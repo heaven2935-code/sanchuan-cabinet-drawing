@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川工方繪圖">
-<link rel="manifest" href="./manifest.webmanifest?v=1.4.0">
-<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.4.0">
-<title>三川工方｜精準櫃體立面繪圖 V1.4.0</title>
+<link rel="manifest" href="./manifest.webmanifest?v=1.4.1">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.4.1">
+<title>三川工方｜精準櫃體立面繪圖 V1.4.1</title>
 <style>
 :root{--night:#222a30;--night2:#2d353d;--stone:#eee9e2;--paper:#fbfaf7;--clay:#ab624c;--clayDark:#824735;--ink:#25313b;--line:#d6d1ca;--aqua:#418c87;--muted:#8b9298;--shadow:0 8px 30px #17252b18}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;color:var(--ink);background:var(--night)}button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.36;cursor:default}button:focus-visible,input:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}input,select{min-width:0}input[type=number]{font-variant-numeric:tabular-nums}
@@ -19,7 +19,7 @@
 @media(max-height:480px){.inspector{padding:6px}.section{margin-bottom:6px}.section-head{padding:6px 9px}.section-body{padding:7px}.topbar{height:43px;min-height:43px}.brand small{display:none}.toolbar{gap:2px;padding-top:4px}.tool{min-height:40px}.canvas-top{min-height:37px;padding:4px 8px}.subbar{height:25px;min-height:25px}.stage-hint{top:7px;left:7px}.stage-btm{bottom:7px;left:7px;right:7px}}
 @media(min-width:1000px){.workspace{grid-template-columns:78px minmax(0,1fr) 282px}.tool{width:68px}.lens-frame{height:116px}.pad{height:112px}}
 
-/* V1.4.0: 橫向可視高度修正與滿版畫布模式 */
+/* V1.4.1: 橫向可視高度修正與滿版畫布模式 */
 html,body{overscroll-behavior:none}
 .workspace{grid-template-rows:minmax(0,1fr);overflow:hidden}
 .toolbar,.canvas-column,.inspector{min-height:0}
@@ -83,13 +83,28 @@ html,body{overscroll-behavior:none}
 @media(max-width:720px) and (orientation:portrait){#toggleCursorDock{display:none}.cursor-dock{display:grid}.inspector #pad{display:none}.cursor-pad{height:64px}}
 @media(max-height:480px){.cursor-dock.dock-open{padding:3px 6px}.cursor-dock-head{display:none}.cursor-pad{height:36px}.cursor-dock-buttons button{height:31px}}
 
+
+/* Floating controller: overlays never reduce the canvas or trigger auto-fit. */
+#toggleCursorDock,#cursorHub,#coordinateChip{display:none!important}
+.cursor-dock{position:absolute;z-index:22;left:8px;bottom:50px;width:min(310px,calc(100% - 16px));display:none!important;border:0;background:transparent;padding:0;gap:6px;pointer-events:none}
+.cursor-dock.dock-open{display:grid!important;grid-template-columns:76px minmax(0,1fr);align-items:center;padding:0}
+.cursor-dock-head{display:none!important}.cursor-ring{grid-column:1;grid-row:2;width:72px;height:72px;border:1px solid #427e6970;background:#d5e8dd40;border-radius:50%;display:grid;place-items:center;pointer-events:none}
+.cursor-pad{width:48px;height:48px;min-height:48px;padding:0;border:0;border-radius:50%;background:transparent!important;box-shadow:none;pointer-events:auto;touch-action:none;position:relative}
+.cursor-pad::after{content:'';width:13px;height:13px;border-radius:50%;background:#367e6d;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.cursor-dock-buttons{grid-column:2;grid-row:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;pointer-events:auto}.cursor-dock-buttons button{height:34px;background:#ffffffe0;font-size:12px}
+.cursor-edit-row{grid-column:1 / -1;grid-row:1;background:#fffefbe8;border-radius:8px;padding:5px;pointer-events:auto;flex-wrap:wrap}.cursor-edit-row input{font-size:16px;max-width:100%}.cursor-edit-row label{font-size:11px}
+.cursor-toggle{position:absolute;z-index:23;bottom:8px;left:8px;width:40px;height:40px;border:1px solid #52877780;border-radius:50%;background:#e8f3edd0;color:#367e6d;font-size:23px;touch-action:manipulation;padding:0}
+.stage-btm{justify-content:flex-end}.cell-actions{position:absolute;top:43px;left:0;right:0;z-index:18;min-height:36px;background:#eff6f1e8}.canvas-column{position:relative}#app.focus-mode .cell-actions{top:32px}.dimension-editor input{font-size:16px}
+@media(max-width:720px) and (orientation:portrait){.stage-hint,.orientation-tip{display:none}.cell-actions{top:36px}.subbar{display:none}.project-name,.field input,.cell-actions input{font-size:16px}}
+
+.canvas-top{min-height:44px;height:44px;flex-shrink:0;padding:3px 5px;overflow-x:auto}.canvas-top .back-edit{position:sticky;left:0;z-index:2;min-width:64px;min-height:38px;background:#397d70;color:white;border-color:#397d70;font-size:12px;flex-shrink:0}.cell-actions,#app.focus-mode .cell-actions{top:44px}
 </style>
 </head>
 <body>
 <div id="bootNotice" role="status" aria-live="polite"><div class="bootPanel"><h2>目前尚未啟動繪圖程式</h2><p>如果此畫面持續顯示，代表目前開啟方式無法執行 JavaScript。iPhone 的 ChatGPT 附件預覽或「檔案」預覽可能只顯示畫面，按鈕無法使用。請改用 Safari 開啟正式的 HTTPS 網址。</p><small>注意：下載 HTML 不等於已部署為網站。</small></div></div>
 <div id="app">
 <header class="topbar">
-<div class="brandmark"><img src="./logo-02-g01.svg?v=1.4.0" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.4.0</small></div>
+<div class="brandmark"><img src="./logo-02-g01.svg?v=1.4.1" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.4.1</small></div>
 <input id="project" class="project-name" aria-label="圖面名稱" value="櫃體 1" placeholder="輸入圖面名稱">
 <div class="top-spacer"></div>
 <button class="top-btn" id="undo" title="復原">↶ <span class="hideSmall">復原</span></button>
@@ -116,6 +131,7 @@ html,body{overscroll-behavior:none}
 </nav>
 <div class="canvas-column">
 <div class="canvas-top">
+<button id="backEdit" class="mini back-edit" aria-label="返回，退出目前編輯並保持畫面">↩ 返回</button>
 <button id="scopeOut" class="pill active">櫃外</button>
 <button id="scopeIn" class="pill">櫃內</button>
 <button id="snapBtn" class="pill active">吸附 10mm</button>
@@ -146,14 +162,15 @@ html,body{overscroll-behavior:none}
 <button data-cursor-tool="text">文字標記</button><button id="cursorMenuCancel">取消選取</button>
 </div></div>
 <div id="dimensionEditor" class="dimension-editor hidden"><label id="dimensionEditorLabel" for="dimensionInput">尺寸 mm</label><input id="dimensionInput" type="number" min="1" step="1"><button id="applyDimension">套用</button><button id="cancelDimension">取消</button></div>
-<div id="toast" class="toast"></div>
-</div>
+<button id="cursorToggle" class="cursor-toggle" aria-label="展開游標控制器" aria-controls="cursorDock" aria-expanded="false">⌖</button>
 <section id="cursorDock" class="cursor-dock" aria-label="游標觸控板">
 <div class="cursor-dock-head"><span id="cursorDockStatus">游標觸控板 · 滑動定位</span><button id="cursorFineStep">微調 1 mm</button></div>
-<div id="cursorPad" class="cursor-pad" aria-label="像筆電觸控板一樣滑動，移動圖面游標">滑動移動游標，可抬手接著滑</div>
+<div class="cursor-ring"><button id="cursorPad" class="cursor-pad" aria-label="按住圓心滑動，移動游標"></button></div>
 <div id="cursorDraftFields" class="cursor-edit-row hidden"><label id="cursorDraftLabel" for="cursorDraftValue">位置 mm</label><button id="cursorMinus" class="nudge-btn" aria-label="預覽位置減少">−</button><input id="cursorDraftValue" type="number" step="1"><input id="cursorDraftText" class="hidden" type="text" maxlength="60" aria-label="文字標記內容" placeholder="輸入標記文字"><input id="cursorEndpointX" class="hidden" type="number" step="1" aria-label="端點 X 座標（毫米）"><input id="cursorEndpointY" class="hidden" type="number" step="1" aria-label="端點 Y 座標（毫米）"><button id="cursorPlus" class="nudge-btn" aria-label="預覽位置增加">＋</button></div>
 <div class="cursor-dock-buttons"><button id="cursorSelect">選取</button><button id="cursorCancel">取消</button><button id="cursorActions" aria-controls="cursorMenu" aria-expanded="false">動作 ▦</button><button id="cursorFinish" class="primary" disabled>完成</button></div>
-</section>
+</section><div id="toast" class="toast"></div>
+</div>
+
 <div class="subbar"><span id="status">已就緒 · 尺寸單位 mm</span><span id="dirtyStatus">本機自動暫存</span></div>
 </div>
 <aside class="inspector" id="inspector"><div class="inspector-heading"><span>尺寸與設定</span><button id="closeInspector">收起 ×</button></div>
@@ -186,7 +203,7 @@ html,body{overscroll-behavior:none}
 <div><h2>隱藏 Safari 網址列</h2><p>目前已放大畫布。若要進一步隱藏 Safari 網址列，請從 Safari 的<strong>分享 → 加入主畫面</strong>，開啟<strong>「打開為網頁 App」</strong>，再由主畫面圖示啟動。</p><p>一般網頁無法自行關閉 Safari 的網址列。</p><button id="closeInstallPrompt">知道了</button></div>
 </div>
 </div>
-<script src="./grid.js?v=1.4.0"></script>
+<script src="./grid.js?v=1.4.1"></script>
 <script>
 (()=>{
 'use strict';
@@ -241,8 +258,8 @@ function deleteSelected(){if(selected?.kind==='gridLine'){try{const cells=Grid.r
 function updateSelected(){if(!selected)return;if(selected.kind==='gridLine'){moveGridLine(selected.axis,selected.value,+$('selectedValue').value);return}let value=+$('selectedValue').value;if(selected.kind==='vertical'){if(!valid(value,1,doc.width-1)||doc.vertical.some((v,i)=>i!==selected.idx&&Math.abs(v-value)<.5)){toast('無效或重複的 X 座標');return}let old=doc.vertical[selected.idx];record('更新直向分格');doc.vertical[selected.idx]=value;doc.vertical.sort((a,b)=>a-b);for(let h of doc.horizontal){if(Math.abs(h.x1-old)<.5)h.x1=value;if(Math.abs(h.x2-old)<.5)h.x2=value;h.x1=Math.min(h.x1,h.x2);h.x2=Math.max(h.x1,h.x2)}selected=null}else if(selected.kind==='horizontal'){if(!valid(value,1,doc.height-1)){toast('Y 座標須位於櫃體內');return}record('更新橫向分格');doc.horizontal[selected.idx].y=value}else return;afterDocChange();toast('分格位置已更新')}
 function measureString(s){return nice(Math.hypot(s.x2-s.x1,s.y2-s.y1))}
 function closeCursorMenu(){cursorMenuOpen=false;$('cursorMenu').classList.add('hidden');$('cursorHub').setAttribute('aria-expanded','false');$('cursorActions').setAttribute('aria-expanded','false')}
-function resetCursorWorkflow(){cursorDraft=null;closeCursorMenu();dimensionEdit=null;$('dimensionEditor').classList.add('hidden')}
-function setDock(open){dockOpen=open;$('cursorDock').classList.toggle('dock-open',open);$('toggleCursorDock').setAttribute('aria-expanded',String(open));if(initialized)requestAnimationFrame(fit)}
+function resetCursorWorkflow(){for(const id of ['dimensionInput','cursorDraftValue','cursorDraftText','cursorEndpointX','cursorEndpointY'])if(document.activeElement===$(id))$(id).blur?.();cursorDraft=null;closeCursorMenu();dimensionEdit=null;$('dimensionEditor').classList.add('hidden')}
+function setDock(open){dockOpen=open;$('cursorDock').classList.toggle('dock-open',open);$('toggleCursorDock').setAttribute('aria-expanded',String(open));$('cursorToggle').setAttribute('aria-expanded',String(open));$('cursorToggle').setAttribute('aria-label',open?'收合游標控制器':'展開游標控制器');$('cursorToggle').textContent=open?'×':'⌖';if(!open)closeCursorMenu()}
 function cursorTargetCell(){const cells=getCells();if(cellSelection.length===1&&cells[cellSelection[0]])return cellSelection[0];return Grid.at(cells,getPoint())}
 function pickWithCursor(){
  if(cursorDraft){toast('預覽中：按完成固定，或按取消');return;}
@@ -254,7 +271,7 @@ function pickWithCursor(){
 }
 function openCursorMenu(){
  if(cursorDraft){toast('先完成或取消目前預覽');return;}
- cursorMenuOpen=!cursorMenuOpen;
+ setDock(true);cursorMenuOpen=!cursorMenuOpen;
  if(!cursorMenuOpen){closeCursorMenu();return;}
  const hasMove=selected?.kind==='shape'||selected?.kind==='gridLine'&&selected.value>0&&selected.value<(selected.axis==='x'?doc.width:doc.height);
  $('cursorMove').disabled=!hasMove;$('cursorDelete').disabled=!hasMove;const hasEnds=selected?.kind==='shape'&&['line','dimension'].includes(doc.shapes[selected.idx]?.type);$('cursorAdjustStart').disabled=$('cursorAdjustEnd').disabled=!hasEnds;
@@ -370,9 +387,8 @@ function cursorPreviewSVG(){
  return `<text x="${b.x}" y="${b.y}" fill="#148f75" font-size="${14/view.scale}">${esc(d.text)}</text>`;
 }
 function positionCursorControls(){
- const p=worldToScreen(getPoint()),size=canvasSize();
- $('cursorHub').style.left=within(p.x+18,3,size.w-31)+'px';$('cursorHub').style.top=within(p.y-34,3,size.h-31)+'px';
- if(cursorMenuOpen){const width=Math.min(200,size.w-16);$('cursorMenu').style.width=width+'px';$('cursorMenu').style.maxHeight=Math.max(40,size.h-16)+'px';$('cursorMenu').style.left=within(p.x+20,8,Math.max(8,size.w-width-8))+'px';$('cursorMenu').style.top=within(p.y-110,8,Math.max(8,size.h-Math.min($('cursorMenu').offsetHeight||280,Math.max(40,size.h-16))-8))+'px';}
+ const size=canvasSize();
+ if(cursorMenuOpen){const menu=$('cursorMenu'),width=Math.min(220,size.w-16);menu.style.width=width+'px';menu.style.maxHeight=Math.max(40,size.h-150)+'px';menu.style.left='8px';menu.style.top='auto';menu.style.bottom='142px';}
 }
 function controlledCursorMove(dx,dy){
  const size=canvasSize(),screen=worldToScreen(cursor),point=screenToWorld({x:within(screen.x+dx*.8,6,size.w-6),y:within(screen.y+dy*.8,6,size.h-6)});
@@ -383,8 +399,10 @@ function showDimensionEditor(axis,start,end){
  const size=canvasSize(),p=worldToScreen({x:axis==='x'?(start+end)/2:0,y:axis==='y'?(start+end)/2:0});
  $('dimensionEditor').style.left=within(p.x-80,8,Math.max(8,size.w-248))+'px';$('dimensionEditor').style.top=within(p.y+12,8,Math.max(8,size.h-80))+'px';$('dimensionEditor').classList.remove('hidden');$('dimensionInput').focus();$('dimensionInput').select();
 }
+function backFromEdit(){cancelEdit();resetCursorWorkflow();pending=null;panAnchor=null;$('cancelPoint').classList.add('hidden');selected=null;cellSelection=[];updateSelection();syncCellActions();render();status('已返回，保留目前圖面位置與比例')}
 function bindCursorControls(){
- $('toggleCursorDock').onclick=()=>setDock(!dockOpen);
+ $('backEdit').onclick=backFromEdit;
+ $('toggleCursorDock').onclick=$('cursorToggle').onclick=()=>setDock(!dockOpen);
  $('cursorSelect').onclick=pickWithCursor;$('cursorCancel').onclick=()=>cancelCursorAction();$('cursorActions').onclick=openCursorMenu;$('cursorHub').onclick=openCursorMenu;
  $('closeCursorMenu').onclick=closeCursorMenu;$('cursorMenuCancel').onclick=()=>cancelCursorAction();$('cursorFinish').onclick=finishCursorAction;
  $('cursorMove').onclick=startCursorMove;$('cursorAdjustStart').onclick=()=>startCursorEndpoint('start');$('cursorAdjustEnd').onclick=()=>startCursorEndpoint('end');$('cursorDelete').onclick=()=>{closeCursorMenu();deleteSelected()};
@@ -400,8 +418,8 @@ function bindCursorControls(){
  pad.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;if(cursorPadDrag)return;e.preventDefault();pad.setPointerCapture(e.pointerId);cursorPadDrag={id:e.pointerId,x:e.clientX,y:e.clientY};closeCursorMenu();});
  pad.addEventListener('pointermove',e=>{if(!cursorPadDrag||cursorPadDrag.id!==e.pointerId)return;e.preventDefault();const dx=e.clientX-cursorPadDrag.x,dy=e.clientY-cursorPadDrag.y;cursorPadDrag.x=e.clientX;cursorPadDrag.y=e.clientY;controlledCursorMove(dx,dy);});
  const end=e=>{if(cursorPadDrag?.id===e.pointerId)cursorPadDrag=null};pad.addEventListener('pointerup',end);pad.addEventListener('pointercancel',end);
- $('applyDimension').onclick=()=>{if(!dimensionEdit)return;const d=dimensionEdit,value=Number($('dimensionInput').value);if(!Number.isFinite(value)||value<1){toast('尺寸至少 1 mm');return;}dimensionEdit=null;$('dimensionEditor').classList.add('hidden');moveGridLine(d.axis,d.end,roundMm(d.start+value),true)};
- $('cancelDimension').onclick=()=>{dimensionEdit=null;$('dimensionEditor').classList.add('hidden')};
+ $('applyDimension').onclick=()=>{if(!dimensionEdit)return;const d=dimensionEdit,value=Number($('dimensionInput').value);if(!Number.isFinite(value)||value<1){toast('尺寸至少 1 mm');return;}dimensionEdit=null;$('dimensionInput').blur?.();$('dimensionEditor').classList.add('hidden');moveGridLine(d.axis,d.end,roundMm(d.start+value),true)};
+ $('cancelDimension').onclick=()=>{dimensionEdit=null;$('dimensionInput').blur?.();$('dimensionEditor').classList.add('hidden')};
  $('dimensionInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('applyDimension').click();if(e.key==='Escape')$('cancelDimension').click()});
 }
 
@@ -578,7 +596,7 @@ if(includeSelection&&pending){let p=getPoint();if(mode==='line'||mode==='dimensi
 if(includeSelection)out+=cursorPreviewSVG();
 return out}
 function render(){let s=canvasSize();$('drawing').setAttribute('viewBox',`0 0 ${s.w} ${s.h}`);$('drawing').innerHTML=svgDefs()+`<g id="world" transform="translate(${view.x} ${view.y}) scale(${view.scale})">${drawScene()}</g>${gridOverlay()}<g id="cursorGraphic" style="pointer-events:none"></g>`;$('zoomText').textContent=(view.scale*100).toFixed(view.scale<.1?1:0)+'%';renderCursor()}
-function renderCursor(){updateCursorDraft();syncCursorDock();positionCursorControls();let p=getPoint(),s=worldToScreen(p),screen=canvasSize();let h=Math.max(6,Math.min(18,screen.w/28));let color=pending?'#338d80':'#a9543d';let cursorSVG=`<g transform="translate(${s.x} ${s.y})"><circle r="${h+4}" fill="#fef9f680" stroke="${color}" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M ${-h-10} 0 H -6 M 6 0 H ${h+10} M 0 ${-h-10} V -6 M 0 6 V ${h+10}" stroke="${color}" stroke-width="1.6"/><circle r="2.6" fill="${color}"/><rect x="${h+8}" y="${-h-9}" rx="5" width="108" height="31" fill="#26343dea"/><text x="${h+15}" y="${-h+3}" font-size="11" fill="white" font-family="sans-serif">${nice(p.x)} , ${nice(p.y)}</text></g>`;
+function renderCursor(){updateCursorDraft();syncCursorDock();positionCursorControls();let p=getPoint(),s=worldToScreen(p),screen=canvasSize();let h=Math.max(6,Math.min(18,screen.w/28));let color=pending?'#338d80':'#a9543d';let cursorSVG=`<g transform="translate(${s.x} ${s.y})"><circle r="${h+4}" fill="#fef9f680" stroke="${color}" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M ${-h-10} 0 H -6 M 6 0 H ${h+10} M 0 ${-h-10} V -6 M 0 6 V ${h+10}" stroke="${color}" stroke-width="1.6"/><circle r="2.6" fill="${color}"/></g>`;
 const target=$('cursorGraphic');if(target)target.innerHTML=cursorSVG;
 $('lens').setAttribute('viewBox',`${p.x-175} ${p.y-100} 350 200`);$('lens').innerHTML=svgDefs()+drawScene(false)+`<g stroke="#df6c42" stroke-width="3" fill="none"><circle cx="${p.x}" cy="${p.y}" r="13"/><path d="M ${p.x-65} ${p.y} h 130 M ${p.x} ${p.y-65} v 130"/></g><rect x="${p.x+37}" y="${p.y+40}" width="126" height="27" rx="5" fill="#26343d"/><text x="${p.x+42}" y="${p.y+59}" fill="#fff" font-size="15">${nice(p.x)} , ${nice(p.y)}</text>`;
 syncCursorChipOnly(p)}
@@ -655,8 +673,8 @@ function endDrawing(e){if(!drawPointers.has(e.pointerId))return;let wasMulti=sup
 drawing.addEventListener('pointerup',endDrawing);drawing.addEventListener('pointercancel',e=>{if(panAnchor?.strokeBegan){pending=null;$('cancelPoint').classList.add('hidden')}cancelEdit();drawPointers.delete(e.pointerId);if(!drawPointers.size){pinchStart=null;panAnchor=null}});
 drawing.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY<0?1.13:1/1.13,eventPosition(e))},{passive:false});
 window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(e.ctrlKey||e.metaKey){if(e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo()}if(e.key.toLowerCase()==='s'){e.preventDefault();save(true)}return}if(e.key==='Escape'&&cursorDraft){cancelCursorAction();return}if(e.key==='Escape'&&pending){pending=null;$('cancelPoint').classList.add('hidden');render()}if(e.key==='Delete'||e.key==='Backspace'){deleteSelected()}if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();snapExactCursor(cursor.x+(e.key==='ArrowLeft'?-step:e.key==='ArrowRight'?step:0),cursor.y+(e.key==='ArrowUp'?-step:e.key==='ArrowDown'?step:0))}if(e.key==='Enter'){cursorDraft?finishCursorAction():confirmAt(getPoint())}});
-let resizeT=null;window.addEventListener('resize',()=>{syncViewportHeight();clearTimeout(resizeT);resizeT=setTimeout(()=>{if(initialized)fit()},150)});
-window.visualViewport?.addEventListener('resize',()=>{syncViewportHeight();clearTimeout(resizeT);resizeT=setTimeout(()=>{if(initialized)fit()},150)});
+let resizeT=null;window.addEventListener('resize',()=>{syncViewportHeight();clearTimeout(resizeT);resizeT=setTimeout(()=>{if(initialized)render()},150)});
+window.visualViewport?.addEventListener('resize',()=>{syncViewportHeight();clearTimeout(resizeT);resizeT=setTimeout(()=>{if(initialized)render()},150)});
 window.addEventListener('orientationchange',()=>{syncViewportHeight();setTimeout(()=>{syncViewportHeight();if(initialized)fit()},300)});
 window.addEventListener('visibilitychange',()=>{if(document.hidden)save(false)});
 }

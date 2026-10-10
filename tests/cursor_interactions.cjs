@@ -146,4 +146,13 @@ function endpointDrag(which,x,y,cancel=false){
 endpointDrag('start',600,600);assert.equal(api.getDoc().shapes[1].x1,600);assert.equal(api.getDoc().shapes[1].y1,600);assert.equal(api.getDoc().shapes[1].x2,400);
 api.undo();assert.equal(doc(),withDimension);endpointDrag('end',900,900,true);assert.equal(doc(),withDimension);
 endpointDrag('start',400,100);assert.equal(doc(),withDimension,'overlapping endpoints must be rejected');
-console.log('PASS: cursor and touch workflows, independently editable line/dimension endpoints, opposite endpoint preservation, cancel/undo, clean save/export');
+// Selection, opening/closing the floating controller, and keyboard resize keep view scale.
+const stableView=api.getView();api.setMode('cells');api.setCursor(290,250);api.confirm();assert.deepEqual(api.getView(),stableView);
+ids.get('cursorToggle').click();ids.get('cursorToggle').click();assert.deepEqual(api.getView(),stableView);
+ids.get('drawing').clientHeight=180;for(const fn of win.listeners.resize||[])fn();for(const timer of [...timers.values()])if(timer.delay===150)timer.fn();
+assert.deepEqual(api.getView(),stableView,'keyboard-sized viewport must never auto-fit the cabinet');
+assert(!ids.get('cursorGraphic').innerHTML.includes('<text'),'crosshair has no coordinate label');
+// Opening Actions, starting a preview, and Back never recenter or scale the viewport.
+ids.get('drawing').clientHeight=300;const beforeActions=api.getView();api.setCursor(290,250);api.pickWithCursor();api.openCursorMenu();assert.deepEqual(api.getView(),beforeActions);
+api.startCursorTool('cutX');assert.deepEqual(api.getView(),beforeActions);const beforeReturn=doc();ids.get('backEdit').click();assert.equal(api.getCursorDraft(),null);assert.equal(doc(),beforeReturn);assert.deepEqual(api.getView(),beforeActions);
+console.log('PASS: action/return/controller/keyboard preserve viewport, cursor workflows and independent endpoints');

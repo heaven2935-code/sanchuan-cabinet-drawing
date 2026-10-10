@@ -12,11 +12,11 @@ html = (root/'index.html').read_text()
 manifest_link = re.search(r'<link rel="manifest" href="([^"]+)"', html).group(1)
 manifest = json.loads((root/urlsplit(manifest_link).path).read_text())
 touch = re.search(r'<link rel="apple-touch-icon" sizes="180x180" href="([^"]+)"', html).group(1)
-assert urlsplit(touch).query == urlsplit(manifest_link).query == 'v=1.4.0'
+assert urlsplit(touch).query == urlsplit(manifest_link).query == 'v=1.4.1'
 assert manifest['display'] == 'standalone'
 assert manifest['start_url'] == manifest['scope'] == './'
 for icon in manifest['icons']:
-    assert urlsplit(icon['src']).query == 'v=1.4.0'
+    assert urlsplit(icon['src']).query == 'v=1.4.1'
     path = root/urlsplit(icon['src']).path
     data = path.read_bytes()
     assert data[:8] == b'\x89PNG\r\n\x1a\n'
