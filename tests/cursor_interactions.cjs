@@ -154,5 +154,10 @@ assert.deepEqual(api.getView(),stableView,'keyboard-sized viewport must never au
 assert(!ids.get('cursorGraphic').innerHTML.includes('<text'),'crosshair has no coordinate label');
 // Opening Actions, starting a preview, and Back never recenter or scale the viewport.
 ids.get('drawing').clientHeight=300;const beforeActions=api.getView();api.setCursor(290,250);api.pickWithCursor();api.openCursorMenu();assert.deepEqual(api.getView(),beforeActions);
-api.startCursorTool('cutX');assert.deepEqual(api.getView(),beforeActions);const beforeReturn=doc();ids.get('backEdit').click();assert.equal(api.getCursorDraft(),null);assert.equal(doc(),beforeReturn);assert.deepEqual(api.getView(),beforeActions);
-console.log('PASS: action/return/controller/keyboard preserve viewport, cursor workflows and independent endpoints');
+api.startCursorTool('cutX');assert.deepEqual(api.getView(),beforeActions);const beforeReturn=doc();ids.get('cursorCancel').click();assert.equal(api.getCursorDraft(),null);assert.equal(doc(),beforeReturn);assert.deepEqual(api.getView(),beforeActions);
+// Bottom row Undo really reverts the drawing, Redo reapplies, and Delete shares selection.
+const commonBase=doc(),commonView=api.getView();api.setCursor(100,100);api.startCursorTool('line');api.setCursor(700,800);api.finishCursorAction();const commonDrawn=doc();
+ids.get('undo').click();assert.equal(doc(),commonBase);assert.deepEqual(api.getView(),commonView);ids.get('redo').click();assert.equal(doc(),commonDrawn);
+api.setCursor(700,800);ids.get('cursorSelect').click();assert.equal(api.getSelection().kind,'shape');assert.equal(api.getSelection().idx,2);ids.get('deleteTool').click();assert.equal(doc(),commonBase);assert.deepEqual(api.getView(),commonView);
+ids.get('undo').click();assert.equal(doc(),commonDrawn);ids.get('commonPan').click();assert(ids.get('commonPan').classList.contains('active'));assert.deepEqual(api.getView(),commonView);
+console.log('PASS: bottom common actions undo/redo/delete/select/pan, cursor editing and viewport preservation');
