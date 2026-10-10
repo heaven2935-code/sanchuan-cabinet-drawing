@@ -20,3 +20,5 @@
 - V1.5.1：按鍵視覺恢復原深色工具列風格，commonActions 圖示上下排列、暖色選取框；cursorSelectLabel 更新文字避免重畫圖示。維持 V1.5 功能與下方配置；真機視覺待驗。
 
 - V1.6.0 最新方向：使用者取消儲存格操作。預設 select，cells 舊模式入口映射 select；gridOverlay 改為直接尺寸標示，不再有字母／數字欄列頭、框選與格子高亮。數值點選經 dimensionEdit；總尺寸按比例調整，局部尺寸依 localPosition 移動相鄰線且外框固定。原 gridCells 只作相容幾何資料，保留舊圖面；合併／等分 UI 隱藏。測試：grid_interactions 驗證總寬高及兩側局部尺寸、無效值拒絕、取消與復原；cursor_interactions 驗證線條／端點／繪圖。iPhone 真機視覺待驗證。
+
+- V1.7.0 最新板件編輯：parts.js 的 CabinetParts 提供類型／編號／metadata 正規化／結構座標 transform 與 round-to-0.01 scale。index.html 的 partEditor 為 stage 浮動面板，contextPart／partList／addBoard 三入口；doc.boardTags 標記結構線位置，shape.part 標記自由線／矩形。boardLines 在點選及清除失效標記時包含四條外框。applyPart 為單次可復原修改，抽屜 children 六件只採使用者輸入加工尺寸，不自動推算。boardLabels 保留於 SVG，名字以 esc 輸出；複製結構線會建立自由圖元；外框刪除只清名稱。測試 parts_interactions.cjs 覆蓋實際處理器、命名／尺寸／移動／抽屜／複製刪除／取消／復原／儲存重載／保留視角。真機鍵盤及浮動面板仍待驗證。

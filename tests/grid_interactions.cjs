@@ -80,6 +80,7 @@ const context = vm.createContext({
   navigator:{standalone:true},sessionStorage:{getItem:()=>null,setItem(){}},structuredClone, Blob, URL, confirm: () => true, prompt: () => promptAnswer,
 });
 vm.runInContext(fs.readFileSync(path.join(root,'grid.js'),'utf8'),context);
+vm.runInContext(fs.readFileSync(path.join(root,'parts.js'),'utf8'),context);
 vm.runInContext(script, context);
 const api=win.__CAD_TEST__,drawing=ids.get('drawing'),baseline=JSON.stringify(api.getDoc());
 assert(api&&ids.get('bootNotice').removed);

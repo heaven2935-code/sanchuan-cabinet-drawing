@@ -80,6 +80,7 @@ const context = vm.createContext({
   navigator:{standalone:true},sessionStorage:{getItem:()=>null,setItem(){}},structuredClone, Blob, URL, confirm: () => true, prompt: () => promptAnswer,
 });
 vm.runInContext(fs.readFileSync(path.join(root,'grid.js'),'utf8'),context);
+vm.runInContext(fs.readFileSync(path.join(root,'parts.js'),'utf8'),context);
 vm.runInContext(script, context);
 const api=win.__CAD_TEST__,doc=()=>JSON.stringify(api.getDoc()),baseline=doc();
 ids.get('cursorToggle').click();api.setCursor(290,250);ids.get('cursorSelect').click();assert.equal(api.getCellSelection().length,0);
