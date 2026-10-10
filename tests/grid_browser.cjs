@@ -40,7 +40,7 @@ async function run(){
  let p=await screen(290,250);await page.touchscreen.tap(p.x,p.y);answers.push('3');await page.locator('#splitColumns').click();assert.equal(await api(()=>__CAD_TEST__.getCells().length),13);
  await page.locator('#undo').click();
  // Header click edits width to 620 mm; other rows follow the same coordinate.
- let header=page.locator('[data-grid-axis="x"][data-grid-start="0"]').first();answers.push('620');await header.click();
+ let header=page.locator('[data-grid-axis="x"][data-grid-start="0"]').first();await header.click();await page.locator('#dimensionInput').fill('620');await page.locator('#applyDimension').click();
  assert(await api(()=>__CAD_TEST__.getCells().some(c=>c.x2===620)));
  await page.locator('#undo').click();
  // Select and drag a real divider; one undo restores it.

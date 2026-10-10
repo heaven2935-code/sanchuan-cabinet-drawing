@@ -80,6 +80,41 @@ function move(cells,axis,value,next,width,height){
  if(!validate(result,newWidth,newHeight))throw Error('此調整會造成儲存格重疊');
  return {cells:result,width:newWidth,height:newHeight};
 }
-const api={fromLegacy,validate,bounds,lines,at,merge,split,cut,move,limits,eq};
+// Find the smallest rectangular neighbourhood connected to a touched divider.
+function segment(cells,axis,value,position){
+ const edge=axis==='x'?['x1','x2']:['y1','y2'],side=axis==='x'?['y1','y2']:['x1','x2'];
+ let a=position,b=position,ids=[];
+ for(let pass=0;pass<=cells.length;pass++){
+  const previous=a+':'+b;
+  ids=[];
+  cells.forEach((c,i)=>{if(edge.some(k=>eq(c[k],value))&&c[side[0]]<b+EPS&&c[side[1]]>a-EPS){
+   // A single contact at a row/column corner must not join unrelated segments.
+   if(a!==b&&(eq(c[side[1]],a)||eq(c[side[0]],b)))return;
+   ids.push(i);a=Math.min(a,c[side[0]]);b=Math.max(b,c[side[1]]);
+  }});
+  if(previous===a+':'+b)break;
+ }
+ if(!ids.length||eq(a,b))throw Error('此位置沒有可編輯的分隔線');
+ return {axis,value,a,b,ids,local:true};
+}
+function localLimits(cells,line){
+ const position=(line.a+line.b)/2,part=segment(cells,line.axis,line.value,position),edge=line.axis==='x'?['x1','x2']:['y1','y2'];
+ let min=-Infinity,max=Infinity;
+ for(const i of part.ids){const c=cells[i];if(eq(c[edge[1]],line.value))min=Math.max(min,c[edge[0]]+1);if(eq(c[edge[0]],line.value))max=Math.min(max,c[edge[1]]-1);}
+ return {min,max,part};
+}
+function moveLocal(cells,line,next,width,height){
+ const limit=localLimits(cells,line);next=round(next);
+ if(!Number.isFinite(next)||!Number.isFinite(limit.min)||!Number.isFinite(limit.max)||next<limit.min||next>limit.max)throw Error('位置須保留兩側至少 1 mm');
+ const keys=line.axis==='x'?['x1','x2']:['y1','y2'],ids=new Set(limit.part.ids);
+ const result=cells.map((c,i)=>{const d={...c};if(ids.has(i))for(const k of keys)if(eq(d[k],line.value))d[k]=next;return d;});
+ if(!validate(result,width,height))throw Error('此線段無法獨立移動，請先整理相鄰格子');
+ return {cells:result,width,height};
+}
+function removeLocal(cells,line,width,height){
+ const part=segment(cells,line.axis,line.value,(line.a+line.b)/2),result=merge(cells,part.ids);
+ if(!validate(result,width,height))throw Error('移除分隔線後的範圍須為長方形');return result;
+}
+const api={fromLegacy,validate,bounds,lines,at,merge,split,cut,move,limits,eq,segment,localLimits,moveLocal,removeLocal};
 if(typeof module!=='undefined'&&module.exports)module.exports=api;root.CabinetGrid=api;
 })(typeof window!=='undefined'?window:globalThis);

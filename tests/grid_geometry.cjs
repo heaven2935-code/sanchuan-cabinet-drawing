@@ -23,3 +23,9 @@ for(let n=2;n<=24;n++){
  assert(G.validate(result.cells,2320,2240));
 }
 console.log('PASS: legacy conversion, local merge, invalid merges, splits, boundaries, coverage and overlap');
+const local=G.segment(cells,'x',580,250);assert.equal(local.a,0);assert.equal(local.b,500);
+const localMoved=G.moveLocal(cells,local,620,2320,2240).cells;
+assert(localMoved.some(c=>c.x2===620&&c.y1===0));assert(localMoved.some(c=>c.x2===580&&c.y1===500));assert(G.validate(localMoved,2320,2240));
+const localDeleted=G.removeLocal(cells,local,2320,2240);assert.equal(localDeleted.length,11);assert(G.validate(localDeleted,2320,2240));
+assert.throws(()=>G.moveLocal(cells,local,1160,2320,2240),/1 mm/);
+console.log('PASS: independent line segments and local deletion');

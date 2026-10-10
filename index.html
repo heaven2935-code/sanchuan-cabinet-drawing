@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川工方繪圖">
-<link rel="manifest" href="./manifest.webmanifest?v=1.3.0">
-<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.3.0">
-<title>三川工方｜精準櫃體立面繪圖 V1.3.0</title>
+<link rel="manifest" href="./manifest.webmanifest?v=1.4.0">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.4.0">
+<title>三川工方｜精準櫃體立面繪圖 V1.4.0</title>
 <style>
 :root{--night:#222a30;--night2:#2d353d;--stone:#eee9e2;--paper:#fbfaf7;--clay:#ab624c;--clayDark:#824735;--ink:#25313b;--line:#d6d1ca;--aqua:#418c87;--muted:#8b9298;--shadow:0 8px 30px #17252b18}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;color:var(--ink);background:var(--night)}button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.36;cursor:default}button:focus-visible,input:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}input,select{min-width:0}input[type=number]{font-variant-numeric:tabular-nums}
@@ -19,7 +19,7 @@
 @media(max-height:480px){.inspector{padding:6px}.section{margin-bottom:6px}.section-head{padding:6px 9px}.section-body{padding:7px}.topbar{height:43px;min-height:43px}.brand small{display:none}.toolbar{gap:2px;padding-top:4px}.tool{min-height:40px}.canvas-top{min-height:37px;padding:4px 8px}.subbar{height:25px;min-height:25px}.stage-hint{top:7px;left:7px}.stage-btm{bottom:7px;left:7px;right:7px}}
 @media(min-width:1000px){.workspace{grid-template-columns:78px minmax(0,1fr) 282px}.tool{width:68px}.lens-frame{height:116px}.pad{height:112px}}
 
-/* V1.3.0: 橫向可視高度修正與滿版畫布模式 */
+/* V1.4.0: 橫向可視高度修正與滿版畫布模式 */
 html,body{overscroll-behavior:none}
 .workspace{grid-template-rows:minmax(0,1fr);overflow:hidden}
 .toolbar,.canvas-column,.inspector{min-height:0}
@@ -72,13 +72,24 @@ html,body{overscroll-behavior:none}
 #app.focus-mode .toolbar{padding-bottom:4px}
 #app.focus-mode #toggleInspector{display:inline-block}
 
+/* Notebook-style relative cursor pad, separate from the drawing canvas. */
+.cursor-dock{display:none;flex-shrink:0;background:#e8efed;border-top:1px solid #b7cbc3;padding:6px 8px;gap:5px;min-width:0}
+.cursor-dock.dock-open{display:grid}.cursor-dock-head{display:flex;gap:6px;align-items:center;justify-content:space-between;font-size:10px;color:#486f64;min-height:18px}.cursor-dock-head span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cursor-dock-head button{border:0;background:transparent;color:#50766b;font-size:11px;padding:2px 5px}
+.cursor-pad{height:64px;position:relative;touch-action:none;user-select:none;border:1px solid #b0c5be;border-radius:9px;background:linear-gradient(145deg,#f6faf8,#d4e3de);box-shadow:inset 0 1px 4px #466f5912;display:grid;place-items:center;color:#77958a;font-size:11px;cursor:grab}.cursor-pad:active{cursor:grabbing;background:#cee2d9}.cursor-pad::after{content:'↔　↕';position:absolute;top:5px;right:8px;font-size:14px;color:#9db5aa}.cursor-dock-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.cursor-dock-buttons button{height:36px;border:1px solid #a8c0b6;border-radius:7px;background:#fff;color:#2c6456;font-size:11px;font-weight:600}.cursor-dock-buttons button.primary{background:#418c87;color:#fff;border-color:#418c87}.cursor-dock-buttons button:disabled{opacity:.4}
+.cursor-edit-row{display:flex;gap:5px;align-items:center;font-size:10px;color:#366b61}.cursor-edit-row input{height:32px;min-width:0;flex:1;border:1px solid #aac3b8;border-radius:6px;padding:3px 7px;font-size:13px}.cursor-edit-row .nudge-btn{height:32px;min-width:35px;border:1px solid #aac3b8;border-radius:6px;background:#fff;color:#366b61;font-size:14px}.cursor-edit-row label{white-space:nowrap}
+.cursor-hub{position:absolute;z-index:12;width:28px;height:28px;border-radius:50%;border:1px solid #67a395;background:#effaf5eb;box-shadow:0 2px 8px #20372e24;color:#367d69;font-size:17px;display:grid;place-items:center;padding:0;touch-action:manipulation}.cursor-hub[aria-expanded="true"]{background:#418c87;color:white}
+.cursor-menu{position:absolute;z-index:25;width:200px;background:#fffdf9f7;border:1px solid #adc8bd;border-radius:12px;box-shadow:0 8px 26px #223b3240;padding:8px;overflow:auto;overscroll-behavior:contain}.cursor-menu-title{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:11px;color:#376d5b;margin-bottom:7px}.cursor-menu-title button{border:0;background:transparent;color:#668477;padding:2px 6px;font-size:15px}.cursor-menu-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.cursor-menu-actions button{min-height:35px;padding:5px;border:1px solid #c0d4ca;border-radius:7px;background:#f1f8f4;color:#326451;font-size:11px}.cursor-menu-actions button:disabled{opacity:.35}.cursor-menu-actions button.danger{color:#98523e;background:#fff2ec;border-color:#e2c4b8}
+.dimension-editor{position:absolute;z-index:35;display:flex;align-items:center;gap:5px;flex-wrap:wrap;width:min(240px,90%);background:#fffefb;border:1px solid #92b3a6;box-shadow:0 5px 18px #23392f35;padding:8px;border-radius:9px;font-size:11px;color:#376d5b}.dimension-editor input{min-width:0;width:83px;height:34px;border:1px solid #abc3b7;border-radius:5px;font-size:14px;padding:5px}.dimension-editor button{height:34px;border:1px solid #acc4b7;border-radius:5px;background:#f2f8f4;color:#376d5b;font-size:11px}
+@media(max-width:720px) and (orientation:portrait){#toggleCursorDock{display:none}.cursor-dock{display:grid}.inspector #pad{display:none}.cursor-pad{height:64px}}
+@media(max-height:480px){.cursor-dock.dock-open{padding:3px 6px}.cursor-dock-head{display:none}.cursor-pad{height:36px}.cursor-dock-buttons button{height:31px}}
+
 </style>
 </head>
 <body>
 <div id="bootNotice" role="status" aria-live="polite"><div class="bootPanel"><h2>目前尚未啟動繪圖程式</h2><p>如果此畫面持續顯示，代表目前開啟方式無法執行 JavaScript。iPhone 的 ChatGPT 附件預覽或「檔案」預覽可能只顯示畫面，按鈕無法使用。請改用 Safari 開啟正式的 HTTPS 網址。</p><small>注意：下載 HTML 不等於已部署為網站。</small></div></div>
 <div id="app">
 <header class="topbar">
-<div class="brandmark"><img src="./logo-02-g01.svg?v=1.3.0" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.3.0</small></div>
+<div class="brandmark"><img src="./logo-02-g01.svg?v=1.4.0" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.4.0</small></div>
 <input id="project" class="project-name" aria-label="圖面名稱" value="櫃體 1" placeholder="輸入圖面名稱">
 <div class="top-spacer"></div>
 <button class="top-btn" id="undo" title="復原">↶ <span class="hideSmall">復原</span></button>
@@ -110,6 +121,7 @@ html,body{overscroll-behavior:none}
 <button id="snapBtn" class="pill active">吸附 10mm</button>
 <button id="cancelPoint" class="pill hidden">取消起點 ×</button>
 <span class="spacer"></span>
+<button id="toggleCursorDock" class="mini" aria-controls="cursorDock" aria-expanded="false">游標</button>
 <button id="fit" class="mini" title="圖面置中">適屏</button>
 <button id="toggleInspector" class="mini" title="顯示或收起右側控制面板" aria-expanded="false" aria-controls="inspector">設定</button>
 </div>
@@ -123,8 +135,25 @@ html,body{overscroll-behavior:none}
 <svg id="drawing" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="櫃體立面繪圖區"></svg>
 <div id="stageHint" class="stage-hint"><strong>精準選點</strong> 在右側觸控板移動游標，再按「確認定位」。</div>
 <div class="stage-btm"><div id="coordinateChip" class="coordinate-chip"><b>XY</b> 0, 0 mm<br>格線 10 mm</div><div class="zoom-controls"><button id="zoomOut" title="縮小">−</button><small id="zoomText">100%</small><button id="zoomIn" title="放大">＋</button></div></div>
+<button id="cursorHub" class="cursor-hub" aria-label="準心動作選單" aria-controls="cursorMenu" aria-expanded="false">⋮</button>
+<div id="cursorMenu" class="cursor-menu hidden" aria-label="游標動作選單">
+<div class="cursor-menu-title"><span id="cursorMenuTitle">游標動作</span><button id="closeCursorMenu" aria-label="關閉動作選單">×</button></div>
+<div class="cursor-menu-actions">
+<button id="cursorMove">移動位置</button><button id="cursorAdjustStart">調起點</button><button id="cursorAdjustEnd">調終點</button><button id="cursorDelete" class="danger">刪除</button>
+<button data-cursor-tool="cutX">直分隔</button><button data-cursor-tool="cutY">橫分隔</button>
+<button data-cursor-tool="line">畫直線</button><button data-cursor-tool="dimension">尺寸標註</button>
+<button data-cursor-tool="rect">畫矩形</button><button data-cursor-tool="ellipse">畫圓形</button>
+<button data-cursor-tool="text">文字標記</button><button id="cursorMenuCancel">取消選取</button>
+</div></div>
+<div id="dimensionEditor" class="dimension-editor hidden"><label id="dimensionEditorLabel" for="dimensionInput">尺寸 mm</label><input id="dimensionInput" type="number" min="1" step="1"><button id="applyDimension">套用</button><button id="cancelDimension">取消</button></div>
 <div id="toast" class="toast"></div>
 </div>
+<section id="cursorDock" class="cursor-dock" aria-label="游標觸控板">
+<div class="cursor-dock-head"><span id="cursorDockStatus">游標觸控板 · 滑動定位</span><button id="cursorFineStep">微調 1 mm</button></div>
+<div id="cursorPad" class="cursor-pad" aria-label="像筆電觸控板一樣滑動，移動圖面游標">滑動移動游標，可抬手接著滑</div>
+<div id="cursorDraftFields" class="cursor-edit-row hidden"><label id="cursorDraftLabel" for="cursorDraftValue">位置 mm</label><button id="cursorMinus" class="nudge-btn" aria-label="預覽位置減少">−</button><input id="cursorDraftValue" type="number" step="1"><input id="cursorDraftText" class="hidden" type="text" maxlength="60" aria-label="文字標記內容" placeholder="輸入標記文字"><input id="cursorEndpointX" class="hidden" type="number" step="1" aria-label="端點 X 座標（毫米）"><input id="cursorEndpointY" class="hidden" type="number" step="1" aria-label="端點 Y 座標（毫米）"><button id="cursorPlus" class="nudge-btn" aria-label="預覽位置增加">＋</button></div>
+<div class="cursor-dock-buttons"><button id="cursorSelect">選取</button><button id="cursorCancel">取消</button><button id="cursorActions" aria-controls="cursorMenu" aria-expanded="false">動作 ▦</button><button id="cursorFinish" class="primary" disabled>完成</button></div>
+</section>
 <div class="subbar"><span id="status">已就緒 · 尺寸單位 mm</span><span id="dirtyStatus">本機自動暫存</span></div>
 </div>
 <aside class="inspector" id="inspector"><div class="inspector-heading"><span>尺寸與設定</span><button id="closeInspector">收起 ×</button></div>
@@ -157,7 +186,7 @@ html,body{overscroll-behavior:none}
 <div><h2>隱藏 Safari 網址列</h2><p>目前已放大畫布。若要進一步隱藏 Safari 網址列，請從 Safari 的<strong>分享 → 加入主畫面</strong>，開啟<strong>「打開為網頁 App」</strong>，再由主畫面圖示啟動。</p><p>一般網頁無法自行關閉 Safari 的網址列。</p><button id="closeInstallPrompt">知道了</button></div>
 </div>
 </div>
-<script src="./grid.js?v=1.3.0"></script>
+<script src="./grid.js?v=1.4.0"></script>
 <script>
 (()=>{
 'use strict';
@@ -166,6 +195,7 @@ const STORE='sanchuan_cabinet_cad_v1'; // 使用原版暫存鍵以保留已編�
 const DEMO=()=>({version:1,name:'櫃體 1',width:2320,height:2240,depth:600,vertical:[580,1160,1740],horizontal:[{x1:0,x2:2320,y:500},{x1:0,x2:2320,y:2140}],shapes:[]});
 let doc=DEMO(),mode='cells',scope='out',snap=true,step=1,pending=null,selected=null,history=[],future=[],cursor={x:1160,y:1120},view={scale:.12,x:100,y:100},initialized=false,drawPointers=new Map(),dragPad=null,panAnchor=null,pinchStart=null,suppressNextTap=false,inspectorOpen=!window.matchMedia('(max-width:720px) and (orientation:portrait)').matches,toastTimer=null,saveTimer=null,dirty=false;
 const Grid=window.CabinetGrid;
+let cursorDraft=null,cursorMenuOpen=false,cursorPadDrag=null,dimensionEdit=null,dockOpen=false;
 let cellSelection=[],editDrag=null,lastPortrait=window.matchMedia('(max-width:720px) and (orientation:portrait)').matches;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const nice=n=>String(+Number(n).toFixed(2));const within=(v,a,b)=>Math.max(a,Math.min(b,v));const roundMm=n=>Math.round(n*100)/100;
@@ -197,19 +227,184 @@ function setCursor(x,y,forceRaw=true){cursor={x:roundMm(within(x,-3000,doc.width
 function getPoint(){return snapped(cursor)}
 function syncCursor(){let p=getPoint();$('cursorX').value=nice(p.x);$('cursorY').value=nice(p.y);$('coordinateChip').innerHTML=`<b>X ${nice(p.x)} &nbsp; Y ${nice(p.y)} mm</b><br>${snap?'吸附開啟 · 格線 10 mm':'自由座標 · 不吸附'}`}
 function updateFields(){$('cabW').value=nice(doc.width);$('cabH').value=nice(doc.height);$('cabD').value=nice(doc.depth);$('project').value=doc.name}
-function afterDocChange(){cellSelection=[];updateFields();updateSelection();syncCursor();render();syncCellActions()}
-function showMode(m){mode=m;cellSelection=[];selected=null;updateSelection();$$('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));pending=null;$('cancelPoint').classList.add('hidden');const names={cells:'儲存格：點選多格或拖曳框選；點尺寸列改寬高，拖分隔線調整',select:'選取：點擊線條可選取；使用觸控板可精準定位',vertical:'直分格：游標指定 X 座標，再按確認定位',horizontal:'橫分格：游標指定位置，分隔所在直向欄位',line:'直線：在畫布按住拖曳即可畫，或分別點起點與終點',rect:'矩形：按住拖曳建立範圍，或分別點兩角',ellipse:'圓形：按住拖曳建立範圍，或分別點兩角',dimension:'尺寸：按住拖曳，或分別點兩端點',text:'文字：定位後輸入註記內容',pan:'平移：拖動畫布來移動檢視範圍'};status(names[m]);$('stageHint').innerHTML=`<strong>${({cells:'儲存格編輯',select:'精準選點',vertical:'直向分格',horizontal:'橫向分格',line:'繪製直線',rect:'繪製矩形',ellipse:'繪製圓形',dimension:'尺寸標註',text:'輸入文字',pan:'平移畫布'})[m]}</strong> ${m==='cells'?'點格子選取；選多格可合併。上方改欄寬、左側改列高':m==='pan'?'拖動畫布移動視角':m==='select'?'點畫布線條選取；右側觸控板可精準定位':['line','rect','ellipse','dimension'].includes(m)?'手指在畫布拖曳直接繪製；也可用精準定位分兩次確認':'移到預定位置，按右側「確認定位」'}`;$('confirmPoint').textContent=m==='pan'?'✓ 定位游標':m==='select'?'✓ 選取游標所在位置':'＋ 確認定位';syncCellActions();render()}
+function afterDocChange(){resetCursorWorkflow();cellSelection=[];updateFields();updateSelection();syncCursor();render();syncCellActions()}
+function showMode(m){resetCursorWorkflow();mode=m;cellSelection=[];selected=null;updateSelection();$$('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));pending=null;$('cancelPoint').classList.add('hidden');const names={cells:'儲存格：點選多格或拖曳框選；點尺寸列改寬高，拖分隔線調整',select:'選取：點擊線條可選取；使用觸控板可精準定位',vertical:'直分格：游標指定 X 座標，再按確認定位',horizontal:'橫分格：游標指定位置，分隔所在直向欄位',line:'直線：在畫布按住拖曳即可畫，或分別點起點與終點',rect:'矩形：按住拖曳建立範圍，或分別點兩角',ellipse:'圓形：按住拖曳建立範圍，或分別點兩角',dimension:'尺寸：按住拖曳，或分別點兩端點',text:'文字：定位後輸入註記內容',pan:'平移：拖動畫布來移動檢視範圍'};status(names[m]);$('stageHint').innerHTML=`<strong>${({cells:'儲存格編輯',select:'精準選點',vertical:'直向分格',horizontal:'橫向分格',line:'繪製直線',rect:'繪製矩形',ellipse:'繪製圓形',dimension:'尺寸標註',text:'輸入文字',pan:'平移畫布'})[m]}</strong> ${m==='cells'?'點格子選取；選多格可合併。上方改欄寬、左側改列高':m==='pan'?'拖動畫布移動視角':m==='select'?'點畫布線條選取；右側觸控板可精準定位':['line','rect','ellipse','dimension'].includes(m)?'手指在畫布拖曳直接繪製；也可用精準定位分兩次確認':'移到預定位置，按右側「確認定位」'}`;$('confirmPoint').textContent=m==='pan'?'✓ 定位游標':m==='select'?'✓ 選取游標所在位置':'＋ 確認定位';syncCellActions();render()}
 function addV(x){return editCells('新增直向分格',()=>Grid.cut(getCells(),'x',roundMm(x)))}
 function bayAt(x){let b=[0,...doc.vertical,doc.width];for(let i=0;i<b.length-1;i++)if(x>=b[i]&&x<=b[i+1])return {a:b[i],b:b[i+1]};return null}
 function addH(x,y){const cells=getCells(),ids=cells.map((c,i)=>x>=c.x1&&x<c.x2&&y>c.y1&&y<c.y2?i:-1).filter(i=>i>=0);return editCells('新增橫向分格',()=>Grid.cut(cells,'y',roundMm(y),ids))}
-function confirmAt(p){if(mode==='cells'){toggleCellAt(p);return}if(mode==='pan'){setCursor(p.x,p.y);return}if(mode==='select'){selectAt(p);return}if(mode==='vertical'){addV(p.x);return}if(mode==='horizontal'){addH(p.x,p.y);return}if(mode==='text'){let v=prompt('輸入圖面註記（最多 60 字）');if(v&&v.trim()){record('新增註記');doc.shapes.push({type:'text',x1:p.x,y1:p.y,x2:p.x,y2:p.y,text:v.trim().slice(0,60),color:'#ab624c'});afterDocChange()}return}
+function confirmAt(p){if(cursorDraft){finishCursorAction();return}if(mode==='cells'){toggleCellAt(p);return}if(mode==='pan'){setCursor(p.x,p.y);return}if(mode==='select'){selectAt(p);return}if(mode==='vertical'){addV(p.x);return}if(mode==='horizontal'){addH(p.x,p.y);return}if(mode==='text'){let v=prompt('輸入圖面註記（最多 60 字）');if(v&&v.trim()){record('新增註記');doc.shapes.push({type:'text',x1:p.x,y1:p.y,x2:p.x,y2:p.y,text:v.trim().slice(0,60),color:'#ab624c'});afterDocChange()}return}
 if(!pending||pending.mode!==mode){pending={...p,mode};$('cancelPoint').classList.remove('hidden');status(`已設定起點 (${nice(p.x)}, ${nice(p.y)}) mm，請指定終點`);render();return}
 let a=pending;pending=null;$('cancelPoint').classList.add('hidden');if(Math.hypot(p.x-a.x,p.y-a.y)<.5){toast('起點與終點不可相同');render();return}record('新增'+({line:'直線',rect:'矩形',ellipse:'圓形',dimension:'尺寸標註'}[mode]));doc.shapes.push({type:mode,x1:a.x,y1:a.y,x2:p.x,y2:p.y,text:'',color:'#a45e48'});afterDocChange();toast('圖元已新增')}
 function selectAt(p){selected=hitLineOrShape(p);cellSelection=[];updateSelection();syncCellActions();render();if(!selected)toast('此位置尚未選到線條')}
 function updateSelection(){let t='尚未選取圖元';$('selectedValue').value='';$('selectedValue').disabled=true;$('updateSelected').disabled=true;$('deleteSelected').disabled=true;if(selected){if(selected.kind==='gridLine'){t=`${selected.axis==='x'?'直向':'橫向'}分隔線 · ${nice(selected.value)} mm`;$('selectedValue').value=nice(selected.value);$('selectedValue').disabled=false;$('updateSelected').disabled=false;}else if(selected.kind==='vertical'&&doc.vertical[selected.idx]!==undefined){t=`直向分格線 · X = ${nice(doc.vertical[selected.idx])} mm`;$('selectedValue').value=nice(doc.vertical[selected.idx]);$('selectedValue').disabled=false;$('updateSelected').disabled=false;$('deleteSelected').disabled=false}else if(selected.kind==='horizontal'&&doc.horizontal[selected.idx]){t=`橫向分格線 · Y = ${nice(doc.horizontal[selected.idx].y)} mm`;$('selectedValue').value=nice(doc.horizontal[selected.idx].y);$('selectedValue').disabled=false;$('updateSelected').disabled=false;$('deleteSelected').disabled=false}else if(selected.kind==='shape'&&doc.shapes[selected.idx]){t=`已選擇圖元：${({line:'直線',rect:'矩形',ellipse:'圓形',dimension:'尺寸標註',text:'文字'})[doc.shapes[selected.idx].type]}`;$('deleteSelected').disabled=false}else selected=null}$('selectedText').textContent=t}
-function deleteSelected(){if(selected?.kind==='gridLine'){toast('請選取分隔線兩側的儲存格，按「合併」移除線條');showMode('cells');return}if(!selected){toast('請先選取圖元');return}record('刪除選取圖元');if(selected.kind==='vertical')doc.vertical.splice(selected.idx,1);else if(selected.kind==='horizontal')doc.horizontal.splice(selected.idx,1);else doc.shapes.splice(selected.idx,1);selected=null;afterDocChange();toast('已刪除選取項目')}
+function deleteSelected(){if(selected?.kind==='gridLine'){try{const cells=Grid.removeLocal(getCells(),selected,doc.width,doc.height);editCells('刪除分隔線',()=>cells)}catch(e){toast(e.message)}return}if(!selected){toast('請先選取圖元');return}record('刪除選取圖元');if(selected.kind==='vertical')doc.vertical.splice(selected.idx,1);else if(selected.kind==='horizontal')doc.horizontal.splice(selected.idx,1);else doc.shapes.splice(selected.idx,1);selected=null;afterDocChange();toast('已刪除選取項目')}
 function updateSelected(){if(!selected)return;if(selected.kind==='gridLine'){moveGridLine(selected.axis,selected.value,+$('selectedValue').value);return}let value=+$('selectedValue').value;if(selected.kind==='vertical'){if(!valid(value,1,doc.width-1)||doc.vertical.some((v,i)=>i!==selected.idx&&Math.abs(v-value)<.5)){toast('無效或重複的 X 座標');return}let old=doc.vertical[selected.idx];record('更新直向分格');doc.vertical[selected.idx]=value;doc.vertical.sort((a,b)=>a-b);for(let h of doc.horizontal){if(Math.abs(h.x1-old)<.5)h.x1=value;if(Math.abs(h.x2-old)<.5)h.x2=value;h.x1=Math.min(h.x1,h.x2);h.x2=Math.max(h.x1,h.x2)}selected=null}else if(selected.kind==='horizontal'){if(!valid(value,1,doc.height-1)){toast('Y 座標須位於櫃體內');return}record('更新橫向分格');doc.horizontal[selected.idx].y=value}else return;afterDocChange();toast('分格位置已更新')}
 function measureString(s){return nice(Math.hypot(s.x2-s.x1,s.y2-s.y1))}
+function closeCursorMenu(){cursorMenuOpen=false;$('cursorMenu').classList.add('hidden');$('cursorHub').setAttribute('aria-expanded','false');$('cursorActions').setAttribute('aria-expanded','false')}
+function resetCursorWorkflow(){cursorDraft=null;closeCursorMenu();dimensionEdit=null;$('dimensionEditor').classList.add('hidden')}
+function setDock(open){dockOpen=open;$('cursorDock').classList.toggle('dock-open',open);$('toggleCursorDock').setAttribute('aria-expanded',String(open));if(initialized)requestAnimationFrame(fit)}
+function cursorTargetCell(){const cells=getCells();if(cellSelection.length===1&&cells[cellSelection[0]])return cellSelection[0];return Grid.at(cells,getPoint())}
+function pickWithCursor(){
+ if(cursorDraft){toast('預覽中：按完成固定，或按取消');return;}
+ if(['line','rect','ellipse','dimension'].includes(mode)&&pending){confirmAt(getPoint());return;}
+ const p=getPoint(),hit=hitLineOrShape(p);cellSelection=[];selected=hit;
+ if(!hit){const i=Grid.at(getCells(),p);if(i>=0)cellSelection=[i];}
+ updateSelection();syncCellActions();render();
+ if(!hit&&!cellSelection.length)toast('請把游標移到櫃體內的格子或線條');
+}
+function openCursorMenu(){
+ if(cursorDraft){toast('先完成或取消目前預覽');return;}
+ cursorMenuOpen=!cursorMenuOpen;
+ if(!cursorMenuOpen){closeCursorMenu();return;}
+ const hasMove=selected?.kind==='shape'||selected?.kind==='gridLine'&&selected.value>0&&selected.value<(selected.axis==='x'?doc.width:doc.height);
+ $('cursorMove').disabled=!hasMove;$('cursorDelete').disabled=!hasMove;const hasEnds=selected?.kind==='shape'&&['line','dimension'].includes(doc.shapes[selected.idx]?.type);$('cursorAdjustStart').disabled=$('cursorAdjustEnd').disabled=!hasEnds;
+ for(const id of ['cutX','cutY'])$$(`[data-cursor-tool="${id}"]`).forEach(b=>b.disabled=cursorTargetCell()<0);
+ $('cursorMenuTitle').textContent=selected?.kind==='gridLine'?'已選分隔線':selected?.kind==='shape'?'已選圖元':cellSelection.length?'已選儲存格':'游標動作';
+ $('cursorMenu').classList.remove('hidden');$('cursorHub').setAttribute('aria-expanded','true');$('cursorActions').setAttribute('aria-expanded','true');positionCursorControls();
+}
+function cancelCursorAction(clearSelection=true){
+ resetCursorWorkflow();pending=null;$('cancelPoint').classList.add('hidden');
+ if(clearSelection){selected=null;cellSelection=[];updateSelection();syncCellActions();}
+ status('已取消，圖面未新增預覽內容');render();
+}
+function startCursorTool(tool){
+ resetCursorWorkflow();pending=null;$('cancelPoint').classList.add('hidden');
+ if(tool==='cutX'||tool==='cutY'){
+  const i=cursorTargetCell();if(i<0){toast('先選取空格，或把游標移到格子內');return;}
+  const cell={...getCells()[i]},axis=tool==='cutX'?'x':'y',value=axis==='x'?(cell.x1+cell.x2)/2:(cell.y1+cell.y2)/2;
+  if((axis==='x'?cell.x2-cell.x1:cell.y2-cell.y1)<2){toast('空格尺寸不足以分隔');return;}
+  cursorDraft={type:'cut',axis,cell,idx:i,value:roundMm(value)};
+  snapExactCursor(axis==='x'?value:(cell.x1+cell.x2)/2,axis==='y'?value:(cell.y1+cell.y2)/2);
+ }else if(['line','rect','ellipse','dimension','text'].includes(tool)){
+  const anchor={...getPoint()};cursorDraft={type:'draw',tool,anchor,end:{...anchor},text:'標記'};selected=null;cellSelection=[];updateSelection();
+ }
+ setDock(true);status('預覽中：移動游標調整，按完成固定');render();syncCursorDock();
+}
+function startCursorMove(){
+ if(!selected||!['gridLine','shape'].includes(selected.kind)){toast('先用選取鍵選取分隔線或圖元');return;}
+ resetCursorWorkflow();const anchor={...getPoint()};
+ if(selected.kind==='gridLine'){
+  cursorDraft={type:'moveLine',line:{...selected},value:selected.value,baseCells:getCells().map(c=>({...c}))};
+  const middle=Number.isFinite(selected.a)&&Number.isFinite(selected.b)?(selected.a+selected.b)/2:selected.axis==='x'?doc.height/2:doc.width/2;snapExactCursor(selected.axis==='x'?selected.value:middle,selected.axis==='y'?selected.value:middle);
+ }else cursorDraft={type:'moveShape',idx:selected.idx,shape:{...doc.shapes[selected.idx]},anchor,previewShape:{...doc.shapes[selected.idx]}};
+ setDock(true);render();syncCursorDock();status('移動預覽：滑動觸控板，再按完成');
+}
+function startCursorEndpoint(endpoint){
+ if(selected?.kind!=='shape'||!['line','dimension'].includes(doc.shapes[selected.idx]?.type)){toast('請先選取直線或尺寸標註');return;}
+ resetCursorWorkflow();const shape={...doc.shapes[selected.idx]};
+ cursorDraft={type:'endpoint',endpoint,idx:selected.idx,shape,previewShape:{...shape}};
+ snapExactCursor(endpoint==='start'?shape.x1:shape.x2,endpoint==='start'?shape.y1:shape.y2);
+ setDock(true);render();status(`調整${endpoint==='start'?'起':'終'}點：另一端保持固定，按完成套用`);
+}
+function updateCursorDraft(){
+ if(!cursorDraft)return;const d=cursorDraft,p=getPoint();
+ if(d.type==='cut'){
+  const min=d.axis==='x'?d.cell.x1:d.cell.y1,max=d.axis==='x'?d.cell.x2:d.cell.y2;
+  d.value=roundMm(within(d.axis==='x'?p.x:p.y,min+1,max-1));cursor={...cursor,[d.axis]:d.value};exactOverride={...cursor};
+ }else if(d.type==='moveLine'){
+  const limit=d.line.local?Grid.localLimits(d.baseCells,d.line):Grid.limits(d.baseCells,d.line.axis,d.line.value);
+  d.value=roundMm(within(d.line.axis==='x'?p.x:p.y,limit.min,limit.max));cursor={...cursor,[d.line.axis]:d.value};exactOverride={...cursor};
+  try{const result=d.line.local?Grid.moveLocal(d.baseCells,d.line,d.value,doc.width,doc.height):Grid.move(d.baseCells,d.line.axis,d.line.value,d.value,doc.width,doc.height);d.previewCells=result.cells;}catch(e){d.previewCells=null;}
+ }else if(d.type==='endpoint'){d.previewShape={...d.shape,...(d.endpoint==='start'?{x1:p.x,y1:p.y}:{x2:p.x,y2:p.y})};}
+ else if(d.type==='draw')d.end={...p};
+ else if(d.type==='moveShape'){
+  const dx=roundMm(p.x-d.anchor.x),dy=roundMm(p.y-d.anchor.y);d.previewShape={...d.shape,x1:roundMm(d.shape.x1+dx),x2:roundMm(d.shape.x2+dx),y1:roundMm(d.shape.y1+dy),y2:roundMm(d.shape.y2+dy)};
+ }
+}
+function syncCursorDock(){
+ const d=cursorDraft,p=getPoint();
+ $('cursorDockStatus').textContent=d?d.type==='cut'?`${d.axis==='x'?'直':'橫'}分隔預覽 · 完成後固定`:d.type==='draw'?`${({line:'直線',rect:'矩形',ellipse:'圓形',dimension:'尺寸標註',text:'文字標記'})[d.tool]}預覽 · 完成後固定`:d.type==='endpoint'?`${d.endpoint==='start'?'起點':'終點'}預覽 · 完成後固定`:'移動預覽 · 完成後固定':`游標 X ${nice(p.x)} · Y ${nice(p.y)} mm`;
+ $('cursorFinish').disabled=!d&&!pending;
+ $('cursorSelect').textContent=pending?'定位':'選取';
+ const numeric=d&&(d.type==='cut'||d.type==='moveLine'),text=d?.type==='draw'&&d.tool==='text',endpoint=d?.type==='endpoint';
+ $('cursorDraftFields').classList.toggle('hidden',!numeric&&!text&&!endpoint);
+ $('cursorDraftValue').classList.toggle('hidden',!numeric);$('cursorDraftText').classList.toggle('hidden',!text);for(const id of ['cursorEndpointX','cursorEndpointY'])$(id).classList.toggle('hidden',!endpoint);
+ for(const id of ['cursorMinus','cursorPlus'])$(id).classList.toggle('hidden',!numeric);
+ $('cursorDraftLabel').textContent=endpoint?`${d.endpoint==='start'?'起':'終'}點 X/Y`:text?'標記內容':d?.type==='cut'?`${d.axis==='x'?'左':'上'}距 mm`:'位置 mm';
+ if(numeric&&document.activeElement!==$('cursorDraftValue'))$('cursorDraftValue').value=nice(d.value-(d.type==='cut'?(d.axis==='x'?d.cell.x1:d.cell.y1):0));
+ if(text&&document.activeElement!==$('cursorDraftText'))$('cursorDraftText').value=d.text;
+ if(endpoint){const first=d.endpoint==='start';if(document.activeElement!==$('cursorEndpointX'))$('cursorEndpointX').value=nice(first?d.previewShape.x1:d.previewShape.x2);if(document.activeElement!==$('cursorEndpointY'))$('cursorEndpointY').value=nice(first?d.previewShape.y1:d.previewShape.y2);}
+}
+function setCursorDraftNumber(value){
+ const d=cursorDraft;if(!d||!['cut','moveLine'].includes(d.type)||!Number.isFinite(value))return;
+ const axis=d.type==='cut'?d.axis:d.line.axis,offset=d.type==='cut'?(axis==='x'?d.cell.x1:d.cell.y1):0;
+ snapExactCursor(axis==='x'?value+offset:cursor.x,axis==='y'?value+offset:cursor.y);updateCursorDraft();render();$('cursorDraftValue').value=nice(d.value-offset);
+}
+function finishCursorAction(){
+ const d=cursorDraft;if(!d){if(pending)confirmAt(getPoint());return;}
+ try{
+  if(d.type==='cut'){
+   const next=Grid.cut(getCells(),d.axis,d.value,[d.idx]);if(!Grid.validate(next,doc.width,doc.height))throw Error('分隔位置無效');
+   record('游標新增'+(d.axis==='x'?'直分隔':'橫分隔'));doc.gridCells=next;projectLegacy();
+   selected={kind:'gridLine',axis:d.axis,value:d.value,a:d.axis==='x'?d.cell.y1:d.cell.x1,b:d.axis==='x'?d.cell.y2:d.cell.x2,local:true};
+  }else if(d.type==='moveLine'){
+   const result=d.line.local?Grid.moveLocal(d.baseCells,d.line,d.value,doc.width,doc.height):Grid.move(d.baseCells,d.line.axis,d.line.value,d.value,doc.width,doc.height);
+   if(!Grid.eq(d.line.value,d.value)){record('游標移動分隔線');doc.gridCells=result.cells;doc.width=result.width;doc.height=result.height;projectLegacy();}
+   selected={...d.line,value:d.value};
+  }else if(d.type==='moveShape'||d.type==='endpoint'){
+   if(d.type==='endpoint'&&Math.hypot(d.previewShape.x2-d.previewShape.x1,d.previewShape.y2-d.previewShape.y1)<.5)throw Error('兩端不可重疊');
+   if(JSON.stringify(d.shape)!==JSON.stringify(d.previewShape)){record(d.type==='endpoint'?'游標調整'+(d.endpoint==='start'?'起點':'終點'):'游標移動圖元');doc.shapes[d.idx]={...d.previewShape};}selected={kind:'shape',idx:d.idx};
+  }else if(d.type==='draw'){
+   if(doc.shapes.length>=1500)throw Error('圖元數量上限為 1500');
+   if(d.tool!=='text'&&Math.hypot(d.end.x-d.anchor.x,d.end.y-d.anchor.y)<.5)throw Error('請移動游標指定終點');
+   if(d.tool==='text'&&!d.text.trim())throw Error('請輸入標記文字');
+   const a=d.tool==='text'?d.end:d.anchor,b=d.end;
+   record('游標新增'+({line:'直線',rect:'矩形',ellipse:'圓形',dimension:'尺寸標註',text:'文字標記'})[d.tool]);
+   doc.shapes.push({type:d.tool,x1:a.x,y1:a.y,x2:b.x,y2:b.y,text:d.tool==='text'?d.text.trim().slice(0,60):'',color:'#a45e48'});selected={kind:'shape',idx:doc.shapes.length-1};
+  }
+  afterDocChange();toast('已完成，可用復原還原');
+ }catch(e){toast(e.message)}
+}
+function cursorPreviewSVG(){
+ const d=cursorDraft;if(!d)return '';const stroke=2/view.scale;
+ if(d.type==='cut'){
+  const x1=d.axis==='x'?d.value:d.cell.x1,y1=d.axis==='x'?d.cell.y1:d.value,x2=d.axis==='x'?d.value:d.cell.x2,y2=d.axis==='x'?d.cell.y2:d.value;
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#148f75" stroke-width="${stroke}" stroke-dasharray="${8/view.scale} ${5/view.scale}"/><circle cx="${(x1+x2)/2}" cy="${(y1+y2)/2}" r="${5/view.scale}" fill="#148f75"/>`;
+ }
+ if(d.type!=='draw')return '';
+ const a=d.anchor,b=d.end;
+ const attr=`stroke="#148f75" fill="#418c8711" stroke-width="${stroke}" stroke-dasharray="${7/view.scale} ${4/view.scale}"`;
+ if(d.tool==='line'||d.tool==='dimension')return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" ${attr}/>`+(d.tool==='dimension'?`<text x="${(a.x+b.x)/2}" y="${(a.y+b.y)/2-12/view.scale}" font-size="${12/view.scale}" fill="#148f75" text-anchor="middle">${nice(Math.hypot(b.x-a.x,b.y-a.y))} mm</text>`:'');
+ if(d.tool==='rect')return `<rect x="${Math.min(a.x,b.x)}" y="${Math.min(a.y,b.y)}" width="${Math.abs(b.x-a.x)}" height="${Math.abs(b.y-a.y)}" ${attr}/>`;
+ if(d.tool==='ellipse')return `<ellipse cx="${(a.x+b.x)/2}" cy="${(a.y+b.y)/2}" rx="${Math.abs(b.x-a.x)/2}" ry="${Math.abs(b.y-a.y)/2}" ${attr}/>`;
+ return `<text x="${b.x}" y="${b.y}" fill="#148f75" font-size="${14/view.scale}">${esc(d.text)}</text>`;
+}
+function positionCursorControls(){
+ const p=worldToScreen(getPoint()),size=canvasSize();
+ $('cursorHub').style.left=within(p.x+18,3,size.w-31)+'px';$('cursorHub').style.top=within(p.y-34,3,size.h-31)+'px';
+ if(cursorMenuOpen){const width=Math.min(200,size.w-16);$('cursorMenu').style.width=width+'px';$('cursorMenu').style.maxHeight=Math.max(40,size.h-16)+'px';$('cursorMenu').style.left=within(p.x+20,8,Math.max(8,size.w-width-8))+'px';$('cursorMenu').style.top=within(p.y-110,8,Math.max(8,size.h-Math.min($('cursorMenu').offsetHeight||280,Math.max(40,size.h-16))-8))+'px';}
+}
+function controlledCursorMove(dx,dy){
+ const size=canvasSize(),screen=worldToScreen(cursor),point=screenToWorld({x:within(screen.x+dx*.8,6,size.w-6),y:within(screen.y+dy*.8,6,size.h-6)});
+ setCursor(point.x,point.y);
+}
+function showDimensionEditor(axis,start,end){
+ dimensionEdit={axis,start,end};$('dimensionEditorLabel').textContent=(axis==='x'?'欄寬':'列高')+' mm';$('dimensionInput').value=nice(end-start);
+ const size=canvasSize(),p=worldToScreen({x:axis==='x'?(start+end)/2:0,y:axis==='y'?(start+end)/2:0});
+ $('dimensionEditor').style.left=within(p.x-80,8,Math.max(8,size.w-248))+'px';$('dimensionEditor').style.top=within(p.y+12,8,Math.max(8,size.h-80))+'px';$('dimensionEditor').classList.remove('hidden');$('dimensionInput').focus();$('dimensionInput').select();
+}
+function bindCursorControls(){
+ $('toggleCursorDock').onclick=()=>setDock(!dockOpen);
+ $('cursorSelect').onclick=pickWithCursor;$('cursorCancel').onclick=()=>cancelCursorAction();$('cursorActions').onclick=openCursorMenu;$('cursorHub').onclick=openCursorMenu;
+ $('closeCursorMenu').onclick=closeCursorMenu;$('cursorMenuCancel').onclick=()=>cancelCursorAction();$('cursorFinish').onclick=finishCursorAction;
+ $('cursorMove').onclick=startCursorMove;$('cursorAdjustStart').onclick=()=>startCursorEndpoint('start');$('cursorAdjustEnd').onclick=()=>startCursorEndpoint('end');$('cursorDelete').onclick=()=>{closeCursorMenu();deleteSelected()};
+ $$('[data-cursor-tool]').forEach(b=>b.onclick=()=>startCursorTool(b.dataset.cursorTool));
+ $('cursorDraftValue').addEventListener('input',()=>{const input=$('cursorDraftValue').value;if(input.trim()!=='')setCursorDraftNumber(Number(input))});
+ $('cursorDraftValue').addEventListener('change',()=>syncCursorDock());
+ for(const id of ['cursorDraftValue','cursorDraftText','cursorEndpointX','cursorEndpointY'])$(id).addEventListener('keydown',e=>{if(e.key==='Enter')finishCursorAction();if(e.key==='Escape')cancelCursorAction()});
+ for(const id of ['cursorEndpointX','cursorEndpointY'])$(id).addEventListener('input',()=>{if(cursorDraft?.type!=='endpoint')return;const x=$('cursorEndpointX').value,y=$('cursorEndpointY').value;if(x.trim()!==''&&y.trim()!==''&&Number.isFinite(+x)&&Number.isFinite(+y))snapExactCursor(+x,+y)});
+ $('cursorDraftText').addEventListener('input',()=>{if(cursorDraft?.type==='draw'){cursorDraft.text=$('cursorDraftText').value.slice(0,60);render()}});
+ for(const [id,direction] of [['cursorMinus',-1],['cursorPlus',1]])$(id).onclick=()=>{const d=cursorDraft;if(!d)return;const axis=d.type==='cut'?d.axis:d.line.axis;snapExactCursor(cursor.x+(axis==='x'?direction*step:0),cursor.y+(axis==='y'?direction*step:0));};
+ $('cursorFineStep').onclick=()=>{step=step===1?5:step===5?10:1;$('cursorFineStep').textContent=`微調 ${step} mm`;};
+ const pad=$('cursorPad');
+ pad.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;if(cursorPadDrag)return;e.preventDefault();pad.setPointerCapture(e.pointerId);cursorPadDrag={id:e.pointerId,x:e.clientX,y:e.clientY};closeCursorMenu();});
+ pad.addEventListener('pointermove',e=>{if(!cursorPadDrag||cursorPadDrag.id!==e.pointerId)return;e.preventDefault();const dx=e.clientX-cursorPadDrag.x,dy=e.clientY-cursorPadDrag.y;cursorPadDrag.x=e.clientX;cursorPadDrag.y=e.clientY;controlledCursorMove(dx,dy);});
+ const end=e=>{if(cursorPadDrag?.id===e.pointerId)cursorPadDrag=null};pad.addEventListener('pointerup',end);pad.addEventListener('pointercancel',end);
+ $('applyDimension').onclick=()=>{if(!dimensionEdit)return;const d=dimensionEdit,value=Number($('dimensionInput').value);if(!Number.isFinite(value)||value<1){toast('尺寸至少 1 mm');return;}dimensionEdit=null;$('dimensionEditor').classList.add('hidden');moveGridLine(d.axis,d.end,roundMm(d.start+value),true)};
+ $('cancelDimension').onclick=()=>{dimensionEdit=null;$('dimensionEditor').classList.add('hidden')};
+ $('dimensionInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('applyDimension').click();if(e.key==='Escape')$('cancelDimension').click()});
+}
+
 function getCells(){return doc.gridCells||Grid.fromLegacy(doc)}
 function projectLegacy(){
  const lines=Grid.lines(doc.gridCells,doc.width,doc.height);
@@ -242,27 +437,24 @@ function hitLineOrShape(p){
  const hit=(d,s)=>{if(d<dist){dist=d;best=s}};
  for(const l of Grid.lines(getCells(),doc.width,doc.height)){
   const a=l.axis==='x'?{x:l.value,y:l.a}:{x:l.a,y:l.value},b=l.axis==='x'?{x:l.value,y:l.b}:{x:l.b,y:l.value};
-  hit(distancePointLine(p,a,b),{kind:'gridLine',...l});
+  let part=l;try{part=Grid.segment(getCells(),l.axis,l.value,l.axis==='x'?p.y:p.x)}catch(e){}hit(distancePointLine(p,a,b),{kind:'gridLine',...part});
  }
  doc.shapes.forEach((s,i)=>{
   let a={x:s.x1,y:s.y1},b={x:s.x2,y:s.y2},d;
   if(s.type==='rect')d=Math.min(distancePointLine(p,a,{x:b.x,y:a.y}),distancePointLine(p,{x:b.x,y:a.y},b),distancePointLine(p,b,{x:a.x,y:b.y}),distancePointLine(p,{x:a.x,y:b.y},a));
   else if(s.type==='ellipse'){const rx=Math.abs(b.x-a.x)/2,ry=Math.abs(b.y-a.y)/2;d=Math.abs(Math.hypot((p.x-(a.x+b.x)/2)/Math.max(rx,1),(p.y-(a.y+b.y)/2)/Math.max(ry,1))-1)*Math.min(rx,ry);}
+  else if(s.type==='dimension'){const dx=b.x-a.x,dy=b.y-a.y,len=Math.max(1,Math.hypot(dx,dy)),normal={x:-dy/len*110,y:dx/len*110},sa={x:a.x+normal.x,y:a.y+normal.y},sb={x:b.x+normal.x,y:b.y+normal.y};d=Math.min(distancePointLine(p,sa,sb),distancePointLine(p,a,sa),distancePointLine(p,b,sb));}
   else d=distancePointLine(p,a,b);
   hit(d,{kind:'shape',idx:i});
  });return best;
 }
-function moveGridLine(axis,value,next){
- try{const result=Grid.move(getCells(),axis,value,next,doc.width,doc.height);if(Grid.eq(value,next))return;
- record('調整分隔線位置');doc.gridCells=result.cells;doc.width=result.width;doc.height=result.height;projectLegacy();selected={kind:'gridLine',axis,value:next};afterDocChange();toast('已更新；同座標分隔線一起移動');
+function moveGridLine(axis,value,next,whole=false){
+ try{const line=!whole&&selected?.kind==='gridLine'&&selected.local&&selected.axis===axis&&Grid.eq(selected.value,value)?selected:null;
+ const result=line?Grid.moveLocal(getCells(),line,next,doc.width,doc.height):Grid.move(getCells(),axis,value,next,doc.width,doc.height);if(Grid.eq(value,next))return;
+ record('調整分隔線位置');doc.gridCells=result.cells;doc.width=result.width;doc.height=result.height;projectLegacy();selected={...(line||{}),kind:'gridLine',axis,value:next};afterDocChange();toast(line?'已更新所選線段':'已更新整欄／列分界');
  }catch(e){toast(e.message)}
 }
-function changeSpan(axis,start,end){
- const input=prompt(`${axis==='x'?'欄寬':'列高'} / mm\n內部分隔線調整會改變相鄰格；最後一欄／列會調整櫃體總尺寸。`,nice(end-start));
- if(input===null)return;const size=Number(input);
- if(!Number.isFinite(size)||size<1){toast('請輸入至少 1 mm 的尺寸');return;}
- moveGridLine(axis,end,roundMm(start+size));
-}
+function changeSpan(axis,start,end){showDimensionEditor(axis,start,end)}
 function gridOverlay(){
  if(mode!=='cells')return '';
  const cells=getCells(),xs=Grid.bounds(cells,'x'),ys=Grid.bounds(cells,'y'),origin=worldToScreen({x:0,y:0});
@@ -291,6 +483,8 @@ function setInspector(open){
  requestAnimationFrame(()=>{if(initialized)fit()});
 }
 function startEdit(e,q,p){
+ const endpoint=e.target.closest?.('[data-shape-endpoint]');
+ if(endpoint){const idx=Number(endpoint.dataset.shapeIndex),shape=doc.shapes[idx];if(!shape||!['line','dimension'].includes(shape.type))return false;selected={kind:'shape',idx};cellSelection=[];editDrag={type:'endpoint',endpoint:endpoint.dataset.shapeEndpoint,idx,q,startDoc:snapshot(),moved:false};updateSelection();syncCellActions();return true;}
  if(!['cells','select'].includes(mode))return false;
  const header=e.target.closest?.('[data-grid-axis]');
  if(header){
@@ -315,15 +509,16 @@ function previewEdit(q,p){
   const cells=getCells(),box={x1:Math.min(d.start.x,p.x),x2:Math.max(d.start.x,p.x),y1:Math.min(d.start.y,p.y),y2:Math.max(d.start.y,p.y)};
   cellSelection=cells.map((c,i)=>c.x1<box.x2&&c.x2>box.x1&&c.y1<box.y2&&c.y2>box.y1?i:-1).filter(i=>i>=0);selected=null;syncCellActions();render();return true;
  }
+ if(d.type==='endpoint'){const shape=JSON.parse(d.startDoc).shapes[d.idx],point={x:snap?Math.round(p.x/10)*10:roundMm(p.x),y:snap?Math.round(p.y/10)*10:roundMm(p.y)};doc.shapes[d.idx]={...shape,...(d.endpoint==='start'?{x1:point.x,y1:point.y}:{x2:point.x,y2:point.y})};render();return true;}
  if(d.type==='shape'){
   const original=JSON.parse(d.startDoc).shapes[d.idx],delta={x:p.x-d.start.x,y:p.y-d.start.y};
   const dx=snap?Math.round(delta.x/10)*10:roundMm(delta.x),dy=snap?Math.round(delta.y/10)*10:roundMm(delta.y);
   doc.shapes[d.idx]={...original,x1:roundMm(original.x1+dx),x2:roundMm(original.x2+dx),y1:roundMm(original.y1+dy),y2:roundMm(original.y2+dy)};render();return true;
  }
- const range=Grid.limits(d.cells,d.axis,d.value);if(!range)return true;
+ const range=d.local?Grid.localLimits(d.cells,d):Grid.limits(d.cells,d.axis,d.value);if(!range)return true;
  const delta=(d.axis==='x'?q.x-d.q.x:q.y-d.q.y)/view.scale;
  let next=snap?Math.round((d.value+delta)/10)*10:roundMm(d.value+delta);next=roundMm(within(next,range.min,range.max));
- try{const result=Grid.move(d.cells,d.axis,d.value,next,d.width,d.height);doc.gridCells=result.cells;doc.width=result.width;doc.height=result.height;projectLegacy();selected={kind:'gridLine',axis:d.axis,value:next};updateFields();updateSelection();syncCellActions();render();}catch(e){}
+ try{const result=d.local?Grid.moveLocal(d.cells,d,next,d.width,d.height):Grid.move(d.cells,d.axis,d.value,next,d.width,d.height);doc.gridCells=result.cells;doc.width=result.width;doc.height=result.height;projectLegacy();selected={kind:'gridLine',axis:d.axis,value:next,a:d.a,b:d.b,local:!!d.local};updateFields();updateSelection();syncCellActions();render();}catch(e){}
  return true;
 }
 function cancelEdit(){if(editDrag?.startDoc&&editDrag.moved){doc=JSON.parse(editDrag.startDoc);selected=null;afterDocChange();}editDrag=null;}
@@ -331,7 +526,7 @@ function finishEdit(p){
  const d=editDrag;if(!d)return false;editDrag=null;
  if(d.type==='header'){if(!d.moved)changeSpan(d.axis,d.start,d.end);return true;}
  if(d.type==='range'){if(!d.moved)toggleCellAt(p);return true;}
- if(d.moved){const next=snapshot();doc=JSON.parse(d.startDoc);if(next!==d.startDoc){record(d.type==='shape'?'拖曳移動圖元':'拖曳調整分隔線');doc=JSON.parse(next);afterDocChange();}render();}
+ if(d.moved){if(d.type==='endpoint'){const shape=doc.shapes[d.idx];if(Math.hypot(shape.x2-shape.x1,shape.y2-shape.y1)<.5){doc=JSON.parse(d.startDoc);afterDocChange();toast('兩端不可重疊');return true}}const next=snapshot();doc=JSON.parse(d.startDoc);if(next!==d.startDoc){record(d.type==='endpoint'?'拖曳調整端點':d.type==='shape'?'拖曳移動圖元':'拖曳調整分隔線');doc=JSON.parse(next);afterDocChange();}render();}
  return true;
 }
 
@@ -340,7 +535,7 @@ function drawScene(includeSelection=true){const W=doc.width,H=doc.height,inside=
 // overall cabinet
 out+=`<rect x="0" y="0" width="${W}" height="${H}" fill="#fffdf9" stroke="#334048" stroke-width="${inside?22:18}"/>`;
 if(inside){out+=`<rect x="18" y="18" width="${Math.max(0,W-36)}" height="${Math.max(0,H-36)}" fill="#f8f3eb"/>`;out+=`<rect x="0" y="0" width="18" height="${H}" fill="#c8ab91"/><rect x="${W-18}" y="0" width="18" height="${H}" fill="#c8ab91"/><rect x="0" y="0" width="${W}" height="18" fill="#c8ab91"/><rect x="0" y="${H-18}" width="${W}" height="18" fill="#c8ab91"/>`;}
-const cells=getCells(),bounds=Grid.bounds(cells,'x');
+const cells=includeSelection&&cursorDraft?.previewCells?cursorDraft.previewCells:getCells(),bounds=Grid.bounds(cells,'x');
 for(let i=0;i<cells.length;i++){
  const c=cells[i],l=c.x1,r=c.x2,y1=c.y1,y2=c.y2,width=r-l,height=y2-y1,cx=(l+r)/2,cy=(y1+y2)/2;
  if(height<80)out+=`<rect x="${l}" y="${y1}" width="${width}" height="${height}" fill="#eeeae3" opacity=".65"/>`;
@@ -350,7 +545,7 @@ for(let i=0;i<cells.length;i++){
 }
 for(const line of Grid.lines(cells,W,H)){
  const x1=line.axis==='x'?line.value:line.a,y1=line.axis==='x'?line.a:line.value,x2=line.axis==='x'?line.value:line.b,y2=line.axis==='x'?line.b:line.value;
- const active=includeSelection&&selected?.kind==='gridLine'&&selected.axis===line.axis&&Grid.eq(selected.value,line.value);
+ const active=includeSelection&&selected?.kind==='gridLine'&&!selected.local&&selected.axis===line.axis&&Grid.eq(selected.value,line.value);
  out+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${active?'#008b96':inside?'#b18b70':'#39454a'}" stroke-width="${active?3/view.scale:inside?18:12}"/>`;
 }
 // dimension lines in mm coordinate
@@ -363,7 +558,7 @@ let dy=H+175;out+=`<path d="M 0 ${dy-45} V ${dy+50} M ${W} ${dy-45} V ${dy+50}" 
 for(let i=0;i<bounds.length-1;i++){let a=bounds[i],b=bounds[i+1];out+=`<line x1="${a}" y1="${dy}" x2="${b}" y2="${dy}" stroke="#a58778" stroke-width="5"/>`;
 out+=`<text x="${(a+b)/2}" y="${dy+120}" fill="#806253" text-anchor="middle" font-size="104">${nice(b-a)}</text>`;
 if(i>0)out+=`<line x1="${a}" y1="${dy-42}" x2="${a}" y2="${dy+45}" stroke="#a58778" stroke-width="5"/>`}
-for(let i=0;i<doc.shapes.length;i++){let s=doc.shapes[i],stroke=esc(s.color||'#ab624c'),X=Math.min(s.x1,s.x2),Y=Math.min(s.y1,s.y2),SW=Math.abs(s.x2-s.x1),SH=Math.abs(s.y2-s.y1),isSel=includeSelection&&selected&&selected.kind==='shape'&&selected.idx===i;let col=isSel?'#007e91':stroke;out+=`<g stroke="${col}" fill="none" stroke-width="${isSel?22:12}">`;
+for(let i=0;i<doc.shapes.length;i++){let s=includeSelection&&['moveShape','endpoint'].includes(cursorDraft?.type)&&cursorDraft.idx===i?cursorDraft.previewShape:doc.shapes[i],stroke=esc(s.color||'#ab624c'),X=Math.min(s.x1,s.x2),Y=Math.min(s.y1,s.y2),SW=Math.abs(s.x2-s.x1),SH=Math.abs(s.y2-s.y1),isSel=includeSelection&&selected&&selected.kind==='shape'&&selected.idx===i;let col=isSel?'#007e91':stroke;out+=`<g stroke="${col}" fill="none" stroke-width="${isSel?22:12}">`;
  if(s.type==='line')out+=`<line x1="${s.x1}" y1="${s.y1}" x2="${s.x2}" y2="${s.y2}"/>`;
  if(s.type==='rect')out+=`<rect x="${X}" y="${Y}" width="${SW}" height="${SH}"/>`;
  if(s.type==='ellipse')out+=`<ellipse cx="${(s.x1+s.x2)/2}" cy="${(s.y1+s.y2)/2}" rx="${SW/2}" ry="${SH/2}"/>`;
@@ -371,11 +566,19 @@ for(let i=0;i<doc.shapes.length;i++){let s=doc.shapes[i],stroke=esc(s.color||'#a
  if(s.type==='text')out+=`</g><text x="${s.x1}" y="${s.y1}" fill="${col}" font-size="115" font-weight="600">${esc(s.text)}</text>`;
  else out+='</g>';
 }
+if(includeSelection&&selected?.kind==='shape'){
+ const idx=selected.idx,shape=['moveShape','endpoint'].includes(cursorDraft?.type)&&cursorDraft.idx===idx?cursorDraft.previewShape:doc.shapes[idx];
+ if(shape&&['line','dimension'].includes(shape.type))for(const [endpoint,x,y] of [['start',shape.x1,shape.y1],['end',shape.x2,shape.y2]]){
+  out+=`<circle data-shape-endpoint="${endpoint}" data-shape-index="${idx}" cx="${x}" cy="${y}" r="${8/view.scale}" fill="#f7fdfb" stroke="#148f75" stroke-width="${2/view.scale}" style="cursor:move"/><text x="${x+12/view.scale}" y="${y-10/view.scale}" fill="#148f75" font-size="${10/view.scale}" style="pointer-events:none">${endpoint==='start'?'起點':'終點'}</text>`;
+ }
+}
+if(includeSelection&&selected?.kind==='gridLine'&&selected.local){const l=selected,value=cursorDraft?.type==='moveLine'?cursorDraft.value:l.value;out+=`<line x1="${l.axis==='x'?value:l.a}" y1="${l.axis==='x'?l.a:value}" x2="${l.axis==='x'?value:l.b}" y2="${l.axis==='x'?l.b:value}" stroke="#008b96" stroke-width="${3/view.scale}"/>`}
 if(includeSelection&&selected){if(selected.kind==='vertical'&&doc.vertical[selected.idx]!=null){let x=doc.vertical[selected.idx];out+=`<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#008b96" stroke-width="29" opacity=".72"/>`}if(selected.kind==='horizontal'&&doc.horizontal[selected.idx]){let h=doc.horizontal[selected.idx];out+=`<line x1="${h.x1}" y1="${h.y}" x2="${h.x2}" y2="${h.y}" stroke="#008b96" stroke-width="29" opacity=".72"/>`}}
 if(includeSelection&&pending){let p=getPoint();if(mode==='line'||mode==='dimension')out+=`<line x1="${pending.x}" y1="${pending.y}" x2="${p.x}" y2="${p.y}" stroke="#368c86" stroke-width="11" stroke-dasharray="30 22"/>`;if(mode==='rect')out+=`<rect x="${Math.min(p.x,pending.x)}" y="${Math.min(p.y,pending.y)}" width="${Math.abs(p.x-pending.x)}" height="${Math.abs(p.y-pending.y)}" stroke="#368c86" fill="#418c8711" stroke-width="11" stroke-dasharray="30 22"/>`;if(mode==='ellipse')out+=`<ellipse cx="${(pending.x+p.x)/2}" cy="${(pending.y+p.y)/2}" rx="${Math.abs(p.x-pending.x)/2}" ry="${Math.abs(p.y-pending.y)/2}" stroke="#368c86" fill="none" stroke-width="11" stroke-dasharray="30 22"/>`}
+if(includeSelection)out+=cursorPreviewSVG();
 return out}
 function render(){let s=canvasSize();$('drawing').setAttribute('viewBox',`0 0 ${s.w} ${s.h}`);$('drawing').innerHTML=svgDefs()+`<g id="world" transform="translate(${view.x} ${view.y}) scale(${view.scale})">${drawScene()}</g>${gridOverlay()}<g id="cursorGraphic" style="pointer-events:none"></g>`;$('zoomText').textContent=(view.scale*100).toFixed(view.scale<.1?1:0)+'%';renderCursor()}
-function renderCursor(){let p=getPoint(),s=worldToScreen(p),screen=canvasSize();let h=Math.max(6,Math.min(18,screen.w/28));let color=pending?'#338d80':'#a9543d';let cursorSVG=`<g transform="translate(${s.x} ${s.y})"><circle r="${h+4}" fill="#fef9f680" stroke="${color}" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M ${-h-10} 0 H -6 M 6 0 H ${h+10} M 0 ${-h-10} V -6 M 0 6 V ${h+10}" stroke="${color}" stroke-width="1.6"/><circle r="2.6" fill="${color}"/><rect x="${h+8}" y="${-h-9}" rx="5" width="108" height="31" fill="#26343dea"/><text x="${h+15}" y="${-h+3}" font-size="11" fill="white" font-family="sans-serif">${nice(p.x)} , ${nice(p.y)}</text></g>`;
+function renderCursor(){updateCursorDraft();syncCursorDock();positionCursorControls();let p=getPoint(),s=worldToScreen(p),screen=canvasSize();let h=Math.max(6,Math.min(18,screen.w/28));let color=pending?'#338d80':'#a9543d';let cursorSVG=`<g transform="translate(${s.x} ${s.y})"><circle r="${h+4}" fill="#fef9f680" stroke="${color}" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M ${-h-10} 0 H -6 M 6 0 H ${h+10} M 0 ${-h-10} V -6 M 0 6 V ${h+10}" stroke="${color}" stroke-width="1.6"/><circle r="2.6" fill="${color}"/><rect x="${h+8}" y="${-h-9}" rx="5" width="108" height="31" fill="#26343dea"/><text x="${h+15}" y="${-h+3}" font-size="11" fill="white" font-family="sans-serif">${nice(p.x)} , ${nice(p.y)}</text></g>`;
 const target=$('cursorGraphic');if(target)target.innerHTML=cursorSVG;
 $('lens').setAttribute('viewBox',`${p.x-175} ${p.y-100} 350 200`);$('lens').innerHTML=svgDefs()+drawScene(false)+`<g stroke="#df6c42" stroke-width="3" fill="none"><circle cx="${p.x}" cy="${p.y}" r="13"/><path d="M ${p.x-65} ${p.y} h 130 M ${p.x} ${p.y-65} v 130"/></g><rect x="${p.x+37}" y="${p.y+40}" width="126" height="27" rx="5" fill="#26343d"/><text x="${p.x+42}" y="${p.y+59}" fill="#fff" font-size="15">${nice(p.x)} , ${nice(p.y)}</text>`;
 syncCursorChipOnly(p)}
@@ -386,7 +589,7 @@ function exportSVGString(){let pad=340,W=doc.width+pad*2,H=doc.height+pad*2;retu
 function exportPNG(){let str=exportSVGString(),blob=new Blob([str],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob),img=new Image();img.onload=()=>{let w=doc.width+680,h=doc.height+680,scale=Math.min(2.5,4200/Math.max(w,h));let c=document.createElement('canvas');c.width=Math.round(w*scale);c.height=Math.round(h*scale);let ctx=c.getContext('2d');ctx.fillStyle='#fbfaf7';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);c.toBlob(out=>{if(out)downloadBlob(out,`${safeName()}.png`,'image/png');else toast('PNG 產生失敗，請使用 SVG')},'image/png')};img.onerror=()=>{URL.revokeObjectURL(url);toast('PNG 產生失敗，請使用 SVG')};img.src=url}
 function exportJSON(){doc.name=$('project').value.trim()||'櫃體';downloadBlob(JSON.stringify(doc,null,2),`${safeName()}.json`,'application/json;charset=utf-8');toast('已產生 JSON 專案檔')}
 function exportSVG(){doc.name=$('project').value.trim()||'櫃體';downloadBlob(exportSVGString(),`${safeName()}.svg`,'image/svg+xml;charset=utf-8');toast('已產生 SVG 向量圖')}
-function bind(){
+function bind(){bindCursorControls();
 $('project').addEventListener('change',()=>{record('已修改圖面名稱');doc.name=$('project').value.trim().slice(0,90)||'櫃體';queueSave()});
 $$('[data-mode]').forEach(b=>b.addEventListener('click',()=>showMode(b.dataset.mode)));
 $('deleteTool').onclick=deleteSelected;$('deleteSelected').onclick=deleteSelected;$('updateSelected').onclick=updateSelected;
@@ -433,8 +636,9 @@ $$('[data-dx],[data-dy]').forEach(b=>b.addEventListener('click',()=>{let dx=+(b.
 snapExactCursor(cursor.x+dx,cursor.y+dy)}));
 $('stepLabel').onclick=()=>{step=step===1?5:step===5?10:1;$$('[data-step]').forEach(s=>s.classList.toggle('active',+s.dataset.step===step));$('stepLabel').textContent=`${step} mm`};
 const pad=$('pad');pad.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();pad.setPointerCapture(e.pointerId);dragPad={id:e.pointerId,x:e.clientX,y:e.clientY};pad.style.background='#d2e6df'});pad.addEventListener('pointermove',e=>{if(!dragPad||dragPad.id!==e.pointerId)return;e.preventDefault();let dx=e.clientX-dragPad.x,dy=e.clientY-dragPad.y;dragPad.x=e.clientX;dragPad.y=e.clientY;let scaleFactor=.36/view.scale;setCursor(cursor.x+dx*scaleFactor,cursor.y+dy*scaleFactor);if(pending)render();});const endPad=e=>{if(dragPad&&dragPad.id===e.pointerId)dragPad=null;pad.style.background=''};pad.addEventListener('pointerup',endPad);pad.addEventListener('pointercancel',endPad);
-const drawing=$('drawing');drawing.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;e.preventDefault();drawing.setPointerCapture(e.pointerId);let q=eventPosition(e);drawPointers.set(e.pointerId,q);if(drawPointers.size===2){if(panAnchor?.strokeBegan){pending=null;$('cancelPoint').classList.add('hidden')}cancelEdit();let vals=[...drawPointers.values()];suppressNextTap=true;pinchStart={distance:Math.hypot(vals[0].x-vals[1].x,vals[0].y-vals[1].y),scale:view.scale,mid:{x:(vals[0].x+vals[1].x)/2,y:(vals[0].y+vals[1].y)/2},vX:view.x,vY:view.y};panAnchor=null;return}if(startEdit(e,q,screenToWorld(q))){panAnchor=null;return}if(mode==='pan'){panAnchor={id:e.pointerId,x:q.x,y:q.y,px:view.x,py:view.y,moved:false}}else{let p=screenToWorld(q);setCursor(p.x,p.y);panAnchor={id:e.pointerId,x:q.x,y:q.y,moved:false,start:{...getPoint()},strokeBegan:false}}});
+const drawing=$('drawing');drawing.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;e.preventDefault();drawing.setPointerCapture(e.pointerId);let q=eventPosition(e);drawPointers.set(e.pointerId,q);if(drawPointers.size===2){if(panAnchor?.strokeBegan){pending=null;$('cancelPoint').classList.add('hidden')}cancelEdit();let vals=[...drawPointers.values()];suppressNextTap=true;pinchStart={distance:Math.hypot(vals[0].x-vals[1].x,vals[0].y-vals[1].y),scale:view.scale,mid:{x:(vals[0].x+vals[1].x)/2,y:(vals[0].y+vals[1].y)/2},vX:view.x,vY:view.y};panAnchor=null;return}if(cursorDraft){setCursor(screenToWorld(q).x,screenToWorld(q).y);panAnchor={id:e.pointerId,draft:true};return}closeCursorMenu();if(startEdit(e,q,screenToWorld(q))){panAnchor=null;return}if(mode==='pan'){panAnchor={id:e.pointerId,x:q.x,y:q.y,px:view.x,py:view.y,moved:false}}else{let p=screenToWorld(q);setCursor(p.x,p.y);panAnchor={id:e.pointerId,x:q.x,y:q.y,moved:false,start:{...getPoint()},strokeBegan:false}}});
 drawing.addEventListener('pointermove',e=>{let q=eventPosition(e);if(!drawPointers.has(e.pointerId)){if(e.pointerType==='mouse')setCursor(screenToWorld(q).x,screenToWorld(q).y);return}drawPointers.set(e.pointerId,q);if(drawPointers.size>=2&&pinchStart){let vals=[...drawPointers.values()],mid={x:(vals[0].x+vals[1].x)/2,y:(vals[0].y+vals[1].y)/2},distance=Math.hypot(vals[0].x-vals[1].x,vals[0].y-vals[1].y);view.scale=within(pinchStart.scale*distance/Math.max(2,pinchStart.distance),.012,5);view.x=pinchStart.vX+(mid.x-pinchStart.mid.x)*1-(pinchStart.mid.x-pinchStart.vX)*(view.scale/pinchStart.scale-1);view.y=pinchStart.vY+(mid.y-pinchStart.mid.y)*1-(pinchStart.mid.y-pinchStart.vY)*(view.scale/pinchStart.scale-1);render();return}
+if(cursorDraft){const point=screenToWorld(q);setCursor(point.x,point.y);return}
 if(previewEdit(q,screenToWorld(q)))return;
 if(mode==='pan'&&panAnchor){view.x=panAnchor.px+q.x-panAnchor.x;view.y=panAnchor.py+q.y-panAnchor.y;panAnchor.moved=true;render()}else{
  let isDrawingTool=['line','rect','ellipse','dimension'].includes(mode), movedEnough=panAnchor&&Math.hypot(q.x-panAnchor.x,q.y-panAnchor.y)>9;
@@ -446,11 +650,11 @@ if(mode==='pan'&&panAnchor){view.x=panAnchor.px+q.x-panAnchor.x;view.y=panAnchor
  }});
 function endDrawing(e){if(!drawPointers.has(e.pointerId))return;let wasMulti=suppressNextTap||drawPointers.size>1||!!pinchStart,p=screenToWorld(eventPosition(e)),moved=panAnchor?.moved,isDrawingTool=['line','rect','ellipse','dimension'].includes(mode);drawPointers.delete(e.pointerId);if(drawPointers.size<2)pinchStart=null;if(drawPointers.size===0){
  // 拖曳圖形：鬆手即完成終點。點選圖形：仍支援精準選點的兩次確認方式。
- if(!wasMulti&&finishEdit(p)){}else if(!wasMulti&&mode!=='pan'&&(!moved||isDrawingTool)){setCursor(p.x,p.y);confirmAt(getPoint())}
+ if(!wasMulti&&cursorDraft){setCursor(p.x,p.y)}else if(!wasMulti&&finishEdit(p)){}else if(!wasMulti&&mode!=='pan'&&(!moved||isDrawingTool)){setCursor(p.x,p.y);confirmAt(getPoint())}
  panAnchor=null;suppressNextTap=false}}
 drawing.addEventListener('pointerup',endDrawing);drawing.addEventListener('pointercancel',e=>{if(panAnchor?.strokeBegan){pending=null;$('cancelPoint').classList.add('hidden')}cancelEdit();drawPointers.delete(e.pointerId);if(!drawPointers.size){pinchStart=null;panAnchor=null}});
 drawing.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY<0?1.13:1/1.13,eventPosition(e))},{passive:false});
-window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(e.ctrlKey||e.metaKey){if(e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo()}if(e.key.toLowerCase()==='s'){e.preventDefault();save(true)}return}if(e.key==='Escape'&&pending){pending=null;$('cancelPoint').classList.add('hidden');render()}if(e.key==='Delete'||e.key==='Backspace'){deleteSelected()}if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();snapExactCursor(cursor.x+(e.key==='ArrowLeft'?-step:e.key==='ArrowRight'?step:0),cursor.y+(e.key==='ArrowUp'?-step:e.key==='ArrowDown'?step:0))}if(e.key==='Enter'){confirmAt(getPoint())}});
+window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(e.ctrlKey||e.metaKey){if(e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo()}if(e.key.toLowerCase()==='s'){e.preventDefault();save(true)}return}if(e.key==='Escape'&&cursorDraft){cancelCursorAction();return}if(e.key==='Escape'&&pending){pending=null;$('cancelPoint').classList.add('hidden');render()}if(e.key==='Delete'||e.key==='Backspace'){deleteSelected()}if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();snapExactCursor(cursor.x+(e.key==='ArrowLeft'?-step:e.key==='ArrowRight'?step:0),cursor.y+(e.key==='ArrowUp'?-step:e.key==='ArrowDown'?step:0))}if(e.key==='Enter'){cursorDraft?finishCursorAction():confirmAt(getPoint())}});
 let resizeT=null;window.addEventListener('resize',()=>{syncViewportHeight();clearTimeout(resizeT);resizeT=setTimeout(()=>{if(initialized)fit()},150)});
 window.visualViewport?.addEventListener('resize',()=>{syncViewportHeight();clearTimeout(resizeT);resizeT=setTimeout(()=>{if(initialized)fit()},150)});
 window.addEventListener('orientationchange',()=>{syncViewportHeight();setTimeout(()=>{syncViewportHeight();if(initialized)fit()},300)});
@@ -458,11 +662,11 @@ window.addEventListener('visibilitychange',()=>{if(document.hidden)save(false)})
 }
 // directional controls must never be pulled to the nearest magnetized coordinate
 let exactOverride=null;
-function snapExactCursor(x,y){cursor={x:roundMm(within(x,-3000,doc.width+3000)),y:roundMm(within(y,-3000,doc.height+3000))};exactOverride={...cursor};syncCursorExact();renderCursor()}
+function snapExactCursor(x,y){cursor={x:roundMm(within(x,-3000,doc.width+3000)),y:roundMm(within(y,-3000,doc.height+3000))};exactOverride={...cursor};syncCursorExact();renderCursor();if(cursorDraft)render()}
 function syncCursorExact(){$('cursorX').value=nice(cursor.x);$('cursorY').value=nice(cursor.y)}
 // Override only for exact numeric input / nudge, reset for dragging and canvas pointer movement
 const originalSnapped=snapped;snapped=function(p){return exactOverride?{...exactOverride}:originalSnapped(p)};
-const originalSetCursor=setCursor;setCursor=function(x,y,forceRaw=true){exactOverride=null;originalSetCursor(x,y,forceRaw)};
+const originalSetCursor=setCursor;setCursor=function(x,y,forceRaw=true){exactOverride=null;originalSetCursor(x,y,forceRaw);if(cursorDraft)render()};
 const originalConfirm=confirmAt;confirmAt=function(p){originalConfirm(p)};
 function syncViewportHeight(){
  const portrait=window.matchMedia('(max-width:720px) and (orientation:portrait)').matches;
@@ -474,7 +678,7 @@ function syncViewportHeight(){
 }
 syncViewportHeight();
 load();bind();setInspector(inspectorOpen);updateFields();showMode('cells');syncHistory();initialized=true;$('bootNotice').remove();requestAnimationFrame(()=>{fit();syncCursor()});
-window.__CAD_TEST__={getDoc:()=>structuredClone(doc),setCursor:(x,y)=>snapExactCursor(x,y),setMode:showMode,confirm:()=>confirmAt(getPoint()),undo,redo,addV,addH,applySize:(w,h,d)=>{$('cabW').value=w;$('cabH').value=h;$('cabD').value=d;$('applyCab').click()},selectAt,exportSVGString,render,fit,validateDoc,save,getCells:()=>structuredClone(getCells()),getSnapPoints:pointsForSnap,getSelection:()=>structuredClone(selected),getView:()=>({...view}),getCellSelection:()=>[...cellSelection],toggleCellAt,moveGridLine,editCells,mergeCells:()=>editCells('合併儲存格',()=>Grid.merge(getCells(),cellSelection)),splitCells:(axis,count=2)=>editCells('拆分儲存格',()=>Grid.split(getCells(),cellSelection,axis,count)),changeSpan,setInspector};
+window.__CAD_TEST__={getDoc:()=>structuredClone(doc),setCursor:(x,y)=>snapExactCursor(x,y),setMode:showMode,confirm:()=>confirmAt(getPoint()),undo,redo,addV,addH,applySize:(w,h,d)=>{$('cabW').value=w;$('cabH').value=h;$('cabD').value=d;$('applyCab').click()},selectAt,exportSVGString,render,fit,validateDoc,save,getCells:()=>structuredClone(getCells()),getSnapPoints:pointsForSnap,getSelection:()=>structuredClone(selected),getView:()=>({...view}),getCellSelection:()=>[...cellSelection],toggleCellAt,moveGridLine,editCells,mergeCells:()=>editCells('合併儲存格',()=>Grid.merge(getCells(),cellSelection)),splitCells:(axis,count=2)=>editCells('拆分儲存格',()=>Grid.split(getCells(),cellSelection,axis,count)),changeSpan,setInspector,pickWithCursor,startCursorTool,startCursorMove,startCursorEndpoint,finishCursorAction,cancelCursorAction,controlledCursorMove,getCursorDraft:()=>cursorDraft?structuredClone(cursorDraft):null,getCursor:()=>({...cursor}),openCursorMenu};
 })();
 </script>
 </body>

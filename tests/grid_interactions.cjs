@@ -33,6 +33,8 @@ class Element {
     for (const fn of this.listeners[k] || []) fn({target: this, preventDefault() {}, ...event});
   }
   click() { if (!this.disabled) { this.onclick?.({target: this}); this.dispatch('click'); } }
+  focus() {context.document.activeElement=this;}
+  select() {}
   closest() {return null;}
   setPointerCapture() {}
   getBoundingClientRect() { return {left: 70, top: 80, width: this.clientWidth, height: this.clientHeight}; }
@@ -93,7 +95,7 @@ assert(api.getSnapPoints().some(p=>p.x===580&&p.y===2140),'partial-divider inter
 assert(win.CabinetGrid.lines(api.getCells(),2320,2240).some(l=>l.axis==='x'&&l.value===580&&l.a===500));
 api.undo();assert.equal(JSON.stringify(api.getDoc()),baseline);api.redo();assert.equal(api.getCells().length,11);
 tap(290,250);promptAnswer='3';ids.get('splitColumns').click();assert.equal(api.getCells().length,13);api.undo();
-api.changeSpan('x',0,580);assert(api.getCells().some(c=>c.x2===3));api.undo();
+api.changeSpan('x',0,580);ids.get('dimensionInput').value='3';ids.get('applyDimension').click();context.document.activeElement=null;assert(api.getCells().some(c=>c.x2===3));api.undo();
 let prior=JSON.stringify(api.getDoc());drag(1160,1200,30,0);assert.notEqual(JSON.stringify(api.getDoc()),prior);assert(api.validateDoc(api.getDoc()));api.undo();assert.equal(JSON.stringify(api.getDoc()),prior);
 tap(1160,1200);assert.equal(api.getSelection().kind,'gridLine');ids.get('linePosition').value='1201';ids.get('applyLinePosition').click();assert(api.getCells().some(c=>c.x1===1201));api.undo();
 // Cancellation rolls geometry back and does not add an undo entry.
