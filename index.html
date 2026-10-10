@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川工方繪圖">
-<link rel="manifest" href="./manifest.webmanifest?v=1.7.0">
-<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.7.0">
-<title>三川工方｜精準櫃體立面繪圖 V1.7.0</title>
+<link rel="manifest" href="./manifest.webmanifest?v=1.8.0">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.8.0">
+<title>三川工方｜精準櫃體立面繪圖 V1.8.0</title>
 <style>
 :root{--night:#222a30;--night2:#2d353d;--stone:#eee9e2;--paper:#fbfaf7;--clay:#ab624c;--clayDark:#824735;--ink:#25313b;--line:#d6d1ca;--aqua:#418c87;--muted:#8b9298;--shadow:0 8px 30px #17252b18}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;color:var(--ink);background:var(--night)}button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.36;cursor:default}button:focus-visible,input:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}input,select{min-width:0}input[type=number]{font-variant-numeric:tabular-nums}
@@ -19,7 +19,7 @@
 @media(max-height:480px){.inspector{padding:6px}.section{margin-bottom:6px}.section-head{padding:6px 9px}.section-body{padding:7px}.topbar{height:43px;min-height:43px}.brand small{display:none}.toolbar{gap:2px;padding-top:4px}.tool{min-height:40px}.canvas-top{min-height:37px;padding:4px 8px}.subbar{height:25px;min-height:25px}.stage-hint{top:7px;left:7px}.stage-btm{bottom:7px;left:7px;right:7px}}
 @media(min-width:1000px){.workspace{grid-template-columns:78px minmax(0,1fr) 282px}.tool{width:68px}.lens-frame{height:116px}.pad{height:112px}}
 
-/* V1.7.0: 橫向可視高度修正與滿版畫布模式 */
+/* V1.8.0: 橫向可視高度修正與滿版畫布模式 */
 html,body{overscroll-behavior:none}
 .workspace{grid-template-rows:minmax(0,1fr);overflow:hidden}
 .toolbar,.canvas-column,.inspector{min-height:0}
@@ -138,13 +138,34 @@ html,body{overscroll-behavior:none}
 .dimension-label{cursor:pointer}.dimension-label:hover rect{fill:#f7e3d7}#mergeCells,#splitColumns,#splitRows,#splitCount,#splitCountLabel,#contextCutX,#contextCutY{display:none!important}
 .part-editor{position:absolute;z-index:70;left:50%;bottom:70px;transform:translateX(-50%);width:min(370px,calc(100% - 12px));max-height:calc(100% - 90px);overflow:auto;overscroll-behavior:contain;border:1px solid #687b74;border-radius:12px;background:#303a42;color:#e6ede9;padding:10px;box-shadow:0 8px 28px #10251c50}.part-editor-head{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:8px}.part-editor button{min-height:40px;border:1px solid #677a72;border-radius:8px;color:#e6ede9;background:transparent;padding:5px 8px}.part-editor-head button{min-width:40px}.part-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px}.part-fields label,.part-editor details label{display:flex;flex-direction:column;gap:4px;font-size:11px}.part-fields .wide{grid-column:1 / -1}.part-editor input,.part-editor select{width:100%;min-width:0;font-size:16px;min-height:38px;border:1px solid #8eaaa0;border-radius:6px;background:#fffdf9;color:#30413a;padding:5px}.part-editor input:read-only{background:#dbe5df;color:#64766e}.part-editor details{margin:9px 0;border-top:1px solid #64766e;padding-top:8px}.part-editor summary{min-height:36px;cursor:pointer;font-size:12px}.part-note{font-size:11px;color:#b9ccc2;line-height:1.5}.part-editor-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:9px}.part-editor-buttons #partApply{background:#bc725737;color:#f4c4b1;border-color:#ce8b74}#partListRows button{display:block;width:100%;text-align:left;margin:5px 0}.part-editor button:disabled{opacity:.35}
 
+/* V1.8: explicit single-row header and notebook-style drawing footer. */
+#app .topbar,#app.focus-mode .topbar{display:flex!important;flex-wrap:nowrap!important;height:50px!important;min-height:50px!important;padding:5px 8px!important;gap:7px;overflow:visible;align-items:center;align-content:normal}
+#app .topbar>*{grid-column:auto;grid-row:auto}.topbar .brandmark{width:28px;height:28px;margin:0;flex:none}.topbar .project-name{flex:1;max-width:260px;width:auto;min-width:50px;height:38px;font-size:16px}.topbar .top-btn{height:38px;min-height:38px;flex:none}.topbar .brand{min-width:0}.topbar .brand strong{font-size:13px}
+#app .canvas-top{justify-content:flex-start;height:42px;min-height:42px}.canvas-top>button{flex:none}.canvas-top #redo{min-height:34px;border:1px solid #c8c2b8;border-radius:7px;background:#fff;color:#5c5551;padding:4px 8px}.canvas-top #redo i,.canvas-top #cursorActions i{font-style:normal}.canvas-top #cursorActions{display:flex;align-items:center;gap:3px}.canvas-top .spacer{display:none}.canvas-top #partList{margin-left:auto}
+#cursorToggle{display:none!important}#toggleCursorDock{display:inline-block!important}.drawing-controls{flex:none;min-height:0;padding:4px 6px 6px;background:#29333b;border-top:1px solid #53676a;z-index:24;display:flex;flex-direction:column;gap:4px}
+#app .common-actions{position:static;transform:none;margin:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:0;padding:0;border-radius:0;background:transparent;gap:5px}
+#app .common-actions button{height:44px;min-height:44px;border-color:#566970;font-size:11px}#app .common-actions button i{font-size:19px}
+#app .cursor-dock,#app .cursor-dock.dock-open{position:static;left:auto;bottom:auto;transform:none;width:100%;padding:0;gap:3px;grid-template-columns:1fr;background:transparent;pointer-events:auto}
+#app .cursor-dock-head{display:flex!important;color:#b5ccc2;min-height:16px;font-size:10px}#app .cursor-dock-head span{max-width:75%}#app .cursor-dock-head button{color:#b5ccc2}
+#app .cursor-ring{grid-column:auto;grid-row:auto;width:100%;height:auto;min-height:0;border:0;border-radius:0;background:transparent;pointer-events:auto}
+#app .cursor-pad{width:100%;height:64px;min-height:64px;border:1px solid #93b3a3;border-radius:9px;background:linear-gradient(145deg,#ecf5ef,#bed5c8)!important;color:#4a7465;font-size:11px;box-shadow:inset 0 1px 4px #466f5912;cursor:grab;display:grid;place-items:center}
+#app .cursor-pad::after{content:'↔　↕';position:absolute;top:5px;right:8px;left:auto;width:auto;height:auto;transform:none;border-radius:0;background:none;font-size:14px;color:#77988a}
+#app .cell-actions,#app.focus-mode .cell-actions{position:static;top:auto;bottom:auto;left:auto;right:auto;min-height:42px;width:100%;border:0;padding:0;background:transparent;gap:4px;overflow-x:auto;flex-wrap:nowrap}
+#app #cellActions button{flex:none;min-height:38px}#cellActions #cellSummary,#cellActions #lineLabel{display:none}#cellActions #linePosition{width:74px;min-width:74px}
+#contextCutX:not(.hidden),#contextCutY:not(.hidden){display:inline-block!important}
+#app #cursorConfirmation{position:static;display:flex;justify-content:flex-end;grid-column:auto;grid-row:auto;width:100%;gap:5px}#cursorConfirmation button{min-width:90px;min-height:38px;height:38px}
+.auxiliary-actions{display:flex;align-items:center;gap:5px;flex:none;overflow-x:auto;background:#303a42;padding:4px 6px;min-height:42px}.auxiliary-actions button,.auxiliary-actions input{flex:none;min-height:34px;border:1px solid #64727a;border-radius:7px;background:transparent;color:#d6e0e3;padding:5px 8px;white-space:nowrap;font-size:12px}.auxiliary-actions input{width:120px;background:#fff;color:#30413a;font-size:16px}.auxiliary-actions label{white-space:nowrap;color:#d6e0e3;font-size:11px}
+#app .cursor-edit-row{position:absolute;top:8px;left:6px;right:6px;z-index:36;width:auto;grid-column:auto;grid-row:auto}.stage-btm{bottom:8px!important;right:8px;left:auto}.part-editor{top:8px;bottom:auto;max-height:calc(100% - 16px)}
+@media(max-width:720px) and (orientation:portrait){#app .topbar .brand,#app .topbar .top-spacer{display:none}.topbar .project-name{max-width:none}.topbar .top-btn{padding:0 8px}#app .topbar .brandmark{display:grid}}
+@media(max-height:480px){#app .topbar,#app.focus-mode .topbar{height:44px!important;min-height:44px!important}.drawing-controls{padding:3px 6px;gap:3px}#app .cursor-pad{height:36px;min-height:36px}#app .cursor-dock-head{display:none!important}#app .common-actions button{height:38px;min-height:38px}.topbar .brand{display:none}.topbar .project-name{max-width:220px}#app .canvas-top{height:36px;min-height:36px}}
+
 </style>
 </head>
 <body>
 <div id="bootNotice" role="status" aria-live="polite"><div class="bootPanel"><h2>目前尚未啟動繪圖程式</h2><p>如果此畫面持續顯示，代表目前開啟方式無法執行 JavaScript。iPhone 的 ChatGPT 附件預覽或「檔案」預覽可能只顯示畫面，按鈕無法使用。請改用 Safari 開啟正式的 HTTPS 網址。</p><small>注意：下載 HTML 不等於已部署為網站。</small></div></div>
 <div id="app">
 <header class="topbar">
-<div class="brandmark"><img src="./logo-02-g01.svg?v=1.7.0" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.7.0</small></div>
+<div class="brandmark"><img src="./logo-02-g01.svg?v=1.8.0" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.8.0</small></div>
 <input id="project" class="project-name" aria-label="圖面名稱" value="櫃體 1" placeholder="輸入圖面名稱">
 <div class="top-spacer"></div>
 
@@ -163,38 +184,30 @@ html,body{overscroll-behavior:none}
 <button id="cancelPoint" class="pill hidden">取消起點 ×</button>
 <span class="spacer"></span>
 <button id="toggleCursorDock" class="mini" aria-controls="cursorDock" aria-expanded="false">游標</button>
-<button id="partList" class="mini">板件</button><button id="fit" class="mini" title="圖面置中">適屏</button>
+<button id="redo" title="重做" aria-label="重做"><i aria-hidden="true">↷</i><span>重做</span></button><button id="cursorActions" class="mini" aria-controls="cursorMenu" aria-expanded="false"><i aria-hidden="true">＋</i><span>繪圖</span></button><button id="partList" class="mini">板件</button><button id="fit" class="mini" title="圖面置中">適屏</button>
 <button id="toggleInspector" class="mini" title="顯示或收起右側控制面板" aria-expanded="false" aria-controls="inspector">設定</button>
 </div>
 
+<div id="auxiliaryActions" class="auxiliary-actions hidden" aria-label="圖形與板件編輯"><button id="annotationCancel" class="hidden">取消</button><button id="annotationFinish" class="hidden">完成</button><button id="shapeMove">移動圖形</button><button id="shapeDelete">刪除圖形</button><button id="contextPart">板件名稱</button><button id="contextStart">調起點</button><button id="contextEnd">調終點</button><button id="contextTextApply">套用文字</button><label id="contextTextLabel" for="contextTextInput">文字</label><input id="contextTextInput" type="text" maxlength="60"></div>
 <div class="stage-wrap" id="stage">
 <div class="orientation-tip">橫向持機可取得更大的繪圖區域</div>
 <svg id="drawing" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="櫃體立面繪圖區"></svg>
 <div id="stageHint" class="stage-hint"><strong>精準選點</strong> 在右側觸控板移動游標，再按「確認定位」。</div>
 <div class="stage-btm"><div id="coordinateChip" class="coordinate-chip"><b>XY</b> 0, 0 mm<br>格線 10 mm</div><div class="zoom-controls"><button id="zoomOut" title="縮小">−</button><small id="zoomText">100%</small><button id="zoomIn" title="放大">＋</button></div></div>
-<div id="cellActions" class="cell-actions" aria-label="儲存格與線條編輯">
-<button id="contextCutX">直分隔</button><button id="contextCutY">橫分隔</button><button id="contextPart">板件名稱</button><button id="contextMove">移動</button><button id="contextStart">調起點</button><button id="contextEnd">調終點</button><label id="contextTextLabel" for="contextTextInput">文字</label><input id="contextTextInput" type="text" maxlength="60"><button id="contextTextApply">套用文字</button><span id="cellSummary" class="selection-size">點選格子</span>
-<button id="mergeCells">合併</button><label id="splitCountLabel" for="splitCount">等分</label><input id="splitCount" type="number" min="2" max="24" value="2" aria-label="等分數量"><button id="splitColumns">新增欄</button><button id="splitRows">新增列</button><button id="clearCellSelection">取消選取</button>
-<label for="linePosition" id="lineLabel" class="hidden">位置 mm</label><input id="linePosition" class="hidden" type="number" step="1" aria-label="分隔線位置（毫米）"><button id="applyLinePosition" class="hidden">套用</button>
-</div>
+
 <button id="cursorHub" class="cursor-hub" aria-label="準心動作選單" aria-controls="cursorMenu" aria-expanded="false">⋮</button>
 <div id="cursorMenu" class="cursor-menu hidden" aria-label="游標動作選單">
 <div class="cursor-menu-title"><span id="cursorMenuTitle">新增</span><button id="closeCursorMenu" aria-label="關閉動作選單">×</button></div>
 <div class="cursor-menu-actions">
 <button class="hidden" id="cursorMove">移動位置</button><button class="hidden" id="cursorAdjustStart">調起點</button><button class="hidden" id="cursorAdjustEnd">調終點</button><button class="danger hidden" id="cursorDelete">刪除</button>
-<button data-cursor-tool="cutX">直分隔</button><button data-cursor-tool="cutY">橫分隔</button>
+
 <button id="addBoard">新增板件</button><button data-cursor-tool="line">畫直線</button><button data-cursor-tool="dimension">尺寸標註</button>
 <button data-cursor-tool="rect">畫矩形</button><button data-cursor-tool="ellipse">畫圓形</button>
 <button data-cursor-tool="text">文字標記</button><button id="cursorMenuCancel" class="hidden">取消選取</button>
 </div></div>
-<div id="dimensionEditor" class="dimension-editor hidden"><label id="dimensionEditorLabel" for="dimensionInput">尺寸 mm</label><input id="dimensionInput" type="number" min="1" step="1"><button id="applyDimension">套用</button><button id="cancelDimension">取消</button></div>
+<div id="cursorDraftFields" class="cursor-edit-row hidden"><label id="cursorDraftLabel" for="cursorDraftValue">位置 mm</label><button id="cursorMinus" class="nudge-btn" aria-label="預覽位置減少">−</button><input id="cursorDraftValue" type="number" step="1"><input id="cursorDraftText" class="hidden" type="text" maxlength="60" aria-label="文字標記內容" placeholder="輸入標記文字"><input id="cursorEndpointX" class="hidden" type="number" step="1" aria-label="端點 X 座標（毫米）"><input id="cursorEndpointY" class="hidden" type="number" step="1" aria-label="端點 Y 座標（毫米）"><button id="cursorPlus" class="nudge-btn" aria-label="預覽位置增加">＋</button></div><div id="dimensionEditor" class="dimension-editor hidden"><label id="dimensionEditorLabel" for="dimensionInput">尺寸 mm</label><input id="dimensionInput" type="number" min="1" step="1"><button id="applyDimension">套用</button><button id="cancelDimension">取消</button></div>
 <button id="cursorToggle" class="cursor-toggle" aria-label="展開游標控制器" aria-controls="cursorDock" aria-expanded="false">⌖</button>
-<section id="cursorDock" class="cursor-dock" aria-label="游標觸控板">
-<div class="cursor-dock-head"><span id="cursorDockStatus">游標觸控板 · 滑動定位</span><button id="cursorFineStep">微調 1 mm</button></div>
-<div class="cursor-ring"><button id="cursorPad" class="cursor-pad" aria-label="按住圓心滑動，移動游標"></button></div>
-<div id="cursorDraftFields" class="cursor-edit-row hidden"><label id="cursorDraftLabel" for="cursorDraftValue">位置 mm</label><button id="cursorMinus" class="nudge-btn" aria-label="預覽位置減少">−</button><input id="cursorDraftValue" type="number" step="1"><input id="cursorDraftText" class="hidden" type="text" maxlength="60" aria-label="文字標記內容" placeholder="輸入標記文字"><input id="cursorEndpointX" class="hidden" type="number" step="1" aria-label="端點 X 座標（毫米）"><input id="cursorEndpointY" class="hidden" type="number" step="1" aria-label="端點 Y 座標（毫米）"><button id="cursorPlus" class="nudge-btn" aria-label="預覽位置增加">＋</button></div>
-<div class="cursor-dock-buttons"><button id="cursorCancel">取消</button><button id="cursorFinish" class="primary" disabled>完成</button></div>
-</section><nav id="commonActions" class="common-actions" aria-label="常用編輯動作"><button id="undo" class="common-undo" title="復原上一個已完成動作" aria-label="復原上一個動作"><i aria-hidden="true">↶</i><span>復原</span></button><button id="redo" title="重做" aria-label="重做"><i aria-hidden="true">↷</i><span>重做</span></button><button id="cursorSelect"><i aria-hidden="true">⌖</i><span id="cursorSelectLabel">選取</span></button><button id="commonPan" data-mode="pan" title="拖動畫布平移視角"><i aria-hidden="true">✥</i><span>平移</span></button><button id="deleteTool" class="common-delete" title="刪除選取項目"><i aria-hidden="true">⌫</i><span>刪除</span></button><button id="cursorActions" aria-controls="cursorMenu" aria-expanded="false"><i aria-hidden="true">＋</i><span>新增</span></button></nav><section id="partEditor" class="part-editor hidden" aria-label="板件編輯"><div class="part-editor-head"><strong id="partEditorTitle">板件</strong><button id="closePartEditor" aria-label="關閉板件編輯">×</button></div><div id="partListRows"></div><div id="partEditorFields" class="hidden">
+<section id="partEditor" class="part-editor hidden" aria-label="板件編輯"><div class="part-editor-head"><strong id="partEditorTitle">板件</strong><button id="closePartEditor" aria-label="關閉板件編輯">×</button></div><div id="partListRows"></div><div id="partEditorFields" class="hidden">
 <div class="part-fields"><label>類型<select id="partType"></select></label><label>編號<span id="partCode"></span></label><label class="wide">名稱<input id="partName" maxlength="60"></label><label>立面寬 mm<input id="partWidth" type="number" min="0"></label><label>立面高 mm<input id="partHeight" type="number" min="0"></label><label>X 位置 mm<input id="partX" type="number"></label><label>Y 位置 mm<input id="partY" type="number"></label></div>
 <button id="partDimension">調整圖面尺寸</button><p id="partGeometryNote" class="part-note"></p>
 <details><summary>材料與板件設定</summary><div class="part-fields"><label>深度 mm<input id="partDepth" type="number" min="0"></label><label>厚度 mm<input id="partThickness" type="number" min="0"></label><label>數量<input id="partCount" type="number" min="1" max="1000" value="1"></label><label>材料<input id="partMaterial" maxlength="80"></label><label id="partOpeningLabel">開啟方向<select id="partOpening"><option value="none">未設定</option><option value="left">左開</option><option value="right">右開</option><option value="up">上掀</option><option value="sliding">滑門</option></select></label><label id="partBackLabel">背板安裝<select id="partBackMount"><option value="none">未設定</option><option value="overlay">包背</option><option value="groove">入槽</option></select></label><label class="wide">備註<input id="partNotes" maxlength="200"></label></div></details>
@@ -202,9 +215,19 @@ html,body{overscroll-behavior:none}
 <div class="part-editor-buttons"><button id="partApply">完成</button><button id="partCancel">取消</button><button id="partMove">移動</button><button id="partDuplicate">複製</button><button id="partDelete">刪除板件</button></div></div></section><div id="toast" class="toast"></div>
 </div>
 
+<section id="drawingControls" class="drawing-controls" aria-label="立面圖編輯控制"><div id="cellActions" class="cell-actions" aria-label="立面選取後的編輯動作">
+<button id="contextCutX">直分隔</button><button id="contextCutY">橫分隔</button><button id="deleteTool" class="common-delete" title="刪除選取項目"><i aria-hidden="true">⌫</i><span>刪除</span></button><button id="contextWholeLine">選取整列</button><button id="contextMove">移動</button><span id="cellSummary" class="selection-size">點選格子</span>
+<button id="mergeCells">合併</button><label id="splitCountLabel" for="splitCount">等分</label><input id="splitCount" type="number" min="2" max="24" value="2" aria-label="等分數量"><button id="splitColumns">新增欄</button><button id="splitRows">新增列</button><button id="clearCellSelection">取消選取</button>
+<label for="linePosition" id="lineLabel" class="hidden">位置 mm</label><input id="linePosition" class="hidden" type="number" step="1" aria-label="分隔線位置（毫米）"><button id="applyLinePosition" class="hidden">套用</button>
+</div><div id="cursorConfirmation" class="cursor-dock-buttons hidden"><button id="cursorCancel">取消</button><button id="cursorFinish" class="primary" disabled>完成</button></div><nav id="commonActions" class="common-actions" aria-label="常用編輯動作"><button id="undo" class="common-undo" title="復原上一個已完成動作" aria-label="復原上一個動作"><i aria-hidden="true">↶</i><span>復原</span></button><button id="cursorSelect"><i aria-hidden="true">⌖</i><span id="cursorSelectLabel">選取</span></button><button id="commonPan" data-mode="pan" title="拖動畫布平移視角"><i aria-hidden="true">✥</i><span>平移</span></button></nav><section id="cursorDock" class="cursor-dock" aria-label="游標觸控板">
+<div class="cursor-dock-head"><span id="cursorDockStatus">游標觸控板 · 滑動定位</span></div>
+<div class="cursor-ring"><div id="cursorPad" class="cursor-pad" role="application" aria-label="滑動觸控板移動游標">滑動移動游標 · 可抬手接續滑動</div></div>
+
+
+</section></section>
 <div class="subbar"><span id="status">已就緒 · 尺寸單位 mm</span><span id="dirtyStatus">本機自動暫存</span></div>
 </div>
-<aside class="inspector" id="inspector"><div class="view-settings"><button id="scopeOut" class="pill active">櫃外</button><button id="scopeIn" class="pill">櫃內</button><button id="snapBtn" class="pill active">吸附 10mm</button><button class="top-btn" id="displayMode" title="放大畫布並收起側邊工具">⛶ 滿版</button></div><div class="inspector-heading"><span>尺寸與設定</span><button id="closeInspector">收起 ×</button></div>
+<aside class="inspector" id="inspector"><div class="view-settings"><button id="cursorFineStep">微調 1 mm</button><button id="scopeOut" class="pill active">櫃外</button><button id="scopeIn" class="pill">櫃內</button><button id="snapBtn" class="pill active">吸附 10mm</button><button class="top-btn" id="displayMode" title="放大畫布並收起側邊工具">⛶ 滿版</button></div><div class="inspector-heading"><span>尺寸與設定</span><button id="closeInspector">收起 ×</button></div>
 <div class="section hidden">
 <div class="section-head">精準選點 <small>手指不遮擋圖面</small></div>
 <div class="section-body">
@@ -234,8 +257,8 @@ html,body{overscroll-behavior:none}
 <div><h2>隱藏 Safari 網址列</h2><p>目前已放大畫布。若要進一步隱藏 Safari 網址列，請從 Safari 的<strong>分享 → 加入主畫面</strong>，開啟<strong>「打開為網頁 App」</strong>，再由主畫面圖示啟動。</p><p>一般網頁無法自行關閉 Safari 的網址列。</p><button id="closeInstallPrompt">知道了</button></div>
 </div>
 </div>
-<script src="./grid.js?v=1.7.0"></script>
-<script src="./parts.js?v=1.7.0"></script>
+<script src="./grid.js?v=1.8.0"></script>
+<script src="./parts.js?v=1.8.0"></script>
 <script>
 (()=>{
 'use strict';
@@ -245,7 +268,7 @@ const DEMO=()=>({version:1,name:'櫃體 1',width:2320,height:2240,depth:600,vert
 const Parts=window.CabinetParts;
 let doc=DEMO(),mode='select',scope='out',snap=true,step=1,pending=null,selected=null,history=[],future=[],cursor={x:1160,y:1120},view={scale:.12,x:100,y:100},initialized=false,drawPointers=new Map(),dragPad=null,panAnchor=null,pinchStart=null,suppressNextTap=false,inspectorOpen=!window.matchMedia('(max-width:720px) and (orientation:portrait)').matches,toastTimer=null,saveTimer=null,dirty=false;
 const Grid=window.CabinetGrid;
-let cursorDraft=null,cursorMenuOpen=false,cursorPadDrag=null,dimensionEdit=null,dockOpen=false;
+let cursorDraft=null,cursorMenuOpen=false,cursorPadDrag=null,dimensionEdit=null,dockOpen=true;
 let cellSelection=[],editDrag=null,lastPortrait=window.matchMedia('(max-width:720px) and (orientation:portrait)').matches;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const nice=n=>String(+Number(n).toFixed(2));const within=(v,a,b)=>Math.max(a,Math.min(b,v));const roundMm=n=>Math.round(n*100)/100;
@@ -285,19 +308,20 @@ function addH(x,y){const cells=getCells(),ids=cells.map((c,i)=>x>=c.x1&&x<c.x2&&
 function confirmAt(p){if(cursorDraft){finishCursorAction();return}if(mode==='cells'){selectAt(p);return}if(mode==='pan'){setCursor(p.x,p.y);return}if(mode==='select'){selectAt(p);return}if(mode==='vertical'){addV(p.x);return}if(mode==='horizontal'){addH(p.x,p.y);return}if(mode==='text'){let v=prompt('輸入圖面註記（最多 60 字）');if(v&&v.trim()){record('新增註記');doc.shapes.push({type:'text',x1:p.x,y1:p.y,x2:p.x,y2:p.y,text:v.trim().slice(0,60),color:'#ab624c'});afterDocChange()}return}
 if(!pending||pending.mode!==mode){pending={...p,mode};$('cancelPoint').classList.remove('hidden');status(`已設定起點 (${nice(p.x)}, ${nice(p.y)}) mm，請指定終點`);render();return}
 let a=pending;pending=null;$('cancelPoint').classList.add('hidden');if(Math.hypot(p.x-a.x,p.y-a.y)<.5){toast('起點與終點不可相同');render();return}record('新增'+({line:'直線',rect:'矩形',ellipse:'圓形',dimension:'尺寸標註'}[mode]));doc.shapes.push({type:mode,x1:a.x,y1:a.y,x2:p.x,y2:p.y,text:'',color:'#a45e48'});afterDocChange();toast('圖元已新增')}
-function selectAt(p){selected=hitLineOrShape(p);cellSelection=[];updateSelection();syncCellActions();render();if(!selected)status('點尺寸數值修改，或點分隔線選取')}
-function updateSelection(){let t='尚未選取圖元';$('selectedValue').value='';$('selectedValue').disabled=true;$('updateSelected').disabled=true;$('deleteSelected').disabled=true;if(selected){if(selected.kind==='gridLine'){t=`${selected.axis==='x'?'直向':'橫向'}分隔線 · ${nice(selected.value)} mm`;$('selectedValue').value=nice(selected.value);$('selectedValue').disabled=false;$('updateSelected').disabled=false;}else if(selected.kind==='vertical'&&doc.vertical[selected.idx]!==undefined){t=`直向分格線 · X = ${nice(doc.vertical[selected.idx])} mm`;$('selectedValue').value=nice(doc.vertical[selected.idx]);$('selectedValue').disabled=false;$('updateSelected').disabled=false;$('deleteSelected').disabled=false}else if(selected.kind==='horizontal'&&doc.horizontal[selected.idx]){t=`橫向分格線 · Y = ${nice(doc.horizontal[selected.idx].y)} mm`;$('selectedValue').value=nice(doc.horizontal[selected.idx].y);$('selectedValue').disabled=false;$('updateSelected').disabled=false;$('deleteSelected').disabled=false}else if(selected.kind==='shape'&&doc.shapes[selected.idx]){t=`已選擇圖元：${({line:'直線',rect:'矩形',ellipse:'圓形',dimension:'尺寸標註',text:'文字'})[doc.shapes[selected.idx].type]}`;$('deleteSelected').disabled=false}else selected=null}$('selectedText').textContent=t}
-function deleteSelected(){if(selected?.kind==='gridLine'){try{const cells=Grid.removeLocal(getCells(),selected,doc.width,doc.height);editCells('刪除分隔線',()=>cells)}catch(e){toast(e.message)}return}if(!selected){toast('請先選取圖元');return}record('刪除選取圖元');if(selected.kind==='vertical')doc.vertical.splice(selected.idx,1);else if(selected.kind==='horizontal')doc.horizontal.splice(selected.idx,1);else doc.shapes.splice(selected.idx,1);selected=null;afterDocChange();toast('已刪除選取項目')}
+function regionAt(p){const idx=Grid.at(getCells(),p);return idx<0?null:{kind:'region',idx}}
+function selectAt(p){selected=hitLineOrShape(p)||regionAt(p);cellSelection=[];updateSelection();syncCellActions();render();if(!selected)status('點尺寸數值修改，或點分隔線選取')}
+function updateSelection(){let t='尚未選取圖元';$('selectedValue').value='';$('selectedValue').disabled=true;$('updateSelected').disabled=true;$('deleteSelected').disabled=true;if(selected){if(selected.kind==='gridLine'){t=`${selected.axis==='x'?'直向':'橫向'}分隔線 · ${nice(selected.value)} mm`;$('selectedValue').value=nice(selected.value);$('selectedValue').disabled=false;$('updateSelected').disabled=false;}else if(selected.kind==='vertical'&&doc.vertical[selected.idx]!==undefined){t=`直向分格線 · X = ${nice(doc.vertical[selected.idx])} mm`;$('selectedValue').value=nice(doc.vertical[selected.idx]);$('selectedValue').disabled=false;$('updateSelected').disabled=false;$('deleteSelected').disabled=false}else if(selected.kind==='horizontal'&&doc.horizontal[selected.idx]){t=`橫向分格線 · Y = ${nice(doc.horizontal[selected.idx].y)} mm`;$('selectedValue').value=nice(doc.horizontal[selected.idx].y);$('selectedValue').disabled=false;$('updateSelected').disabled=false;$('deleteSelected').disabled=false}else if(selected.kind==='shape'&&doc.shapes[selected.idx]){t=`已選擇圖元：${({line:'直線',rect:'矩形',ellipse:'圓形',dimension:'尺寸標註',text:'文字'})[doc.shapes[selected.idx].type]}`;$('deleteSelected').disabled=false}else if(selected.kind==='region'){t='已選取立面開口，可新增直／橫分隔'}else selected=null}$('selectedText').textContent=t}
+function deleteSelected(){if(selected?.kind==='gridLine'){try{let cells=getCells();if(selected.local)cells=Grid.removeLocal(cells,selected,doc.width,doc.height);else{for(let n=0;n<2000;n++){const l=Grid.lines(cells,doc.width,doc.height).find(l=>l.axis===selected.axis&&Grid.eq(l.value,selected.value));if(!l)break;const part=Grid.segment(cells,l.axis,l.value,l.a+.1);cells=Grid.removeLocal(cells,part,doc.width,doc.height)}}editCells('刪除分隔線',()=>cells)}catch(e){toast(e.message)}return}if(!selected||selected.kind==='region'){toast('請先選取要刪除的線條');return}record('刪除選取圖元');if(selected.kind==='vertical')doc.vertical.splice(selected.idx,1);else if(selected.kind==='horizontal')doc.horizontal.splice(selected.idx,1);else doc.shapes.splice(selected.idx,1);selected=null;afterDocChange();toast('已刪除選取項目')}
 function updateSelected(){if(!selected)return;if(selected.kind==='gridLine'){moveGridLine(selected.axis,selected.value,+$('selectedValue').value);return}let value=+$('selectedValue').value;if(selected.kind==='vertical'){if(!valid(value,1,doc.width-1)||doc.vertical.some((v,i)=>i!==selected.idx&&Math.abs(v-value)<.5)){toast('無效或重複的 X 座標');return}let old=doc.vertical[selected.idx];record('更新直向分格');doc.vertical[selected.idx]=value;doc.vertical.sort((a,b)=>a-b);for(let h of doc.horizontal){if(Math.abs(h.x1-old)<.5)h.x1=value;if(Math.abs(h.x2-old)<.5)h.x2=value;h.x1=Math.min(h.x1,h.x2);h.x2=Math.max(h.x1,h.x2)}selected=null}else if(selected.kind==='horizontal'){if(!valid(value,1,doc.height-1)){toast('Y 座標須位於櫃體內');return}record('更新橫向分格');doc.horizontal[selected.idx].y=value}else return;afterDocChange();toast('分格位置已更新')}
 function measureString(s){return nice(Math.hypot(s.x2-s.x1,s.y2-s.y1))}
 function closeCursorMenu(){cursorMenuOpen=false;$('cursorMenu').classList.add('hidden');$('cursorHub').setAttribute('aria-expanded','false');$('cursorActions').setAttribute('aria-expanded','false')}
 function resetCursorWorkflow(){for(const id of ['dimensionInput','cursorDraftValue','cursorDraftText','cursorEndpointX','cursorEndpointY'])if(document.activeElement===$(id))$(id).blur?.();cursorDraft=null;closeCursorMenu();dimensionEdit=null;$('dimensionEditor').classList.add('hidden')}
-function setDock(open){dockOpen=open;$('cursorDock').classList.toggle('dock-open',open);$('toggleCursorDock').setAttribute('aria-expanded',String(open));$('cursorToggle').setAttribute('aria-expanded',String(open));$('cursorToggle').setAttribute('aria-label',open?'收合游標控制器':'展開游標控制器');$('cursorToggle').textContent=open?'×':'⌖';if(!open)closeCursorMenu()}
-function cursorTargetCell(){const cells=getCells();if(cellSelection.length===1&&cells[cellSelection[0]])return cellSelection[0];return Grid.at(cells,getPoint())}
+function setDock(open){dockOpen=open;$('cursorDock').classList.toggle('dock-open',open);$('toggleCursorDock').setAttribute('aria-expanded',String(open));$('toggleCursorDock').textContent=open?'收起觸控板':'觸控板';$('cursorToggle').setAttribute('aria-expanded',String(open));$('cursorToggle').setAttribute('aria-label',open?'收合游標控制器':'展開游標控制器');$('cursorToggle').textContent=open?'×':'⌖';if(!open)closeCursorMenu();if(initialized)requestAnimationFrame(()=>render())}
+function cursorTargetCell(){const cells=getCells();if(selected?.kind==='region')return selected.idx;if(cellSelection.length===1&&cells[cellSelection[0]])return cellSelection[0];return Grid.at(cells,getPoint())}
 function pickWithCursor(){
  if(cursorDraft){toast('預覽中：按完成固定，或按取消');return;}
  if(['line','rect','ellipse','dimension'].includes(mode)&&pending){confirmAt(getPoint());return;}
- const p=getPoint(),hit=hitLineOrShape(p);cellSelection=[];selected=hit;
+ const p=getPoint(),hit=hitLineOrShape(p)||regionAt(p);cellSelection=[];selected=hit;
 
  updateSelection();syncCellActions();render();
  if(!hit)status('點尺寸數值修改，或選取分隔線調整位置');
@@ -331,6 +355,7 @@ function startCursorTool(tool){
  setDock(true);status('預覽中：移動游標調整，按完成固定');render();syncCursorDock();
 }
 function startCursorMove(){
+ if(selected?.frame){toast('外框請點總寬／總高修改');return}
  if(!selected||!['gridLine','shape'].includes(selected.kind)){toast('先用選取鍵選取分隔線或圖元');return;}
  resetCursorWorkflow();const anchor={...getPoint()};
  if(selected.kind==='gridLine'){
@@ -365,7 +390,7 @@ function syncCursorDock(){
  const d=cursorDraft,p=getPoint();
  syncCellActions();
  $('cursorDockStatus').textContent=d?d.type==='cut'?`${d.axis==='x'?'直':'橫'}分隔預覽 · 完成後固定`:d.type==='draw'?`${({line:'直線',rect:'矩形',ellipse:'圓形',dimension:'尺寸標註',text:'文字標記'})[d.tool]}預覽 · 完成後固定`:d.type==='endpoint'?`${d.endpoint==='start'?'起點':'終點'}預覽 · 完成後固定`:'移動預覽 · 完成後固定':`游標 X ${nice(p.x)} · Y ${nice(p.y)} mm`;
- $('cursorFinish').disabled=!d&&!pending;
+ $('cursorFinish').disabled=!d&&!pending;$('cursorConfirmation').classList.toggle('hidden',(!d&&!pending)||['draw','endpoint','moveShape'].includes(d?.type)||(!d&&['line','rect','ellipse','dimension','text'].includes(mode)));
  $('cursorSelectLabel').textContent=pending?'定位':'選取';$('cursorSelect').classList.toggle('active',mode==='cells'||mode==='select'||!!selected||cellSelection.length>0);
  const numeric=d&&(d.type==='cut'||d.type==='moveLine'),text=d?.type==='draw'&&d.tool==='text',endpoint=d?.type==='endpoint';
  $('cursorDraftFields').classList.toggle('hidden',!numeric&&!text&&!endpoint);
@@ -422,9 +447,10 @@ function cursorPreviewSVG(){
 }
 function positionCursorControls(){
  const size=canvasSize();
- if(cursorMenuOpen){const menu=$('cursorMenu'),width=Math.min(220,size.w-16);menu.style.width=width+'px';menu.style.maxHeight=Math.max(40,size.h-150)+'px';menu.style.left='50%';menu.style.transform='translateX(-50%)';menu.style.top='auto';menu.style.bottom='156px';}
+ if(cursorMenuOpen){const menu=$('cursorMenu'),width=Math.min(220,size.w-16);menu.style.width=width+'px';menu.style.maxHeight=Math.max(40,size.h-16)+'px';menu.style.left='50%';menu.style.transform='translateX(-50%)';menu.style.top='8px';menu.style.bottom='auto';}
 }
 function controlledCursorMove(dx,dy){
+ if(mode==='pan'&&!cursorDraft){view.x+=dx*.8;view.y+=dy*.8;render();return}
  const size=canvasSize(),screen=worldToScreen(cursor),point=screenToWorld({x:within(screen.x+dx*.8,6,size.w-6),y:within(screen.y+dy*.8,6,size.h-6)});
  setCursor(point.x,point.y);
 }
@@ -433,9 +459,9 @@ function showDimensionEditor(axis,start,end,localPosition=null){
  const size=canvasSize(),p=worldToScreen({x:axis==='x'?(start+end)/2:0,y:axis==='y'?(start+end)/2:0});
  $('dimensionEditor').style.left=within(p.x-80,8,Math.max(8,size.w-248))+'px';$('dimensionEditor').style.top=within(p.y+12,8,Math.max(8,size.h-80))+'px';$('dimensionEditor').classList.remove('hidden');$('dimensionInput').focus();$('dimensionInput').select();
 }
-function contextPartition(axis){const cells=getCells(),cell=cells[cellSelection[0]];if(!cell)return;snapExactCursor((cell.x1+cell.x2)/2,(cell.y1+cell.y2)/2);startCursorTool(axis==='x'?'cutX':'cutY')}
+function contextPartition(axis){const cells=getCells(),cell=cells[cursorTargetCell()];if(!cell)return;snapExactCursor((cell.x1+cell.x2)/2,(cell.y1+cell.y2)/2);startCursorTool(axis==='x'?'cutX':'cutY')}
 function bindCursorControls(){
- $('contextCutX').onclick=()=>contextPartition('x');$('contextCutY').onclick=()=>contextPartition('y');$('contextMove').onclick=startCursorMove;$('contextStart').onclick=()=>startCursorEndpoint('start');$('contextEnd').onclick=()=>startCursorEndpoint('end');
+ $('annotationCancel').onclick=()=>cancelCursorAction();$('annotationFinish').onclick=finishCursorAction;$('shapeMove').onclick=startCursorMove;$('shapeDelete').onclick=deleteSelected;$('contextWholeLine').onclick=selectWholeLine;$('contextCutX').onclick=()=>contextPartition('x');$('contextCutY').onclick=()=>contextPartition('y');$('contextMove').onclick=startCursorMove;$('contextStart').onclick=()=>startCursorEndpoint('start');$('contextEnd').onclick=()=>startCursorEndpoint('end');
  $('contextTextApply').onclick=()=>{if(selected?.kind!=='shape'||doc.shapes[selected.idx]?.type!=='text')return;const value=$('contextTextInput').value.trim().slice(0,60);if(!value){toast('請輸入文字');return}if(value===doc.shapes[selected.idx].text)return;record('修改文字');doc.shapes[selected.idx].text=value;afterDocChange()};
 
  $('toggleCursorDock').onclick=$('cursorToggle').onclick=()=>setDock(!dockOpen);
@@ -478,22 +504,27 @@ function toggleCellAt(p){
  if(idx<0){cellSelection=[];}else if(cellSelection.includes(idx)){cellSelection=cellSelection.filter(i=>i!==idx);}else{cellSelection.push(idx);}
  syncCellActions();render();
 }
+function selectWholeLine(){if(selected?.kind!=='gridLine')return;selected={kind:'gridLine',axis:selected.axis,value:selected.value,a:0,b:selected.axis==='x'?doc.height:doc.width,local:false};updateSelection();syncCellActions();render();status(selected.axis==='x'?'已選取整欄的直線，同一 X 位置一起調整':'已選取整列的橫線，同一 Y 位置一起調整')}
 function syncCellActions(){
- const line=selected?.kind==='gridLine',shape=selected?.kind==='shape'?doc.shapes[selected.idx]:null,cells=getCells(),chosen=cellSelection.map(i=>cells[i]).filter(Boolean),editing=!!cursorDraft;
- $('contextPart').classList.toggle('hidden',!line&&(!shape||!['line','rect'].includes(shape.type)));
- $('cellActions').classList.toggle('hidden',editing||(!line&&!shape&&!chosen.length));
- $('cellSummary').textContent=line?`${selected.axis==='x'?'直':'橫'}線`:shape?({line:'直線',dimension:'尺寸標註',text:'文字',rect:'矩形',ellipse:'圓形'})[shape.type]:chosen.length===1?`${nice(chosen[0].x2-chosen[0].x1)} × ${nice(chosen[0].y2-chosen[0].y1)} mm`:`已選 ${chosen.length} 格`;
- for(const id of ['mergeCells','splitColumns','splitRows','splitCount','splitCountLabel','contextCutX','contextCutY'])$(id).classList.add('hidden');
- $('clearCellSelection').classList.toggle('hidden',false);$('clearCellSelection').textContent='取消';
- $('mergeCells').disabled=chosen.length<2;$('splitColumns').disabled=$('splitRows').disabled=!chosen.length;
-
- for(const id of ['lineLabel','linePosition','applyLinePosition'])$(id).classList.toggle('hidden',!line);
- $('contextMove').classList.toggle('hidden',!line&&!shape);
- for(const id of ['contextStart','contextEnd'])$(id).classList.toggle('hidden',!shape||!['line','dimension'].includes(shape.type));
- for(const id of ['contextTextLabel','contextTextInput','contextTextApply'])$(id).classList.toggle('hidden',shape?.type!=='text');
+ const line=selected?.kind==='gridLine',shape=selected?.kind==='shape'?doc.shapes[selected.idx]:null,region=selected?.kind==='region',editing=!!cursorDraft;
+ const frame=line&&(Grid.eq(selected.value,0)||Grid.eq(selected.value,selected.axis==='x'?doc.width:doc.height));
+ $('cellActions').classList.toggle('hidden',editing||(!line&&!region));
+ const auxiliaryDraft=['draw','endpoint','moveShape'].includes(cursorDraft?.type);$('auxiliaryActions').classList.toggle('hidden',!auxiliaryDraft&&(editing||(!line&&!shape)));for(const id of ['annotationCancel','annotationFinish'])$(id).classList.toggle('hidden',!auxiliaryDraft);for(const id of ['shapeMove','shapeDelete'])$(id).classList.toggle('hidden',editing||!shape);
+ $('contextPart').classList.toggle('hidden',editing||!line&&(!shape||!['line','rect'].includes(shape.type)));
+ $('cellSummary').textContent=line?(selected.local?`${selected.axis==='x'?'直':'橫'}線段`:`${selected.axis==='x'?'整欄':'整列'}線`):'已選開口';
+ for(const id of ['mergeCells','splitColumns','splitRows','splitCount','splitCountLabel'])$(id).classList.add('hidden');
+ for(const id of ['contextCutX','contextCutY'])$(id).classList.toggle('hidden',!region);
+ $('contextWholeLine').classList.toggle('hidden',!line||frame);$('contextWholeLine').disabled=!line||!selected.local;
+ $('contextWholeLine').textContent=line&&selected.axis==='x'?'選取整欄':'選取整列';
+ $('deleteTool').classList.toggle('hidden',!line);$('deleteTool').disabled=!!frame;
+ $('contextMove').classList.toggle('hidden',!line);$('contextMove').disabled=!!frame;
+ for(const id of ['lineLabel','linePosition','applyLinePosition'])$(id).classList.toggle('hidden',!line||frame);
+ $('clearCellSelection').textContent='取消選取';
+ for(const id of ['contextStart','contextEnd'])$(id).classList.toggle('hidden',editing||!shape||!['line','dimension'].includes(shape.type));
+ for(const id of ['contextTextLabel','contextTextInput','contextTextApply'])$(id).classList.toggle('hidden',editing||shape?.type!=='text');
  if(shape?.type==='text'&&document.activeElement!==$('contextTextInput'))$('contextTextInput').value=shape.text;
  if(line&&document.activeElement!==$('linePosition'))$('linePosition').value=nice(selected.value);
- $('app').classList.toggle('cells-mode',mode==='cells');
+ $('app').classList.toggle('cells-mode',false);
 }
 function hitLineOrShape(p){
  let best=null,dist=10/view.scale;
@@ -546,7 +577,8 @@ function startEdit(e,q,p){
   else editDrag={type:'header',axis,start:Number(header.dataset.gridStart),end:Number(header.dataset.gridEnd),q,moved:false,localPosition:header.dataset.dimensionLocal!==undefined?Number(header.dataset.dimensionLocal):null};
   return true;
  }
- const hit=hitLineOrShape(p);
+ let hit=hitLineOrShape(p);
+ if(hit?.kind==='gridLine'&&selected?.kind==='gridLine'&&!selected.local&&selected.axis===hit.axis&&Grid.eq(selected.value,hit.value)&&!selected.frame)hit={...selected};
  if(hit){
   selected=hit;cellSelection=[];updateSelection();syncCellActions();render();
   editDrag={type:hit.kind==='shape'?'shape':'boundary',...hit,q,start:p,startDoc:snapshot(),cells:getCells().map(c=>({...c})),width:doc.width,height:doc.height,moved:false};return true;
@@ -760,8 +792,8 @@ function boardLabels(includeSelection){const fs=includeSelection?11/view.scale:6
 function bindParts(){$('partType').innerHTML=Parts.types.map(t=>`<option value="${t[0]}">${t[2]}</option>`).join('');$('drawerChild').innerHTML=Parts.drawerNames.map((n,i)=>`<option value="${i}">${n}</option>`).join('');$('contextPart').onclick=()=>openPartEditor();$('partList').onclick=showPartList;$('addBoard').onclick=()=>openPartEditor(true);$('closePartEditor').onclick=$('partCancel').onclick=closePartEditor;$('partApply').onclick=applyPart;$('partDuplicate').onclick=duplicatePart;$('partType').onchange=()=>{if(!partDraft)return;try{savePartChild();const type=$('partType').value,original=partDraft.originalPart,code=original?.type===type?original.code:Parts.next(type,allParts());partDraft.part=Parts.normalize({...partDraft.part,type,code,children:original?.type===type?original.children:partDraft.part.children,name:original?.type===type?original.name:Parts.types.find(t=>t[0]===type)[2]+' '+code});$('partCode').textContent=code;$('partName').value=partDraft.part.name;updatePartTypeFields()}catch(e){$('partType').value=partDraft.part.type;toast(e.message)}};$('drawerChild').onchange=()=>{try{savePartChild();partChildIndex=Number($('drawerChild').value);loadPartChild()}catch(e){$('drawerChild').value=String(partChildIndex);toast(e.message)}};$('partMove').onclick=()=>{if(!partDraft)return;selected=partDraft.target;closePartEditor();startCursorMove()};$('partDelete').onclick=()=>{if(!partDraft)return;selected=partDraft.target;const t=selected;closePartEditor();if(t.kind==='gridLine'&&(Grid.eq(t.value,0)||Grid.eq(t.value,t.axis==='x'?doc.width:doc.height))){record('清除外框板件名稱');doc.boardTags=(doc.boardTags||[]).filter(tag=>!sameTag(tag,t));afterDocChange();toast('已清除板件名稱，櫃體外框保留')}else deleteSelected()};$('partDimension').onclick=()=>{if(!partDraft||partDraft.target.kind!=='gridLine')return;const t=partDraft.target,axis=t.axis==='x'?'y':'x',total=axis==='x'?doc.width:doc.height;closePartEditor();showDimensionEditor(axis,t.a,t.b,Grid.eq(t.a,0)&&Grid.eq(t.b,total)?null:t.value)};$('partListRows').addEventListener('click',e=>{const target=e.target.closest?.('[data-part-key]');if(target)selectPart(target.dataset.partKey)});}
 
 syncViewportHeight();
-load();bind();setInspector(inspectorOpen);updateFields();showMode('select');syncHistory();initialized=true;$('bootNotice').remove();requestAnimationFrame(()=>{fit();syncCursor()});
-window.__CAD_TEST__={getDoc:()=>structuredClone(doc),setCursor:(x,y)=>snapExactCursor(x,y),setMode:showMode,confirm:()=>confirmAt(getPoint()),undo,redo,addV,addH,applySize:(w,h,d)=>{$('cabW').value=w;$('cabH').value=h;$('cabD').value=d;$('applyCab').click()},selectAt,exportSVGString,render,fit,validateDoc,save,getCells:()=>structuredClone(getCells()),getSnapPoints:pointsForSnap,getSelection:()=>structuredClone(selected),getView:()=>({...view}),getCellSelection:()=>[...cellSelection],toggleCellAt,moveGridLine,editCells,mergeCells:()=>editCells('合併儲存格',()=>Grid.merge(getCells(),cellSelection)),splitCells:(axis,count=2)=>editCells('拆分儲存格',()=>Grid.split(getCells(),cellSelection,axis,count)),changeSpan,setInspector,pickWithCursor,startCursorTool,startCursorMove,startCursorEndpoint,finishCursorAction,cancelCursorAction,controlledCursorMove,getCursorDraft:()=>cursorDraft?structuredClone(cursorDraft):null,getCursor:()=>({...cursor}),openCursorMenu,openPartEditor,allParts,partForSelection,applyPart,duplicatePart,selectPart};
+load();bind();setDock(true);setInspector(inspectorOpen);updateFields();showMode('select');syncHistory();initialized=true;$('bootNotice').remove();requestAnimationFrame(()=>{fit();syncCursor()});
+window.__CAD_TEST__={getDoc:()=>structuredClone(doc),setCursor:(x,y)=>snapExactCursor(x,y),setMode:showMode,confirm:()=>confirmAt(getPoint()),undo,redo,addV,addH,applySize:(w,h,d)=>{$('cabW').value=w;$('cabH').value=h;$('cabD').value=d;$('applyCab').click()},selectAt,exportSVGString,render,fit,validateDoc,save,getCells:()=>structuredClone(getCells()),getSnapPoints:pointsForSnap,getSelection:()=>structuredClone(selected),getView:()=>({...view}),getCellSelection:()=>[...cellSelection],toggleCellAt,moveGridLine,editCells,mergeCells:()=>editCells('合併儲存格',()=>Grid.merge(getCells(),cellSelection)),splitCells:(axis,count=2)=>editCells('拆分儲存格',()=>Grid.split(getCells(),cellSelection,axis,count)),changeSpan,setInspector,pickWithCursor,startCursorTool,startCursorMove,startCursorEndpoint,finishCursorAction,cancelCursorAction,controlledCursorMove,getCursorDraft:()=>cursorDraft?structuredClone(cursorDraft):null,getCursor:()=>({...cursor}),openCursorMenu,selectWholeLine,openPartEditor,allParts,partForSelection,applyPart,duplicatePart,selectPart};
 })();
 </script>
 </body>

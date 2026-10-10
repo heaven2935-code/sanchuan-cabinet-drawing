@@ -90,7 +90,15 @@ function event(type,id,p,target=drawing){drawing.dispatch(type,{target,pointerId
 function tap(x,y){const p=point(x,y);event('pointerdown',1,p);event('pointerup',1,p)}
 function drag(x,y,dx,dy,id=2){const p=point(x,y);event('pointerdown',id,p);event('pointermove',id,{x:p.x+dx,y:p.y+dy});event('pointerup',id,{x:p.x+dx,y:p.y+dy})}
 assert.equal(api.getCells().length,12);
-tap(290,250);tap(870,250);assert.equal(api.getCellSelection().length,0);assert(ids.get('cellActions').classList.contains('hidden'));assert(!drawing.innerHTML.includes('grid-header'));
+// Whole-column/row actions move every same-coordinate segment in one undoable change.
+const originalWhole=JSON.stringify(api.getDoc()),wholeView=api.getView();
+api.selectAt({x:580,y:1200});ids.get('contextWholeLine').click();assert.equal(api.getSelection().local,false);assert.equal(ids.get('contextWholeLine').textContent,'選取整欄');
+ids.get('linePosition').value='650';ids.get('applyLinePosition').click();assert(api.getCells().every(c=>c.x1!==580&&c.x2!==580));assert(api.validateDoc(api.getDoc()));api.undo();assert.equal(JSON.stringify(api.getDoc()),originalWhole);assert.deepEqual(api.getView(),wholeView);
+api.selectAt({x:800,y:500});ids.get('contextWholeLine').click();assert.equal(ids.get('contextWholeLine').textContent,'選取整列');ids.get('contextMove').click();api.setCursor(800,620);ids.get('cursorFinish').click();assert(api.getCells().every(c=>c.y1!==500&&c.y2!==500));api.undo();assert.equal(JSON.stringify(api.getDoc()),originalWhole);
+api.selectAt({x:580,y:1200});ids.get('contextWholeLine').click();const wholePoint=point(580,1200);event('pointerdown',81,wholePoint);event('pointermove',81,{x:wholePoint.x+20,y:wholePoint.y});event('pointerup',81,{x:wholePoint.x+20,y:wholePoint.y});assert(api.getCells().every(c=>c.x1!==580&&c.x2!==580));api.undo();assert.equal(JSON.stringify(api.getDoc()),originalWhole);
+api.selectAt({x:580,y:1200});ids.get('contextWholeLine').click();ids.get('deleteTool').click();assert(api.getCells().every(c=>c.x1!==580&&c.x2!==580));api.undo();assert.equal(JSON.stringify(api.getDoc()),originalWhole);
+
+tap(290,250);tap(870,250);assert.equal(api.getCellSelection().length,0);assert(!ids.get('cellActions').classList.contains('hidden'));assert.equal(api.getSelection().kind,'region');assert(!drawing.innerHTML.includes('grid-header'));
 function dimension(axis,start,end,value,position=null){
  const attrs={'data-grid-axis':axis,'data-grid-start':String(start),'data-grid-end':String(end)};if(position!==null)attrs['data-dimension-local']=String(position);
  const target=new Element('g',attrs);target.closest=selector=>selector==='[data-grid-axis]'?target:null;
