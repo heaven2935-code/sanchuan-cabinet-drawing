@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川工方繪圖">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icon-180.png">
-<title>三川工方｜精準櫃體立面繪圖 V1.2</title>
+<link rel="manifest" href="./manifest.webmanifest?v=1.2.1">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.2.1">
+<title>三川工方｜精準櫃體立面繪圖 V1.2.1</title>
 <style>
 :root{--night:#222a30;--night2:#2d353d;--stone:#eee9e2;--paper:#fbfaf7;--clay:#ab624c;--clayDark:#824735;--ink:#25313b;--line:#d6d1ca;--aqua:#418c87;--muted:#8b9298;--shadow:0 8px 30px #17252b18}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;color:var(--ink);background:var(--night)}button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.36;cursor:default}button:focus-visible,input:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}input,select{min-width:0}input[type=number]{font-variant-numeric:tabular-nums}
@@ -19,7 +19,7 @@
 @media(max-height:480px){.inspector{padding:6px}.section{margin-bottom:6px}.section-head{padding:6px 9px}.section-body{padding:7px}.topbar{height:43px;min-height:43px}.brand small{display:none}.toolbar{gap:2px;padding-top:4px}.tool{min-height:40px}.canvas-top{min-height:37px;padding:4px 8px}.subbar{height:25px;min-height:25px}.stage-hint{top:7px;left:7px}.stage-btm{bottom:7px;left:7px;right:7px}}
 @media(min-width:1000px){.workspace{grid-template-columns:78px minmax(0,1fr) 282px}.tool{width:68px}.lens-frame{height:116px}.pad{height:112px}}
 
-/* V1.2: 橫向可視高度修正與滿版畫布模式 */
+/* V1.2.1: 橫向可視高度修正與滿版畫布模式 */
 html,body{overscroll-behavior:none}
 .workspace{grid-template-rows:minmax(0,1fr);overflow:hidden}
 .toolbar,.canvas-column,.inspector{min-height:0}
@@ -52,7 +52,7 @@ html,body{overscroll-behavior:none}
 <div id="bootNotice" role="status" aria-live="polite"><div class="bootPanel"><h2>目前尚未啟動繪圖程式</h2><p>如果此畫面持續顯示，代表目前開啟方式無法執行 JavaScript。iPhone 的 ChatGPT 附件預覽或「檔案」預覽可能只顯示畫面，按鈕無法使用。請改用 Safari 開啟正式的 HTTPS 網址。</p><small>注意：下載 HTML 不等於已部署為網站。</small></div></div>
 <div id="app">
 <header class="topbar">
-<div class="brandmark"><b>三</b></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.2</small></div>
+<div class="brandmark"><b>三</b></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.2.1</small></div>
 <input id="project" class="project-name" aria-label="圖面名稱" value="櫃體 1" placeholder="輸入圖面名稱">
 <div class="top-spacer"></div>
 <button class="top-btn" id="undo" title="復原">↶ <span class="hideSmall">復原</span></button>

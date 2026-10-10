@@ -1,10 +1,6 @@
-# 三川工方｜櫃體立面繪圖 V1.2
+# TODO
 
-網站：https://heaven2935-code.github.io/sanchuan-cabinet-drawing/
-
-## iPhone 滿版使用
-Safari 開啟網站 → 分享 → 加入主畫面 → 打開為網頁 App → 加入。以主畫面圖示啟動，可避免一般 Safari 網址列占用繪圖畫面。
-
-在繪圖應用內點「⛶ 滿版」，會收起右側控制面板與部分標題，擴大畫布；再次點「⛶ 返回」復原。Safari 網址列無法用一般 JavaScript 強制關閉。
-
-備份：加入主畫面之前，建議先在 Safari 匯出 JSON。因為 Safari 和網頁 App 可能不共用本機儲存資料。
+- [x] V1.2.1 修復損壞的主畫面 PNG 圖示並更新快取版本。
+- [x] 驗證 PNG CRC、完整解碼、尺寸與安裝資產連結。
+- [ ] iPhone Safari 開啟 ?v=1.2.1，確認加入主畫面及獨立模式。
+- [ ] 真機確認橫向滿版、觸控移動和 JSON 匯入匯出。

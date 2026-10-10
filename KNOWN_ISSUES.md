@@ -3,3 +3,4 @@
 - Safari 的橫向螢幕方向由 iOS 使用者設備決定，Web App manifest orientation 不保證所有機型鎖定方向。
 - 目前只做 Chromium 模擬尺寸測試，真機 iPhone Safari 還需確認。
 - 本機資料僅儲存在開啟該網站的瀏覽器環境，主畫面 Web App 的儲存空間可能與 Safari 分開；重要圖面請先匯出 JSON。
+- V1.2 的主畫面 PNG 原檔有截斷與 IDAT 校驗錯誤；V1.2.1 已修復。尚未確認此缺陷是否為 iPhone 安裝失敗的唯一原因。
