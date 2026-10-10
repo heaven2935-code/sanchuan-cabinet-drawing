@@ -5,3 +5,5 @@
 - index.html: #displayMode 控制畫布滿版；#installPrompt 指引加入主畫面；syncViewportHeight 校正 iOS 可視高度。
 - scripts/build_icons.py: 可重建主畫面 PNG 圖示（Pillow）。
 - tests/install_assets.py: PNG CRC、解碼、尺寸及主畫面安裝連結驗證。
+
+- logo-02-g01.svg: 02-G01 藍色漸層向量標誌，由 build_icons.py 重建。

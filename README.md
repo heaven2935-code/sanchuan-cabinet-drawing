@@ -1,4 +1,4 @@
-# 三川工方｜櫃體立面繪圖 V1.2.1
+# 三川工方｜櫃體立面繪圖 V1.2.2
 
 網站：https://heaven2935-code.github.io/sanchuan-cabinet-drawing/
 

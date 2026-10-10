@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 270 270" role="img" aria-label="三川工方 02-G01 藍色漸層標誌">
+<defs><linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#174DAA"/><stop offset="1" stop-color="#23BDD0"/></linearGradient></defs>
+<g fill="url(#blue)">
+<polygon points="135,0 152,17 95,74 78,57"/>
+<polygon points="161,26 178,43 121,100 104,83"/>
+<polygon points="187,52 204,69 147,126 130,109"/>
+<polygon points="270,135 253,152 196,95 213,78"/>
+<polygon points="244,161 227,178 170,121 187,104"/>
+<polygon points="218,187 201,204 144,147 161,130"/>
+<polygon points="135,270 118,253 175,196 192,213"/>
+<polygon points="109,244 92,227 149,170 166,187"/>
+<polygon points="83,218 66,201 123,144 140,161"/>
+<polygon points="0,135 17,118 74,175 57,192"/>
+<polygon points="26,109 43,92 100,149 83,166"/>
+<polygon points="52,83 69,66 126,123 109,140"/>
+</g></svg>
