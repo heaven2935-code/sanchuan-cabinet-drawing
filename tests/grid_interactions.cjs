@@ -89,6 +89,7 @@ function drag(x,y,dx,dy,id=2){const p=point(x,y);event('pointerdown',id,p);event
 assert.equal(api.getCells().length,12);
 tap(290,250);tap(870,250);assert.equal(api.getCellSelection().length,2);
 ids.get('mergeCells').click();assert.equal(api.getCells().length,11);
+assert(api.getSnapPoints().some(p=>p.x===580&&p.y===2140),'partial-divider intersection remains available for snapping');
 assert(win.CabinetGrid.lines(api.getCells(),2320,2240).some(l=>l.axis==='x'&&l.value===580&&l.a===500));
 api.undo();assert.equal(JSON.stringify(api.getDoc()),baseline);api.redo();assert.equal(api.getCells().length,11);
 tap(290,250);promptAnswer='3';ids.get('splitColumns').click();assert.equal(api.getCells().length,13);api.undo();

@@ -189,9 +189,9 @@ function screenToWorld(p){return {x:(p.x-view.x)/view.scale,y:(p.y-view.y)/view.
 function eventPosition(e){let r=$('drawing').getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
 function zoom(factor,anchor){const s=canvasSize();anchor=anchor||{x:s.w/2,y:s.h/2};const point=screenToWorld(anchor);view.scale=within(view.scale*factor,.012,5);view.x=anchor.x-point.x*view.scale;view.y=anchor.y-point.y*view.scale;render()}
 function distancePointLine(p,a,b){let dx=b.x-a.x,dy=b.y-a.y,len=dx*dx+dy*dy;if(!len)return Math.hypot(p.x-a.x,p.y-a.y);let t=within(((p.x-a.x)*dx+(p.y-a.y)*dy)/len,0,1);return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy)}
-function pointsForSnap(){let out=[{x:0,y:0},{x:doc.width,y:0},{x:0,y:doc.height},{x:doc.width,y:doc.height}];for(let x of doc.vertical){out.push({x,y:0},{x,y:doc.height});}for(let h of doc.horizontal){out.push({x:h.x1,y:h.y},{x:h.x2,y:h.y});for(let x of [0,...doc.vertical,doc.width])if(x>=h.x1&&x<=h.x2)out.push({x,y:h.y})}for(let s of doc.shapes)out.push({x:s.x1,y:s.y1},{x:s.x2,y:s.y2});return out}
+function pointsForSnap(){let out=getCells().flatMap(c=>[{x:c.x1,y:c.y1},{x:c.x1,y:c.y2},{x:c.x2,y:c.y1},{x:c.x2,y:c.y2}]);for(let shape of doc.shapes)out.push({x:shape.x1,y:shape.y1},{x:shape.x2,y:shape.y2});return out}
 function snapped(p){if(!snap)return {x:roundMm(p.x),y:roundMm(p.y)};let thresh=12/view.scale,nearest=null,best=thresh;for(let q of pointsForSnap()){let d=Math.hypot(p.x-q.x,p.y-q.y);if(d<best){nearest=q;best=d}}if(nearest)return {...nearest};let sx=Math.round(p.x/10)*10,sy=Math.round(p.y/10)*10;let max=9/view.scale;
-const xlines=[0,doc.width,...doc.vertical];let bx=null,dxBest=Math.min(max,35);for(let x of xlines){let dx=Math.abs(x-p.x);if(dx<dxBest){dxBest=dx;bx=x}}
+const xlines=Grid.bounds(getCells(),'x');let bx=null,dxBest=Math.min(max,35);for(let x of xlines){let dx=Math.abs(x-p.x);if(dx<dxBest){dxBest=dx;bx=x}}
 if(bx!==null)sx=bx;let by=null,dyBest=Math.min(max,35);for(let y of [0,doc.height,...doc.horizontal.filter(h=>p.x>=h.x1&&p.x<=h.x2).map(h=>h.y)]){let dy=Math.abs(y-p.y);if(dy<dyBest){dyBest=dy;by=y}}if(by!==null)sy=by;return {x:sx,y:sy}}
 function setCursor(x,y,forceRaw=true){cursor={x:roundMm(within(x,-3000,doc.width+3000)),y:roundMm(within(y,-3000,doc.height+3000))};syncCursor();renderCursor()}
 function getPoint(){return snapped(cursor)}
@@ -474,7 +474,7 @@ function syncViewportHeight(){
 }
 syncViewportHeight();
 load();bind();setInspector(inspectorOpen);updateFields();showMode('cells');syncHistory();initialized=true;$('bootNotice').remove();requestAnimationFrame(()=>{fit();syncCursor()});
-window.__CAD_TEST__={getDoc:()=>structuredClone(doc),setCursor:(x,y)=>snapExactCursor(x,y),setMode:showMode,confirm:()=>confirmAt(getPoint()),undo,redo,addV,addH,applySize:(w,h,d)=>{$('cabW').value=w;$('cabH').value=h;$('cabD').value=d;$('applyCab').click()},selectAt,exportSVGString,render,fit,validateDoc,save,getCells:()=>structuredClone(getCells()),getSelection:()=>structuredClone(selected),getView:()=>({...view}),getCellSelection:()=>[...cellSelection],toggleCellAt,moveGridLine,editCells,mergeCells:()=>editCells('合併儲存格',()=>Grid.merge(getCells(),cellSelection)),splitCells:(axis,count=2)=>editCells('拆分儲存格',()=>Grid.split(getCells(),cellSelection,axis,count)),changeSpan,setInspector};
+window.__CAD_TEST__={getDoc:()=>structuredClone(doc),setCursor:(x,y)=>snapExactCursor(x,y),setMode:showMode,confirm:()=>confirmAt(getPoint()),undo,redo,addV,addH,applySize:(w,h,d)=>{$('cabW').value=w;$('cabH').value=h;$('cabD').value=d;$('applyCab').click()},selectAt,exportSVGString,render,fit,validateDoc,save,getCells:()=>structuredClone(getCells()),getSnapPoints:pointsForSnap,getSelection:()=>structuredClone(selected),getView:()=>({...view}),getCellSelection:()=>[...cellSelection],toggleCellAt,moveGridLine,editCells,mergeCells:()=>editCells('合併儲存格',()=>Grid.merge(getCells(),cellSelection)),splitCells:(axis,count=2)=>editCells('拆分儲存格',()=>Grid.split(getCells(),cellSelection,axis,count)),changeSpan,setInspector};
 })();
 </script>
 </body>
