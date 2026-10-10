@@ -82,7 +82,7 @@ const context = vm.createContext({
 vm.runInContext(fs.readFileSync(path.join(root,'grid.js'),'utf8'),context);
 vm.runInContext(script, context);
 const api=win.__CAD_TEST__,doc=()=>JSON.stringify(api.getDoc()),baseline=doc();
-api.setCursor(290,250);ids.get('cursorSelect').click();assert.equal(api.getCellSelection().length,1);
+ids.get('cursorToggle').click();api.setCursor(290,250);ids.get('cursorSelect').click();assert.equal(api.getCellSelection().length,1);
 ids.get('cursorActions').click();assert(!ids.get('cursorMenu').classList.contains('hidden'));
 query('[data-cursor-tool="cutX"]')[0].click();assert.equal(api.getCursorDraft().type,'cut');assert.equal(doc(),baseline);
 assert(!ids.get('cursorDock').classList.contains('hidden'));assert(!ids.get('cursorFinish').disabled);
@@ -160,4 +160,15 @@ const commonBase=doc(),commonView=api.getView();api.setCursor(100,100);api.start
 ids.get('undo').click();assert.equal(doc(),commonBase);assert.deepEqual(api.getView(),commonView);ids.get('redo').click();assert.equal(doc(),commonDrawn);
 api.setCursor(700,800);ids.get('cursorSelect').click();assert.equal(api.getSelection().kind,'shape');assert.equal(api.getSelection().idx,2);ids.get('deleteTool').click();assert.equal(doc(),commonBase);assert.deepEqual(api.getView(),commonView);
 ids.get('undo').click();assert.equal(doc(),commonDrawn);ids.get('commonPan').click();assert(ids.get('commonPan').classList.contains('active'));assert.deepEqual(api.getView(),commonView);
-console.log('PASS: bottom common actions undo/redo/delete/select/pan, cursor editing and viewport preservation');
+// Direct creation stays direct; Add never opens the cursor controller or resets view.
+api.cancelCursorAction();if(ids.get('cursorToggle').attrs['aria-expanded']==='true')ids.get('cursorToggle').click();api.setMode('cells');const directView=api.getView();
+ids.get('cursorActions').click();assert.equal(ids.get('cursorToggle').attrs['aria-expanded'],'false');query('[data-cursor-tool="line"]')[0].click();assert.equal(api.getCursorDraft(),null);
+const beforeDirect=doc();api.setCursor(900,1500);api.confirm();api.setCursor(1000,1700);api.confirm();assert.equal(api.getDoc().shapes.at(-1).type,'line');api.undo();assert.equal(doc(),beforeDirect);assert.deepEqual(api.getView(),directView);
+// Selection-specific tools appear only for the selected type; local partition is previewed.
+api.setMode('cells');api.setCursor(290,250);api.confirm();assert(!ids.get('contextCutX').classList.contains('hidden'));assert(ids.get('contextStart').classList.contains('hidden'));
+const beforeContext=doc();ids.get('contextCutX').click();assert.equal(api.getCursorDraft().type,'cut');assert(ids.get('cellActions').classList.contains('hidden'));assert.equal(doc(),beforeContext);ids.get('cursorCancel').click();assert.equal(doc(),beforeContext);
+api.selectAt({x:250,y:275});assert(!ids.get('contextStart').classList.contains('hidden'));assert(ids.get('contextCutX').classList.contains('hidden'));ids.get('contextStart').click();assert.equal(api.getCursorDraft().type,'endpoint');api.cancelCursorAction();
+// Text edits use the inline field and one reversible change, without a popup.
+api.setCursor(900,1800);api.startCursorTool('text');api.finishCursorAction();api.selectAt({x:900,y:1800});const beforeText=doc();assert(!ids.get('contextTextInput').classList.contains('hidden'));ids.get('contextTextInput').value='層板';ids.get('contextTextApply').click();assert.equal(api.getDoc().shapes.at(-1).text,'層板');api.undo();assert.equal(doc(),beforeText);
+const settingsView=api.getView();api.setInspector(true);api.setInspector(false);assert.deepEqual(api.getView(),settingsView);assert(ids.get('cellActions').classList.contains('hidden'));
+console.log('PASS: unified direct/cursor workflows, contextual tools, inline text, settings, undo/redo and preserved viewport');

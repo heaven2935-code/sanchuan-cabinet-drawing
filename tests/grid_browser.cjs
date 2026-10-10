@@ -37,7 +37,7 @@ async function run(){
  await page.locator('#undo').click();assert.equal(await api(()=>__CAD_TEST__.getCells().length),12);
  await page.locator('#redo').click();assert.equal(await api(()=>__CAD_TEST__.getCells().length),11);
  // Split a selected merged cell and undo.
- let p=await screen(290,250);await page.touchscreen.tap(p.x,p.y);answers.push('3');await page.locator('#splitColumns').click();assert.equal(await api(()=>__CAD_TEST__.getCells().length),13);
+ let p=await screen(290,250);await page.touchscreen.tap(p.x,p.y);await page.locator('#splitCount').fill('3');await page.locator('#splitColumns').click();assert.equal(await api(()=>__CAD_TEST__.getCells().length),13);
  await page.locator('#undo').click();
  // Header click edits width to 620 mm; other rows follow the same coordinate.
  let header=page.locator('[data-grid-axis="x"][data-grid-start="0"]').first();await header.click();await page.locator('#dimensionInput').fill('620');await page.locator('#applyDimension').click();
