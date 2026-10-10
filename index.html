@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川工方繪圖">
-<link rel="manifest" href="./manifest.webmanifest?v=1.5.0">
-<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.5.0">
-<title>三川工方｜精準櫃體立面繪圖 V1.5.0</title>
+<link rel="manifest" href="./manifest.webmanifest?v=1.5.1">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.5.1">
+<title>三川工方｜精準櫃體立面繪圖 V1.5.1</title>
 <style>
 :root{--night:#222a30;--night2:#2d353d;--stone:#eee9e2;--paper:#fbfaf7;--clay:#ab624c;--clayDark:#824735;--ink:#25313b;--line:#d6d1ca;--aqua:#418c87;--muted:#8b9298;--shadow:0 8px 30px #17252b18}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;color:var(--ink);background:var(--night)}button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.36;cursor:default}button:focus-visible,input:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}input,select{min-width:0}input[type=number]{font-variant-numeric:tabular-nums}
@@ -19,7 +19,7 @@
 @media(max-height:480px){.inspector{padding:6px}.section{margin-bottom:6px}.section-head{padding:6px 9px}.section-body{padding:7px}.topbar{height:43px;min-height:43px}.brand small{display:none}.toolbar{gap:2px;padding-top:4px}.tool{min-height:40px}.canvas-top{min-height:37px;padding:4px 8px}.subbar{height:25px;min-height:25px}.stage-hint{top:7px;left:7px}.stage-btm{bottom:7px;left:7px;right:7px}}
 @media(min-width:1000px){.workspace{grid-template-columns:78px minmax(0,1fr) 282px}.tool{width:68px}.lens-frame{height:116px}.pad{height:112px}}
 
-/* V1.5.0: 橫向可視高度修正與滿版畫布模式 */
+/* V1.5.1: 橫向可視高度修正與滿版畫布模式 */
 html,body{overscroll-behavior:none}
 .workspace{grid-template-rows:minmax(0,1fr);overflow:hidden}
 .toolbar,.canvas-column,.inspector{min-height:0}
@@ -122,13 +122,26 @@ html,body{overscroll-behavior:none}
 @media(max-height:480px){.cursor-dock,.cursor-dock.dock-open{bottom:116px}.cursor-toggle{bottom:128px}.stage-btm{bottom:118px}}
 
 #app.focus-mode #toggleInspector{display:inline-block}
+
+/* Restore the original dark tool buttons without restoring the side rail. */
+.common-actions{background:#303a42;border-color:#50606a;border-radius:10px;gap:4px;padding:4px}
+.common-actions button,.common-actions .common-undo,.common-actions .common-delete{height:48px;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:3px 1px;border:1px solid transparent;border-radius:9px;background:transparent;color:#d6e0e3;font-size:10px;font-weight:400;line-height:1.15}
+.common-actions button i{font-style:normal;font-size:20px;line-height:1;display:block}.common-actions button span{display:block}
+.common-actions button.active,.common-actions button[aria-expanded="true"],.common-actions button:active:not(:disabled){background:#bc725737;color:#f4c4b1;border-color:#ce8b74}
+.common-actions button:disabled{opacity:.35}.common-actions button:focus-visible{outline:2px solid #ce8b74;outline-offset:1px}
+.cell-actions,#app.focus-mode .cell-actions{bottom:70px;background:#303a42;border-color:#50606a;color:#d6e0e3}.cell-actions span,.cell-actions label{color:#d6e0e3}.cell-actions button{background:transparent;color:#d6e0e3;border-color:#64727a;border-radius:8px}.cell-actions button:active:not(:disabled){background:#bc725737;color:#f4c4b1;border-color:#ce8b74}
+.cursor-menu{background:#303a42f5;border-color:#50606a}.cursor-menu-title{color:#d6e0e3}.cursor-menu-title button{color:#d6e0e3}.cursor-menu-actions button{background:transparent;color:#d6e0e3;border-color:#64727a;border-radius:9px}.cursor-menu-actions button:active:not(:disabled){background:#bc725737;color:#f4c4b1;border-color:#ce8b74}
+.cursor-dock-buttons button{background:#303a42f2;color:#d6e0e3;border-color:#64727a;border-radius:9px}.cursor-dock-buttons button.primary{background:#bc725737;color:#f4c4b1;border-color:#ce8b74}
+.cursor-toggle{bottom:124px}.cursor-dock,.cursor-dock.dock-open{bottom:172px}.stage-btm{bottom:126px}
+@media(max-height:480px){.cursor-dock,.cursor-dock.dock-open{bottom:124px}.cursor-toggle{bottom:136px}}
+
 </style>
 </head>
 <body>
 <div id="bootNotice" role="status" aria-live="polite"><div class="bootPanel"><h2>目前尚未啟動繪圖程式</h2><p>如果此畫面持續顯示，代表目前開啟方式無法執行 JavaScript。iPhone 的 ChatGPT 附件預覽或「檔案」預覽可能只顯示畫面，按鈕無法使用。請改用 Safari 開啟正式的 HTTPS 網址。</p><small>注意：下載 HTML 不等於已部署為網站。</small></div></div>
 <div id="app">
 <header class="topbar">
-<div class="brandmark"><img src="./logo-02-g01.svg?v=1.5.0" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.5.0</small></div>
+<div class="brandmark"><img src="./logo-02-g01.svg?v=1.5.1" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.5.1</small></div>
 <input id="project" class="project-name" aria-label="圖面名稱" value="櫃體 1" placeholder="輸入圖面名稱">
 <div class="top-spacer"></div>
 
@@ -178,7 +191,7 @@ html,body{overscroll-behavior:none}
 <div class="cursor-ring"><button id="cursorPad" class="cursor-pad" aria-label="按住圓心滑動，移動游標"></button></div>
 <div id="cursorDraftFields" class="cursor-edit-row hidden"><label id="cursorDraftLabel" for="cursorDraftValue">位置 mm</label><button id="cursorMinus" class="nudge-btn" aria-label="預覽位置減少">−</button><input id="cursorDraftValue" type="number" step="1"><input id="cursorDraftText" class="hidden" type="text" maxlength="60" aria-label="文字標記內容" placeholder="輸入標記文字"><input id="cursorEndpointX" class="hidden" type="number" step="1" aria-label="端點 X 座標（毫米）"><input id="cursorEndpointY" class="hidden" type="number" step="1" aria-label="端點 Y 座標（毫米）"><button id="cursorPlus" class="nudge-btn" aria-label="預覽位置增加">＋</button></div>
 <div class="cursor-dock-buttons"><button id="cursorCancel">取消</button><button id="cursorFinish" class="primary" disabled>完成</button></div>
-</section><nav id="commonActions" class="common-actions" aria-label="常用編輯動作"><button id="undo" class="common-undo" title="復原上一個已完成動作" aria-label="復原上一個動作">↶ 復原</button><button id="redo" title="重做" aria-label="重做">↷ 重做</button><button id="cursorSelect">選取</button><button id="commonPan" data-mode="pan" title="拖動畫布平移視角">✥ 平移</button><button id="deleteTool" class="common-delete" title="刪除選取項目">⌫ 刪除</button><button id="cursorActions" aria-controls="cursorMenu" aria-expanded="false">＋ 新增</button></nav><div id="toast" class="toast"></div>
+</section><nav id="commonActions" class="common-actions" aria-label="常用編輯動作"><button id="undo" class="common-undo" title="復原上一個已完成動作" aria-label="復原上一個動作"><i aria-hidden="true">↶</i><span>復原</span></button><button id="redo" title="重做" aria-label="重做"><i aria-hidden="true">↷</i><span>重做</span></button><button id="cursorSelect"><i aria-hidden="true">⌖</i><span id="cursorSelectLabel">選取</span></button><button id="commonPan" data-mode="pan" title="拖動畫布平移視角"><i aria-hidden="true">✥</i><span>平移</span></button><button id="deleteTool" class="common-delete" title="刪除選取項目"><i aria-hidden="true">⌫</i><span>刪除</span></button><button id="cursorActions" aria-controls="cursorMenu" aria-expanded="false"><i aria-hidden="true">＋</i><span>新增</span></button></nav><div id="toast" class="toast"></div>
 </div>
 
 <div class="subbar"><span id="status">已就緒 · 尺寸單位 mm</span><span id="dirtyStatus">本機自動暫存</span></div>
@@ -213,7 +226,7 @@ html,body{overscroll-behavior:none}
 <div><h2>隱藏 Safari 網址列</h2><p>目前已放大畫布。若要進一步隱藏 Safari 網址列，請從 Safari 的<strong>分享 → 加入主畫面</strong>，開啟<strong>「打開為網頁 App」</strong>，再由主畫面圖示啟動。</p><p>一般網頁無法自行關閉 Safari 的網址列。</p><button id="closeInstallPrompt">知道了</button></div>
 </div>
 </div>
-<script src="./grid.js?v=1.5.0"></script>
+<script src="./grid.js?v=1.5.1"></script>
 <script>
 (()=>{
 'use strict';
@@ -343,7 +356,7 @@ function syncCursorDock(){
  syncCellActions();
  $('cursorDockStatus').textContent=d?d.type==='cut'?`${d.axis==='x'?'直':'橫'}分隔預覽 · 完成後固定`:d.type==='draw'?`${({line:'直線',rect:'矩形',ellipse:'圓形',dimension:'尺寸標註',text:'文字標記'})[d.tool]}預覽 · 完成後固定`:d.type==='endpoint'?`${d.endpoint==='start'?'起點':'終點'}預覽 · 完成後固定`:'移動預覽 · 完成後固定':`游標 X ${nice(p.x)} · Y ${nice(p.y)} mm`;
  $('cursorFinish').disabled=!d&&!pending;
- $('cursorSelect').textContent=pending?'定位':'選取';$('cursorSelect').classList.toggle('active',mode==='cells'||mode==='select'||!!selected||cellSelection.length>0);
+ $('cursorSelectLabel').textContent=pending?'定位':'選取';$('cursorSelect').classList.toggle('active',mode==='cells'||mode==='select'||!!selected||cellSelection.length>0);
  const numeric=d&&(d.type==='cut'||d.type==='moveLine'),text=d?.type==='draw'&&d.tool==='text',endpoint=d?.type==='endpoint';
  $('cursorDraftFields').classList.toggle('hidden',!numeric&&!text&&!endpoint);
  $('cursorDraftValue').classList.toggle('hidden',!numeric);$('cursorDraftText').classList.toggle('hidden',!text);for(const id of ['cursorEndpointX','cursorEndpointY'])$(id).classList.toggle('hidden',!endpoint);
