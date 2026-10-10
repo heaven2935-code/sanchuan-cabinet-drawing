@@ -89,13 +89,17 @@ function event(type,id,p,target=drawing){drawing.dispatch(type,{target,pointerId
 function tap(x,y){const p=point(x,y);event('pointerdown',1,p);event('pointerup',1,p)}
 function drag(x,y,dx,dy,id=2){const p=point(x,y);event('pointerdown',id,p);event('pointermove',id,{x:p.x+dx,y:p.y+dy});event('pointerup',id,{x:p.x+dx,y:p.y+dy})}
 assert.equal(api.getCells().length,12);
-tap(290,250);tap(870,250);assert.equal(api.getCellSelection().length,2);
-ids.get('mergeCells').click();assert.equal(api.getCells().length,11);
-assert(api.getSnapPoints().some(p=>p.x===580&&p.y===2140),'partial-divider intersection remains available for snapping');
-assert(win.CabinetGrid.lines(api.getCells(),2320,2240).some(l=>l.axis==='x'&&l.value===580&&l.a===500));
-api.undo();assert.equal(JSON.stringify(api.getDoc()),baseline);api.redo();assert.equal(api.getCells().length,11);
-tap(290,250);ids.get('splitCount').value='3';ids.get('splitColumns').click();assert.equal(api.getCells().length,13);api.undo();
-api.changeSpan('x',0,580);ids.get('dimensionInput').value='3';ids.get('applyDimension').click();context.document.activeElement=null;assert(api.getCells().some(c=>c.x2===3));api.undo();
+tap(290,250);tap(870,250);assert.equal(api.getCellSelection().length,0);assert(ids.get('cellActions').classList.contains('hidden'));assert(!drawing.innerHTML.includes('grid-header'));
+function dimension(axis,start,end,value,position=null){
+ const attrs={'data-grid-axis':axis,'data-grid-start':String(start),'data-grid-end':String(end)};if(position!==null)attrs['data-dimension-local']=String(position);
+ const target=new Element('g',attrs);target.closest=selector=>selector==='[data-grid-axis]'?target:null;
+ const q=point(250,250);event('pointerdown',50,q,target);event('pointerup',50,q,target);assert(!ids.get('dimensionEditor').classList.contains('hidden'));ids.get('dimensionInput').value=String(value);ids.get('applyDimension').click();context.document.activeElement=null;
+}
+const dimensionsView=api.getView();dimension('x',0,2320,2500);assert.equal(api.getDoc().width,2500);assert.deepEqual(api.getView(),dimensionsView);api.undo();assert.equal(JSON.stringify(api.getDoc()),baseline);
+dimension('y',0,2240,2400);assert.equal(api.getDoc().height,2400);api.undo();assert.equal(JSON.stringify(api.getDoc()),baseline);
+dimension('x',0,580,600,250);assert.equal(api.getDoc().width,2320);assert(api.getCells().some(c=>c.x2===600&&c.y2===500));assert(api.getCells().some(c=>c.x2===580&&c.y1===500));api.undo();assert.equal(JSON.stringify(api.getDoc()),baseline);
+dimension('x',1740,2320,600,1200);assert.equal(api.getDoc().width,2320);assert(api.getCells().some(c=>c.x1===1720&&c.x2===2320&&c.y1===500));api.undo();assert.equal(JSON.stringify(api.getDoc()),baseline);
+dimension('x',0,580,5000,250);assert.equal(JSON.stringify(api.getDoc()),baseline,'invalid local dimension must not mutate geometry');
 let prior=JSON.stringify(api.getDoc());drag(1160,1200,30,0);assert.notEqual(JSON.stringify(api.getDoc()),prior);assert(api.validateDoc(api.getDoc()));api.undo();assert.equal(JSON.stringify(api.getDoc()),prior);
 tap(1160,1200);assert.equal(api.getSelection().kind,'gridLine');ids.get('linePosition').value='1201';ids.get('applyLinePosition').click();assert(api.getCells().some(c=>c.x1===1201));api.undo();
 // Cancellation rolls geometry back and does not add an undo entry.
@@ -105,10 +109,10 @@ event('pointerdown',4,p);event('pointermove',4,{x:p.x+20,y:p.y});event('pointerd
 api.setMode('line');api.setCursor(100,100);api.confirm();api.setCursor(400,450);api.confirm();assert.equal(api.getDoc().shapes.at(-1).x2,400);
 api.setMode('select');drag(250,275,30,20);assert.notEqual(api.getDoc().shapes.at(-1).x2,400);api.undo();assert.equal(api.getDoc().shapes.at(-1).x2,400);
 api.applySize(4640,4480,600);assert(api.validateDoc(api.getDoc()));assert.equal(api.getDoc().shapes.at(-1).x2,800);
-api.save();const saved=JSON.parse(storage.get('sanchuan_cabinet_cad_v1'));assert(saved.gridCells);assert(api.validateDoc(saved));
+api.save();const saved=JSON.parse(storage.get('sanchuan_cabinet_cad_v1'));assert.deepEqual(saved,api.getDoc());assert(api.validateDoc(saved));
 const svg=api.exportSVGString();assert(!svg.includes('data-grid-axis'));assert(!svg.includes('#418c8733'));
 ids.get('toggleInspector').click();assert(!ids.get('app').classList.contains('panel-closed'));ids.get('closeInspector').click();assert(ids.get('app').classList.contains('panel-closed'));
-console.log('PASS: real application handlers for cell taps, local merge/split, resize, drag, cancellation, pinch, shapes, undo/redo, scaling, save and clean export');
+console.log('PASS: direct overall/local dimension labels, no spreadsheet selection, line drag, endpoints, pinch, undo/redo, saved geometry and clean export');
 const oldDoc={version:1,name:'舊圖面相容測試',width:1200,height:2000,depth:600,vertical:[400,800],horizontal:[{x1:0,x2:400,y:800}],shapes:[{type:'line',x1:100,y1:100,x2:200,y2:200,text:'',color:'#ab624c'}]};
 storage.set('sanchuan_cabinet_cad_v1',JSON.stringify(oldDoc));vm.runInContext(script,context);
 let loaded=win.__CAD_TEST__;assert.equal(loaded.getDoc().name,oldDoc.name);assert.equal(loaded.getCells().length,4);assert.equal(loaded.getDoc().shapes[0].x2,200);
