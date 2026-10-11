@@ -7,188 +7,31 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川工方繪圖">
-<link rel="manifest" href="./manifest.webmanifest?v=1.8.0">
-<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.8.0">
-<title>三川工方｜精準櫃體立面繪圖 V1.8.0</title>
-<style>
-:root{--night:#222a30;--night2:#2d353d;--stone:#eee9e2;--paper:#fbfaf7;--clay:#ab624c;--clayDark:#824735;--ink:#25313b;--line:#d6d1ca;--aqua:#418c87;--muted:#8b9298;--shadow:0 8px 30px #17252b18}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;color:var(--ink);background:var(--night)}button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.36;cursor:default}button:focus-visible,input:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}input,select{min-width:0}input[type=number]{font-variant-numeric:tabular-nums}
-#app{height:100vh;height:100dvh;height:var(--app-height,100dvh);display:flex;flex-direction:column;overflow:hidden}.topbar{height:53px;min-height:53px;display:flex;align-items:center;gap:9px;background:var(--night);color:#f4f3ed;padding:0 max(12px,env(safe-area-inset-right)) 0 max(12px,env(safe-area-inset-left));border-bottom:1px solid #ffffff16}.brandmark{width:31px;height:31px;display:grid;place-items:center;margin-right:5px;flex:none}.brandmark img{display:block;width:100%;height:100%;object-fit:contain}.brand{display:flex;flex-direction:column;gap:1px;min-width:116px}.brand strong{font-size:14px;letter-spacing:.13em;white-space:nowrap}.brand small{color:#adb6ba;font-size:9px;letter-spacing:.11em}.project-name{width:155px;max-width:17vw;height:32px;border-radius:6px;border:1px solid #586168;background:#333c44;color:#fff;padding:0 9px;font-size:12px}.top-spacer{flex:1}.top-btn{height:31px;min-width:34px;padding:0 9px;border:1px solid #606c73;background:#343e45;border-radius:7px;color:#f2f5f5;font-size:12px;white-space:nowrap}.top-btn.primary{background:var(--clay);border-color:#c47c64;color:white}.top-btn:hover,.tool:hover{filter:brightness(1.1)}.top-btn span{font-size:16px}.workspace{flex:1;min-height:0;display:grid;grid-template-columns:70px minmax(0,1fr) 246px}.toolbar{background:#303a42;border-right:1px solid #50606a;overflow:auto;display:flex;flex-direction:column;gap:5px;align-items:center;padding:9px 4px calc(14px + env(safe-area-inset-bottom))}.tool{border:1px solid transparent;background:transparent;color:#d6e0e3;width:61px;min-height:49px;border-radius:9px;padding:5px 2px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:none;font-size:11px}.tool i{font-style:normal;font-size:20px;line-height:1}.tool.active{background:#bc725737;color:#f4c4b1;border-color:#ce8b74}.tool-rule{height:1px;width:40px;background:#65717a;margin:4px 0}.canvas-column{min-width:0;display:flex;flex-direction:column;background:#e4dfd7}.canvas-top{display:flex;align-items:center;gap:6px;padding:7px 9px;min-height:43px;background:#f0ede7;border-bottom:1px solid #d9d3cb}.pill{padding:5px 9px;border:1px solid #d2c8be;background:#fbfaf7;color:#4f5455;font-size:11px;border-radius:7px;white-space:nowrap}.pill.active{color:#994d39;border-color:#c78a74;background:#fff2ec}.canvas-top .spacer{flex:1}.canvas-top .mini{padding:5px 9px;min-width:33px;border:1px solid #c8c2b8;color:#5c5551;border-radius:7px;background:#fff;font-weight:700}.stage-wrap{min-height:0;flex:1;position:relative;overflow:hidden;background:var(--paper)}#drawing{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair;user-select:none}.stage-hint{position:absolute;top:12px;left:12px;border-radius:7px;background:#fffdf7eb;border:1px solid #dfd7ce;padding:7px 10px;color:#79716e;font-size:10px;pointer-events:none;box-shadow:0 2px 12px #0000000a;max-width:64%;line-height:1.45}.stage-hint strong{color:#98614e;font-size:11px}.stage-btm{position:absolute;left:12px;right:12px;bottom:12px;display:flex;align-items:end;justify-content:space-between;pointer-events:none;gap:8px}.coordinate-chip{background:#29343be9;color:#f8f8f5;border-radius:8px;padding:7px 11px;box-shadow:var(--shadow);font-size:11px;font-variant-numeric:tabular-nums;line-height:1.6;pointer-events:none}.coordinate-chip b{color:#f0b49e;font-size:13px}.zoom-controls{pointer-events:auto;display:flex;gap:4px;align-items:center;background:#fffffff0;padding:5px;border-radius:9px;border:1px solid #ddd2c8;box-shadow:var(--shadow)}.zoom-controls button{height:30px;width:30px;border:0;background:#ece6df;border-radius:5px;color:#67584f;font-weight:700}.zoom-controls small{font-size:11px;color:#685d55;min-width:35px;text-align:center}.subbar{height:29px;min-height:29px;background:#eee8df;border-top:1px solid #d3c9bd;display:flex;align-items:center;justify-content:space-between;padding:0 12px;color:#71665e;font-size:10px;gap:5px}.subbar #status{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}.subbar #dirtyStatus{white-space:nowrap;color:#98614e}
-.inspector{background:#f2f0eb;border-left:1px solid #d2c9bf;min-width:0;overflow:auto;overscroll-behavior:contain;padding:11px;padding-bottom:calc(20px + env(safe-area-inset-bottom));scrollbar-width:thin}.section{border:1px solid #ddd4ca;background:#fffdf9;border-radius:11px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px #5c4d3807}.section-head{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-bottom:1px solid #eee8e0;font-size:12px;font-weight:700}.section-head small{font-size:10px;color:#aa7160;font-weight:500}.section-body{padding:10px}.field-row{display:flex;gap:6px}.field{min-width:0;flex:1}.field label{display:block;color:#797c79;font-size:10px;margin:0 0 4px}.field input,.field select,.wide-input{height:31px;width:100%;border:1px solid #d9d4ce;border-radius:6px;background:#fff;color:#2f373a;padding:0 7px;font-size:12px}.field input:focus{border-color:var(--aqua)}.unit{font-size:9px;color:#a59d94;padding-top:5px}.action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:9px}.action{border-radius:7px;border:1px solid #cabfb6;background:#f9f7f3;color:#745c50;min-height:31px;font-size:11px;padding:5px 5px}.action.fill{background:var(--clay);border-color:var(--clay);color:white;font-weight:700}.action.green{background:#deede8;border-color:#9dbab1;color:#366b64}.action:active,.mini:active{transform:scale(.98)}.cursor-coords{display:flex;gap:8px;justify-content:space-around;padding:0 0 9px}.cursor-coords .field input{height:33px;font-weight:700;font-size:14px;text-align:center;color:#974c36}.lens-frame{background:#fcfbf7;border:1px solid #e1dacf;border-radius:7px;height:94px;position:relative;overflow:hidden;margin-bottom:8px}.lens-frame svg{width:100%;height:100%;display:block}.lens-label{position:absolute;top:4px;left:5px;font-size:9px;color:#b38472;background:#fff8f1e6;padding:2px 5px;border-radius:4px;pointer-events:none}.pad{height:95px;touch-action:none;user-select:none;border-radius:9px;position:relative;overflow:hidden;border:1px solid #b9a9a0;background:radial-gradient(circle at center,#e6f0ee 0,#e3e9e7 42%,#e2e4e1 100%);cursor:grab}.pad:active{cursor:grabbing}.pad::before{content:"";position:absolute;inset:14px;background:linear-gradient(90deg,transparent calc(50% - .5px),#9fada9 calc(50% - .5px),#9fada9 calc(50% + .5px),transparent calc(50% + .5px)),linear-gradient(transparent calc(50% - .5px),#9fada9 calc(50% - .5px),#9fada9 calc(50% + .5px),transparent calc(50% + .5px));opacity:.5;border:1px dashed #bacbc7;border-radius:50%}.pad::after{content:"✛";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:18px;color:#678a80}.pad small{position:absolute;bottom:6px;left:0;width:100%;text-align:center;color:#607b74;font-size:10px;letter-spacing:.03em}.confirm-btn{width:100%;height:38px;border:0;border-radius:8px;background:var(--aqua);color:#fff;font-weight:700;font-size:13px;margin-top:7px}.nudge{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:29px 29px 29px;gap:3px;margin:8px 0;max-width:164px;margin-left:auto;margin-right:auto}.nudge button{border:1px solid #d2c6bb;background:#fff;border-radius:6px;color:#866251;font-size:14px;font-weight:700}.nudge .mid{font-size:9px;color:#79716d;background:#eae4db}.step-row{display:flex;align-items:center;gap:5px;margin-bottom:7px}.step-row button{flex:1;min-height:26px;border:1px solid #cabfb6;border-radius:5px;background:#fff;font-size:11px;color:#7b6458}.step-row button.active{background:#f2d9cc;border-color:#bc816d;color:#924c37;font-weight:700}.muted-note{font-size:10px;color:#92877d;line-height:1.5;margin:7px 0 0}.selected-text{font-size:11px;color:#60706c;min-height:17px}.toast{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);background:#26343de9;color:#fff;padding:9px 14px;border-radius:8px;max-width:80%;font-size:12px;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap;z-index:80}.toast.show{opacity:1}.hidden{display:none!important}.orientation-tip{display:none}
-@media(max-width:720px) and (orientation:portrait){.topbar{height:48px;min-height:48px;gap:6px}.brand{min-width:74px}.brand strong{font-size:11px}.brand small{font-size:8px}.brandmark{width:24px;height:24px}.project-name{width:82px;max-width:22vw;font-size:10px}.top-btn{min-width:28px;padding:0 5px;font-size:11px}.top-btn.label-big{font-size:0}.top-btn.label-big::first-letter{font-size:14px}.workspace{grid-template-columns:53px minmax(0,1fr) 136px}.toolbar{padding:5px 3px}.tool{width:45px;min-height:44px;font-size:10px}.tool i{font-size:18px}.inspector{padding:5px}.section-head{padding:7px 6px;font-size:10px}.section-body{padding:6px}.field label{font-size:9px}.field input{font-size:11px;padding:0 3px;height:29px}.action-grid{gap:3px}.action{font-size:10px}.pad{height:82px}.canvas-top{padding:4px;gap:3px;min-height:36px;overflow-x:auto}.pill{padding:5px;font-size:10px}.canvas-top .mini{padding:4px 6px}.lens-frame{height:74px}.coordinate-chip{padding:5px 6px;font-size:9px}.stage-hint{font-size:9px;max-width:75%}.subbar{font-size:9px}.orientation-tip{display:block;position:absolute;top:5px;left:50%;transform:translateX(-50%);font-size:9px;color:#987260;pointer-events:none}}
-@media(max-height:480px){.inspector{padding:6px}.section{margin-bottom:6px}.section-head{padding:6px 9px}.section-body{padding:7px}.topbar{height:43px;min-height:43px}.brand small{display:none}.toolbar{gap:2px;padding-top:4px}.tool{min-height:40px}.canvas-top{min-height:37px;padding:4px 8px}.subbar{height:25px;min-height:25px}.stage-hint{top:7px;left:7px}.stage-btm{bottom:7px;left:7px;right:7px}}
-@media(min-width:1000px){.workspace{grid-template-columns:78px minmax(0,1fr) 282px}.tool{width:68px}.lens-frame{height:116px}.pad{height:112px}}
-
-/* V1.8.0: 橫向可視高度修正與滿版畫布模式 */
-html,body{overscroll-behavior:none}
-.workspace{grid-template-rows:minmax(0,1fr);overflow:hidden}
-.toolbar,.canvas-column,.inspector{min-height:0}
-#app{width:100%;max-width:100%;position:relative}
-#app.focus-mode .workspace{grid-template-columns:56px minmax(0,1fr)!important}
-#app.focus-mode .inspector{display:none!important}
-#app.focus-mode .brandmark,#app.focus-mode .brand,#app.focus-mode .project-name{display:none!important}
-#app.focus-mode .topbar{height:35px;min-height:35px;padding-top:1px;padding-bottom:1px}
-#app.focus-mode .topbar .top-spacer{flex:1}
-#app.focus-mode .top-btn{height:29px}
-#app.focus-mode .toolbar{gap:1px;padding:3px 2px max(4px,env(safe-area-inset-bottom))}
-#app.focus-mode .tool{min-height:39px;width:51px;font-size:10px;padding:3px 1px}
-#app.focus-mode .tool i{font-size:16px}
-#app.focus-mode .tool-rule{margin:2px 0}
-#app.focus-mode .canvas-top{min-height:32px;padding:3px 8px}
-#app.focus-mode #toggleInspector{display:none}
-#app.focus-mode .stage-hint{display:none}
-#app.focus-mode .subbar{height:22px;min-height:22px}
-.install-prompt{position:fixed;inset:0;display:grid;place-items:center;padding:18px;background:#0f1820b8;z-index:500}
-.install-prompt>div{width:min(410px,94vw);background:#fffdf9;border-radius:14px;padding:17px;color:#27343b;box-shadow:0 15px 45px #0005}
-.install-prompt h2{font-size:16px;margin:0 0 8px}
-.install-prompt p{font-size:13px;line-height:1.65;margin:8px 0}
-.install-prompt button{display:block;margin-left:auto;padding:8px 18px;background:#ab624c;border:0;color:white;border-radius:7px}
-@media(max-height:400px){.topbar{height:38px;min-height:38px}.canvas-top{min-height:33px}.stage-hint{max-width:54%;padding:4px 6px}.subbar{height:22px;min-height:22px}}
-
-#bootNotice{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#202c33ed;color:#fff;padding:24px}#bootNotice .bootPanel{max-width:420px;background:#fff;color:#344047;border-radius:16px;padding:24px;line-height:1.85;box-shadow:0 15px 55px #0006}#bootNotice h2{font-size:18px;margin:0 0 8px}#bootNotice p{font-size:14px;margin:0}#bootNotice small{display:block;margin-top:12px;color:#95624e}
-/* V1.3: one safe-area container protects every drawing control. */
-:root{--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px)}
-#app{padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left)}
-.topbar{padding:0 10px;flex-shrink:0;min-width:0}
-.toolbar{padding-bottom:10px}.inspector{padding-bottom:16px}
-.workspace{position:relative}.panel-closed .workspace{grid-template-columns:70px minmax(0,1fr)}.panel-closed .inspector{display:none}
-.inspector-heading{position:sticky;top:-11px;display:flex;justify-content:space-between;align-items:center;gap:8px;background:#f2f0eb;z-index:2;padding:6px 0 10px;font-size:12px;font-weight:700}.inspector-heading button{border:1px solid #cabfb6;border-radius:6px;padding:6px 10px;background:white;color:var(--ink)}
-.cell-actions{display:flex;align-items:center;gap:5px;overflow-x:auto;flex-shrink:0;min-height:44px;padding:5px 8px;background:#e9f1ee;border-bottom:1px solid #cbd9d4;scrollbar-width:thin}
-.cell-actions button{border:1px solid #a9bdb7;border-radius:6px;background:white;color:#376b65;padding:7px 9px;white-space:nowrap;font-size:11px;min-height:32px}.cell-actions button:disabled{opacity:.42}.cell-actions span{white-space:nowrap;font-size:11px;color:#376b65}.cell-actions input{width:80px;min-width:80px;height:32px;border:1px solid #a9bdb7;border-radius:5px;padding:4px;font-size:12px}.cell-actions .selection-size{margin-right:3px}
-.cells-mode .stage-hint{display:none}.grid-header{cursor:pointer}.grid-handle{cursor:col-resize}.grid-row-handle{cursor:row-resize}.grid-caption{pointer-events:none;user-select:none}
-.canvas-top{overflow-x:auto;flex-shrink:0}.canvas-top .mini{white-space:nowrap}.stage-hint{max-width:70%;font-size:10px}.orientation-tip{display:none!important}
-@media(max-width:720px) and (orientation:portrait){
- .topbar{height:auto;min-height:76px;display:grid;grid-template-columns:24px minmax(0,1fr) repeat(5,auto);gap:5px;padding:6px 8px;align-content:center}
- .brand{grid-column:2/-1;min-width:0;display:flex;flex-direction:row;align-items:baseline;gap:7px}.brand strong{font-size:13px}.brand small{font-size:9px}.brandmark{margin:0}.top-spacer{display:none}
- .project-name{grid-column:1/3;width:100%;max-width:none;font-size:12px;height:32px}.top-btn{height:32px;min-width:30px;padding:0 6px;font-size:11px}.top-btn .hideSmall{display:none}
- .workspace,.panel-closed .workspace{grid-template-columns:49px minmax(0,1fr)}
- .toolbar{padding:5px 2px}.tool{width:44px;min-height:46px}.canvas-top{gap:4px;padding:5px;min-height:40px}.pill{padding:6px;font-size:10px}.canvas-top .mini{padding:5px 7px;font-size:11px}.canvas-top .spacer{min-width:0}
- .inspector{position:absolute;right:0;top:0;bottom:0;width:min(290px,calc(100% - 54px));z-index:30;box-shadow:-10px 0 28px #17252b35;padding:10px;font-size:12px}.panel-closed .inspector{display:none}.inspector-heading{top:-10px}
- .section-head{font-size:12px;padding:9px}.section-body{padding:9px}.field label{font-size:11px}.field input{height:35px;font-size:13px;padding:0 6px}.action{font-size:12px;min-height:36px}.pad{height:100px}.lens-frame{height:100px}
- .coordinate-chip{padding:5px 7px;font-size:9px;max-width:47%}.coordinate-chip b{font-size:10px}.zoom-controls{gap:2px;padding:4px}.stage-btm{left:6px;right:6px;bottom:6px}.stage-hint{top:7px;left:7px;padding:5px 7px;font-size:9px;max-width:88%}.stage-hint strong{font-size:10px}
- .cell-actions{padding:5px;gap:4px}.cell-actions button{padding:7px}.subbar{padding:0 7px}.subbar #dirtyStatus{font-size:8px}
-}
-@media(max-width:720px) and (orientation:portrait){#app.focus-mode .topbar{display:flex;height:38px;min-height:38px;padding:4px 8px}}
-#app.focus-mode .toolbar{padding-bottom:4px}
-#app.focus-mode #toggleInspector{display:inline-block}
-
-/* Notebook-style relative cursor pad, separate from the drawing canvas. */
-.cursor-dock{display:none;flex-shrink:0;background:#e8efed;border-top:1px solid #b7cbc3;padding:6px 8px;gap:5px;min-width:0}
-.cursor-dock.dock-open{display:grid}.cursor-dock-head{display:flex;gap:6px;align-items:center;justify-content:space-between;font-size:10px;color:#486f64;min-height:18px}.cursor-dock-head span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cursor-dock-head button{border:0;background:transparent;color:#50766b;font-size:11px;padding:2px 5px}
-.cursor-pad{height:64px;position:relative;touch-action:none;user-select:none;border:1px solid #b0c5be;border-radius:9px;background:linear-gradient(145deg,#f6faf8,#d4e3de);box-shadow:inset 0 1px 4px #466f5912;display:grid;place-items:center;color:#77958a;font-size:11px;cursor:grab}.cursor-pad:active{cursor:grabbing;background:#cee2d9}.cursor-pad::after{content:'↔　↕';position:absolute;top:5px;right:8px;font-size:14px;color:#9db5aa}.cursor-dock-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.cursor-dock-buttons button{height:36px;border:1px solid #a8c0b6;border-radius:7px;background:#fff;color:#2c6456;font-size:11px;font-weight:600}.cursor-dock-buttons button.primary{background:#418c87;color:#fff;border-color:#418c87}.cursor-dock-buttons button:disabled{opacity:.4}
-.cursor-edit-row{display:flex;gap:5px;align-items:center;font-size:10px;color:#366b61}.cursor-edit-row input{height:32px;min-width:0;flex:1;border:1px solid #aac3b8;border-radius:6px;padding:3px 7px;font-size:13px}.cursor-edit-row .nudge-btn{height:32px;min-width:35px;border:1px solid #aac3b8;border-radius:6px;background:#fff;color:#366b61;font-size:14px}.cursor-edit-row label{white-space:nowrap}
-.cursor-hub{position:absolute;z-index:12;width:28px;height:28px;border-radius:50%;border:1px solid #67a395;background:#effaf5eb;box-shadow:0 2px 8px #20372e24;color:#367d69;font-size:17px;display:grid;place-items:center;padding:0;touch-action:manipulation}.cursor-hub[aria-expanded="true"]{background:#418c87;color:white}
-.cursor-menu{position:absolute;z-index:25;width:200px;background:#fffdf9f7;border:1px solid #adc8bd;border-radius:12px;box-shadow:0 8px 26px #223b3240;padding:8px;overflow:auto;overscroll-behavior:contain}.cursor-menu-title{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:11px;color:#376d5b;margin-bottom:7px}.cursor-menu-title button{border:0;background:transparent;color:#668477;padding:2px 6px;font-size:15px}.cursor-menu-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.cursor-menu-actions button{min-height:35px;padding:5px;border:1px solid #c0d4ca;border-radius:7px;background:#f1f8f4;color:#326451;font-size:11px}.cursor-menu-actions button:disabled{opacity:.35}.cursor-menu-actions button.danger{color:#98523e;background:#fff2ec;border-color:#e2c4b8}
-.dimension-editor{position:absolute;z-index:35;display:flex;align-items:center;gap:5px;flex-wrap:wrap;width:min(240px,90%);background:#fffefb;border:1px solid #92b3a6;box-shadow:0 5px 18px #23392f35;padding:8px;border-radius:9px;font-size:11px;color:#376d5b}.dimension-editor input{min-width:0;width:83px;height:34px;border:1px solid #abc3b7;border-radius:5px;font-size:14px;padding:5px}.dimension-editor button{height:34px;border:1px solid #acc4b7;border-radius:5px;background:#f2f8f4;color:#376d5b;font-size:11px}
-@media(max-width:720px) and (orientation:portrait){#toggleCursorDock{display:none}.cursor-dock{display:grid}.inspector #pad{display:none}.cursor-pad{height:64px}}
-@media(max-height:480px){.cursor-dock.dock-open{padding:3px 6px}.cursor-dock-head{display:none}.cursor-pad{height:36px}.cursor-dock-buttons button{height:31px}}
-
-
-/* Floating controller: overlays never reduce the canvas or trigger auto-fit. */
-#toggleCursorDock,#cursorHub,#coordinateChip{display:none!important}
-.cursor-dock{position:absolute;z-index:22;left:8px;bottom:50px;width:min(310px,calc(100% - 16px));display:none!important;border:0;background:transparent;padding:0;gap:6px;pointer-events:none}
-.cursor-dock.dock-open{display:grid!important;grid-template-columns:76px minmax(0,1fr);align-items:center;padding:0}
-.cursor-dock-head{display:none!important}.cursor-ring{grid-column:1;grid-row:2;width:72px;height:72px;border:1px solid #427e6970;background:#d5e8dd40;border-radius:50%;display:grid;place-items:center;pointer-events:none}
-.cursor-pad{width:48px;height:48px;min-height:48px;padding:0;border:0;border-radius:50%;background:transparent!important;box-shadow:none;pointer-events:auto;touch-action:none;position:relative}
-.cursor-pad::after{content:'';width:13px;height:13px;border-radius:50%;background:#367e6d;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
-.cursor-dock-buttons{grid-column:2;grid-row:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;pointer-events:auto}.cursor-dock-buttons button{height:34px;background:#ffffffe0;font-size:12px}
-.cursor-edit-row{grid-column:1 / -1;grid-row:1;background:#fffefbe8;border-radius:8px;padding:5px;pointer-events:auto;flex-wrap:wrap}.cursor-edit-row input{font-size:16px;max-width:100%}.cursor-edit-row label{font-size:11px}
-.cursor-toggle{position:absolute;z-index:23;bottom:8px;left:8px;width:40px;height:40px;border:1px solid #52877780;border-radius:50%;background:#e8f3edd0;color:#367e6d;font-size:23px;touch-action:manipulation;padding:0}
-.stage-btm{justify-content:flex-end}.cell-actions{position:absolute;top:43px;left:0;right:0;z-index:18;min-height:36px;background:#eff6f1e8}.canvas-column{position:relative}#app.focus-mode .cell-actions{top:32px}.dimension-editor input{font-size:16px}
-@media(max-width:720px) and (orientation:portrait){.stage-hint,.orientation-tip{display:none}.cell-actions{top:36px}.subbar{display:none}.project-name,.field input,.cell-actions input{font-size:16px}}
-
-.canvas-top{min-height:44px;height:44px;flex-shrink:0;padding:3px 5px;overflow-x:auto}.canvas-top .back-edit{position:sticky;left:0;z-index:2;min-width:64px;min-height:38px;background:#397d70;color:white;border-color:#397d70;font-size:12px;flex-shrink:0}.cell-actions,#app.focus-mode .cell-actions{top:44px}
-
-/* Shared thumb-reachable actions and centered lower cursor controller. */
-.common-actions{position:absolute;left:6px;right:6px;bottom:6px;z-index:24;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;padding:4px;border:1px solid #b3c8bf99;border-radius:10px;background:#f5faf7de}
-.common-actions button{min-width:0;height:44px;border:1px solid #b1c5bd;border-radius:7px;background:#ffffffe8;color:#326757;font-size:11px;white-space:nowrap;padding:0 2px;touch-action:manipulation}
-.common-actions button:disabled{opacity:.35}.common-actions button.active{background:#397d70;color:#fff;border-color:#397d70}.common-actions .common-undo{background:#397d70;color:white;font-weight:700}.common-actions .common-delete{color:#a24f38}
-.cursor-toggle{left:50%;bottom:66px;transform:translateX(-50%);width:44px;height:44px}
-.cursor-dock,.cursor-dock.dock-open{left:50%;bottom:116px;transform:translateX(-50%);width:min(290px,calc(100% - 16px));grid-template-columns:1fr;justify-items:center;gap:5px}
-.cursor-ring{grid-column:1;grid-row:2;width:72px;height:72px}.cursor-dock-buttons{grid-column:1;grid-row:3;grid-template-columns:repeat(2,minmax(0,1fr));width:150px}.cursor-dock-buttons button{height:36px}
-.cursor-edit-row{grid-column:1;grid-row:1;width:100%}.stage-btm{bottom:68px;left:auto;right:8px}.zoom-controls{gap:2px;padding:3px}.zoom-controls button{width:28px;height:30px}.zoom-controls small{font-size:10px}
-@media(max-height:480px){.cursor-dock,.cursor-dock.dock-open{bottom:66px;left:50%;grid-template-columns:72px 110px;width:190px}.cursor-ring{grid-column:1;grid-row:2}.cursor-dock-buttons{grid-column:2;grid-row:2;width:110px}.cursor-edit-row{grid-column:1 / -1;grid-row:1}.cursor-toggle{left:calc(50% - 122px);bottom:80px}}
-
-
-/* V1.5: one canvas, one shared action row, selection-specific tools. */
-.workspace,#app.panel-closed .workspace,#app.focus-mode .workspace{grid-template-columns:minmax(0,1fr)!important}
-.canvas-column{grid-column:1;min-height:0}.inspector{position:absolute!important;z-index:50;right:0;top:0;bottom:0;width:min(340px,calc(100% - 12px))!important;max-height:100%;box-shadow:-6px 0 24px #17352c33}
-.view-settings{display:flex;flex-wrap:wrap;gap:6px;padding:8px}.view-settings button{min-height:38px}.canvas-top{justify-content:flex-end;height:40px;min-height:40px}.canvas-top .mini{min-height:34px}
-.cell-actions,#app.focus-mode .cell-actions{top:auto;left:6px;right:6px;bottom:62px;z-index:20;border:1px solid #abc7ba;border-radius:9px;min-height:44px;background:#f6fcf8ef;padding:5px;gap:5px;overscroll-behavior:contain}
-.cell-actions button{min-height:36px}.cell-actions #splitCount{width:44px;min-width:44px;font-size:16px}.cell-actions #contextTextInput{width:120px;min-width:120px;font-size:16px}.cell-actions input{font-size:16px}
-.cursor-toggle{bottom:116px}.cursor-dock,.cursor-dock.dock-open{bottom:164px}.stage-btm{bottom:118px}.stage-hint{display:none!important}.subbar{display:none}.topbar .brand small{display:none}
-.common-actions button{min-height:44px}.cursor-menu-actions button{min-height:44px;font-size:12px}
-@media(max-width:720px) and (orientation:portrait){.topbar{height:48px!important;min-height:48px!important;flex-wrap:nowrap!important;padding:0 6px;gap:5px}.topbar .brand,.topbar .top-spacer{display:none}.brandmark{margin-right:0}.project-name{flex:1;width:auto;max-width:none;min-width:60px;font-size:16px}.topbar .top-btn{min-height:36px;font-size:12px;padding:0 8px}.cursor-toggle{bottom:116px}}
-@media(max-height:480px){.cursor-dock,.cursor-dock.dock-open{bottom:116px}.cursor-toggle{bottom:128px}.stage-btm{bottom:118px}}
-
-#app.focus-mode #toggleInspector{display:inline-block}
-
-/* Restore the original dark tool buttons without restoring the side rail. */
-.common-actions{background:#303a42;border-color:#50606a;border-radius:10px;gap:4px;padding:4px}
-.common-actions button,.common-actions .common-undo,.common-actions .common-delete{height:48px;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:3px 1px;border:1px solid transparent;border-radius:9px;background:transparent;color:#d6e0e3;font-size:10px;font-weight:400;line-height:1.15}
-.common-actions button i{font-style:normal;font-size:20px;line-height:1;display:block}.common-actions button span{display:block}
-.common-actions button.active,.common-actions button[aria-expanded="true"],.common-actions button:active:not(:disabled){background:#bc725737;color:#f4c4b1;border-color:#ce8b74}
-.common-actions button:disabled{opacity:.35}.common-actions button:focus-visible{outline:2px solid #ce8b74;outline-offset:1px}
-.cell-actions,#app.focus-mode .cell-actions{bottom:70px;background:#303a42;border-color:#50606a;color:#d6e0e3}.cell-actions span,.cell-actions label{color:#d6e0e3}.cell-actions button{background:transparent;color:#d6e0e3;border-color:#64727a;border-radius:8px}.cell-actions button:active:not(:disabled){background:#bc725737;color:#f4c4b1;border-color:#ce8b74}
-.cursor-menu{background:#303a42f5;border-color:#50606a}.cursor-menu-title{color:#d6e0e3}.cursor-menu-title button{color:#d6e0e3}.cursor-menu-actions button{background:transparent;color:#d6e0e3;border-color:#64727a;border-radius:9px}.cursor-menu-actions button:active:not(:disabled){background:#bc725737;color:#f4c4b1;border-color:#ce8b74}
-.cursor-dock-buttons button{background:#303a42f2;color:#d6e0e3;border-color:#64727a;border-radius:9px}.cursor-dock-buttons button.primary{background:#bc725737;color:#f4c4b1;border-color:#ce8b74}
-.cursor-toggle{bottom:124px}.cursor-dock,.cursor-dock.dock-open{bottom:172px}.stage-btm{bottom:126px}
-@media(max-height:480px){.cursor-dock,.cursor-dock.dock-open{bottom:124px}.cursor-toggle{bottom:136px}}
-
-.dimension-label{cursor:pointer}.dimension-label:hover rect{fill:#f7e3d7}#mergeCells,#splitColumns,#splitRows,#splitCount,#splitCountLabel,#contextCutX,#contextCutY{display:none!important}
-.part-editor{position:absolute;z-index:70;left:50%;bottom:70px;transform:translateX(-50%);width:min(370px,calc(100% - 12px));max-height:calc(100% - 90px);overflow:auto;overscroll-behavior:contain;border:1px solid #687b74;border-radius:12px;background:#303a42;color:#e6ede9;padding:10px;box-shadow:0 8px 28px #10251c50}.part-editor-head{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:8px}.part-editor button{min-height:40px;border:1px solid #677a72;border-radius:8px;color:#e6ede9;background:transparent;padding:5px 8px}.part-editor-head button{min-width:40px}.part-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px}.part-fields label,.part-editor details label{display:flex;flex-direction:column;gap:4px;font-size:11px}.part-fields .wide{grid-column:1 / -1}.part-editor input,.part-editor select{width:100%;min-width:0;font-size:16px;min-height:38px;border:1px solid #8eaaa0;border-radius:6px;background:#fffdf9;color:#30413a;padding:5px}.part-editor input:read-only{background:#dbe5df;color:#64766e}.part-editor details{margin:9px 0;border-top:1px solid #64766e;padding-top:8px}.part-editor summary{min-height:36px;cursor:pointer;font-size:12px}.part-note{font-size:11px;color:#b9ccc2;line-height:1.5}.part-editor-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:9px}.part-editor-buttons #partApply{background:#bc725737;color:#f4c4b1;border-color:#ce8b74}#partListRows button{display:block;width:100%;text-align:left;margin:5px 0}.part-editor button:disabled{opacity:.35}
-
-/* V1.8: explicit single-row header and notebook-style drawing footer. */
-#app .topbar,#app.focus-mode .topbar{display:flex!important;flex-wrap:nowrap!important;height:50px!important;min-height:50px!important;padding:5px 8px!important;gap:7px;overflow:visible;align-items:center;align-content:normal}
-#app .topbar>*{grid-column:auto;grid-row:auto}.topbar .brandmark{width:28px;height:28px;margin:0;flex:none}.topbar .project-name{flex:1;max-width:260px;width:auto;min-width:50px;height:38px;font-size:16px}.topbar .top-btn{height:38px;min-height:38px;flex:none}.topbar .brand{min-width:0}.topbar .brand strong{font-size:13px}
-#app .canvas-top{justify-content:flex-start;height:42px;min-height:42px}.canvas-top>button{flex:none}.canvas-top #redo{min-height:34px;border:1px solid #c8c2b8;border-radius:7px;background:#fff;color:#5c5551;padding:4px 8px}.canvas-top #redo i,.canvas-top #cursorActions i{font-style:normal}.canvas-top #cursorActions{display:flex;align-items:center;gap:3px}.canvas-top .spacer{display:none}.canvas-top #partList{margin-left:auto}
-#cursorToggle{display:none!important}#toggleCursorDock{display:inline-block!important}.drawing-controls{flex:none;min-height:0;padding:4px 6px 6px;background:#29333b;border-top:1px solid #53676a;z-index:24;display:flex;flex-direction:column;gap:4px}
-#app .common-actions{position:static;transform:none;margin:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:0;padding:0;border-radius:0;background:transparent;gap:5px}
-#app .common-actions button{height:44px;min-height:44px;border-color:#566970;font-size:11px}#app .common-actions button i{font-size:19px}
-#app .cursor-dock,#app .cursor-dock.dock-open{position:static;left:auto;bottom:auto;transform:none;width:100%;padding:0;gap:3px;grid-template-columns:1fr;background:transparent;pointer-events:auto}
-#app .cursor-dock-head{display:flex!important;color:#b5ccc2;min-height:16px;font-size:10px}#app .cursor-dock-head span{max-width:75%}#app .cursor-dock-head button{color:#b5ccc2}
-#app .cursor-ring{grid-column:auto;grid-row:auto;width:100%;height:auto;min-height:0;border:0;border-radius:0;background:transparent;pointer-events:auto}
-#app .cursor-pad{width:100%;height:64px;min-height:64px;border:1px solid #93b3a3;border-radius:9px;background:linear-gradient(145deg,#ecf5ef,#bed5c8)!important;color:#4a7465;font-size:11px;box-shadow:inset 0 1px 4px #466f5912;cursor:grab;display:grid;place-items:center}
-#app .cursor-pad::after{content:'↔　↕';position:absolute;top:5px;right:8px;left:auto;width:auto;height:auto;transform:none;border-radius:0;background:none;font-size:14px;color:#77988a}
-#app .cell-actions,#app.focus-mode .cell-actions{position:static;top:auto;bottom:auto;left:auto;right:auto;min-height:42px;width:100%;border:0;padding:0;background:transparent;gap:4px;overflow-x:auto;flex-wrap:nowrap}
-#app #cellActions button{flex:none;min-height:38px}#cellActions #cellSummary,#cellActions #lineLabel{display:none}#cellActions #linePosition{width:74px;min-width:74px}
-#contextCutX:not(.hidden),#contextCutY:not(.hidden){display:inline-block!important}
-#app #cursorConfirmation{position:static;display:flex;justify-content:flex-end;grid-column:auto;grid-row:auto;width:100%;gap:5px}#cursorConfirmation button{min-width:90px;min-height:38px;height:38px}
-.auxiliary-actions{display:flex;align-items:center;gap:5px;flex:none;overflow-x:auto;background:#303a42;padding:4px 6px;min-height:42px}.auxiliary-actions button,.auxiliary-actions input{flex:none;min-height:34px;border:1px solid #64727a;border-radius:7px;background:transparent;color:#d6e0e3;padding:5px 8px;white-space:nowrap;font-size:12px}.auxiliary-actions input{width:120px;background:#fff;color:#30413a;font-size:16px}.auxiliary-actions label{white-space:nowrap;color:#d6e0e3;font-size:11px}
-#app .cursor-edit-row{position:absolute;top:8px;left:6px;right:6px;z-index:36;width:auto;grid-column:auto;grid-row:auto}.stage-btm{bottom:8px!important;right:8px;left:auto}.part-editor{top:8px;bottom:auto;max-height:calc(100% - 16px)}
-@media(max-width:720px) and (orientation:portrait){#app .topbar .brand,#app .topbar .top-spacer{display:none}.topbar .project-name{max-width:none}.topbar .top-btn{padding:0 8px}#app .topbar .brandmark{display:grid}}
-@media(max-height:480px){#app .topbar,#app.focus-mode .topbar{height:44px!important;min-height:44px!important}.drawing-controls{padding:3px 6px;gap:3px}#app .cursor-pad{height:36px;min-height:36px}#app .cursor-dock-head{display:none!important}#app .common-actions button{height:38px;min-height:38px}.topbar .brand{display:none}.topbar .project-name{max-width:220px}#app .canvas-top{height:36px;min-height:36px}}
-
-</style>
+<link rel="manifest" href="./manifest.webmanifest?v=1.9.0">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=1.9.0">
+<title>三川工方｜精準櫃體立面繪圖 V1.9.0</title>
+<link rel="stylesheet" href="./ui.css?v=1.9.0">
 </head>
 <body>
 <div id="bootNotice" role="status" aria-live="polite"><div class="bootPanel"><h2>目前尚未啟動繪圖程式</h2><p>如果此畫面持續顯示，代表目前開啟方式無法執行 JavaScript。iPhone 的 ChatGPT 附件預覽或「檔案」預覽可能只顯示畫面，按鈕無法使用。請改用 Safari 開啟正式的 HTTPS 網址。</p><small>注意：下載 HTML 不等於已部署為網站。</small></div></div>
 <div id="app">
 <header class="topbar">
-<div class="brandmark"><img src="./logo-02-g01.svg?v=1.8.0" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>CAD / 櫃體立面 V1.8.0</small></div>
+<div class="brandmark"><img src="./logo-02-g01.svg?v=1.9.0" alt="三川工方" width="31" height="31"></div><div class="brand"><strong>三川工方</strong><small>櫃體立面 · V1.9.0</small></div>
 <input id="project" class="project-name" aria-label="圖面名稱" value="櫃體 1" placeholder="輸入圖面名稱">
 <div class="top-spacer"></div>
 
 
-<button class="top-btn" id="save" title="儲存到此裝置">儲存</button>
+<button class="top-btn" id="save" title="儲存到此裝置"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13l3 3v15H4zM8 3v6h8V3M8 21v-7h8v7"/></svg><span>儲存</span></button>
 
-<button class="top-btn primary" id="export" title="匯出圖面">匯出 ▾</button>
+<button class="top-btn primary" id="export" title="匯出圖面"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M5 12v8h14v-8"/></svg><span>匯出</span></button>
 </header>
 <main class="workspace">
 
 <div class="canvas-column">
-<div class="canvas-top">
+<nav class="canvas-top" aria-label="繪圖與檢視工具">
+<button id="cursorActions" class="mini" aria-controls="cursorMenu" aria-expanded="false"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 17 12-12 3 3L7 20l-4 1 1-4ZM13 8l3 3"/></svg><span id="cursorActionsLabel">繪圖</span></button><button id="partList" class="mini"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM8 5v14m8-14v14"/></svg><span id="partListLabel">板件</span></button><button id="fit" class="mini" title="圖面置中"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M8 8h8v8H8z"/></svg><span id="fitLabel">適屏</span></button><button id="toggleInspector" class="mini" title="顯示或收起右側控制面板" aria-expanded="false" aria-controls="inspector"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="var(--stone)"/><circle cx="15" cy="17" r="3" fill="var(--stone)"/></svg><span id="toggleInspectorLabel">設定</span></button><button id="redo" title="重做" aria-label="重做"><i aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 5 5-5 5M20 10h-9a6 6 0 0 0-6 6v3"/></svg></i><span>重做</span></button><button id="toggleCursorDock" class="mini" aria-controls="cursorDock" aria-expanded="false"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M9 11h6m-3-3v6"/></svg><span id="toggleCursorDockLabel">觸控板</span></button><button id="cancelPoint" class="pill hidden">取消起點 ×</button></nav>
 
-
-
-<button id="cancelPoint" class="pill hidden">取消起點 ×</button>
-<span class="spacer"></span>
-<button id="toggleCursorDock" class="mini" aria-controls="cursorDock" aria-expanded="false">游標</button>
-<button id="redo" title="重做" aria-label="重做"><i aria-hidden="true">↷</i><span>重做</span></button><button id="cursorActions" class="mini" aria-controls="cursorMenu" aria-expanded="false"><i aria-hidden="true">＋</i><span>繪圖</span></button><button id="partList" class="mini">板件</button><button id="fit" class="mini" title="圖面置中">適屏</button>
-<button id="toggleInspector" class="mini" title="顯示或收起右側控制面板" aria-expanded="false" aria-controls="inspector">設定</button>
-</div>
-
-<div id="auxiliaryActions" class="auxiliary-actions hidden" aria-label="圖形與板件編輯"><button id="annotationCancel" class="hidden">取消</button><button id="annotationFinish" class="hidden">完成</button><button id="shapeMove">移動圖形</button><button id="shapeDelete">刪除圖形</button><button id="contextPart">板件名稱</button><button id="contextStart">調起點</button><button id="contextEnd">調終點</button><button id="contextTextApply">套用文字</button><label id="contextTextLabel" for="contextTextInput">文字</label><input id="contextTextInput" type="text" maxlength="60"></div>
+<div id="auxiliaryActions" class="auxiliary-actions hidden" aria-label="圖形與板件編輯"><button id="annotationCancel" class="hidden">取消</button><button id="annotationFinish" class="hidden">完成</button><button id="shapeMove">移動圖形</button><button id="shapeDelete">刪除圖形</button><button id="contextPart">板件名稱</button><button id="contextStart">調起點</button><button id="contextEnd">調終點</button><label id="contextTextLabel" for="contextTextInput">文字</label><input id="contextTextInput" type="text" maxlength="60"><button id="contextTextApply">套用</button></div>
 <div class="stage-wrap" id="stage">
 <div class="orientation-tip">橫向持機可取得更大的繪圖區域</div>
 <svg id="drawing" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="櫃體立面繪圖區"></svg>
@@ -201,9 +44,9 @@ html,body{overscroll-behavior:none}
 <div class="cursor-menu-actions">
 <button class="hidden" id="cursorMove">移動位置</button><button class="hidden" id="cursorAdjustStart">調起點</button><button class="hidden" id="cursorAdjustEnd">調終點</button><button class="danger hidden" id="cursorDelete">刪除</button>
 
-<button id="addBoard">新增板件</button><button data-cursor-tool="line">畫直線</button><button data-cursor-tool="dimension">尺寸標註</button>
-<button data-cursor-tool="rect">畫矩形</button><button data-cursor-tool="ellipse">畫圓形</button>
-<button data-cursor-tool="text">文字標記</button><button id="cursorMenuCancel" class="hidden">取消選取</button>
+<button id="addBoard"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM8 5v14m8-14v14"/></svg><span>板件</span></button><button data-cursor-tool="line"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 20 4"/></svg><span>直線</span></button><button data-cursor-tool="dimension"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14M19 5v14M3 12h18m-15-3-3 3 3 3m12-6 3 3-3 3"/></svg><span>尺寸</span></button>
+<button data-cursor-tool="rect"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/></svg><span>矩形</span></button><button data-cursor-tool="ellipse"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg><span>圓形</span></button>
+<button data-cursor-tool="text"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M12 5v15M8 20h8M4 5v3m16-3v3"/></svg><span>文字</span></button><button id="cursorMenuCancel" class="hidden">取消選取</button>
 </div></div>
 <div id="cursorDraftFields" class="cursor-edit-row hidden"><label id="cursorDraftLabel" for="cursorDraftValue">位置 mm</label><button id="cursorMinus" class="nudge-btn" aria-label="預覽位置減少">−</button><input id="cursorDraftValue" type="number" step="1"><input id="cursorDraftText" class="hidden" type="text" maxlength="60" aria-label="文字標記內容" placeholder="輸入標記文字"><input id="cursorEndpointX" class="hidden" type="number" step="1" aria-label="端點 X 座標（毫米）"><input id="cursorEndpointY" class="hidden" type="number" step="1" aria-label="端點 Y 座標（毫米）"><button id="cursorPlus" class="nudge-btn" aria-label="預覽位置增加">＋</button></div><div id="dimensionEditor" class="dimension-editor hidden"><label id="dimensionEditorLabel" for="dimensionInput">尺寸 mm</label><input id="dimensionInput" type="number" min="1" step="1"><button id="applyDimension">套用</button><button id="cancelDimension">取消</button></div>
 <button id="cursorToggle" class="cursor-toggle" aria-label="展開游標控制器" aria-controls="cursorDock" aria-expanded="false">⌖</button>
@@ -215,13 +58,13 @@ html,body{overscroll-behavior:none}
 <div class="part-editor-buttons"><button id="partApply">完成</button><button id="partCancel">取消</button><button id="partMove">移動</button><button id="partDuplicate">複製</button><button id="partDelete">刪除板件</button></div></div></section><div id="toast" class="toast"></div>
 </div>
 
-<section id="drawingControls" class="drawing-controls" aria-label="立面圖編輯控制"><div id="cellActions" class="cell-actions" aria-label="立面選取後的編輯動作">
-<button id="contextCutX">直分隔</button><button id="contextCutY">橫分隔</button><button id="deleteTool" class="common-delete" title="刪除選取項目"><i aria-hidden="true">⌫</i><span>刪除</span></button><button id="contextWholeLine">選取整列</button><button id="contextMove">移動</button><span id="cellSummary" class="selection-size">點選格子</span>
-<button id="mergeCells">合併</button><label id="splitCountLabel" for="splitCount">等分</label><input id="splitCount" type="number" min="2" max="24" value="2" aria-label="等分數量"><button id="splitColumns">新增欄</button><button id="splitRows">新增列</button><button id="clearCellSelection">取消選取</button>
+<section id="drawingControls" class="drawing-controls" aria-label="立面圖編輯控制"><div id="cellActions" class="cell-actions" aria-label="立面選取後的編輯動作"><button id="contextCutX">直分隔</button><button id="contextCutY">橫分隔</button><button id="contextMove">移動</button><button id="deleteTool" class="common-delete" title="刪除選取項目"><i aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h8l5 7-5 7H8l-5-7 5-7Zm2 4 5 6m0-6-5 6"/></svg></i><span>刪除</span></button><button id="contextWholeLine">選取整列</button><button id="clearCellSelection">取消選取</button>
+<span id="cellSummary" class="selection-size">點選格子</span>
+<button id="mergeCells">合併</button><label id="splitCountLabel" for="splitCount">等分</label><input id="splitCount" type="number" min="2" max="24" value="2" aria-label="等分數量"><button id="splitColumns">新增欄</button><button id="splitRows">新增列</button>
 <label for="linePosition" id="lineLabel" class="hidden">位置 mm</label><input id="linePosition" class="hidden" type="number" step="1" aria-label="分隔線位置（毫米）"><button id="applyLinePosition" class="hidden">套用</button>
-</div><div id="cursorConfirmation" class="cursor-dock-buttons hidden"><button id="cursorCancel">取消</button><button id="cursorFinish" class="primary" disabled>完成</button></div><nav id="commonActions" class="common-actions" aria-label="常用編輯動作"><button id="undo" class="common-undo" title="復原上一個已完成動作" aria-label="復原上一個動作"><i aria-hidden="true">↶</i><span>復原</span></button><button id="cursorSelect"><i aria-hidden="true">⌖</i><span id="cursorSelectLabel">選取</span></button><button id="commonPan" data-mode="pan" title="拖動畫布平移視角"><i aria-hidden="true">✥</i><span>平移</span></button></nav><section id="cursorDock" class="cursor-dock" aria-label="游標觸控板">
+</div><div id="cursorConfirmation" class="cursor-dock-buttons hidden"><button id="cursorCancel">取消</button><button id="cursorFinish" class="primary" disabled>完成</button></div><nav id="commonActions" class="common-actions" aria-label="常用編輯動作"><button id="undo" class="common-undo" title="復原上一個已完成動作" aria-label="復原上一個動作"><i aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 4 10l5 5M4 10h9a6 6 0 0 1 6 6v3"/></svg></i><span>復原</span></button><button id="cursorSelect"><i aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/><path d="M12 2v6m0 8v6M2 12h6m8 0h6"/></svg></i><span id="cursorSelectLabel">選取</span></button><button id="commonPan" data-mode="pan" title="拖動畫布平移視角"><i aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M2 12h20m-13-7 3-3 3 3m-6 14 3 3 3-3M5 9l-3 3 3 3m14-6 3 3-3 3"/></svg></i><span>平移</span></button></nav><section id="cursorDock" class="cursor-dock" aria-label="游標觸控板">
 <div class="cursor-dock-head"><span id="cursorDockStatus">游標觸控板 · 滑動定位</span></div>
-<div class="cursor-ring"><div id="cursorPad" class="cursor-pad" role="application" aria-label="滑動觸控板移動游標">滑動移動游標 · 可抬手接續滑動</div></div>
+<div class="cursor-ring"><div id="cursorPad" class="cursor-pad" role="application" aria-label="滑動觸控板移動游標"><span>滑動定位 · 抬手後可接續滑動</span></div></div>
 
 
 </section></section>
@@ -257,8 +100,8 @@ html,body{overscroll-behavior:none}
 <div><h2>隱藏 Safari 網址列</h2><p>目前已放大畫布。若要進一步隱藏 Safari 網址列，請從 Safari 的<strong>分享 → 加入主畫面</strong>，開啟<strong>「打開為網頁 App」</strong>，再由主畫面圖示啟動。</p><p>一般網頁無法自行關閉 Safari 的網址列。</p><button id="closeInstallPrompt">知道了</button></div>
 </div>
 </div>
-<script src="./grid.js?v=1.8.0"></script>
-<script src="./parts.js?v=1.8.0"></script>
+<script src="./grid.js?v=1.9.0"></script>
+<script src="./parts.js?v=1.9.0"></script>
 <script>
 (()=>{
 'use strict';
@@ -316,7 +159,7 @@ function updateSelected(){if(!selected)return;if(selected.kind==='gridLine'){mov
 function measureString(s){return nice(Math.hypot(s.x2-s.x1,s.y2-s.y1))}
 function closeCursorMenu(){cursorMenuOpen=false;$('cursorMenu').classList.add('hidden');$('cursorHub').setAttribute('aria-expanded','false');$('cursorActions').setAttribute('aria-expanded','false')}
 function resetCursorWorkflow(){for(const id of ['dimensionInput','cursorDraftValue','cursorDraftText','cursorEndpointX','cursorEndpointY'])if(document.activeElement===$(id))$(id).blur?.();cursorDraft=null;closeCursorMenu();dimensionEdit=null;$('dimensionEditor').classList.add('hidden')}
-function setDock(open){dockOpen=open;$('cursorDock').classList.toggle('dock-open',open);$('toggleCursorDock').setAttribute('aria-expanded',String(open));$('toggleCursorDock').textContent=open?'收起觸控板':'觸控板';$('cursorToggle').setAttribute('aria-expanded',String(open));$('cursorToggle').setAttribute('aria-label',open?'收合游標控制器':'展開游標控制器');$('cursorToggle').textContent=open?'×':'⌖';if(!open)closeCursorMenu();if(initialized)requestAnimationFrame(()=>render())}
+function setDock(open){dockOpen=open;$('cursorDock').classList.toggle('dock-open',open);$('toggleCursorDock').setAttribute('aria-expanded',String(open));$('toggleCursorDockLabel').textContent='觸控板';$('cursorToggle').setAttribute('aria-expanded',String(open));$('cursorToggle').setAttribute('aria-label',open?'收合游標控制器':'展開游標控制器');$('cursorToggle').textContent=open?'×':'⌖';if(!open)closeCursorMenu();if(initialized)requestAnimationFrame(()=>render())}
 function cursorTargetCell(){const cells=getCells();if(selected?.kind==='region')return selected.idx;if(cellSelection.length===1&&cells[cellSelection[0]])return cellSelection[0];return Grid.at(cells,getPoint())}
 function pickWithCursor(){
  if(cursorDraft){toast('預覽中：按完成固定，或按取消');return;}
@@ -563,7 +406,7 @@ function gridOverlay(){
 function columnName(index){let result='';for(let n=index+1;n>0;n=Math.floor((n-1)/26))result=String.fromCharCode(65+(n-1)%26)+result;return result}
 function setInspector(open){
  inspectorOpen=open;$('app').classList.toggle('panel-closed',!open);$('inspector').classList.remove('hidden');
- $('toggleInspector').setAttribute('aria-expanded',String(open));$('toggleInspector').textContent=open?'收起':'設定';
+ $('toggleInspector').setAttribute('aria-expanded',String(open));$('toggleInspectorLabel').textContent=open?'收起':'設定';
  requestAnimationFrame(()=>{if(initialized)render()});
 }
 function startEdit(e,q,p){

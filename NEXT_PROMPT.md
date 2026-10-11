@@ -24,3 +24,5 @@
 - V1.7.0 最新板件編輯：parts.js 的 CabinetParts 提供類型／編號／metadata 正規化／結構座標 transform 與 round-to-0.01 scale。index.html 的 partEditor 為 stage 浮動面板，contextPart／partList／addBoard 三入口；doc.boardTags 標記結構線位置，shape.part 標記自由線／矩形。boardLines 在點選及清除失效標記時包含四條外框。applyPart 為單次可復原修改，抽屜 children 六件只採使用者輸入加工尺寸，不自動推算。boardLabels 保留於 SVG，名字以 esc 輸出；複製結構線會建立自由圖元；外框刪除只清名稱。測試 parts_interactions.cjs 覆蓋實際處理器、命名／尺寸／移動／抽屜／複製刪除／取消／復原／儲存重載／保留視角。真機鍵盤及浮動面板仍待驗證。
 
 - V1.8.0 最新使用者方向：恢復最初長方形游標觸控板於下方，預設 dockOpen=true，觸控板上方 commonActions 僅「復原／選取／平移」。下方只放結構線／開口的編輯動作；繪圖／尺寸標記／板件／自由圖形編輯及完成取消都在上方。選取整列／整欄用 selected.local=false，數值、cursor move 和 native drag 必須全座標連動，請維持測試。頂部改單列 Flex 避免舊 Grid 隱含列被 48px 高度裁切。不要恢復浮動圓形控制器或六鍵底列。真機排版待驗；DOM 測試不能代替真機。
+
+- V1.9.0 最新：使用者要求恢復第一版的完整設計品質。ui.css 已取代 index 全部累積的 style rules，請以此統一樣式維護，勿再次加入連續覆寫。深灰工具、米白卡片、暖色選取框、24×24 stroke 1.5 SVG；下方三鍵仍復原／選取／平移，結構情境動作四欄+位置數值列，其餘在頂部。品牌＋檔名兩列直式、橫式單列。雲端 browser 開頁逾時，真實截圖及 iPhone 排版尚未確認；不要用 DOM 回歸宣稱視覺通過。
