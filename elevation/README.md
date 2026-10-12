@@ -1,13 +1,20 @@
-# 櫃體立面圖（新版）— GitHub 版
+# 三川工方｜手機繪圖
 
 網址：https://heaven2935-code.github.io/sanchuan-cabinet-drawing/elevation/
 
-- 來源：Claude 上的主檔案 https://claude.ai/artifact/LE9z4xUGS94R6ZGWkkfc5Z
-- 更新方式：取得主檔案的 index.html 後執行
-  `python3 scripts/build_elevation.py <主檔案 index.html> elevation`
-- 跟 Claude 版的差別：
-  - 「我的圖面」存在這支手機的瀏覽器裡（IndexedDB），跟 Claude 版的資料不共用。
-  - 匯出：手機上跳出分享選單（可存到檔案／照片），電腦上直接下載。
-  - AI 繪圖不提供（需要 Claude）。
-  - 上方不預設留空（沒有 Claude 的浮動按鈕）。
-- 主畫面圖示：icon-180.png、icon-512.png（三川工方 Logo）。
+手機介面以圖面為主：點線或格子才出現可用操作；操作完成後收起。
+單指拖圖、雙指縮放。分隔、線位置調整或標註移動時，顯示下緣 X 與右緣 Y 尺軌；可拖動標示控制準星，對準線延伸到尺軌。
+X 為距櫃左，Y 為離櫃底高度，單位 mm。
+
+保留原有櫃體計算、47 種樣式、照片校正、掃描匯入、自由繪圖與 PNG／SVG／DXF 匯出。資料沿用原先的 sc-cab IndexedDB 與草稿鍵，既有圖面可繼續讀取。
+
+程式來源：elevation/source/。
+重建：
+```sh
+python3 scripts/build_mobile_elevation.py
+node elevation/source/tests/verify.cjs
+```
+
+舊版備份分支：backup/elevation-before-mobile-20261013-4ae2031。
+
+尚未完成 iPhone 實機觸控與分享流程驗收。無 AI 服務與自動裁切清單。

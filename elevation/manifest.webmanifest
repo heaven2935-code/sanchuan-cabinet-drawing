@@ -1,20 +1,20 @@
 {
-  "name": "櫃體立面圖｜三川工方",
-  "short_name": "櫃體立面圖",
-  "lang": "zh-TW",
+  "name": "三川工方｜手機繪圖",
+  "short_name": "手機繪圖",
+  "lang": "zh-Hant",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#1F2428",
-  "theme_color": "#1F2428",
+  "background_color": "#f4f6f7",
+  "theme_color": "#f4f6f7",
   "icons": [
     {
-      "src": "./icon-180.png?v=1",
+      "src": "icon-180.png",
       "sizes": "180x180",
       "type": "image/png"
     },
     {
-      "src": "./icon-512.png?v=1",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

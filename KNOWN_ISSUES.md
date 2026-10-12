@@ -32,3 +32,10 @@
 
 - V1.9 本次雲端瀏覽器建立頁面逾時，未取得實際畫面。互動測試通過僅代表 JavaScript 行為；新版 CSS 的直／橫式、safe-area 與真機視覺須另行確認。
 - 直式頂部為完整品牌列及檔名列；滿版模式收起品牌列，觸控板可從上方工具收合。
+
+
+## 2026-10-13：手機版 elevation/
+
+新版位於 elevation/index.html，原網址保持 https://heaven2935-code.github.io/sanchuan-cabinet-drawing/elevation/ 。以圖面為主、點選顯示操作；需要位置調整時顯示可拖動的 XY 尺軌。程式來源、驗證與詳細文件位於 elevation/source/；重建使用 python3 scripts/build_mobile_elevation.py。既有資料沿用 sc-cab 存檔位置。舊版已備份至 backup/elevation-before-mobile-20261013-4ae2031。
+
+新版尚未完成 iPhone 實機驗收；座標、縮放及計算檢查已通過。
