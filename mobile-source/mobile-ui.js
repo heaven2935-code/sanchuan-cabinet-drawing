@@ -37,6 +37,8 @@ placeTiles=function(cw,hp,lay){tiles=[{i:pj.cur,S:lay.S,vb:lay.vb,ox:0,oy:0}];wo
 forceLand=false;axOn.x=axOn.y=false;esub='line';padMode='cur';lkp=null;
 const mEngineRender=render;
 render=function(){
+  st.grid=displaySettings.gridStyle==='none'?0:displaySettings.gridSize;
+  st.labels=displaySettings.names;
   cur.on=true;esub='line';
   mEngineRender();
   cur.on=!!mobileUI.op;
@@ -97,8 +99,20 @@ function mTransaction(fn){
 function mGridButton(id,label,icon,accent=false){return`<button data-m="${id}" class="${accent?'m-accent':''}">${mIcon(icon)}<span>${label}</span></button>`;}
 function mRow(id,label,icon,note=''){return`<button class="m-row-action" data-m="${id}">${mIcon(icon)}<span>${label}</span>${note?'<small>'+note+'</small>':''}</button>`;}
 function mMenuOpen(){
-  mOpenSheet('圖面與檔案',`<label class="m-field">檔名<input id="mName" maxlength="60" value="${esc(pj.name||'')}" placeholder="輸入案名或圖面名稱"></label><div class="m-menu-grid">${mGridButton('overall','尺寸','size')}${mGridButton('styles','櫃體樣式','style')}${mGridButton('pages','分頁','files')}${mGridButton('save','儲存','save',true)}${mGridButton('saved','我的圖面','files')}${mGridButton('exports','匯出','export')}</div><p class="m-section-label">圖面</p>${mRow('preview','預覽成品圖','preview')}${mRow('grid','格線','grid',st.grid?'顯示中':'已關閉')}${mRow('labels','格內名稱與尺寸','size',st.labels?'顯示中':'已關閉')}${mRow('photo','照片與掃描底圖','photo')}<p class="m-section-label">備份</p>${mRow('backup','下載可編輯備份','export','JSON')}${mRow('restore','匯入圖面備份','import')}${mRow('new','新增檔案','new')}<p class="m-sheet-note">圖面存在這台裝置的瀏覽器內。下載備份可保留可編輯的圖面與照片。</p>`,'menu');
+  mOpenSheet('圖面與檔案',`<label class="m-field">檔名<input id="mName" maxlength="60" value="${esc(pj.name||'')}" placeholder="輸入案名或圖面名稱"></label><div class="m-menu-grid">${mGridButton('overall','尺寸','size')}${mGridButton('styles','櫃體樣式','style')}${mGridButton('pages','分頁','files')}${mGridButton('save','儲存','save',true)}${mGridButton('saved','我的圖面','files')}${mGridButton('exports','匯出','export')}</div><p class="m-section-label">圖面</p>${mRow('preview','預覽成品圖','preview')}${mRow('display','圖面顯示與尺軌','settings','格線・顏色')}${mRow('photo','照片與掃描底圖','photo')}<p class="m-section-label">備份</p>${mRow('backup','下載可編輯備份','export','JSON')}${mRow('restore','匯入圖面備份','import')}${mRow('new','新增檔案','new')}<p class="m-sheet-note">圖面存在這台裝置的瀏覽器內。下載備份可保留可編輯的圖面與照片。</p>`,'menu');
   $('#mName').addEventListener('change',e=>{pushP();pj.name=e.target.value.trim().slice(0,60);render();saveNow();});
+}
+function mDisplayOpen(){
+  const p=displaySettings,select=(id,label,options,value)=>`<label class="m-field">${label}<select id="${id}">${options.map(([v,t])=>`<option value="${v}"${value===v?' selected':''}>${t}</option>`).join('')}</select></label>`;
+  const toggle=(id,label,value)=>`<label class="m-display-toggle"><span>${label}</span><input id="${id}" type="checkbox"${value?' checked':''}></label>`;
+  const swatch=(id,label,value)=>`<label class="m-field m-color-field">${label}<input id="${id}" type="color" value="${value}"></label>`;
+  mOpenSheet('圖面顯示與尺軌',`<form id="mForm"><p class="m-section-label">顯示內容</p>${toggle('mShowSwing','門片開啟斜線',p.doorSwing)}${toggle('mShowDims','尺寸標示',p.dimensions)}${toggle('mShowNames','格內名稱與尺寸',p.names)}<p class="m-sheet-note">尺寸關閉時，選取線條仍會顯示相關尺寸，方便調整。</p><p class="m-section-label">格線</p><div class="m-form-grid">${select('mGridStyle','樣式',[['lines','細格線'],['dots','點陣'],['none','無格線']],p.gridStyle)}${mField('mGridSize','格距 · mm',p.gridSize,10,1000)}</div>${swatch('mGridColor','格線顏色',p.gridColor)}<p class="m-sheet-note">細格線每 5 格加深一條。縮小時會簡化過密格線，設定格距仍用於對齊。</p><p class="m-section-label">標示顏色</p><div class="m-form-grid">${swatch('mSelectionColor','選取線與菱形',p.selectionColor)}${swatch('mDimensionColor','一般尺寸',p.dimensionColor)}</div>${select('mRulerSide','直向尺的位置',[['right','右側'],['left','左側']],p.rulerSide)}${mFormButtons}</form>`,'display');
+  mobileUI.submit=()=>{
+    const size=Number($('#mGridSize').value);if(!Number.isFinite(size)||size<10||size>1000){toast('格距請輸入 10–1000 mm');return;}
+    Object.assign(displaySettings,DisplayStyle.normalize({doorSwing:$('#mShowSwing').checked,dimensions:$('#mShowDims').checked,names:$('#mShowNames').checked,gridStyle:$('#mGridStyle').value,gridSize:size,gridColor:$('#mGridColor').value,selectionColor:$('#mSelectionColor').value,dimensionColor:$('#mDimensionColor').value,rulerSide:$('#mRulerSide').value}));
+    try{localStorage.setItem('sc-mobile-display-v1',JSON.stringify(displaySettings))}catch(_){}
+    othCache.clear();mCloseSheet(true);toast('圖面顯示已更新');
+  };
 }
 function mAddOpen(){const c=!isFree()?locCell(mCellCenter()):null,x=c&&(c.s||c.p),L=c&&(c.s?c.p.ins:c.col.parts),v=c&&view==='out'&&!c.col.lock&&c.col.w>=2*MIN&&st.cols.length<20,h=x&&x.h>=2*MIN&&L.length<(c.s?8:12);mOpenSheet('新增內容','<div class="m-menu-grid">'+(v?mGridButton('splitV','直分隔','vertical'):'')+(h?mGridButton('splitH','橫分隔','horizontal'):'')+mGridButton('mark','標註／量尺','mark',true)+mGridButton('photo','照片底圖','photo')+(pj.sheets.length<20?mGridButton('addpage','新增分頁','new'):'')+(isFree()?mGridButton('freeTools','畫板與五金','pen'):mGridButton('toFree','自由繪圖','pen'))+'</div><p class="m-sheet-note">先點一格再分隔，可以直接指定要編輯的區域。</p>','add');}
 function mPages(){mOpenSheet('分頁',pj.sheets.map((x,i)=>mRow('page:'+i,shName(i),'files',i===pj.cur?'目前':'')).join('')+(pj.sheets.length<20?mRow('addpage','新增分頁','plus'):'')+mRow('pageRename','修改目前分頁名稱','text')+mRow('pageDuplicate','複製目前分頁','copy'),'pages');}
@@ -164,6 +178,7 @@ function mPhoto(){mCloseSheet(false);mode='bg';ucat='edit';render();mOpenSheet('
 function mFreeTools(){mOpenSheet('自由繪圖工具','<div class="m-menu-grid">'+[['board','固定板'],['shelf','活動層板'],['rod','吊衣桿'],['hinge','鉸鏈'],['line','輔助線']].map(([k,l])=>mGridButton('free:'+k,l,k==='board'?'vertical':'line')).join('')+'</div><p class="m-section-label">封閉格子</p><div class="m-menu-grid">'+[['door','門片'],['drawer','抽屜'],['open','開放格'],['blank','封板']].map(([k,l])=>mGridButton('stamp:'+k,l,'rect')).join('')+'</div>','freeTools');}
 async function mBackup(){try{pjSync();photoStash();await dl.save({filename:fileBase()+'.json',data:JSON.stringify({format:'sanchuan-mobile-v1',project:{id:'',name:pj.name,cur:pj.cur,sheets:pj.sheets},photos:[...photos.entries()]},null,2)});toast('可編輯備份已交給裝置存檔');}catch(e){if(e?.code!=='declined')toast('備份沒有完成，請再試一次');}}
 async function mRun(id){
+  if(id==='display'||id==='grid'||id==='labels'){mDisplayOpen();return;}
   if(id.startsWith('tool:')){mStartTool(id.slice(5));return;}
   if(id.startsWith('color:')){mobileUI.color=id.slice(6);mToolOpen();return;}
   if(id.startsWith('free:')||id.startsWith('stamp:')){ftool={k:id.startsWith('free:')?'ln':'st',t:id.split(':')[1]};mCloseSheet(false);mFinish();mode='draw';dtool='line';mobileUI.freeDrawing=true;render();return;}

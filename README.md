@@ -57,3 +57,8 @@ Safari 開啟網站 → 分享 → 加入主畫面 → 打開為網頁 App → �
 ## 2026-10-13 主網址改版（保留 elevation）
 
 主網址 https://heaven2935-code.github.io/sanchuan-cabinet-drawing/ 已換成新版手機繪圖程式，包含直接點選、情境編輯與 X/Y 尺軌。/elevation/ 完整保留原樣。新版維護使用 scripts/build_mobile_root.py。
+
+
+## 2026-10-14 圖面顯示設定
+
+圖面顯示設定：選單 → 圖面顯示與尺軌。門片斜線、尺寸與格內名稱預設關閉；線條選取時顯示相關尺寸。可調整格距 10–1000 mm、格線或點陣、格線／選取／尺寸顏色，以及直向尺左右位置。設定沿用至下次開啟。正式網址 https://heaven2935-code.github.io/sanchuan-cabinet-drawing/ 。

@@ -20,3 +20,8 @@
 驗證：`node tests/verify.cjs`。
 
 來源參考：https://github.com/heaven2935-code/sanchuan-cabinet-drawing/tree/main/elevation
+
+
+## 2026-10-14 圖面顯示設定
+
+圖面顯示設定：選單 → 圖面顯示與尺軌。門片斜線、尺寸與格內名稱預設關閉；線條選取時顯示相關尺寸。可調整格距 10–1000 mm、格線或點陣、格線／選取／尺寸顏色，以及直向尺左右位置。設定沿用至下次開啟。正式網址 https://heaven2935-code.github.io/sanchuan-cabinet-drawing/ 。

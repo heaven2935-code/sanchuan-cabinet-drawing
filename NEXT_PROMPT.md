@@ -31,3 +31,8 @@
 ## 2026-10-13 主網址改版（保留 elevation）
 
 使用者最新指定：保留 /elevation/ 原樣，只將主網址 /sanchuan-cabinet-drawing/ 舊程式換成手機新版。新版來源 mobile-source/；建置 scripts/build_mobile_root.py；資料命名 sc-mobile-*。不得將新版發布至 elevation/。
+
+
+## 2026-10-14 圖面顯示設定
+
+只維護 GitHub 主網址新版，elevation/ 保留原樣。顯示偏好 display-style.js / sc-mobile-display-v1；執行 python scripts/build.py、node tests/verify.cjs、node tests/display.cjs。根目錄建置 scripts/build_mobile_root.py。勿改回每條線不同色或非中點標記。

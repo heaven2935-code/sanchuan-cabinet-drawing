@@ -41,3 +41,8 @@
 ## 2026-10-13 主網址改版（保留 elevation）
 
 主入口 index.html 為新版手機繪圖，mobile-source/ 保存新版來源，scripts/build_mobile_root.py 建置至根目錄。elevation/ 為獨立保留的原程式，本次沒有修改。
+
+
+## 2026-10-14 圖面顯示設定
+
+正式入口為 GitHub 根目錄，elevation/ 保留不動。display-style.js 管理裝置顯示偏好、格線與中點幾何；scripts/build.py 將偏好注入原引擎與匯出流程。mobile-ui.js 的 mDisplayOpen 提供設定與儲存，mobile-rulers.js 支援左右尺軌。

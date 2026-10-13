@@ -135,6 +135,11 @@ html,body,#app,#app main{background:#fff!important}
 .m-x-marker:after{left:calc(var(--pin-x,40px) - 4px);top:-7px;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:6px solid #147c88}
 #mShell .m-y-marker{width:76px;left:-70px;cursor:ns-resize}
 .m-y-marker:after{right:-7px;top:calc(var(--pin-y,22px) - 4px);border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid #147c88}
+.m-rulers-left .m-y-marker{left:28px!important}
+.m-rulers-left .m-y-marker:after{right:auto;left:-7px;border-left:0;border-right:6px solid #147c88}
+.m-display-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:50px;border-bottom:1px solid #e5ecef}
+#mShell .m-display-toggle input{appearance:auto;-webkit-appearance:checkbox;accent-color:#147c88;width:24px;height:24px;flex-shrink:0}
+#mShell .m-color-field input{height:44px;width:100%;padding:4px;border:1px solid #dce5e8;border-radius:9px;background:#fff}
 #mRailCorner{position:absolute;display:flex;justify-content:center;align-items:center;color:#8da4ae;font-size:9px;font-family:var(--num);pointer-events:none;background:#f5f9fa;border-left:1px solid #d8e5e9}
 #mRailSafe{position:absolute;left:0;bottom:0;height:env(safe-area-inset-bottom,0px);width:1px;pointer-events:none;visibility:hidden}
 .m-header,.m-dock,.m-context,#mOperation,#mToolStrip{z-index:3}

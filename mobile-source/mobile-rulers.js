@@ -32,22 +32,23 @@ function mRulersSync(){
   root.hidden=!on;mShell.classList.toggle('has-rulers',on);if(!on){mobileUI.railDrags.clear();return;}
   const {rect,map}=mRulerMap();if(!rect.width||!rect.height)return;
   root.style.left=rect.left+'px';root.style.top=rect.top+'px';root.style.width=rect.width+'px';root.style.height=rect.height+'px';
-  const safe=$('#mRailSafe').getBoundingClientRect().height,W=rect.width,H=rect.height,right=34,bottom=36,X=W-right,Y=H-safe-bottom,p=MobilePolicy.worldToScreen(map,q),tick=MobilePolicy.rulerStep(64/map.scale),minor=tick/5;
-  const xTrack=$('#mRailX'),yTrack=$('#mRailY');xTrack.style.cssText=`left:0;top:${Y}px;width:${X}px;height:${bottom}px`;yTrack.style.cssText=`left:${X}px;top:0;width:${right}px;height:${Y}px`;
-  $('#mRailCorner').style.cssText=`left:${X}px;top:${Y}px;width:${right}px;height:${bottom}px`;
+  const safe=$('#mRailSafe').getBoundingClientRect().height,W=rect.width,H=rect.height,R=DisplayStyle.rails(W,H,safe,displaySettings.rulerSide),{left,width:right,bottom,x0,x1,railX,borderX}=R,Y=R.y,p=MobilePolicy.worldToScreen(map,q),tick=MobilePolicy.rulerStep(64/map.scale),minor=tick/5;
+  root.classList.toggle('m-rulers-left',left);
+  const xTrack=$('#mRailX'),yTrack=$('#mRailY');xTrack.style.cssText=`left:${x0}px;top:${Y}px;width:${x1-x0}px;height:${bottom}px`;yTrack.style.cssText=`left:${railX}px;top:0;width:${right}px;height:${Y}px`;
+  $('#mRailCorner').style.cssText=`left:${railX}px;top:${Y}px;width:${right}px;height:${bottom}px`;
   const f=n=>Math.round(n*10)/10,tx=(x,y,text,anchor='middle')=>`<text x="${f(x)}" y="${f(y)}" text-anchor="${anchor}" fill="#7b949e" font-size="9" font-family="ui-monospace,monospace">${text}</text>`,line=(x1,y1,x2,y2,c='#b3c7cf',dash='')=>`<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" stroke="${c}" stroke-width="1"${dash?' stroke-dasharray="'+dash+'"':''}/>`;
-  let art=`<rect x="0" y="${Y}" width="${W}" height="${bottom+safe}" fill="#f5f9fa"/><rect x="${X}" y="0" width="${right}" height="${Y}" fill="#f5f9fa"/>`+line(0,Y,W,Y,'#d8e5e9')+line(X,0,X,Y,'#d8e5e9');
-  const lo=MobilePolicy.screenToWorld(map,{x:0,y:0}),hi=MobilePolicy.screenToWorld(map,{x:X,y:Y});
+  let art=`<rect x="0" y="${Y}" width="${W}" height="${bottom+safe}" fill="#f5f9fa"/><rect x="${railX}" y="0" width="${right}" height="${Y}" fill="#f5f9fa"/>`+line(0,Y,W,Y,'#d8e5e9')+line(borderX,0,borderX,Y,'#d8e5e9');
+  const lo=MobilePolicy.screenToWorld(map,{x:x0,y:0}),hi=MobilePolicy.screenToWorld(map,{x:x1,y:Y});
   const major=v=>Math.abs(v/tick-Math.round(v/tick))<1e-5,label=v=>Math.abs(v)<.00001?'0':String(Math.round(v*1000)/1000);
-  for(let n=Math.ceil(lo.x/minor);n*minor<=hi.x&&n<Math.ceil(lo.x/minor)+300;n++){const v=n*minor,x=MobilePolicy.worldToScreen(map,{x:v,y:0}).x,m=major(v);art+=line(x,Y,x,Y+(m?9:4));if(m&&x>18&&x<X-20)art+=tx(x,Y+24,label(v));}
+  for(let n=Math.ceil(lo.x/minor);n*minor<=hi.x&&n<Math.ceil(lo.x/minor)+300;n++){const v=n*minor,x=MobilePolicy.worldToScreen(map,{x:v,y:0}).x,m=major(v);art+=line(x,Y,x,Y+(m?9:4));if(m&&x>x0+18&&x<x1-20)art+=tx(x,Y+24,label(v));}
   const yLow=st.H-hi.y,yHigh=st.H-lo.y;
-  for(let n=Math.ceil(yLow/minor);n*minor<=yHigh&&n<Math.ceil(yLow/minor)+300;n++){const v=n*minor,y=MobilePolicy.worldToScreen(map,{x:0,y:st.H-v}).y,m=major(v);art+=line(X,y,X+(m?9:4),y);if(m&&y>18&&y<Y-20)art+=`<text x="${f(X+23)}" y="${f(y)}" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 ${f(X+23)} ${f(y)})" fill="#7b949e" font-size="9" font-family="ui-monospace,monospace">${label(v)}</text>`;}
-  const inX=p.x>=0&&p.x<=X,inY=p.y>=0&&p.y<=Y;
-  if(inX)art+=line(p.x,0,p.x,Y+8,'#2b9baa','5 4');if(inY)art+=line(0,p.y,X+8,p.y,'#2b9baa','5 4');
+  for(let n=Math.ceil(yLow/minor);n*minor<=yHigh&&n<Math.ceil(yLow/minor)+300;n++){const v=n*minor,y=MobilePolicy.worldToScreen(map,{x:0,y:st.H-v}).y,m=major(v),txY=railX+(left?11:23);art+=line(borderX,y,borderX+(left?-1:1)*(m?9:4),y);if(m&&y>18&&y<Y-20)art+=`<text x="${f(txY)}" y="${f(y)}" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 ${f(txY)} ${f(y)})" fill="#7b949e" font-size="9" font-family="ui-monospace,monospace">${label(v)}</text>`;}
+  const inX=p.x>=x0&&p.x<=x1,inY=p.y>=0&&p.y<=Y;
+  if(inX)art+=line(p.x,0,p.x,Y+8,'#2b9baa','5 4');if(inY)art+=line(left?x0-8:0,p.y,left?W:x1+8,p.y,'#2b9baa','5 4');
   if(inX&&inY)art+=`<circle cx="${f(p.x)}" cy="${f(p.y)}" r="5" fill="#fff" stroke="#147c88" stroke-width="1.5"/><circle cx="${f(p.x)}" cy="${f(p.y)}" r="1.5" fill="#147c88"/>`;
   const artNode=$('#mRulerArt');artNode.setAttribute('viewBox',`0 0 ${W} ${H}`);artNode.innerHTML=art;
-  const mx=$('#mRailXM'),my=$('#mRailYM'),px=clamp(p.x,2,X-2),py=clamp(p.y,2,Y-2),left=clamp(px-40,2,Math.max(2,X-82)),top=clamp(py-22,2,Math.max(2,Y-46));
-  mx.style.left=left+'px';mx.style.setProperty('--pin-x',(px-left)+'px');my.style.top=top+'px';my.style.setProperty('--pin-y',(py-top)+'px');
+  const mx=$('#mRailXM'),my=$('#mRailYM'),px=clamp(p.x-x0,2,x1-x0-2),py=clamp(p.y,2,Y-2),markerLeft=clamp(px-40,2,Math.max(2,x1-x0-82)),top=clamp(py-22,2,Math.max(2,Y-46));
+  mx.style.left=markerLeft+'px';mx.style.setProperty('--pin-x',(px-markerLeft)+'px');my.style.top=top+'px';my.style.setProperty('--pin-y',(py-top)+'px');
   const vx=Math.round(q.x),vy=Math.round(st.H-q.y);mx.querySelector('b').textContent=vx;my.querySelector('b').textContent=vy;
   [[mx,vx,0,st.W],[my,vy,0,st.H]].forEach(([el,v,min,max])=>{el.setAttribute('aria-valuenow',v);el.setAttribute('aria-valuemin',Math.min(min,v));el.setAttribute('aria-valuemax',Math.max(max,v));el.setAttribute('aria-valuetext',v+' 公釐');});
 }

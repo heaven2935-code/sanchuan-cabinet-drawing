@@ -4,6 +4,28 @@ import re
 
 root=Path(__file__).resolve().parents[1]
 src=(root/'legacy-source.html').read_text()
+display=(root/'display-style.js').read_text()
+src=src.replace("const BASEC=", display+"\nlet displaySettings=DisplayStyle.normalize();\ntry{displaySettings=DisplayStyle.normalize(JSON.parse(localStorage.getItem('sc-mobile-display-v1')||'{}'))}catch(_){}\nconst BASEC=",1)
+src=src.replace("let xi=0,yi=0;H.forEach(h=>{h.col=h.ax==='x'?HCOL[xi++%HCOL.length]:HCOL[(5+yi++)%HCOL.length]});", "const centered=DisplayStyle.handles(st,H,displaySettings);H.splice(0,H.length,...centered);")
+src=src.replace("A.push({t:'p',pts:[[ox,y],[hx,y+h/2],[ox,y+h]],c:'dash'})", "A.push({t:'p',pts:[[ox,y],[hx,y+h/2],[ox,y+h]],c:'dash',doorSwing:true})")
+src=src.replace("sx+sw*.7", "sx+sw*.5")
+src=src.replace("grid:+d.grid===50||+d.grid===100?+d.grid:0", "grid:Number.isFinite(+d.grid)&&+d.grid>=10?clamp(Math.round(+d.grid),10,1000):0")
+src=src.replace("gd:`fill=\"none\" stroke=\"${pal.mute}\"", "gd:`fill=\"none\" stroke=\"${displaySettings.gridColor}\"")
+src=src.replace("gD:`fill=\"none\" stroke=\"${pal.mute}\"", "gD:`fill=\"none\" stroke=\"${displaySettings.gridColor}\"")
+src=src.replace("    rt:`", "    gDot:`fill=\"${displaySettings.gridColor}\" fill-opacity=\".6\" stroke=\"none\"`,\n    rt:`",1)
+src=src.replace("dm:[pal.sub,NUMF,'']", "dm:[pal.sub,NUMF,halo(p.z)]")
+src=src.replace("font-family=\"Outfit,'LXGW WenKai TC',sans-serif\"", "font-family=\"-apple-system,BlinkMacSystemFont,'Arial',sans-serif\"")
+wrapper='''
+const displayGeom=geom;
+geom=function(st,o){
+  const shape=Object.assign({},st,{labels:displaySettings.names,grid:0});
+  const options=Object.assign({},o,{acc:displaySettings.selectionColor});
+  const g=displayGeom(shape,options),H=handleModel(shape,o.view==='in',o.sel?o.sel.c:null);
+  return DisplayStyle.decorate(g,shape,options,displaySettings,H);
+};
+'''
+src=src.replace("if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={",wrapper+"if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={DisplayStyle,displaySettings,",1)
+src=src.replace("bg:bgArg(),fsel:","bg:bgArg(),gridScale:S/zoom.z,fsel:")
 css=(root/'mobile-ui.css').read_text()
 js=(root/'mobile-ui.js').read_text()
 js=js.replace('// Stable public metadata', (root/'mobile-rulers.js').read_text()+'\n// Stable public metadata',1)
@@ -18,6 +40,7 @@ assert pos>0
 src=src[:pos]+'\n/* Mobile interaction layer */\n'+js+'\n'+src[pos:]
 src=src.replace("indexedDB.open('sc-cab',1)","indexedDB.open('sc-mobile-cab',1)")
 src=src.replace("'sc-cab-","'sc-mobile-")
+src=src.replace('?v=1','?v=display-20261014')
 dist=root/'dist'
 dist.mkdir(exist_ok=True)
 (dist/'index.html').write_text(src)
