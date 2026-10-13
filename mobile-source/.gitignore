@@ -1,0 +1,7 @@
+/qa/
+*.tar.gz
+*.tgz
+*.log
+
+node_modules/
+dist/

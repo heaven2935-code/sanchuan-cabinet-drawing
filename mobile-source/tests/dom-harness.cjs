@@ -1,0 +1,26 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const {parseHTML}=require('linkedom'),{indexedDB,IDBKeyRange}=require('fake-indexeddb');
+const {setTimeout:nativeSetTimeout,clearTimeout:nativeClearTimeout}=require('node:timers');
+const root=path.resolve(__dirname,'..');
+async function boot(memory=new Map(),viewport={width:390,height:844}){
+  const html=fs.readFileSync(path.join(root,'dist/index.html'),'utf8'),{window:domWindow}=parseHTML(html),window={document:domWindow.document,HTMLElement:domWindow.HTMLElement,SVGElement:domWindow.SVGElement,HTMLInputElement:domWindow.HTMLInputElement,HTMLSelectElement:domWindow.HTMLSelectElement,Event:domWindow.Event,CustomEvent:domWindow.CustomEvent,addEventListener:domWindow.addEventListener.bind(domWindow),removeEventListener:domWindow.removeEventListener.bind(domWindow),dispatchEvent:domWindow.dispatchEvent.bind(domWindow)},timers=new Set(),downloads=[];
+  const later=(fn,ms)=>{const id=nativeSetTimeout(()=>{timers.delete(id);fn()},ms);timers.add(id);return id;};
+  const storage={getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,String(v)),removeItem:k=>memory.delete(k),clear:()=>memory.clear()};
+  Object.assign(window,{console,TextEncoder,TextDecoder,Uint8Array,DataView,ArrayBuffer,Blob,Buffer,Date,Math,Promise,indexedDB,IDBKeyRange,localStorage:storage,innerWidth:viewport.width,innerHeight:viewport.height,performance:{now:()=>Date.now()},matchMedia:()=>({matches:false,addEventListener(){},removeEventListener(){}}),scrollTo(){},setTimeout:later,clearTimeout:id=>{timers.delete(id);nativeClearTimeout(id)},requestAnimationFrame:fn=>later(()=>fn(Date.now()),16),cancelAnimationFrame:id=>{timers.delete(id);nativeClearTimeout(id)},URL:{createObjectURL:b=>{downloads.push(b);return'blob:qa-'+downloads.length},revokeObjectURL(){}}});
+  window.getComputedStyle=el=>({getPropertyValue:k=>({'--ink':'#203038','--sub':'#60727b','--mute':'#85949b','--sheet':'#ffffff','--tint':'#eef3f4','--accent':'#147c88'}[k]||''),paddingTop:'0',paddingBottom:'0',marginBottom:'0',fontSize:'14px',lineHeight:'18px',display:el?.hidden?'none':'block'});
+  const ep=window.HTMLElement.prototype;for(const prop of ['clientWidth','offsetWidth'])Object.defineProperty(ep,prop,{get(){return this.id==='sheet'||this.id==='dw'?viewport.width:40},configurable:true});
+  for(const prop of ['clientHeight','offsetHeight'])Object.defineProperty(ep,prop,{get(){return this.id==='sheet'||this.id==='dw'?viewport.height-58:40},configurable:true});
+  ep.getBoundingClientRect=function(){const drawing=['dw','sheet','mRulers'].includes(this.id),w=drawing?viewport.width:40,h=drawing?viewport.height-58:40,x=0,y=drawing?58:0;return{x,y,left:x,top:y,right:x+w,bottom:y+h,width:w,height:h}};
+  ep.focus=function(){};ep.blur=function(){};ep.select=function(){};ep.scrollIntoView=function(){};ep.setPointerCapture=function(){};ep.releasePointerCapture=function(){};ep.hasPointerCapture=()=>false;
+  ep.getScreenCTM=()=>({a:1,b:0,c:0,d:1,e:0,f:0,inverse(){return this}});ep.getBBox=function(){return{x:Number(this.getAttribute('x'))||0,y:(Number(this.getAttribute('y'))||0)-14,width:(this.textContent||'').length*8,height:16}};
+  window.DOMPoint=class{constructor(x=0,y=0){this.x=x;this.y=y}matrixTransform(){return this}};
+  window.document.elementFromPoint=()=>window.document.querySelector('#dw');
+  window.window=window;
+  const ctx=vm.createContext(window),sources=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
+  const expose=`\nwindow.__qa={state:()=>({st:JSON.parse(JSON.stringify(st)),sel:sel&&{...sel},hsel:hsel&&{...hsel},fsel:fsel&&{...fsel},view,mode,zoom:{...zoom},pointerCount:mobileUI.pointers.size,hist:hist.length,fut:fut.length,pj:JSON.parse(JSON.stringify(pj)),prefs:{...displaySettings},op:mobileUI.op&&{kind:mobileUI.op.kind},runtime:{...depthRuntime},panel:mobileUI.panelKind}),load:(s,v='out')=>{mCloseSheet(false);mFinish();setProject(mkProject(s));hist=[];fut=[];edN=0;setView(v);render()},tap:(q,el=null)=>mTap(q,el),selection:mState,storeList:()=>store.list(),pixel:q=>{const M=inv();return{x:M.r.left+(M.r.width-M.v[2]*M.s)/2+(q.x-M.v[0])*M.s,y:M.r.top+(M.r.height-M.v[3]*M.s)/2+(q.y-M.v[1])*M.s}},zoom:z=>{zoom.m=true;zoom.z=z;applyView()},run:mRun,offset:mOperationOffset,point:mOperationPoint,confirm:mConfirmOperation,finish:mFinish,styles:STYLES,styleState,normalize,toFree,regions:()=>CabinetDepth.regions(st,gapsOf),handles:()=>hModel(),segment:h=>DisplayStyle.segment(st,h),gapsOf,render,save:saveNow,prefs:p=>{Object.assign(displaySettings,DisplayStyle.normalize({...displaySettings,...p}));render()},ann:a=>{push();st.ann.push(a);render()},snapshot:()=>svg.innerHTML};\n`;
+  sources.forEach((s,i)=>{if(i===sources.length-1){const n=s.lastIndexOf('})();');s=s.slice(0,n)+expose+s.slice(n)}vm.runInContext(s,ctx,{filename:'app-'+i+'.js'});});
+  await new Promise(r=>nativeSetTimeout(r,30));
+  return{window,document:window.document,qa:window.__qa,memory,downloads,dispose(){for(const id of timers)nativeClearTimeout(id);timers.clear()}};
+}
+module.exports={boot};

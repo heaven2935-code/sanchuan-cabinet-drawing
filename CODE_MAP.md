@@ -51,3 +51,8 @@
 ## 2026-10-14 線條選色與深色版
 
 新增 DisplayStyle.lineColor、theme、themeColors/themeChange 與 palette。mDisplayOpen 提供線色及淺／深版本；render 設定 data-canvas-theme；mobile-ui.css 與 mobile-rulers.js 實作深色介面。toSVG/exportSVG 使用同一色盤。
+
+
+## 2026-10-14 櫃內深度與操作檢查
+
+cabinet-depth.js：櫃內固定視角投影、開口裁切、板面陰影，以及自由線與標註的點選距離。depthRuntime 管理編輯暫停、基準外框及未確認預覽。mobile-ui.js：櫃內平面／深度切換、平面編輯後恢復、精確毫米、數值驗證與原生板線拖曳。ui-policy.js：合併、鎖定及可用動作判斷。tests/dom-harness.cjs/audit.cjs 執行完整程式與真實 DOM 事件，tests/depth.cjs 驗證投影；测试依賴只供開發。

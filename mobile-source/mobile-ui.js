@@ -20,7 +20,7 @@ const mIcon=k=>'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+(M_ICONS[
 const mobileUI={panel:false,panelKind:'',native:[],op:null,tool:null,first:null,preview:null,target:null,pointers:new Map(),gesture:null,hint:true,submit:null,freeDrawing:false,color:'#147c88',width:2};
 const mShell=document.createElement('div');mShell.id='mShell';
 mShell.innerHTML=`
-  <header class="m-header"><span class="m-brand" aria-hidden="true"><img src="./logo.svg" alt=""></span><button id="mTitle" aria-label="編輯檔名"><strong></strong><span id="mSubtitle"></span></button><button id="mView" aria-label="切換櫃外與櫃內"></button><button id="mMenu" aria-label="圖面與檔案">${mIcon('menu')}</button></header>
+  <header class="m-header"><span class="m-brand" aria-hidden="true"><img src="./logo.svg" alt=""></span><button id="mTitle" aria-label="編輯檔名"><strong></strong><span id="mSubtitle"></span></button><button id="mView" aria-label="切換櫃外與櫃內"></button><button id="mDepth" aria-label="切換櫃內平面與深度預覽" title="固定視角的深度示意，不代表實際櫃深"></button><button id="mMenu" aria-label="圖面與檔案">${mIcon('menu')}</button></header>
   <div id="mHint">點線或格子來編輯 · 單指拖圖 · 雙指縮放</div>
   <div class="m-dock"><div class="m-tools"><button id="mUndo" aria-label="復原">${mIcon('undo')}</button><button id="mRedo" aria-label="重做">${mIcon('redo')}</button></div><button id="mFit" aria-label="圖面置中">${mIcon('fit')}</button><button id="mAdd" aria-label="新增內容">${mIcon('plus')}</button></div>
   <section id="mContext" class="m-context" aria-label="選取項目的操作" hidden><div class="m-selection-heading"><span id="mSelectedTitle"></span><button id="mDismiss" aria-label="取消選取">${mIcon('close')}</button></div><div id="mActions"></div></section>
@@ -37,6 +37,9 @@ placeTiles=function(cw,hp,lay){tiles=[{i:pj.cur,S:lay.S,vb:lay.vb,ox:0,oy:0}];wo
 forceLand=false;axOn.x=axOn.y=false;esub='line';padMode='cur';lkp=null;
 const mEngineRender=render;
 render=function(){
+  depthRuntime.view=view;depthRuntime.previewing=!!mobileUI.nativeDrag||!!(mobileUI.op?.kind==='annmove'&&!mobileUI.op.committed);
+  depthRuntime.editing=!!mobileUI.op||!!mobileUI.tool||['cell','overall','native'].includes(mobileUI.panelKind);
+  depthRuntime.fixedEdge=mobileUI.fixedEdge||null;
   document.documentElement.dataset.canvasTheme=displaySettings.theme;
   darkSheet=displaySettings.theme==='dark';
   const themeMeta=document.querySelector('meta[name="theme-color"]');if(themeMeta)themeMeta.content=darkSheet?'#151f27':'#ffffff';
@@ -50,21 +53,23 @@ render=function(){
 
 function mState(){
   if(mobileUI.op||mobileUI.tool||mobileUI.panel)return{busy:true};
-  if(multi){const c=picked(),cols=[...new Set(c.map(x=>x.c))];return{kind:'multi',title:'已選 '+c.length+' 格',merge:!$('#mMerge').disabled,evenWidth:cols.length>1,evenHeight:c.length>1&&cols.length===1,more:c.length>0};}
+  if(mobileUI.fixedEdge)return{kind:'line',title:mobileUI.fixedEdge==='left'?'左側外框 · 固定基準':'底部外框 · 固定基準',movable:false,removable:false};
+  if(multi){const c=picked(),cols=[...new Set(c.map(x=>x.c))];return{kind:'multi',title:'已選 '+c.length+' 格',merge:MobilePolicy.mergeAllowed(st,view,c),evenWidth:cols.length>1&&!cols.some(i=>st.cols[i].lock),evenHeight:c.length>1&&cols.length===1&&(view!=='in'||new Set(c.map(x=>x.p)).size===1),more:c.length>0};}
   if(asel>=0&&st.ann[asel])return{kind:'annotation',title:ANN[st.ann[asel].k]||'標註'};
   if(isFree()&&fsel)return{kind:fsel.k==='l'?'freeLine':'freeCell',title:fsel.k==='l'?flName(st.ln[fsel.i]):'自由繪圖格子'};
   if(hsel||(sel&&sel.g!=null)){
-    const h=hsel,removable=!!(h&&/^[crps]$/.test(h.k))||!!(sel&&sel.g!=null),movable=!!mvInfo();
-    return{kind:'line',title:mobileUI.target&&mobileUI.target.name|| (h?({w:'總寬',h:'總高',k:'踢腳板上緣',c:'直向分隔線',r:'橫向分隔線',p:'橫向分隔線',s:'櫃內分隔線'}[h.k]||'分隔線'):'層板'),movable,removable};
+    const h=hsel,removable=!!(h&&/^[crps]$/.test(h.k))||!!(sel&&sel.g!=null),m=mvInfo(),movable=!!m&&m.lo<m.hi&&!(h?.k==='c'&&(freeL(h.i)<0||freeR(h.i+1)<0));
+    return{kind:'line',title:mobileUI.target&&mobileUI.target.name|| (h?({w:'總寬',h:'總高',k:'踢腳板上緣',c:'直向分隔線',r:'橫向分隔線',p:'橫向分隔線',s:'櫃內分隔線'}[h.k]||'分隔線'):'層板'),movable,removable,dimensions:movable||!!(h&&['w','h','k'].includes(h.k))};
   }
   const o=selObj();
-  if(o){const x=view==='in'?o.s:o.p,L=view==='in'?o.p.ins:o.col.parts;return{kind:'cell',title:(view==='in'?INS[x.t]:TYPES[x.t])+' · '+Math.round(o.col.w)+' × '+Math.round(x.h)+' mm',splitV:view==='out'&&!o.col.lock&&o.col.w>=2*MIN&&st.cols.length<20,splitH:x.h>=2*MIN&&L.length<(view==='in'?8:12),more:true};}
+  if(o){const x=view==='in'?o.s:o.p,L=view==='in'?o.p.ins:o.col.parts;return{kind:'cell',title:(['drawer','idrawer'].includes(x.t)?(view==='in'?'內抽組':'抽屜組')+'（'+x.n+' 個）':x.t==='door'&&x.n===2?'對開門片':(view==='in'?INS[x.t]:TYPES[x.t]))+' · '+Math.round(o.col.w)+' × '+Math.round(x.h)+' mm',splitV:view==='out'&&!o.col.lock&&o.col.w>=2*MIN&&st.cols.length<20,splitH:x.h>=2*MIN&&L.length<(view==='in'?8:12),more:true};}
   return{};
 }
 function mSync(){
   if(mobileUI.panel&&$('#mNative'))mobileUI.native.forEach(x=>{if(x.el.parentNode!==$('#mNative'))$('#mNative').appendChild(x.el);x.el.hidden=false;});
   const name=pj.name||'未命名圖面';$('#mTitle strong').textContent=name;
-  $('#mSubtitle').textContent=shName(pj.cur)+' · mm';
+  $('#mSubtitle').textContent=shName(pj.cur)+(view==='in'&&displaySettings.interiorView==='depth'?' · 深度示意':' · mm');
+  $('#mDepth').hidden=isFree()||view!=='in';$('#mDepth').textContent=displaySettings.interiorView==='depth'?'深度':'平面';$('#mDepth').setAttribute('aria-pressed',displaySettings.interiorView==='depth');
   $('#mView').hidden=isFree();$('#mView').innerHTML=(view==='out'?'櫃外':'櫃內')+mIcon('view');
   $('#mUndo').classList.toggle('m-off',!hist.length);$('#mRedo').classList.toggle('m-off',!fut.length);
   $('.m-tools').hidden=!hist.length&&!fut.length;
@@ -84,13 +89,14 @@ function mSync(){
   mPreview();
 }
 function mRestoreNative(){mobileUI.native.forEach(x=>{if(x.next&&x.next.parentNode===x.parent)x.parent.insertBefore(x.el,x.next);else x.parent.appendChild(x.el)});mobileUI.native=[];}
-function mCloseSheet(clear){mRestoreNative();mobileUI.panel=false;mobileUI.panelKind='';mobileUI.submit=null;$('#mSheet').hidden=$('#mScrim').hidden=true;$('#mSheetBody').innerHTML='';if(clear)mFinish();else mSync();}
-function mOpenSheet(title,html,kind){mCloseSheet(false);mobileUI.panel=true;mobileUI.panelKind=kind||'';$('#mSheetTitle').textContent=title;$('#mSheetBody').innerHTML=html;$('#mSheetBody').scrollTop=0;$('#mSheet').hidden=$('#mScrim').hidden=false;mSync();}
+function mCloseSheet(clear){const planar=['cell','overall','native'].includes(mobileUI.panelKind);mRestoreNative();mobileUI.panel=false;mobileUI.panelKind='';mobileUI.submit=null;$('#mSheet').hidden=$('#mScrim').hidden=true;$('#mSheetBody').innerHTML='';if(clear)mFinish();else if(planar)render();else mSync();}
+function mOpenSheet(title,html,kind){mCloseSheet(false);mobileUI.panel=true;mobileUI.panelKind=kind||'';$('#mSheetTitle').textContent=title;$('#mSheetBody').innerHTML=html;$('#mSheetBody').scrollTop=0;$('#mSheet').hidden=$('#mScrim').hidden=false;if(['cell','overall','native'].includes(kind))render();else mSync();}
 function mNative(id){const e=$(id);if(!e)return;mobileUI.native.push({el:e,parent:e.parentNode,next:e.nextSibling});$('#mNative').appendChild(e);e.hidden=false;}
 function mFinish(){
+  const returnView=mobileUI.returnView;mobileUI.returnView=null;mobileUI.fixedEdge=null;
   if(mobileUI.op&&mobileUI.op.kind==='annmove'&&!mobileUI.op.committed)st.ann[mobileUI.op.index]=mobileUI.op.original;
   mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
-  mk.p1=mk.end=mk.mv=null;tool=null;asel=-1;sel=null;hsel=null;hgrp=[];hsolo=false;fsel=null;msel=[];multi=false;mode='edit';ucat='edit';cur.tp=null;cur.dm=null;cur.on=false;padMode='cur';lkp=null;render();
+  mk.p1=mk.end=mk.mv=null;tool=null;asel=-1;sel=null;hsel=null;hgrp=[];hsolo=false;fsel=null;msel=[];multi=false;mode='edit';ucat='edit';cur.tp=null;cur.dm=null;cur.on=false;cur.fine=false;padMode='cur';lkp=null;if(returnView&&view!==returnView)setView(returnView);else render();
 }
 function mTransaction(fn){
   pjSync();const before=snapS(),oldHist=hist.slice(),oldFut=fut.slice(),oldN=edN,oldBak=futBak;
@@ -102,6 +108,7 @@ function mTransaction(fn){
 function mGridButton(id,label,icon,accent=false){return`<button data-m="${id}" class="${accent?'m-accent':''}">${mIcon(icon)}<span>${label}</span></button>`;}
 function mRow(id,label,icon,note=''){return`<button class="m-row-action" data-m="${id}">${mIcon(icon)}<span>${label}</span>${note?'<small>'+note+'</small>':''}</button>`;}
 function mMenuOpen(){
+  mFinish();
   mOpenSheet('圖面與檔案',`<label class="m-field">檔名<input id="mName" maxlength="60" value="${esc(pj.name||'')}" placeholder="輸入案名或圖面名稱"></label><div class="m-menu-grid">${mGridButton('overall','尺寸','size')}${mGridButton('styles','櫃體樣式','style')}${mGridButton('pages','分頁','files')}${mGridButton('save','儲存','save',true)}${mGridButton('saved','我的圖面','files')}${mGridButton('exports','匯出','export')}</div><p class="m-section-label">圖面</p>${mRow('preview','預覽成品圖','preview')}${mRow('display','圖面顯示與尺軌','settings','格線・顏色')}${mRow('photo','照片與掃描底圖','photo')}<p class="m-section-label">備份</p>${mRow('backup','下載可編輯備份','export','JSON')}${mRow('restore','匯入圖面備份','import')}${mRow('new','新增檔案','new')}<p class="m-sheet-note">圖面存在這台裝置的瀏覽器內。下載備份可保留可編輯的圖面與照片。</p>`,'menu');
   $('#mName').addEventListener('change',e=>{pushP();pj.name=e.target.value.trim().slice(0,60);render();saveNow();});
 }
@@ -112,7 +119,7 @@ function mDisplayOpen(){
   mOpenSheet('圖面顯示與尺軌',`<form id="mForm">${select('mTheme','介面版本',[['light','淺色'],['dark','深色']],p.theme)}<p class="m-section-label">顯示內容</p>${toggle('mShowSwing','門片開啟斜線',p.doorSwing)}${toggle('mShowDims','尺寸標示',p.dimensions)}${toggle('mShowNames','格內名稱與尺寸',p.names)}<p class="m-sheet-note">尺寸關閉時，選取線條仍會顯示相關尺寸，方便調整。</p><p class="m-section-label">格線</p><div class="m-form-grid">${select('mGridStyle','樣式',[['lines','細格線'],['dots','點陣'],['none','無格線']],p.gridStyle)}${mField('mGridSize','格距 · mm',p.gridSize,10,1000)}</div>${swatch('mGridColor','格線顏色',p.gridColor)}<p class="m-sheet-note">細格線每 5 格加深一條。縮小時會簡化過密格線，設定格距仍用於對齊。</p><p class="m-section-label">櫃體線條</p>${swatch('mLineColor','櫃體線條顏色',p.lineColor)}<p class="m-section-label">標示顏色</p><div class="m-form-grid">${swatch('mSelectionColor','選取線與菱形',p.selectionColor)}${swatch('mDimensionColor','一般尺寸',p.dimensionColor)}</div>${select('mRulerSide','直向尺的位置',[['right','右側'],['left','左側']],p.rulerSide)}${mFormButtons}</form>`,'display');
   mobileUI.submit=()=>{
     const size=Number($('#mGridSize').value);if(!Number.isFinite(size)||size<10||size>1000){toast('格距請輸入 10–1000 mm');return;}
-    Object.assign(displaySettings,DisplayStyle.themeChange(p,$('#mTheme').value,{lineColor:$('#mLineColor').value,doorSwing:$('#mShowSwing').checked,dimensions:$('#mShowDims').checked,names:$('#mShowNames').checked,gridStyle:$('#mGridStyle').value,gridSize:size,gridColor:$('#mGridColor').value,selectionColor:$('#mSelectionColor').value,dimensionColor:$('#mDimensionColor').value,rulerSide:$('#mRulerSide').value}));
+    Object.assign(displaySettings,DisplayStyle.themeChange(p,$('#mTheme').value,{interiorView:p.interiorView,lineColor:$('#mLineColor').value,doorSwing:$('#mShowSwing').checked,dimensions:$('#mShowDims').checked,names:$('#mShowNames').checked,gridStyle:$('#mGridStyle').value,gridSize:size,gridColor:$('#mGridColor').value,selectionColor:$('#mSelectionColor').value,dimensionColor:$('#mDimensionColor').value,rulerSide:$('#mRulerSide').value}));
     try{localStorage.setItem('sc-mobile-display-v1',JSON.stringify(displaySettings))}catch(_){}
     othCache.clear();mCloseSheet(true);toast('圖面顯示已更新');
   };
@@ -132,6 +139,7 @@ function mMoreOpen(){
 }
 const mField=(id,label,value,min,max)=>`<label class="m-field">${label}<input id="${id}" type="number" inputmode="numeric" min="${min}" max="${max}" step="1" required value="${value}"></label>`;
 const mFormButtons='<div class="m-form-actions"><button type="button" data-m="cancelForm">取消</button><button class="m-confirm" type="submit">套用</button></div>';
+function mFormValuesValid(){const form=$('#mForm');if(!form)return true;for(const e of form.querySelectorAll('input[type="number"]')){const n=Number(e.value),min=e.getAttribute('min'),max=e.getAttribute('max');if(!String(e.value).trim()||!Number.isFinite(n)||!Number.isInteger(n)||(min!==null&&n<Number(min))||(max!==null&&n>Number(max))){toast('請檢查數值，輸入允許範圍內的整數');e.focus();return false;}}return true;}
 function mOverall(){
   const fr=isFree();
   mOpenSheet('整體尺寸 · mm',`<form id="mForm"><div class="m-form-grid">${mField('mW','總寬',st.W,st.cols?st.cols.length*MIN:100,MAXW)}${mField('mH','總高',st.H,150,MAXH)}${mField('mT','板厚',st.T||18,6,40)}${fr?'':mField('mK','踢腳板',st.kick||0,0,st.H-MIN)}</div><p class="m-sheet-note">${fr?'修改總寬與總高會按比例調整現有板線的位置與長度。':'修改整體尺寸會同步調整各區配置。'}圖面尺寸以公釐（mm）表示。</p>${mFormButtons}</form>`,'overall');
@@ -153,7 +161,7 @@ function mCellCenter(){const o=selObj();if(!o)return{x:st.W/2,y:(st.H-st.kick)/2
 function mBegin(kind){
   const q=(kind==='move'||kind==='annmove')&&mobileUI.lastPoint?mobileUI.lastPoint:mCellCenter();mCloseSheet(false);
   if(kind==='annmove'){const a=st.ann[asel];if(!a)return;const seed={x:Math.round(q.x),y:Math.round(q.y)};mobileUI.op={kind,index:asel,original:JSON.parse(JSON.stringify(a)),before:snapS(),origin:{...seed},railPoint:{...seed},grab:null};mobileUI.target=null;render();return;}
-  mode='edit';ucat='edit';cur.on=true;cur.nos=true;cur.x=Math.round(q.x);cur.y=Math.round(q.y);cur.tp=null;
+  mode='edit';ucat='edit';cur.on=true;cur.nos=true;cur.fine=true;cur.x=Math.round(q.x);cur.y=Math.round(q.y);cur.tp=null;
   const cell=locCell(q),x=cell&&(cell.s||cell.p),top=cell&&(cell.s?cell.sy:cell.y0);
   mobileUI.op={kind,bounds:cell?{x0:cell.x0,x1:cell.x0+cell.col.w,y0:top,y1:top+x.h}:null};
   cpdKey(kind==='splitV'?'vsplit':kind==='splitH'?'hsplit':'move');
@@ -161,7 +169,7 @@ function mBegin(kind){
 }
 function mOperationData(){const o=mobileUI.op;if(!o)return null;if(o.kind==='annmove')return{title:'移動標註',note:'在圖上拖曳標註，位置對了按「確定」。',label:'',value:null};if(o.kind==='move'){const r=cpdTarget();if(!r)return null;const m=r.m,dd=r.tv-m.v;return{title:'移動分隔線',note:(m.ax==='x'?'左 ':'上 ')+fmt((m.a0||0)+dd)+' ／ '+(m.ax==='x'?'右 ':'下 ')+fmt((m.b0||0)-dd)+' mm',label:m.ax==='x'?'距左':'距上',value:m.a0==null?null:(m.a0+dd)};}const r=splitPlan(o.kind==='splitV'),p=r.pl;return p?{title:o.kind==='splitV'?'直分隔':'橫分隔',note:(p.v?'左 ':'上 ')+p.a+' ／ '+(p.v?'右 ':'下 ')+p.b+' mm · 可拖動預覽線',label:p.v?'距左':'距上',value:p.a}: {title:o.kind==='splitV'?'直分隔':'橫分隔',note:'把預覽線移到可分隔的區域內。',label:'位置',value:null};}
 function mOperationSync(){const d=mOperationData();if(!d)return;$('#mOperationTitle').innerHTML=esc(d.title)+'<span id="mOperationNote">'+esc(d.note)+'</span>';$('#mOffsetLabel').textContent=d.label;$('.m-op-label').hidden=d.value==null;if(d.value!=null&&document.activeElement!==$('#mOffset'))$('#mOffset').value=Math.round(d.value);}
-function mOperationOffset(raw){const o=mobileUI.op;if(!o)return;const n=Number(raw);if(!Number.isFinite(n))return;if(o.kind==='move'){const r=cpdTarget();if(!r||r.m.a0==null)return;const m=r.m,v=clamp(m.v-m.a0+n,m.lo,m.hi);if(m.ax==='x')cur.x=v;else cur.y=v;}else{const r=splitPlan(o.kind==='splitV'),p=r.pl;if(!p)return;const v=MobilePolicy.clampOffset(n,p.a+p.b,MIN);if(v==null)return;if(o.kind==='splitV')cur.x=p.c.x0+v;else cur.y=p.top+v;}cur.nos=true;mSync();}
+function mOperationOffset(raw){const o=mobileUI.op;if(!o)return;if(raw==null||!String(raw).trim())return;const n=Number(raw);if(!Number.isFinite(n))return;if(o.kind==='move'){const r=cpdTarget();if(!r||r.m.a0==null)return;const m=r.m,v=clamp(m.v-m.a0+n,m.lo,m.hi);if(m.ax==='x')cur.x=v;else cur.y=v;}else{const r=splitPlan(o.kind==='splitV'),p=r.pl;if(!p)return;const v=MobilePolicy.clampOffset(n,p.a+p.b,MIN);if(v==null)return;if(o.kind==='splitV')cur.x=p.c.x0+v;else cur.y=p.top+v;}cur.nos=true;mSync();}
 function mOperationPoint(q){const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(!o.origin)o.origin={...q};o.railPoint={x:Math.round(q.x),y:Math.round(q.y)};const a=JSON.parse(JSON.stringify(o.original));moveAnn(a,o.railPoint.x-o.origin.x,o.railPoint.y-o.origin.y);st.ann[o.index]=a;render();return;}if(o.kind==='move'){const m=mvInfo();if(!m)return;cur.x=Math.round(q.x);cur.y=Math.round(q.y);if(m.ax==='x')cur.x=clamp(cur.x,m.lo,m.hi);else cur.y=clamp(cur.y,m.lo,m.hi);}else{const b=o.bounds;if(b){cur.x=clamp(Math.round(q.x),b.x0+MIN,b.x1-MIN);cur.y=clamp(Math.round(q.y),b.y0+MIN,b.y1-MIN);}else{cur.x=Math.round(q.x);cur.y=Math.round(q.y);}}cur.nos=true;cur.tp=null;mSync();}
 function mConfirmOperation(){const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(snapS()!==o.before)pushRaw(o.before);o.committed=true;mFinish();toast('標註位置已更新');return;}cpdGo();if(cpd)return;mFinish();}
 function mPreview(){
@@ -188,7 +196,7 @@ async function mRun(id){
   if(id==='settings'){mSettings();return;}if(id==='more'){mMoreOpen();return;}
   if(id==='splitV'||id==='splitH'){mBegin(id);return;}
   if(id==='move'){mBegin(asel>=0?'annmove':'move');return;}
-  if(id==='dimensions'){if(hsel&&['w','h','k'].includes(hsel.k))mOverall();else mBegin('move');return;}
+  if(id==='dimensions'){if(mobileUI.fixedEdge||(hsel&&['w','h','k'].includes(hsel.k)))mOverall();else mBegin('move');return;}
   if(id==='delete'){mCloseSheet(false);if(asel>=0){push();st.ann.splice(asel,1)}else if(isFree())freeAct(fsel?.k==='c'?'ct':'del','none');else if(hsel)hDelete();else if(sel?.g!=null)act('gdel');else act('ddel');mFinish();return;}
   if(id==='copy'||id==='paste'||id==='clear'||id==='lock'||id==='align'||id==='merge'||id==='evenWidth'||id==='evenHeight'){mCloseSheet(false);act({copy:'xcopy',paste:'xpaste',clear:'subclear',lock:'xlock',align:'align',merge:'merge',evenWidth:'evenw',evenHeight:'evenh'}[id]);mFinish();return;}
   if(id==='multi'){mCloseSheet(false);act('multi');mobileUI.target=null;mobileUI.hint=false;render();return;}
@@ -220,16 +228,32 @@ function mTap(q,el){
   if(mobileUI.op){mOperationPoint(q);return;}
   mobileUI.hint=false;
   const dim=el&&el.closest&&el.closest('[data-d]');if(dim&&!isFree()){const key={...dim.dataset};mFinish();const fresh=[...svg.querySelectorAll('[data-d]')].find(e=>e.dataset.d===key.d&&e.dataset.dc===key.dc&&e.dataset.dp===key.dp&&e.dataset.ds===key.ds);if(fresh)openDim(fresh);return;}
-  const a=hitAnn(q,false);if(a>=0){mode='mark';tool=null;sel=null;hsel=null;fsel=null;asel=a;mobileUI.target={name:ANN[st.ann[a].k]};render();return;}
+  const grip=el?.closest?.('[data-h]');if(grip&&!isFree()){
+    const d=grip.dataset,k=d.h;let t=null;
+    if(k==='g')t={t:'l',g:{c:+d.c,p:+d.p,s:+d.s||0,i:+d.i},name:'層板'};
+    else if(['w','h','k','c','r','p','s'].includes(k)){const h=k==='r'?{k,y:+d.y}:{k,c:d.c==null?undefined:+d.c,p:d.p==null?undefined:+d.p,i:d.i==null?undefined:+d.i};t={t:'l',h,name:{w:'總寬',h:'總高',k:'踢腳板上緣',c:'直向分隔線',r:'橫向分隔線',p:'橫向分隔線',s:'櫃內分隔線'}[k],sel:['p','s'].includes(k)?{c:h.c,p:k==='s'?h.p:h.i,s:k==='s'?h.i:0}:null};}
+    if(t){mobileUI.fixedEdge=null;mode='edit';ucat='edit';asel=-1;mobileUI.target=t;pickTarget(t);return;}
+  }
+  const tol=9/inv().s;const a=CabinetDepth.annotationPick(st.ann,q,tol,aview(),annBox);if(a>=0){mode='mark';tool=null;sel=null;hsel=null;fsel=null;asel=a;mobileUI.target={name:ANN[st.ann[a].k]};render();return;}
   mode='edit';ucat='edit';tool=null;asel=-1;cur.on=true;esub='line';
-  if(isFree()){freeTap(el);return;}
-  const t=tgtAt(q,9*S/zoom.z);t.k=null;
+  if(isFree()){fsel=CabinetDepth.freePick(st,freeFaces(st),q,tol);render();return;}
+  const edge=q.y>=-tol&&q.y<=st.H+tol&&Math.abs(q.x)<=tol?'left':q.x>=-tol&&q.x<=st.W+tol&&Math.abs(q.y-st.H)<=tol?'bottom':null;
+  if(edge){mFinish();mobileUI.fixedEdge=edge;render();return;}
+  mobileUI.fixedEdge=null;let t=tgtAt(q,tol);
+  if(!t.t&&st.kick>0&&q.x>0&&q.x<st.W&&q.y>=st.H-st.kick&&q.y<st.H)t={t:'l',h:{k:'k'},name:'踢腳板'};
+  if(!t.t&&view==='in'){const c=locCell(q);if(c&&!c.s){if(multi){toast('多選請在櫃外選開放格與外抽');return;}mobileUI.returnView='in';setView('out');t=tgtAt(q,tol);}}
+  t.k=null;
   if(multi){if(t.t==='c'){const k={c:t.key.c,p:t.key.p,s:t.key.s||0,k:null},i=msel.findIndex(x=>x.c===k.c&&x.p===k.p&&(x.s||0)===k.s);if(i>=0)msel.splice(i,1);else msel.push(k);render();}return;}
   mobileUI.target=t;if(!t.t){mFinish();return;}pickTarget(t);
 }
 function mOnDown(e){
   if(bgCal||isFree()&&mode==='draw'&&mobileUI.freeDrawing)return;
   if(mobileUI.panel)return;
+  if(mobileUI.nativeDrag){e.preventDefault();e.stopImmediatePropagation();return;}
+  if(isFree()&&mode==='edit'&&e.target.closest?.('[data-fe],[data-h="f"]')){
+    const before=snapS(),history=hist.slice(),future=fut.slice(),editNumber=edN,selection=fsel&&{...fsel};
+    if(freeGrab(e)){mobileUI.nativeDrag=true;const done=ev=>{if(ev.pointerId!=null&&ev.pointerId!==e.pointerId)return;window.removeEventListener('pointerup',done);window.removeEventListener('pointercancel',done);mobileUI.nativeDrag=false;depthRuntime.previewing=false;if(ev.type==='pointercancel'){st=normalize(JSON.parse(before).s);pj.sheets[pj.cur]=st;hist=history;fut=future;edN=editNumber;fsel=selection;justDragged=false;render();}else saveDraft();};window.addEventListener('pointerup',done);window.addEventListener('pointercancel',done);e.stopImmediatePropagation();return;}
+  }
   e.preventDefault();e.stopImmediatePropagation();flyStop();
   const p={x:e.clientX,y:e.clientY};mobileUI.pointers.set(e.pointerId,p);try{svg.setPointerCapture(e.pointerId)}catch(_){}
   if(mobileUI.pointers.size===2){const p=[...mobileUI.pointers.values()],mid={clientX:(p[0].x+p[1].x)/2,clientY:(p[0].y+p[1].y)/2};mobileUI.gesture={pinch:true,dist:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),z:zoom.z,anchor:pt(mid),moved:true};mobileUI.preview=null;mSync();return;}
@@ -263,10 +287,11 @@ svg.addEventListener('click',e=>{if(bgCal||isFree()&&mode==='draw'&&mobileUI.fre
 ['touchstart','touchmove','touchend'].forEach(k=>svg.addEventListener(k,e=>{if(bgCal||isFree()&&mode==='draw'&&mobileUI.freeDrawing)return;e.preventDefault();e.stopImmediatePropagation();},{capture:true,passive:false}));
 svg.addEventListener('wheel',e=>{if(mobileUI.panel)return;e.preventDefault();e.stopImmediatePropagation();zoomAt(zoom.z*Math.exp(-e.deltaY*.002),pt(e),e.clientX,e.clientY);mPreview();},{capture:true,passive:false});
 mShell.addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(b){mRun(b.dataset.m).catch(()=>toast('操作沒有完成，請再試一次'));}});
-$('#mSheetBody').addEventListener('submit',e=>{e.preventDefault();if(mobileUI.submit)mobileUI.submit();});
+$('#mSheetBody').addEventListener('submit',e=>{e.preventDefault();if(mobileUI.submit&&mFormValuesValid())mobileUI.submit();});
 $('#mSheetBody').addEventListener('click',e=>{if(e.target.closest('[data-open],[data-add]'))queueMicrotask(()=>mCloseSheet(true));else if(e.target.closest('#bgCalBtn'))queueMicrotask(()=>{if(bgCal){mCloseSheet(false);render();toast('先把四個角對準，再按「輸入尺寸」');}});});
 $('#mTitle').onclick=mMenuOpen;$('#mMenu').onclick=mMenuOpen;$('#mAdd').onclick=mAddOpen;
-$('#mView').onclick=()=>{mFinish();setView(view==='out'?'in':'out');mSync();};
+$('#mView').onclick=()=>{const next=view==='out'?'in':'out';mobileUI.returnView=null;mFinish();setView(next);mSync();};
+$('#mDepth').onclick=()=>{mFinish();displaySettings.interiorView=displaySettings.interiorView==='depth'?'flat':'depth';try{localStorage.setItem('sc-mobile-display-v1',JSON.stringify(displaySettings))}catch(_){}othCache.clear();render();};
 $('#mDismiss').onclick=mFinish;$('#mSheetClose').onclick=()=>mCloseSheet(false);$('#mScrim').onclick=()=>mCloseSheet(false);
 $('#mUndo').onclick=()=>{mFinish();$('#undo').click();render();};$('#mRedo').onclick=()=>{mFinish();$('#redo').click();render();};
 $('#mFit').onclick=()=>{mFinish();zoom.m=false;render();};

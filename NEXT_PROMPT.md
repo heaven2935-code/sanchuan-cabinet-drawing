@@ -41,3 +41,8 @@
 ## 2026-10-14 線條選色與深色版
 
 正式程式在主網址，elevation/ 不改。顯示偏好 sc-mobile-display-v1 包含 theme 及 lineColor；維護 mobile-source/display-style.js、mobile-ui.js、mobile-ui.css。執行 scripts/build.py、tests/verify.cjs、tests/display.cjs。自訂線色保留，主題預設色可隨版本調整。
+
+
+## 2026-10-14 櫃內深度與操作檢查
+
+只修改主網址與 mobile-source，獨立 elevation/ 保留原樣（已是第51版）。本輪深度視圖由 displaySettings.interiorView=flat/depth 與 CabinetDepth 驅動，depthRuntime.editing 暫停示意以精確編輯。mMenuOpen 取消未確認預覽；自動草稿跳過 previewing。執行 python scripts/build_mobile_root.py；npm --prefix mobile-source install；npm --prefix mobile-source run verify。不要將示意投影當真實深度或拆料依據。先維持可用動作／鎖定／合併與數值驗證，再做實機優化。

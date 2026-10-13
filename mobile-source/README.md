@@ -1,27 +1,29 @@
-# 三川工方｜手機繪圖
+# 三川工方｜手機櫃體立面繪圖
 
-以圖面為主的手機櫃體立面繪圖工具。以既有的三川工方櫃體引擎為基礎，重新設計觸控操作。
+正式入口：https://heaven2935-code.github.io/sanchuan-cabinet-drawing/
 
-使用方式：
+獨立 Elevation：https://heaven2935-code.github.io/sanchuan-cabinet-drawing/elevation/ （此輪未修改）
 
-- 單指拖曳圖面，雙指縮放。
-- 點線或格子，才顯示該項目可用的操作。
-- 選擇分隔或移動後，操作列收起，留下預覽線與精準尺寸輸入。
-- 完成、取消，或點空白處，即回到以圖面為主的畫面。
-- 右下方「＋」加入分隔、標註、照片或新分頁。
-- 右上方選單管理尺寸、樣式、分頁、儲存與匯出。
+## 操作
 
-沿用原有 47 種櫃體樣式、櫃外／櫃內配置、板厚與淨高計算、自由繪圖、照片透視校正、掃描匯入、復原／重做，以及 PNG、SVG、DXF 匯出。
+點線或格子顯示可用動作；單指平移、雙指縮放。移動與分隔可輸入精確公釐數值，確定後記錄一次復原；取消不改圖面。
 
-圖面以 IndexedDB 與瀏覽器草稿保存。可下載包含圖面及照片的 JSON 備份，再於另一台裝置匯入。沒有雲端同步或 AI 服務。
+切到「櫃內」後，按「平面／深度」切換固定視角示意。側板、背板與層板以淡色板面區分。編輯時回到平面，完成後恢復。示意不代表實際櫃深；後方斜線不是獨立可移動板件。
 
-重建：`python3 scripts/build.py`。已生成圖示保留在 dist 中。
+右上選單 → 圖面顯示與尺軌，可選淺色／深色、櫃體線色、格線／點陣與格距、選取色、尺寸色及尺軌左右位置。門片斜線、尺寸及格內名稱預設關閉；選取線時顯示相關尺寸。
 
-驗證：`node tests/verify.cjs`。
+## 存檔
 
-來源參考：https://github.com/heaven2935-code/sanchuan-cabinet-drawing/tree/main/elevation
+圖面保存在目前裝置的瀏覽器，使用 sc-mobile-*，與 elevation 的資料隔離。換裝置請下載可編輯 JSON 備份，再匯入。備份可包含照片；顯示偏好保存在目前裝置，不隨圖面備份。
 
+## 維護與驗證
 
-## 2026-10-14 圖面顯示設定
+根目錄分發檔由 mobile-source 建置：
 
-圖面顯示設定：選單 → 圖面顯示與尺軌。門片斜線、尺寸與格內名稱預設關閉；線條選取時顯示相關尺寸。可調整格距 10–1000 mm、格線或點陣、格線／選取／尺寸顏色，以及直向尺左右位置。設定沿用至下次開啟。正式網址 https://heaven2935-code.github.io/sanchuan-cabinet-drawing/ 。
+```sh
+python scripts/build_mobile_root.py
+npm --prefix mobile-source install
+npm --prefix mobile-source run verify
+```
+
+驗證包含原有幾何、顯示與配色、深度投影，以及完整 DOM 事件操作。47 櫃型在三種寬度下完成 1547 次格子及 625 次線／層板選取。詳見 MOBILE_AUDIT.md；DOM 測試不代表已通過 iPhone 真機驗收。

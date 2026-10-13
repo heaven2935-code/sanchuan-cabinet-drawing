@@ -24,6 +24,8 @@ body{position:fixed!important;inset:0;transform:none!important}
 #mSubtitle{font-size:10px;font-weight:450;color:#7c8d95;letter-spacing:.3px}
 #mView{font-size:12px;background:#fff;border:1px solid #dce6e9;border-radius:22px;min-height:34px!important;padding:0 13px!important;gap:5px!important}
 #mView svg{width:13px;height:13px}
+#mDepth{min-height:34px!important;font-size:12px;padding:0 10px!important;border:1px solid #dce6e9!important;border-radius:20px;background:#fff}
+#mDepth[aria-pressed=true]{color:#147c88;border-color:#9acbd0!important;background:#edf8f9}
 #mMenu{width:42px;border-radius:50%}
 .m-dock{position:absolute;bottom:calc(17px + env(safe-area-inset-bottom,0px));left:16px;right:16px;display:flex;align-items:center;gap:8px;transition:opacity .16s,transform .16s}
 .m-tools{display:flex;background:rgba(255,255,255,.95);border:1px solid #e0e8eb;border-radius:25px;box-shadow:0 3px 13px #183c4810;pointer-events:auto}
@@ -159,6 +161,7 @@ html[data-canvas-theme=dark] #mScrim{background:#0008}
 html[data-canvas-theme=dark] #mShell .m-axis-marker{background:#183942!important;border-color:#4d8590!important;color:#9ddce5!important}
 html[data-canvas-theme=dark] #mRailCorner{color:#a9becb}
 html[data-canvas-theme=dark] #pvw{background:#151f27!important}
+html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;border-color:#3c505e!important}
 #mRailCorner{position:absolute;display:flex;justify-content:center;align-items:center;color:#8da4ae;font-size:9px;font-family:var(--num);pointer-events:none;background:#f5f9fa;border-left:1px solid #d8e5e9}
 #mRailSafe{position:absolute;left:0;bottom:0;height:env(safe-area-inset-bottom,0px);width:1px;pointer-events:none;visibility:hidden}
 .m-header,.m-dock,.m-context,#mOperation,#mToolStrip{z-index:3}

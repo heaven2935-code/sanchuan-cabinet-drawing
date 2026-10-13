@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "verify": "node tests/verify.cjs && node tests/display.cjs && node tests/depth.cjs && node tests/audit.cjs"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "6.2.5",
+    "linkedom": "0.18.13"
+  }
+}

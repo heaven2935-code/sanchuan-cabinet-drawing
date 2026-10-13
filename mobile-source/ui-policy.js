@@ -6,7 +6,7 @@
     if(s.kind==='annotation')return[item('move','移動','move',true),item('settings','設定','settings'),item('delete','刪除','trash',false,true)];
     if(s.kind==='line')return[
       ...(s.movable?[item('move','移動','move',true)]:[]),
-      item('dimensions','尺寸','size',!s.movable),
+      ...(s.dimensions!==false?[item('dimensions','尺寸','size',!s.movable)]:[]),
       ...(s.removable?[item('delete','刪除','trash',false,true)]:[])
     ];
     if(s.kind==='cell')return[
@@ -37,6 +37,11 @@
   function worldToScreen(map,point){return{x:map.offsetX+(point.x-map.x)*map.scale,y:map.offsetY+(point.y-map.y)*map.scale};}
   function screenToWorld(map,point){return{x:map.x+(point.x-map.offsetX)/map.scale,y:map.y+(point.y-map.offsetY)/map.scale};}
   function rulerStep(units){const power=10**Math.floor(Math.log10(Math.max(units,1e-6))),n=units/power;return(n<=1?1:n<=2?2:n<=5?5:10)*power;}
-  const api={actions,clampOffset,viewportMap,worldToScreen,screenToWorld,rulerStep};
+  function mergeAllowed(st,view,cells){if(cells.length<2||cells.some(c=>c.k!=null))return false;const run=a=>a.every((v,i)=>i===0||v===a[i-1]+1),cols=[...new Set(cells.map(c=>c.c))].sort((a,b)=>a-b);
+    if(view==='in')return cols.length===1&&new Set(cells.map(c=>c.p)).size===1&&run(cells.map(c=>c.s||0).sort((a,b)=>a-b));
+    if(cols.length===1)return run(cells.map(c=>c.p).sort((a,b)=>a-b));
+    return run(cols)&&cols.every(ci=>st.cols[ci]?.parts.every((p,pi)=>cells.some(c=>c.c===ci&&c.p===pi)));
+  }
+  const api={actions,mergeAllowed,clampOffset,viewportMap,worldToScreen,screenToWorld,rulerStep};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.MobilePolicy=api;
 })(typeof window!=='undefined'?window:this);
