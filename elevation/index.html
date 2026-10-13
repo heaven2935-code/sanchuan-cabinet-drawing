@@ -1125,7 +1125,7 @@ html:not(.land) #shRow{display:none!important}
 html:not(.npx) #nRul,html:not(.npx) #nPad,html:not(.npx) #nGrp{display:none!important}
 html.npx #panel>*{display:none!important}
 html.npx #panel{padding-bottom:0}
-html.npx #tbMark{display:none!important}
+
 html.npx #topbar #tbSize{flex:1 1 0}html.npx #topbar #tbFile{flex:2 1 0}
 html:not(.land) #topbar{border:0;gap:0;padding:0}
 html:not(.land) #topbar #tbSize,html:not(.land) #topbar #tbMark,html:not(.land) #topbar #fileBtns button{border:1px dashed var(--dash)!important;border-left-width:0!important;border-right-width:0!important;border-radius:0!important;letter-spacing:.08em}
@@ -1272,6 +1272,7 @@ html:not(.land) #szwBody{padding-bottom:34vh}
 #cOv .ova svg{width:20px;height:20px;display:block;overflow:visible}
 #cOv .ova path{fill:var(--cyan);stroke:var(--paper);stroke-width:2.2;stroke-linejoin:round;paint-order:stroke}
 #cOv .ova:active path{fill:var(--ink)}
+
 #cOv .ovm{width:30px;height:26px;margin:-13px 0 0 -15px;cursor:grab}
 #cOv .ovm[data-om="y"]{width:26px;height:30px;margin:-15px 0 0 -13px}
 #cOv .ovm i{display:block;width:13px;height:13px;border-radius:50%;box-sizing:border-box;border:2px solid var(--cyan);background:var(--paper);position:relative}
@@ -1285,7 +1286,7 @@ html:not(.land) #szwBody{padding-bottom:34vh}
 /* ---- (29) 簡易面板: two rows of keys instead of the round pad ---- */
 #simBtn{display:none}html:not(.land) #simBtn{display:inline-flex;align-items:center;justify-content:center}
 html.npx.simp #deck{position:relative}
-html.npx.simp #nPad{height:96px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:46px 44px;gap:6px}
+html.npx.simp #nPad{height:130px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:46px 28px 44px;gap:6px}
 html.npx.simp #nArt,html.npx.simp #nTp,html.npx.simp #nRing #nView{display:none!important}
 html.npx.simp #nRing{display:contents}
 html.npx.simp #nPad .nk,html.npx.simp #nRing button{position:static;inset:auto;width:auto!important;height:auto;min-height:0;margin:0;clip-path:none;border:1px dashed var(--dash);border-radius:4px;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 2px;font-size:12px;font-weight:700;letter-spacing:.02em;line-height:1.15;text-align:center;white-space:nowrap}
@@ -1295,7 +1296,7 @@ html.npx.simp #nPad .nk[data-s="off"],html.npx.simp #nRing button[data-s="off"]{
 html.npx.simp #nPad .nk[data-s="act"],html.npx.simp #nRing button[data-s="act"]{border:1.6px solid var(--cyan);color:var(--cyan)}
 html.npx.simp .nk[data-nk="l0"]{grid-area:1/1}html.npx.simp .nk[data-nk="l1"]{grid-area:1/2}html.npx.simp .nk[data-nk="l2"]{grid-area:1/3}
 html.npx.simp .nk[data-nk="r0"]{grid-area:1/4}html.npx.simp .nk[data-nk="r1"]{grid-area:1/5}html.npx.simp .nk[data-nk="r2"]{grid-area:1/6}
-html.npx.simp #nRing #nBack{grid-area:2/1/3/3}html.npx.simp #nRing #nSel{grid-area:2/3/3/5;font-size:15px;letter-spacing:.1em;padding:0}html.npx.simp #nRing #nMove{grid-area:2/5/3/7}
+html.npx.simp #nRing #nBack{grid-area:3/1/4/3}html.npx.simp #nRing #nSel{grid-area:3/3/4/5;font-size:15px;letter-spacing:.1em;padding:0}html.npx.simp #nRing #nMove{grid-area:3/5/4/7}
 html.npx.simp #nRing #nSel,html.npx.simp #nRing #nBack,html.npx.simp #nRing #nMove{clip-path:none!important;position:static!important;width:auto!important;height:auto!important;padding:0!important;justify-content:center!important;align-items:center!important;border:1px dashed var(--dash)}
 html.npx.simp #nRing #nSel[data-s="act"],html.npx.simp #nRing #nBack[data-s="act"],html.npx.simp #nRing #nMove[data-s="act"]{border:1.6px solid var(--cyan)}
 html.npx.simp #nRing #nSel[data-s="off"],html.npx.simp #nRing #nBack[data-s="off"],html.npx.simp #nRing #nMove[data-s="off"]{border-color:var(--dash2)}
@@ -1329,9 +1330,93 @@ html.npx.simp #actm{position:absolute;left:10px;right:10px;top:6px;bottom:8px;he
 #szList .szx>.note{margin:8px 0 2px}
 
 /* ---- (31) ruler tracks ---- */
+#cOv .ovm svg{width:100%;height:100%;display:block;overflow:visible}#cOv .ovm{width:30px!important;height:30px!important;margin:-15px 0 0 -15px!important}#cOv .ovm path{fill:none;stroke:var(--cyan);stroke-width:1.6}#cOv .ovm circle{fill:none;stroke:var(--cyan);stroke-width:2}#cOv .ovm path{stroke-width:2;stroke-linecap:round}#cOv .ovm path.cx{stroke:var(--ink);stroke-width:1.4}#cOv .ovm.on circle{stroke:var(--ink)}
 #cOv .ovt{position:absolute;pointer-events:auto;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;cursor:grab}
 #cOv .ovt[hidden]{display:none}
 #cOv .ovm{pointer-events:none!important}
+#cOv .ova{width:58px;height:58px;margin:-29px 0 0 -29px}#cOv:not(.fine) .ova{display:none!important}
+#cOv .ova::before{display:none;content:"";position:absolute;left:50%;top:50%;width:32px;height:32px;margin:-16px 0 0 -16px;border-radius:50%;background:color-mix(in srgb,var(--paper) 82%,transparent);border:1.6px solid var(--cyan);box-sizing:border-box}
+#cOv .ova svg{position:relative;width:30px;height:30px}
+#cOv .ova path{fill:var(--cyan);stroke:var(--paper);stroke-width:2;paint-order:stroke;stroke-linejoin:round}
+#cOv .ova:active path{fill:var(--ink)}
+#nwBox{position:fixed;inset:0;z-index:45;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+#nwCard{width:min(360px,100%);background:var(--paper);border:1px dashed var(--dash);border-radius:6px;padding:14px 14px 12px;line-height:1.35}
+#nwCard>b{font-size:16px;letter-spacing:.08em}
+#nwPre{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+#nwPre button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:48px;padding:4px 2px;border:1px dashed var(--dash);border-radius:4px;background:transparent;color:var(--ink);font-size:13px}
+#nwPre button span{font-family:var(--num);font-size:11.5px;color:var(--sub)}
+#nwPre button[aria-pressed="true"]{border:1.6px solid var(--cyan);color:var(--cyan)}
+.nwf{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.nwf label{display:grid;gap:4px;font-size:12.5px;color:var(--sub);font-weight:700}
+.nwf input{width:100%;height:36px;padding:0 8px;border:1px dashed var(--dash);border-radius:4px;background:transparent;color:var(--ink);font-family:var(--num);font-size:16px;text-align:right}
+.nwf input:focus{outline:none;border:1px solid var(--cyan)}
+.nwb{display:flex;gap:8px;margin-top:14px}.nwb button{flex:1;height:38px;min-height:38px;border:1px dashed var(--dash);border-radius:4px;background:transparent;color:var(--ink);font-weight:700;letter-spacing:.08em}
+.nwb #nwGo{border:1.6px solid var(--cyan);color:var(--cyan)}
+#fBlank,#toFreeBtn{display:none!important}
+#cOv #ovStep{position:absolute;pointer-events:auto;transform:translate(-50%,-50%);min-height:0;height:30px;padding:0 10px;border:1.4px solid var(--cyan)!important;border-radius:4px;background:color-mix(in srgb,var(--paper) 90%,transparent)!important;color:var(--cyan);font-family:var(--num);font-size:13.5px;font-weight:600;white-space:nowrap;display:block}
+#cOv:not(.fine) #ovStep{display:none!important}
+#nRul #tStep{display:none!important}
+.lw .lwb{flex:none;width:32px;height:32px;min-height:0;padding:0;border:1px dashed var(--dash);border-radius:4px;background:transparent;color:var(--ink);font-size:18px;line-height:1}
+#pOv{position:fixed;z-index:6;pointer-events:none;height:0}
+#pOv button{pointer-events:auto;min-height:0;padding:0;border:1px dashed var(--dash);border-radius:4px;background:color-mix(in srgb,var(--paper) 86%,transparent);color:var(--ink);font-size:18px;line-height:1}
+#pOv button.dis{opacity:.35}
+#pvM{position:absolute;left:24px;top:6px;display:flex;align-items:center;gap:5px;padding:4px 5px;border:1px dashed var(--dash);border-radius:4px;background:color-mix(in srgb,var(--paper) 86%,transparent);pointer-events:auto}
+#pvM[hidden]{display:none}
+#pvM .pvc{width:24px;height:24px;border-radius:50%;border:2px solid var(--paper);background:var(--c);box-shadow:0 0 0 1px var(--dash)}
+#pvM .pvc[aria-pressed="true"]{box-shadow:0 0 0 2px var(--cyan)}
+#pvM .pvd{width:1px;height:22px;background:var(--dash)}
+#pvM [data-pl]{width:30px;height:30px}#pvM b{min-width:1.2em!important}
+#pvM b{min-width:1.4em;text-align:center;font-family:var(--num);font-weight:500;font-size:15px;color:var(--ink)}
+#cLock{display:none!important}
+#cOv .ovm{width:var(--om,38px)!important;height:var(--om,38px)!important;margin:calc(var(--om,38px) / -2) 0 0 calc(var(--om,38px) / -2)!important}
+#pvB{position:absolute;right:6px;top:calc(var(--ph) - 13.2px - 40px);display:flex;gap:6px}
+#pOv #pvB button{height:32px;min-width:52px;padding:0 10px;font-size:13.5px;font-weight:700;letter-spacing:.06em;border:1px solid var(--dash)!important;background:color-mix(in srgb,var(--paper) 92%,transparent)}
+#pOv #pvB button.dis{opacity:.45}
+#pvB button[hidden]{display:none}
+#pOv #pvB button[aria-pressed="true"]{border:1.6px solid var(--cyan)!important;color:var(--cyan)}
+
+/* (47) ☰ menu */
+#hmBtn,#mkExit{display:none}
+html.npx #hmBtn{display:flex;align-items:center;justify-content:center;flex:none;width:38px;height:34px;min-height:0!important;padding:0!important;border:1px solid var(--dash);border-radius:4px;background:transparent;color:var(--ink)}
+html.npx #hmBtn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+html.npx.hmOpen #hmBtn{border:1.6px solid var(--cyan);color:var(--cyan)}
+html.npx #mkExit:not([hidden]){display:flex;align-items:center;flex:none;height:30px;min-height:0!important;padding:0 8px!important;border:1.6px solid var(--cyan);border-radius:4px;background:transparent;color:var(--cyan);font-size:12.5px;font-weight:700}
+html.npx #topbar{display:none!important}
+html.npx.hmOpen #topbar{display:flex!important;position:fixed;z-index:30;flex-direction:column;align-items:stretch;gap:5px;margin:0;padding:6px;background:var(--paper);border:1px dashed var(--dash);border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+html.npx #topbar #tbFile,html.npx #topbar #fileBtns{display:contents!important}html.npx #topbar #tbSeg{display:none!important}
+html.npx.hmOpen #topbar #shChip{position:static!important;max-width:none!important;gap:6px;margin:0!important;left:auto!important;top:auto!important;width:100%!important;box-sizing:border-box}html.npx.hmOpen #topbar #shChip span{overflow:visible}
+html.npx.hmOpen #topbar button{display:flex!important;align-items:center;flex:none!important;width:100%;height:42px!important;min-height:0!important;padding:0 12px!important;border:1px dashed var(--dash)!important;border-radius:4px!important;background:transparent!important;color:var(--ink)!important;font-size:15px!important;font-weight:500;box-shadow:none!important;justify-content:flex-start}
+html.npx #topbar #tbSize{order:1}html.npx #topbar #moreBtn{order:2}html.npx #topbar #fileBtn{order:3}html.npx #topbar #shChip{order:4}html.npx #topbar #tbMark{order:5}html.npx #topbar #tbSimp{order:6}
+html.npx #topbar #shChip::before{content:"分頁　";color:var(--sub)}
+html.npx.hmOpen #topbar #tbSize,html.npx.hmOpen #topbar #tbMark,html.npx.hmOpen #topbar #fileBtns button,html.npx.hmOpen #topbar #shChip,html.npx.hmOpen #topbar #tbSimp{border:1px dashed var(--dash)!important;border-radius:4px!important;letter-spacing:.06em}
+html.npx #topbar #moreBtn::before{content:none!important}
+html.npx.hmOpen #topbar #tbMark[aria-pressed="true"]{border:1.6px solid var(--cyan)!important;color:var(--cyan)!important}
+#tbSimp{display:none}
+html.npx #nGrp{display:none!important}
+/* (47) 極簡: the whole screen is the drawing paper */
+html.npx.simp main{padding:0!important}
+html.npx.simp .stage{margin:0!important}
+html.npx.simp #sheet{border:0!important;border-radius:0!important}
+html.npx.simp .name{position:fixed;z-index:7;top:0;left:0;right:0;max-width:none;margin:0!important;padding:6px 10px 6px 12px;gap:8px;background:color-mix(in srgb,var(--paper) 86%,transparent);border:0;border-radius:0}
+html.npx.simp.topi .name{top:var(--topi)}
+html.npx.simp .nm .brand{display:flex!important;align-items:center;flex:none;font-size:15px!important;letter-spacing:.1em}html.npx.simp .nm .brand .lg{width:30px!important;height:30px!important;margin-right:9px}html.npx.simp .nm .brand i{height:1em;margin:0 .6em}html.npx.simp .nm{flex:1 1 0!important;min-width:0;align-items:center!important;gap:14px!important}
+html.npx.simp .name #fName{flex:1 1 0!important;width:auto;min-width:3em}html.npx.simp #hmBtn{margin-left:auto}
+html.npx.simp #deck{position:fixed!important;left:0;right:0;bottom:calc(44px + env(safe-area-inset-bottom,0px));z-index:6;margin:0!important;padding:0 8px!important;background:transparent!important;pointer-events:none}
+html.npx.simp #deck>*{pointer-events:auto}
+html.npx.simp #nRul.idle{display:none!important}
+html.npx.simp #nRul{background:color-mix(in srgb,var(--paper) 90%,transparent);border-radius:4px;margin-bottom:6px}
+html.npx.simp #nPad{background:transparent!important;pointer-events:none}
+html.npx.simp #nPad>*,html.npx.simp #nPad .nk,html.npx.simp #nRing button{pointer-events:auto}
+html.npx.simp #nPad .nk,html.npx.simp #nRing button{background:color-mix(in srgb,var(--paper) 92%,transparent)!important}
+html.npx.simp:not(.nsel) #nPad .nk{visibility:hidden!important}
+html.npx.simp #actm{position:fixed!important;left:8px;right:8px;top:auto!important;bottom:8px!important;height:min(52vh,380px)!important;z-index:9}
+html.npx.simp #pvB{position:fixed!important;top:auto!important;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));gap:6px;flex-direction:row}
+html.npx.simp #pOv #pvB button{flex:1 1 0;height:30px;font-size:13px}
+html.npx.simp #pvM{top:48px}
+html.npx.simp.topi #pvM{top:calc(48px + var(--topi))}
+#nRing #nSel[data-s="act"]{color:var(--ink)!important}
+html.npx.simp #nRing #nSel[data-s="act"]{border:1.6px solid var(--sub)!important;color:var(--ink)!important}
+html.npx.simp .name:has(#mkExit:not([hidden])) .brand i,html.npx.simp .name:has(#mkExit:not([hidden])) .brand em{display:none!important}
 </style>
 </head>
 <body>
@@ -1347,8 +1432,8 @@ html.npx.simp #actm{position:absolute;left:10px;right:10px;top:6px;bottom:8px;he
       <span class="en">Cabinet Elevation</span>
     </header>
 
-    <div class="name"><label class="nm"><span class="brand" id="brand"><svg class="lg" viewBox="0 0 1059 1059" role="img" aria-label="三川工方"><defs><linearGradient id="lgA" gradientUnits="userSpaceOnUse" x1="262" y1="258" x2="792" y2="788"><stop offset="0" stop-color="#2D53B2"/><stop offset="1" stop-color="#68C1D8"/></linearGradient></defs><path d="M289 254L530 14L591 75L350 315ZM393 355L633 114L694 175L454 415ZM485 444L726 204L787 265L546 505ZM190 348L431 589L491 528L251 287ZM750 350L991 590L1051 529L811 289ZM99 437L339 677L400 617L160 376ZM655 442L896 682L957 621L716 381ZM8 528L248 769L309 708L69 468ZM564 532L805 772L865 711L625 471ZM283 802L523 562L584 623L344 863ZM374 893L614 652L675 713L435 953ZM468 985L708 744L769 805L529 1045Z" fill="url(#lgA)"/></svg><b>三川工方</b><i></i><em>櫃體立面圖</em></span><input id="fName" maxlength="60" placeholder="輸入檔名" aria-label="檔案名稱（案名）"></label><span id="viewSlot"><div class="seg" id="viewSeg" role="group" aria-label="看哪一張圖"><button id="vOut" aria-pressed="true">櫃外</button><button id="vIn" aria-pressed="false">櫃內</button></div></span><span id="fileBtns"><button id="fileBtn" aria-expanded="false" aria-controls="filePop">檔案</button><button id="moreBtn" aria-expanded="false" aria-controls="morePop">檢視</button></span><span id="nameSlot"></span></div>
-    <div id="topbar"><span id="tbSeg"></span><button id="tbSize" aria-pressed="false">尺寸</button><button id="tbMark" aria-pressed="false">標註</button><span id="tbFile"></span></div>
+    <div class="name"><label class="nm"><span class="brand" id="brand"><svg class="lg" viewBox="0 0 1059 1059" role="img" aria-label="三川工方"><defs><linearGradient id="lgA" gradientUnits="userSpaceOnUse" x1="262" y1="258" x2="792" y2="788"><stop offset="0" stop-color="#2D53B2"/><stop offset="1" stop-color="#68C1D8"/></linearGradient></defs><path d="M289 254L530 14L591 75L350 315ZM393 355L633 114L694 175L454 415ZM485 444L726 204L787 265L546 505ZM190 348L431 589L491 528L251 287ZM750 350L991 590L1051 529L811 289ZM99 437L339 677L400 617L160 376ZM655 442L896 682L957 621L716 381ZM8 528L248 769L309 708L69 468ZM564 532L805 772L865 711L625 471ZM283 802L523 562L584 623L344 863ZM374 893L614 652L675 713L435 953ZM468 985L708 744L769 805L529 1045Z" fill="url(#lgA)"/></svg><b>三川工方</b><i></i><em>櫃體立面圖</em></span><input id="fName" maxlength="60" placeholder="輸入檔名" aria-label="檔案名稱（案名）"></label><button id="mkExit" hidden aria-label="結束標註">標註中 ✕</button><button id="hmBtn" aria-label="選單" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><span id="viewSlot"><div class="seg" id="viewSeg" role="group" aria-label="看哪一張圖"><button id="vOut" aria-pressed="true">櫃外</button><button id="vIn" aria-pressed="false">櫃內</button></div></span><span id="fileBtns"><button id="fileBtn" aria-expanded="false" aria-controls="filePop">檔案</button><button id="moreBtn" aria-expanded="false" aria-controls="morePop">檢視</button></span><span id="nameSlot"></span></div>
+    <div id="topbar"><span id="tbSeg"></span><button id="tbSize" aria-pressed="false">尺寸</button><button id="tbMark" aria-pressed="false">標註</button><span id="tbFile"></span><button id="tbSimp">極簡模式</button></div>
     <div id="fileSlot"></div>
 
     <div id="urSlot"></div>
@@ -1390,7 +1475,7 @@ html.npx.simp #actm{position:absolute;left:10px;right:10px;top:6px;bottom:8px;he
         <button class="sw" data-col="#ee7d1c" style="background:#ee7d1c" aria-label="橘色"></button>
         <button class="sw" data-col="#7b4a2a" style="background:#7b4a2a" aria-label="咖啡色"></button>
       </div><span class="sp"></span><button id="clearAnn" class="quiet">全部清除</button></div>
-      <label class="lw" id="lwRow"><span class="t">粗細</span><input type="range" id="lwIn" min="1" max="12" step="1" value="2" aria-label="線條粗細"><b id="lwVal">2</b></label>
+      <label class="lw" id="lwRow"><span class="t">粗細</span><button type="button" class="lwb" data-lw="-1" aria-label="線細一點">−</button><input type="range" id="lwIn" min="1" max="12" step="1" value="2" aria-label="線條粗細"><button type="button" class="lwb" data-lw="1" aria-label="線粗一點">＋</button><b id="lwVal">2</b></label>
       <p class="hint" id="markHint" hidden></p>
       <div id="selRow" hidden>
         <button id="fzDown" aria-label="文字縮小">字小一點</button>
@@ -1456,8 +1541,8 @@ html.npx.simp #actm{position:absolute;left:10px;right:10px;top:6px;bottom:8px;he
       <div class="btns"><button id="szAdjBtn" aria-pressed="false">調線</button><button id="evenAllBtn">各區均分</button><button id="mirrorBtn">左右鏡射</button></div>
     </section>
     <div id="editHome" hidden><div class="btns"><button id="ehDraw" aria-pressed="false">畫線</button></div><p class="note" id="ehNote">還沒選取要編輯的格子或線：把準星移過去，按「選取」。</p><div id="quickCols" hidden><span>直接分成</span><button data-qc="2">2 區</button><button data-qc="3">3 區</button><button data-qc="4">4 區</button><button data-qc="5">5 區</button><button data-qc="6">6 區</button></div><div id="cabOps"><p class="fh">整個櫃體</p><div class="btns"><button id="ehEven">各區均分</button><button id="ehMirror">左右鏡射</button></div></div></div>
-    <ol id="startTip" hidden><li><b>1</b><span>上面「尺寸」：輸入總寬、總高、踢腳板。</span></li><li><b>2</b><span>下面「直分隔」「橫分隔」：先出現預覽線，位置對了按「確定」。也可以先用「直接分成幾區」。</span></li><li><b>3</b><span>準星移到格子上按「選取」，再選門片、抽屜、層板。</span></li></ol>
-    <div id="viewPanel" class="ed" hidden><p class="fh" style="margin-top:0">圖面</p><div class="fg g4"><button id="gridBtn" aria-pressed="false" aria-label="格線">格線</button><button id="darkBtn" aria-pressed="false">黑底</button><button id="pvBtn" aria-label="預覽成品圖">預覽</button><button id="landBtn" aria-pressed="false">橫屏</button><button id="topiBtn" aria-pressed="true">上方留空</button><button id="lblBtn" aria-pressed="false">格子寫尺寸</button><button id="simBtn" aria-pressed="false">簡易面板</button></div><p class="fh">其他</p><div class="fg g3"><button id="xBg">底圖</button><button id="viewBtn" aria-label="設定">設定</button><button id="xHelp">使用說明</button></div><p class="note" style="font-size:13px;margin:10px 0 0">在「檢視」裡點圖面不會選到東西，可以放心拖動、縮放。要修改請按左邊的「編輯」。</p></div>
+    <ol id="startTip" hidden><li><b>1</b><span>上面「尺寸」：輸入總寬、總高、踢腳板。</span></li><li><b>2</b><span>點一格按「選取」，旁邊出現「直分隔」「橫分隔」：先出現預覽線，位置對了按「確定」。也可以先用「直接分成幾區」。</span></li><li><b>3</b><span>準星移到格子上按「選取」，再選門片、抽屜、層板。</span></li></ol>
+    <div id="viewPanel" class="ed" hidden><p class="fh" style="margin-top:0">圖面</p><div class="fg g4"><button id="gridBtn" aria-pressed="false" aria-label="格線">格線</button><button id="darkBtn" aria-pressed="false">黑底</button><button id="pvBtn" aria-label="預覽成品圖">預覽</button><button id="landBtn" aria-pressed="false">橫屏</button><button id="topiBtn" aria-pressed="true">上方留空</button><button id="lblBtn" aria-pressed="false">格子寫尺寸</button><button id="swBtn" aria-pressed="false">開門線</button><button id="simBtn" aria-pressed="false">極簡模式</button><button id="datBtn" aria-pressed="false">基準：左</button></div><p class="fh">其他</p><div class="fg g3"><button id="xBg">底圖</button><button id="viewBtn" aria-label="設定">設定</button><button id="xHelp">使用說明</button></div><p class="note" style="font-size:13px;margin:10px 0 0">在「檢視」裡點圖面不會選到東西，可以放心拖動、縮放。要修改請按左邊的「編輯」。</p></div>
     <p class="hint" id="edHint"></p>
     </div>
     <div id="deck"></div>
@@ -1481,22 +1566,23 @@ html.npx.simp #actm{position:absolute;left:10px;right:10px;top:6px;bottom:8px;he
   <dl>
     <dt>上面</dt><dd>尺寸、檢視、檔案。右上角那一顆是分頁：點它可以切換、新增、改名、複製、刪除分頁。</dd>
     <dt>下面</dt><dd>由上到下：一條標線、圓盤和它左右各三顆按鍵、最下面一排「看圖｜櫃體｜標註」。</dd>
-    <dt>圓盤</dt><dd>在中間拖動是移動準星；手指拖出圓盤外面也沒關係，不會按到旁邊的鍵。四個小箭頭每按一下走一步，一步多大按標線上方的小字切換（1、5、10、50 mm）。圓環上有四顆：上面「選取」、左邊「返回」、右邊「移動」、下面「視角」。</dd>
+    <dt>圓盤</dt><dd>在中間拖動是移動準星；手指拖出圓盤外面也沒關係，不會按到旁邊的鍵。圓環上有四顆：上面「選取」、左邊「返回」、右邊「移動」、下面「視角」。</dd>
     <dt>選取</dt><dd>點圖面只是把準星移過去，指到的東西會亮起來；<b>按圓盤上面的「選取」才算選到</b>，這樣不會誤觸。選到之後，左右的按鍵會自動換成「櫃體」那一組。選別的東西會直接換過去。分隔、移動進行中，這一顆會變成「確定」。</dd>
     <dt>返回</dt><dd>每按一下退一步：分隔或移動進行中、或剛選到東西還沒改它，這一顆是「取消」；其他時候是復原上一步。</dd>
-    <dt>看圖｜櫃體｜標註</dt><dd>最下面三顆，切換圓盤左右的按鍵。<br><b>看圖</b>只改怎麼看：鎖定準星、置中放大（把準星移到畫面中間並放大 4 倍，方便對準）、櫃外／櫃內、＋、－、還原。<br><b>櫃體</b>會改到櫃子：直分隔、橫分隔、刪除、編輯、多選、重做。<br><b>標註</b>是在圖上另外畫：直線、方框、量尺、文字、圓形、更多。</dd>
+    <dt>看圖｜櫃體｜標註</dt><dd>最下面三顆，切換圓盤左右的按鍵。<br><b>看圖</b>的按鍵都搬走了：「微調」是點一下圓盤正中心，再點一下收起（準星四周出現三角形和步距鍵，預設一步 5 公分，點步距鍵換 1／5／10／50 公釐；再按一次全部收起）；「還原」和「櫃外／櫃內」在圖面右下角（縮放用兩指）；基準左／右在「檢視」裡。<br><b>櫃體</b>會改到櫃子：刪除、編輯、多選、重做；選到一格時才多出直分隔、橫分隔（線只能移動、刪除，所以選線時不出現）。<br><b>標註</b>是在圖上另外畫：直線、方框、量尺、文字、圓形、更多。</dd>
+    <dt>基準、刻度</dt><dd>準星往下的那條線量到地面，往基準邊的那條線量到櫃體外側，箭頭就指在地面和側板上，數字寫在線上。基準在「檢視」切換左或右：靠右牆的櫃子切到右邊，下面的刻度改成從右邊量，直的刻度也移到左邊。刻度是整條軌道，手指按在軌道上任何地方滑動，準星就往同一個方向移，不用按到圓點。</dd>
     <dt>標線</dt><dd>圓盤上面那一條，中間是準星。平常顯示準星離左邊（L）、右邊（R）那條線多遠。選到一條線或一片層板時，顯示它到兩邊的距離（橫的線是上、下），數字外面有虛線框，可以直接點來改。</dd>
-    <dt>直分隔、橫分隔</dt><dd>按了不會馬上切：圖上先出現一條預覽線和兩邊的尺寸，跟著準星走。把準星移到要切的位置，再按圓盤上面的「確定」。再按一次同一顆是取消。</dd>
-    <dt>移動</dt><dd>先選一條線（或一片層板），按圓環右邊的「移動」，把準星移到新的位置，圖上有預覽線和兩邊的距離，再按「確定」。也可以直接改標線上的數字。</dd>
+    <dt>直分隔、橫分隔</dt><dd>先選一格才會出現。按了不會馬上切：預覽線先出現在那一格的正中間，兩邊尺寸一樣。位置對就直接按「確定」；要偏一點，移動準星再按「確定」。位置對了，按「確定」或再按一次同一顆都可以；要放棄按「返回」。</dd>
+    <dt>移動</dt><dd>選到的線或層板會變青藍，正中間有兩個三角形指著它，按住那裡可以直接拖。先選一條線（或一片層板），按圓環右邊的「移動」，把準星移到新的位置，圖上有預覽線和兩邊的距離，再按「確定」。也可以直接改標線上的數字。按了「移動」以後，刻度上淡青色的那一段是這條線能移動的範圍（兩旁至少留 50；直的線看下面的刻度，橫的線看左邊的刻度），預覽線跟著準星走，按「確定」或再按一次「移動」就移過去，「返回」取消。移動層板時，靠近隔壁那一區的層板高度會自動吸過去，預覽線會延伸到隔壁那一格。</dd>
     <dt>刪除</dt><dd>刪掉選到的東西（線、層板、格子）。要先選取。刪線是兩邊併成一格。</dd>
     <dt>編輯</dt><dd>選到格子後按「編輯」，圓盤的位置會換成選單：選它是門片、抽屜、層板、空櫃或封板，下面是那一種的選項；複製、貼上、整區的加一區和刪除也在裡面。上面有「選格」可以直接換一格。改好按右上角的「完成」，回到圓盤。沒選東西時按「編輯」，可以把空白櫃體直接分成幾區。</dd>
     <dt>多選</dt><dd>按「多選」後直接點幾格；圓盤的位置會出現合併、均分寬、均分高這些按鍵，選到不同區的層板格時有「層板對齊」。按「完成」結束多選。</dd>
     <dt>尺寸</dt><dd>另外開一頁，把這一張的數字全部列出來：總高、總寬、板厚、踢腳板，每一區的寬，每一格的高、各層淨高、每個抽屜的高，都可以直接改，上面的圖會跟著變。按「完成」回到圖面。不開這一頁也能改：圖上的尺寸數字可以點；選到一條線，標線上的數字可以改。</dd>
-    <dt>標註</dt><dd>不會改到櫃體。按最下面的「標註」，再點左右的工具：把準星移到第一點按「選取」，再移到第二點按「確定」。畫好的可以再改：準星移到它上面按「選取」，再把準星移到它的一端按「選取」、移到新位置按「確定」；整個搬用「移動」。「更多」裡有箭頭、畫筆、螢光筆（這兩種直接用手指畫）、顏色、粗細、全部清除，選到的標註也在這裡刪除。按「看圖」或「櫃體」就離開標註。</dd>
-    <dt>視角、鎖定準星</dt><dd>「視角」開著時圓盤移動的是畫面，準星留在圖上原本的位置。「鎖定準星」開著時準星固定在螢幕上不動，拖圓盤或圖面，把要選的地方移到準星下面，再按「選取」。</dd>
+    <dt>標註</dt><dd>不會改到櫃體。進入標註後，圖面左上角有顏色和線條粗細（－／＋），隨時可以換。按最下面的「標註」，再點左右的工具：把準星移到第一點按「選取」，再移到第二點按「確定」。畫好的可以再改：準星移到它上面按「選取」，再把準星移到它的一端按「選取」、移到新位置按「確定」；整個搬用「移動」。「更多」裡有箭頭、畫筆、螢光筆（這兩種直接用手指畫）、顏色、粗細、全部清除，選到的標註也在這裡刪除。按「看圖」或「櫃體」就離開標註。</dd>
+    <dt>視角</dt><dd>「視角」開著時圓盤移動的是畫面，準星留在圖上原本的位置。</dd>
     <dt>圖面</dt><dd>在圖上按住拖是移動畫面，兩指開合是縮放。</dd>
     <dt>檢視</dt><dd>格線、預覽、橫屏、底圖。預覽和匯出的圖固定是白底。</dd>
-    <dt>檔案</dt><dd>存檔、開舊圖、櫃體樣式、空白圖面、AI 繪圖、轉成自由繪圖、匯出。</dd>
+    <dt>檔案</dt><dd>存檔、開舊圖、新檔案（先選常用尺寸或自己輸入寬、高、踢腳板）、櫃體樣式、AI 繪圖、匯出。</dd>
     <dt>橫屏</dt><dd>按鍵排在左邊一排，功能一樣，但沒有圓盤和三組切換：「標註」在右上，分頁在圖面左上角，選到東西後的選項在右邊。</dd>
   </dl>
 </div></div>
@@ -1543,6 +1629,10 @@ html.npx.simp #actm{position:absolute;left:10px;right:10px;top:6px;bottom:8px;he
   <p class="note" id="styleNote"></p>
 </div>
 <div id="szw" hidden><div id="szwH"><b>尺寸</b><div id="szwSeg" role="group" aria-label="看櫃外還是櫃內"><button data-v="out">櫃外</button><button data-v="in">櫃內</button></div><span class="sp"></span><button id="szwU">復原</button><button id="szwX" class="pri">完成</button></div><div id="szwMain"><div id="szwImg"></div><div id="szwBody"><div class="szt" style="margin-top:2px"><b>整體</b><span>mm</span></div><div id="szwDim"></div><div class="szt"><b id="szwT">各區</b><span>mm</span></div><div id="szList"></div><p class="note" id="szwNote"></p></div></div></div><div id="pvw" hidden><div id="pvwImg"></div><button id="pvwX">關閉預覽</button></div>
+<div id="nwBox" hidden><div id="nwCard" role="dialog" aria-label="新櫃體的尺寸"><b id="nwT">新檔案</b><p class="note" style="margin:4px 0 8px">先定外框，裡面是空的，再開始分格。</p>
+<div id="nwPre"></div>
+<div class="nwf"><label>總寬<input id="nwW" inputmode="numeric" maxlength="5"></label><label>總高<input id="nwH" inputmode="numeric" maxlength="5"></label><label>踢腳板<input id="nwK" inputmode="numeric" maxlength="4"></label></div>
+<div class="nwb"><button id="nwNo">取消</button><button id="nwGo">開始</button></div></div></div>
 <div id="toast" role="status" aria-live="polite"></div>
 </div>
 
@@ -1604,6 +1694,9 @@ const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth
 const debounce=(f,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>f(...a),ms)}};
 const use=n=>{try{return window.claude&&window.claude.use?window.claude.use(n).catch(()=>null):Promise.resolve(null)}catch(e){return Promise.resolve(null)}};
 
+function vpGet(k,d){try{const v=localStorage.getItem('sc-cab-'+k);return v==null?d:v==='1'}catch(e){return d}}
+function vpSet(k,v){try{localStorage.setItem('sc-cab-'+k,v?'1':'0')}catch(e){}}
+function swingOn(){return vpGet('swing',false)}
 function sample0(){return{id:'',name:'',W:2400,H:2400,kick:100,T:18,labels:true,ann:[],cols:[
   {w:600,parts:[{t:'door',h:2300,n:1,hinge:'L',ins:[{t:'rod',h:1500,n:1},{t:'shelf',h:800,n:1}]}]},
   {w:600,parts:[{t:'door',h:2300,n:1,hinge:'R',ins:[{t:'shelf',h:1500,n:3},{t:'idrawer',h:800,n:3}]}]},
@@ -1668,7 +1761,7 @@ function toFree(st){const H=st.H,k=st.kick,T=st.T||18,ln=[],cl=[],B=(x1,z1,x2,z2
       cl.push({x:x+c.w/2,z:H-y-p.h/2,t:p.t,n:p.n,hinge:p.hinge});
       if(p.t==='open'&&p.n>0&&c.w>4*T&&p.h>4*T){const g=gapsOf(p,p.h-2*T,T);let sy=y+T;g.forEach((v,q)=>{if(q<p.n)B(x,H-(sy+v+T/2),x+c.w,H-(sy+v+T/2),'shelf');sy+=v+T})}
       y+=p.h});x+=c.w});
-  const o=normalize({kind:'free',id:st.id,name:st.name,T,labels:st.labels,grid:st.grid,W:st.W,H,ln,cl,ann:st.ann,bg:st.bg,wall:st.wall});if(st.sid)o.sid=st.sid;return o}
+  const o=normalize({kind:'free',id:st.id,name:st.name,T,labels:st.labels,grid:st.grid,dat:st.dat,W:st.W,H,ln,cl,ann:st.ann,bg:st.bg,wall:st.wall});if(st.sid)o.sid=st.sid;return o}
 function fixAll(st){if(st.kind==='free'){freeFix(st);return}const T=st.T||18;st.cols.forEach(c=>c.parts.forEach(p=>{
   if(p.t==='door'){if(!Array.isArray(p.ins)||!p.ins.length)p.ins=normIns(null,p.h);else settle(p.ins,'h',p.h);
     p.ins.forEach((s,si)=>{if(s.t==='shelf')fixGs(s,clearIn(p,si,T),T);else if(s.gs)delete s.gs})}
@@ -1677,7 +1770,7 @@ function normalize(d,notes){
   if(d&&d.kind==='free'&&!d._f){const W=clamp(num(d.W,2400),100,MAXW),H=clamp(num(d.H,2400),150,MAXH),o=normalize(Object.assign({},d,{_f:1,W,H,kick:0,cols:[{w:W,parts:[{t:'open',h:H,n:0}]}]}),[]);
     o.kind='free';o.ln=(Array.isArray(d.ln)?d.ln:[]).map(l=>Object.assign({},l));o.cl=(Array.isArray(d.cl)?d.cl:[]).map(c=>Object.assign({},c));return freeFix(o)}
   notes=notes||[];d=d||{};
-  const o={id:String(d.id||''),name:String(d.name||'').slice(0,60),labels:d.labels!==false,grid:+d.grid===50||+d.grid===100?+d.grid:0};if(d.sid)o.sid=String(d.sid).slice(0,24);
+  const o={id:String(d.id||''),name:String(d.name||'').slice(0,60),labels:vpGet('lbl',false),grid:+d.grid===50||+d.grid===100?+d.grid:0};if(d.sid)o.sid=String(d.sid).slice(0,24);if(d.dat==='R')o.dat='R';
   o.W=clamp(num(d.W,2400),100,MAXW);o.H=clamp(num(d.H,2400),150,MAXH);o.kick=clamp(num(d.kick,0),0,o.H-MIN);o.T=clamp(num(d.T,18),6,40);
   const body=o.H-o.kick;
   const src=Array.isArray(d.cols)&&d.cols.length?d.cols.slice(0,20):[{w:o.W}];
@@ -1717,18 +1810,19 @@ function wallItems(st){const q=st.wall;if(!q||q.on===false)return[];return q.ite
   return{i,k:it.k,x,y,w:it.w,h:it.h,a:it.a,hit:ox>0&&oy>0?{w:Math.round(ox),h:Math.round(oy)}:null}})}
 const WNAME={win:'窗',door:'門',open:'開口'};
 function layout(st,availW,maxH,ax){
-  let S=Math.max(st.W,st.H)/300;const gb=st.grid||(ax&&(ax.x||ax.r))?1:0,gr=st.grid||(ax&&(ax.y||ax.r))?1:0,we=wallExt(st),ml=ax&&ax.y?7:5,mt=ax&&ax.x?8.8:6.6,vbOf=s=>{const fs=11*s;return[-ml*fs-we.l,-mt*fs-we.t,st.W+(ml+5+1.8*gr)*fs+we.l+we.r,st.H+(mt+4.8+1.2*gb)*fs+we.t]};
+  let S=Math.max(st.W,st.H)/300;const gb=st.grid||(ax&&(ax.x||ax.r))?1:0,gr=st.grid||(ax&&(ax.y||ax.r))?1:0,we=wallExt(st),ml=ax&&ax.y?7:5,mt=ax&&ax.x?8.8:6.6,vbOf=s=>{const fs=11*s;return[-(ml+1.8*gr)*fs-we.l,-mt*fs-we.t,st.W+(ml+5+1.8*gr)*fs+we.l+we.r,st.H+(mt+4.8+1.2*gb)*fs+we.t]};
   for(let i=0;i<6;i++){const vb=vbOf(S);S=Math.max(vb[2]/availW,vb[3]/maxH)}
   return{S,vb:vbOf(S)}}
 
 function rulerPrims(st,S,b,gr,sx,sy){
   sx=sx!==false;sy=sy!==false;
-  const fs=11*S,rf=fs*.68,bw=sy?fs*1.8:0,bh=sx?fs*1.2:0,x0=b[0],y0=b[1],x1=b[2],y1=b[3],P=[];
+  const fs=11*S,rf=fs*.8,bw=sy?fs*1.8:0,bh=sx?fs*1.2:0,x0=b[0],y0=b[1],x1=b[2],y1=b[3],P=[];
   const pick=need=>[gr,100,200,500,1000,2000,5000].find(c=>c>=gr&&c>=need)||5000;
-  const dg=Math.max(String(Math.round(x0/10)).length,String(Math.round(x1/10)).length),lx=pick(dg*.6*rf+5*S),ly=pick(rf+3*S);
-  if(sx)P.push({t:'r',x:x0,y:y1-bh,w:x1-x0,h:bh,c:'rb'});if(sy)P.push({t:'r',x:x1-bw,y:y0,w:bw,h:y1-y0,c:'rb'});
-  if(sx)for(let v=Math.ceil(x0/gr)*gr;v<=x1-bw;v+=gr){const mj=v%lx===0;P.push({t:'l',x1:v,y1:y1,x2:v,y2:y1-fs*(mj?.4:.22),c:'rt'});if(mj)P.push({t:'t',x:v,y:y1-fs*.5,s:String(v/10),c:'rl',a:'middle',z:rf})}
-  if(sy)for(let k=Math.ceil((st.H-(y1-bh))/gr)*gr;k<=st.H-y0;k+=gr){const y=st.H-k,mj=k%ly===0;P.push({t:'l',x1:x1,y1:y,x2:x1-fs*(mj?.4:.22),y2:y,c:'rt'});if(mj)P.push({t:'t',x:x1-fs*.55,y:y+rf*.35,s:String(k/10),c:'rl',a:'end',z:rf})}
+  const dg=Math.max(String(Math.abs(Math.round(x0/10))).length,String(Math.abs(Math.round(x1/10))).length),lx=pick(Math.max(dg*.56*rf+1.5*S,rf+2*S)),ly=lx;
+  const dr=st.dat==='R',xa=x0+bw,xb=x1,ex=x0,sg=1;
+  if(sx)P.push({t:'r',x:x0,y:y1-bh,w:x1-x0,h:bh,c:'rb'});if(sy)P.push({t:'r',x:x0,y:y0,w:bw,h:y1-y0,c:'rb'});
+  if(sx)for(let u=Math.ceil((dr?st.W-xb:xa)/gr)*gr;;u+=gr){const v=dr?st.W-u:u;if(dr?v<xa:v>xb)break;const mj=u%lx===0;P.push({t:'l',x1:v,y1:y1,x2:v,y2:y1-fs*(mj?.4:.22),c:'rt'});if(mj)P.push({t:'t',x:v,y:y1-fs*.5,s:String(u/10),c:'rl',a:'middle',z:rf})}
+  if(sy)for(let k=Math.ceil((st.H-(y1-bh))/gr)*gr;k<=st.H-y0;k+=gr){const y=st.H-k,mj=k%ly===0;P.push({t:'l',x1:ex,y1:y,x2:ex+sg*fs*(mj?.4:.22),y2:y,c:'rt'});if(mj)P.push({t:'t',x:ex+sg*fs*.55,y:y+rf*.35,s:String(k/10),c:'rl',a:'start',z:rf})}
   return P}
 const BASEC='#3d3a35';
 const HCOL=['#c8372d','#1f66b3','#2f8a57','#ee7d1c','#8e44ad','#0f9d9d','#b8860b','#d6408f','#4a5d7a','#6b8e23'];
@@ -1765,14 +1859,14 @@ function zoneName(z){const c=z.cnt;return z.t==='none'?'空格':z.t==='door'?'�
 function handleModel(st,inV,selC){
   if(st.kind==='free')return[];
   const H=[],body=st.H-st.kick,T=st.T||18,xs=[];let x=0;
-  st.cols.forEach((c,ci)=>{xs.push(x);x+=c.w;if(ci<st.cols.length-1)H.push({k:'c',i:ci,ax:'x',v:x,gx:x,gy:body*.8,sp:Math.min(c.w,st.cols[ci+1].w)})});
-  H.push({k:'w',ax:'x',v:st.W,gx:st.W,gy:st.H*.3,sp:st.cols[st.cols.length-1].w},{k:'h',ax:'y',v:0,gx:st.W/2,gy:0,sp:400});
+  st.cols.forEach((c,ci)=>{xs.push(x);x+=c.w;if(ci<st.cols.length-1)H.push({k:'c',i:ci,ax:'x',v:x,gx:x,gy:body/2,sp:Math.min(c.w,st.cols[ci+1].w)})});
+  H.push({k:'w',ax:'x',v:st.W,gx:st.W,gy:st.H/2,sp:st.cols[st.cols.length-1].w},{k:'h',ax:'y',v:0,gx:st.W/2,gy:0,sp:400});
   if(!inV&&selC==null){const m=new Map();
-    st.cols.forEach((c,ci)=>{let y=0;for(let i=0;i<c.parts.length-1;i++){y+=c.parts[i].h;const key=Math.round(y),sp=Math.min(c.parts[i].h,c.parts[i+1].h),e=m.get(key);if(e)e.sp=Math.min(e.sp,sp);else m.set(key,{k:'r',y:key,ax:'y',v:key,gx:xs[ci]+c.w*.2,gy:key,sp})}});
+    st.cols.forEach((c,ci)=>{let y=0;for(let i=0;i<c.parts.length-1;i++){y+=c.parts[i].h;const key=Math.round(y),sp=Math.min(c.parts[i].h,c.parts[i+1].h),e=m.get(key);if(e){e.sp=Math.min(e.sp,sp);e.x1=xs[ci]+c.w;e.gx=(e.x0+e.x1)/2}else m.set(key,{k:'r',y:key,ax:'y',v:key,gx:xs[ci]+c.w/2,x0:xs[ci],x1:xs[ci]+c.w,gy:key,sp})}});
     [...m.values()].sort((a,b)=>a.v-b.v).forEach(h=>H.push(h))}
   else{const ci=clamp(selC==null?st.cols.length-1:selC,0,st.cols.length-1),c=st.cols[ci];let y=0;
-    c.parts.forEach((p,pi)=>{if(pi&&!inV)H.push({k:'p',c:ci,i:pi-1,ax:'y',v:y,gx:xs[ci]+c.w*.2,gy:y,sp:Math.min(c.parts[pi-1].h,p.h)});
-      if(inV&&p.t==='door'&&p.ins&&c.w>4*T&&p.h>4*T){let sy=y;p.ins.forEach((q,si)=>{if(si)H.push({k:'s',c:ci,p:pi,i:si-1,ax:'y',v:sy,gx:xs[ci]+c.w*.2,gy:sy,sp:Math.min(p.ins[si-1].h,q.h)});sy+=q.h})}
+    c.parts.forEach((p,pi)=>{if(pi&&!inV)H.push({k:'p',c:ci,i:pi-1,ax:'y',v:y,gx:xs[ci]+c.w/2,gy:y,sp:Math.min(c.parts[pi-1].h,p.h)});
+      if(inV&&p.t==='door'&&p.ins&&c.w>4*T&&p.h>4*T){let sy=y;p.ins.forEach((q,si)=>{if(si)H.push({k:'s',c:ci,p:pi,i:si-1,ax:'y',v:sy,gx:xs[ci]+c.w/2,gy:sy,sp:Math.min(p.ins[si-1].h,q.h)});sy+=q.h})}
       y+=p.h})}
   if(st.kick>0)H.push({k:'k',ax:'y',v:body,gx:st.W*.5,gy:body,sp:Math.max(60,st.kick)});
   let xi=0,yi=0;H.forEach(h=>{h.col=h.ax==='x'?HCOL[xi++%HCOL.length]:HCOL[(5+yi++)%HCOL.length]});
@@ -1832,7 +1926,7 @@ function geomFree(st,o){
     if(zs.length>2)for(let i=0;i<zs.length-1;i++)dimV(Y(zs[i]),Y(zs[i+1]),bx1+fs*1.6,String(zs[i]-zs[i+1]),false)}
   const gr=o.nogrid||o.nog?0:(st.grid||0),G=[];let RU=[];
   if(gr){const b=o.box||[-5*fs,-(o.top||4.2)*fs,st.W+6.8*fs,H+6*fs];
-    for(let v=Math.ceil(b[0]/gr)*gr;v<=b[2];v+=gr)G.push({t:'l',x1:v,y1:b[1],x2:v,y2:b[3],c:v%500?'gd':'gD'});
+    {const go=st.dat==='R'?((st.W%gr)+gr)%gr:0;for(let v=Math.ceil((b[0]-go)/gr)*gr+go;v<=b[2];v+=gr)G.push({t:'l',x1:v,y1:b[1],x2:v,y2:b[3],c:(st.dat==='R'?st.W-v:v)%500?'gd':'gD'})}
     for(let k=Math.ceil((H-b[3])/gr)*gr;k<=H-b[1];k+=gr)G.push({t:'l',x1:b[0],y1:H-k,x2:b[2],y2:H-k,c:k%500?'gd':'gD'});
     if(o.rule)RU=rulerPrims(st,S,b,gr)}
   if(o.cap)tx(-fs*4.4,-fs*4.7,o.cap,'ttl',fs*1.15,'start');
@@ -1858,14 +1952,14 @@ function geom(st,o){
     else if(wp>=44&&hp>=14)TX(lx,cy+fs*.33,size,'lbn',null,fs*.9)};
   const shelves=(sx,sw,top,bot,x,hm,sb)=>{const g=gapsOf(x,bot-top,T),n=x.n,cu=n>0&&!!x.gs,tops=[];let sy=top,m=Math.floor(n/2);
     g.forEach((v,k)=>{tops.push(sy);if(k<n){const y1=sy+v;L(sx,y1,sx+sw,y1,'thin');L(sx,y1+T,sx+sw,y1+T,'thin');if(hm&&o.sel&&o.sel.g===k&&!(o.msel&&o.msel.length))A.push({t:'l',x1:sx,y1:y1+T/2,x2:sx+sw,y2:y1+T/2,c:'an',col:o.acc||'#b4583c',lw:T+2.4*S});
-        if(hm){U.push(Object.assign({t:'hg',x:sx,y:y1+T/2,w:sw,i:k,hh:clamp(Math.min(v,g[k+1])/2+T/2,5*S,11*S)},hm));A.push({t:'grip',x:sx+sw*.7,y:y1+T/2})}}
+        if(hm){U.push(Object.assign({t:'hg',x:sx,y:y1+T/2,w:sw,i:k,hh:clamp(Math.min(v,g[k+1])/2+T/2,5*S,11*S)},hm));A.push({t:'grip',x:sx+sw*.5,y:y1+T/2})}}
       sy+=v+T});
     if(cu){g.forEach((v,k)=>{if(v>g[m]+.5)m=k});
       if(st.labels)g.forEach((v,k)=>{if(k!==m&&sw/S>=30&&v/S>=13)TX(sx+sw/2,tops[k]+v/2+fs*.33,'淨'+fmt(v),'lbg',null,fs*.9)})}
     if(sb)g.forEach((v,k)=>{const a=k?tops[k]-T/2:sb.y0,b=k<n?tops[k]+v+T/2:sb.y1;U.push({t:'hit',x:sb.x,y:a,w:sb.w,h:b-a,ci:sb.ci,pi:sb.pi,si:sb.si,k});if(onk(sb.ci,sb.pi,sb.si,k))selRs.push({t:'r',x:sx,y:tops[k],w:sw,h:v,c:'sel'})});
     if(!sb&&hm&&sk!=null&&sk<g.length)selRs.push({t:'r',x:sx,y:tops[sk],w:sw,h:g[sk],c:'sel'});
     return{cy:tops[m]+g[m]/2,ch:g[m],gl:cu?'淨'+fmt(g[m]):null}};
-  const hm=o.hsel&&it?handleModel(st,inV,o.sel?o.sel.c:null).find(h=>hOn(o.hsel,h)):null,HW=new Set(),HP=new Set();let hcol=hm?hm.col:null,hiW=false,hiH=false,hiK=false;
+  const hm=o.hsel&&it?handleModel(st,inV,o.sel?o.sel.c:null).find(h=>hOn(o.hsel,h)):null,HW=new Set(),HP=new Set();let hcol=null,hiW=false,hiH=false,hiK=false;
   if(hm){const nc=st.cols.length,fl=i=>{for(let k=i;k>=0;k--)if(!st.cols[k].lock)return k;return-1},fr=i=>{for(let k=i;k<nc;k++)if(!st.cols[k].lock)return k;return-1};
     if(hm.k==='c'){const a=fl(hm.i),b=fr(hm.i+1);if(a>=0&&b>=0){HW.add(a);HW.add(b)}}
     else if(hm.k==='w'){hiW=true;if(!st.cols.some(c=>c.lock)&&isEven(st.cols,'w'))st.cols.forEach((c,i)=>HW.add(i));else{const a=fl(nc-1);HW.add(a<0?nc-1:a)}}
@@ -1906,7 +2000,7 @@ function geom(st,o){
           const lv=p.n===2?[{x,w:w/2,hg:'L'},{x:x+w/2,w:w/2,hg:'R'}]:[{x,w,hg:p.hinge}];
           if(p.n===2){L(x+w/2,y,x+w/2,y+h,'in');if(w/2/S>=50){lx=x+w/4;lw=w/2}else if(h/S>=110)cy=y+h/2+Math.min(160,h*.3)/2+fs*1.5}
           lv.forEach(f=>{const hx=f.hg==='L'?f.x:f.x+f.w,ox=f.hg==='L'?f.x+f.w:f.x,g=Math.min(45,f.w*.14),gx=f.hg==='L'?ox-g:ox+g,gl=Math.min(160,h*.3);
-            A.push({t:'p',pts:[[ox,y],[hx,y+h/2],[ox,y+h]],c:'dash'});if(p.pull==='groove'){const G=gvDoor(f,ox,y,h,p);F.push(...G.f);A.push(...G.a)}else if(p.pull!=='none')L(gx,y+h/2-gl/2,gx,y+h/2+gl/2,'hd')});
+            if(swingOn())A.push({t:'p',pts:[[ox,y],[hx,y+h/2],[ox,y+h]],c:'dash'});if(p.pull==='groove'){const G=gvDoor(f,ox,y,h,p);F.push(...G.f);A.push(...G.a)}else if(p.pull!=='none')L(gx,y+h/2-gl/2,gx,y+h/2+gl/2,'hd')});
         }else if(p.t==='drawer'){
           const dh=h/p.n,gl=Math.min(160,w*.3),tp=Math.min(60,dh*.3);
           for(let k=0;k<p.n;k++){if(k)L(x,y+dh*k,x+w,y+dh*k,'in');if(p.pull==='groove'){const G=gvDrawer(x,y+dh*k,w,dh,p);F.push(...G.f);A.push(...G.a)}else if(p.pull!=='none')L(x+w/2-gl/2,y+dh*k+tp,x+w/2+gl/2,y+dh*k+tp,'hd')}
@@ -1929,7 +2023,7 @@ function geom(st,o){
   if(o.bare)return{art:F.concat(A,B),ui:U};
   const tk=fs*.32,gr=o.nogrid||o.nog?0:(st.grid||0),rw=0,rh=0,G=[];let RU=[];
   if(gr){const b=o.box||[-5*fs,-(o.top||4.2)*fs,st.W+6.8*fs,st.H+6*fs];
-    for(let v=Math.ceil(b[0]/gr)*gr;v<=b[2];v+=gr)G.push({t:'l',x1:v,y1:b[1],x2:v,y2:b[3],c:v%500?'gd':'gD'});
+    {const go=st.dat==='R'?((st.W%gr)+gr)%gr:0;for(let v=Math.ceil((b[0]-go)/gr)*gr+go;v<=b[2];v+=gr)G.push({t:'l',x1:v,y1:b[1],x2:v,y2:b[3],c:(st.dat==='R'?st.W-v:v)%500?'gd':'gD'})}
     for(let k=Math.ceil((st.H-b[3])/gr)*gr;k<=st.H-b[1];k+=gr)G.push({t:'l',x1:b[0],y1:st.H-k,x2:b[2],y2:st.H-k,c:k%500?'gd':'gD'});
     if(o.rule)RU=rulerPrims(st,S,b,gr)}
   const dimH=(a,b,y,s,side,low,d,hc)=>{const n0=A.length;L(a,y,b,y,'dim');[a,b].forEach(v=>{L(v-tk,y+tk,v+tk,y-tk,'dim');side==='top'?L(v,-fs*.5,v,y-fs*.45,'dim'):L(v,st.H+rh+fs*.5,v,y+fs*.45,'dim')});
@@ -1947,7 +2041,7 @@ function geom(st,o){
   if(st.kick>0&&!hideH)dimV(body,st.H,st.W+rw+fs*1.6,String(st.kick),'right',{d:'K'},hiK?hcol:null);
   if(it&&st.kick>0)U.push({t:'hd',x:0,y:body,w:st.W,h:st.kick,d:'K'});
   if(it)handleModel(st,inV,o.sel?o.sel.c:null).forEach(h=>{const on=hOn(o.hsel,h)||(o.hgrp||[]).some(k=>hOn(k,h));if(h.fixed||!on)return;const hw=h.ax==='x'?13*S:16*S,hh=h.ax==='x'?16*S:12*S;
-    U.push({t:'hx',k:h.k,x:h.gx-hw,y:h.gy-hh,w:2*hw,h:2*hh,ci:h.c,pi:h.p,i:h.i,yv:h.y});A.push({t:'grip',x:h.gx,y:h.gy,on:hOn(o.hsel,h),col:h.col})});
+    U.push({t:'hx',k:h.k,x:h.gx-hw,y:h.gy-hh,w:2*hw,h:2*hh,ci:h.c,pi:h.p,i:h.i,yv:h.y});});
   if(o.cap)TX(-fs*4.4,-fs*4.7,o.cap,'ttl','start',fs*1.15);
   const ZF=[];if(o.zones)zones(st,inV).forEach(z=>{ZF.push({t:'r',x:z.x,y:z.y,w:z.w,h:z.h,c:'zf',col:z.col});B.push({t:'zb',x:z.x,y:z.y,w:z.w,h:z.h,s:String(z.n),col:z.col})});
   const WL=[];if(st.wall&&st.wall.on!==false&&!o.nogrid&&!o.bare){const q=st.wall;WL.push({t:'r',x:-q.ox,y:st.H-q.h,w:q.w,h:q.h,c:'wl'});
@@ -1995,7 +2089,7 @@ function toSVG(P,S,pal,U,W){
     lks:`fill="none" stroke="${pal.accent}" stroke-width="${f(.8*S)}"`,
     sel:`fill="${pal.accent}" fill-opacity=".14" stroke="${pal.accent}" stroke-width="${f(2*S)}"`};
   const an=p=>`fill="none" stroke="${p.col}" stroke-width="${f(p.lw||2.2*S)}" stroke-linecap="${p.dash?'butt':'round'}" stroke-linejoin="round"${p.c==='anh'?' stroke-opacity=".38"':''}${p.dash?` stroke-dasharray="${f(p.dash)} ${f(p.dash*.6)}"`:''}`;
-  const sty=p=>p.c==='wl'?`fill="${pal.tint}" fill-opacity=".35" stroke="${pal.mute}" stroke-width="${f(1.1*S)}"`:p.c==='wlf'?`fill="${pal.sheet}" stroke="none"`:p.c==='wlo'?`fill="none" stroke="${pal.sub}" stroke-width="${f(.9*S)}" stroke-dasharray="${f(6*S)} ${f(3*S)}"`:p.c==='wlx'?`fill="none" stroke="#c8372d" stroke-width="${f(1.5*S)}" stroke-dasharray="${f(6*S)} ${f(3*S)}"`:p.c==='zf'?'fill="none" stroke="none"':p.c==='es'?`fill="none" stroke="${p.col||pal.mute}" stroke-width="${f((p.lw||1)*S)}"${p.col?'':' stroke-opacity=".6"'}`:p.c==='dim'&&p.col?`fill="none" stroke="${p.col}" stroke-width="${f(1.6*S)}"`:p.c==='gl'&&p.col?`fill="none" stroke="${p.col}" stroke-width="${f((p.lw||1.3)*S)}" stroke-dasharray="${f(5*S)} ${f(4*S)}"`:p.c==='an'||p.c==='anh'?an(p):p.c==='anf'?`fill="${p.col}" stroke="${p.col}" stroke-width="${f(S)}" stroke-linejoin="round"`:st[p.c]||st.in;
+  const sty=p=>p.c==='band'?`fill="${p.col}" fill-opacity="${p.op||.12}" stroke="none"`:p.c==='wl'?`fill="${pal.tint}" fill-opacity=".35" stroke="${pal.mute}" stroke-width="${f(1.1*S)}"`:p.c==='wlf'?`fill="${pal.sheet}" stroke="none"`:p.c==='wlo'?`fill="none" stroke="${pal.sub}" stroke-width="${f(.9*S)}" stroke-dasharray="${f(6*S)} ${f(3*S)}"`:p.c==='wlx'?`fill="none" stroke="#c8372d" stroke-width="${f(1.5*S)}" stroke-dasharray="${f(6*S)} ${f(3*S)}"`:p.c==='zf'?'fill="none" stroke="none"':p.c==='es'?`fill="none" stroke="${p.col||pal.mute}" stroke-width="${f((p.lw||1)*S)}"${p.col?'':' stroke-opacity=".6"'}`:p.c==='dim'&&p.col?`fill="none" stroke="${p.col}" stroke-width="${f(1.6*S)}"`:p.c==='gl'&&p.col?`fill="none" stroke="${p.col}" stroke-width="${f((p.lw||1.3)*S)}" stroke-dasharray="${f(5*S)} ${f(4*S)}"`:p.c==='an'||p.c==='anh'?an(p):p.c==='anf'?`fill="${p.col}" stroke="${p.col}" stroke-width="${f(S)}" stroke-linejoin="round"`:st[p.c]||st.in;
   const NUMF=`font-family="Outfit,'LXGW WenKai TC',sans-serif"`,ZHF=`font-family="'LXGW WenKai TC','Noto Sans TC','PingFang TC',sans-serif"`;
   const halo=z=>`stroke="${pal.sheet}" stroke-width="${f(Math.max(3.2*S,z*.22))}" paint-order="stroke" stroke-linejoin="round"`;
   let s='';
@@ -2011,7 +2105,7 @@ function toSVG(P,S,pal,U,W){
     else if(p.t==='grip'){const gc=p.col||pal.accent;s+=(p.on?`<circle cx="${f(p.x)}" cy="${f(p.y)}" r="${f(9.5*S)}" fill="${gc}" fill-opacity=".2" stroke="${gc}" stroke-width="${f(1.2*S)}"/>`:'')+`<circle cx="${f(p.x)}" cy="${f(p.y)}" r="${f((p.on?5.5:4.8)*S)}" fill="${gc}" stroke="${pal.sheet}" stroke-width="${f(1.4*S)}"/>`}
     else if(p.t==='zb'){const r=p.s.length>1?1.4:1,bh=Math.max(10*S,Math.min(24*S,p.h*.7,p.w*.7/r)),bw=bh*r,g=Math.min(5*S,(p.w-bw)/2,(p.h-bh)/2),bx=p.x+g,by=p.y+g;
       s+=`<rect class="zb" x="${f(bx)}" y="${f(by)}" width="${f(bw)}" height="${f(bh)}" rx="${f(bh*.27)}" fill="${pal.sheet}" stroke="${pal.sub}" stroke-width="${f(1.5*S)}"/><text class="zbt" x="${f(bx+bw/2)}" y="${f(by+bh*.72)}" font-size="${f(bh*.62)}" text-anchor="middle" fill="${pal.ink}" font-family="'IBM Plex Mono',ui-monospace,monospace" font-weight="700">${esc(p.s)}</text>`}
-    else if(p.t==='t'){const m={dm:[pal.sub,NUMF,''],lb:[pal.ink,ZHF,halo(p.z)],lbn:[pal.mute,NUMF,halo(p.z)],lbg:[pal.sub,NUMF,halo(p.z)],rl:[pal.sub,NUMF,''],ttl:[pal.ink,ZHF,''],tt2:[pal.sub,ZHF,''],ant:[p.col,ZHF+' font-weight="700"',halo(p.z)]}[p.c];
+    else if(p.t==='t'){const m={dm:[pal.sub,NUMF,''],lb:[pal.ink,ZHF,halo(p.z)],lbn:[pal.mute,NUMF,halo(p.z)],lbg:[pal.sub,NUMF,halo(p.z)],rl:[pal.ink,NUMF+' font-weight="600"',''],ttl:[pal.ink,ZHF,''],tt2:[pal.sub,ZHF,''],ant:[p.col,ZHF+' font-weight="700"',halo(p.z)]}[p.c];
       s+=`<text x="${f(p.x)}" y="${f(p.y)}" font-size="${f(p.z)}" text-anchor="${p.a}" fill="${p.hc||m[0]}" ${m[1]} ${m[2]}${p.hc?' font-weight="700"':''}${p.ai!=null?` data-a="${p.ai}"`:''}>${esc(p.s)}</text>`}
   }
   let u='';const R=20*S,K=12*S,tr='fill="#000" fill-opacity="0"',sg=(a,b,c)=>{const l=Math.max(a,c-R);return[l,Math.max(1,Math.min(b,c+R)-l)]};
@@ -2024,7 +2118,7 @@ function toSVG(P,S,pal,U,W){
     else if(p.t==='hh'){const q=sg(0,p.w,p.w/2);u+=`<rect x="${f(q[0])}" y="${f(-K)}" width="${f(q[1])}" height="${f(2*K)}" ${tr} data-h="h"/>`}
     else if(p.t==='hw'){const q=sg(0,p.h,p.h*.3);u+=`<rect x="${f(p.x-K)}" y="${f(q[0])}" width="${f(2*K)}" height="${f(q[1])}" ${tr} data-h="w"/>`}
     else if(p.t==='hc'){const q=sg(0,p.h,p.h*.8);u+=`<rect x="${f(p.x-K)}" y="${f(q[0])}" width="${f(2*K)}" height="${f(q[1])}" ${tr} data-h="c" data-i="${p.i}"/>`}
-    else if(p.t==='hg'){const q=sg(p.x,p.x+p.w,p.x+p.w*.7);u+=`<rect x="${f(q[0])}" y="${f(p.y-p.hh)}" width="${f(q[1])}" height="${f(2*p.hh)}" ${tr} data-h="g" data-c="${p.ci}" data-p="${p.pi}"${p.si!=null?` data-s="${p.si}"`:''} data-i="${p.i}"/>`}
+    else if(p.t==='hg'){const q=sg(p.x,p.x+p.w,p.x+p.w*.5);u+=`<rect x="${f(q[0])}" y="${f(p.y-p.hh)}" width="${f(q[1])}" height="${f(2*p.hh)}" ${tr} data-h="g" data-c="${p.ci}" data-p="${p.pi}"${p.si!=null?` data-s="${p.si}"`:''} data-i="${p.i}"/>`}
     else if(p.t==='hp'||p.t==='hs'){const q=sg(p.x,p.x+p.w,p.x+p.w*.2);u+=`<rect x="${f(q[0])}" y="${f(p.y-K)}" width="${f(q[1])}" height="${f(2*K)}" ${tr} data-h="${p.t==='hp'?'p':'s'}" data-c="${p.ci}"${p.pi!=null?` data-p="${p.pi}"`:''} data-i="${p.i}"/>`}
   }
   return{art:s,ui:u}}
@@ -2125,7 +2219,7 @@ const STYLES=[
   {c:'mx',id:'mx1',name:'窗下座榻櫃',H:450,kick:50,make:(W,B)=>cols(W,800,()=>[Dw(B,2)])},
   {c:'mx',id:'mx2',name:'掃具儲藏櫃',tall:1,make:(W,B)=>cols(W,500,(w,i,n)=>[i===0||(n>2&&i===n-1)?Dr(B,w,i,sf(B,0)):Op(B,i===1?0:4)])}];
 function styleState(s,base){const W=s.W||base.W,H=s.tall?(base.H>=1800?base.H:2400):s.H,kick=s.tall?(base.kick>0&&base.kick<=200?base.kick:100):s.kick;
-  return normalize({id:base.id,name:base.name,T:base.T,labels:base.labels,grid:base.grid,bg:base.bg,wall:base.wall,W,H,kick,cols:s.make(W,H-kick),ann:[]})}
+  return normalize({id:base.id,name:base.name,T:base.T,labels:base.labels,grid:base.grid,bg:base.bg,wall:base.wall,dat:base.dat,W,H,kick,cols:s.make(W,H-kick),ann:[]})}
 function thumbOf(t,pal){const S=Math.max(t.W,t.H)/54,m=2*S;
   return`<svg width="${Math.round((t.W+2*m)/S)}" height="${Math.round((t.H+2*m)/S)}" viewBox="${-m} ${-m} ${t.W+2*m} ${t.H+2*m}" aria-hidden="true">${toSVG(geom(t,{S,view:'out',bare:true}).art.filter(p=>p.c!=='dash').map(p=>p.c==='hd'||p.c==='out'?Object.assign({},p,{c:p.c==='hd'?'thin':'in'}):p),S,pal).art}</svg>`}
 function styleThumb(s,pal){return thumbOf(styleState(s,{id:'',name:'',T:18,labels:false,W:1800,H:2400,kick:100}),pal)}
@@ -2187,7 +2281,9 @@ function portH(cw){const ae=document.activeElement,typing=ae&&/^(INPUT|TEXTAREA|
   if(!$('#qslots').children.length)syncQuick();
   const m=document.querySelector('main'),nm=document.querySelector('.name'),mh=m.clientHeight||window.innerHeight||700,
     avail=mh-(parseFloat(getComputedStyle(m).paddingTop)||0)-nm.offsetHeight-(parseFloat(getComputedStyle(nm).marginBottom)||0)-$('#topbar').offsetHeight-8,
-    h=clamp(avail-(simOn()?216:300),240,cw*1.6);portC={w:cw,h};return h}
+    np=document.documentElement.classList.contains('npx'),av2=np?avail+$('#topbar').offsetHeight:avail;
+  let h;if(np&&simOn()){h=Math.max(240,Math.min(mh,(window.innerHeight||mh)-(m.getBoundingClientRect().top||0))-100);portC={w:cw,h};return h}
+  h=clamp(av2-(np?256:300),240,cw*1.6);portC={w:cw,h};return h}
 function drawArt(){
   fixAll(st);
   const sh=$('#sheet'),cw=sh.clientWidth||300,hp=Math.round(LAND.matches?Math.max(160,sh.clientHeight-(parseFloat(getComputedStyle(sh).paddingTop)||0)-2):portH(cw));
@@ -2196,7 +2292,7 @@ function drawArt(){
   else lay=layout(st,Math.max(200,cw-2),hp,{x:axOn.x,y:axOn.y,m:multiS(),r:true});
   S=lay.S;fullVB=lay.vb;svg.style.height=hp+'px';placeTiles(cw,hp,lay);applyView();
   const k0=Math.max(lay.vb[2]/cw,lay.vb[3]/hp),mx=lay.vb[0]+lay.vb[2]/2,my=lay.vb[1]+lay.vb[3]/2,gbox=multiS()?[lay.vb[0],lay.vb[1],lay.vb[0]+lay.vb[2],lay.vb[1]+lay.vb[3]]:[mx-cw*k0*1.6,my-hp*k0*1.6,mx+cw*k0*1.6,my+hp*k0*1.6];
-  const ed=mode==='edit',ds=mode==='draw'&&dtool==='sel',g=geom(st,{S,view,sel:ed&&!multi?sel:null,msel:(ed&&multi)||ds?msel:null,interactive:(ed&&ucat!=='view')||ds,sub:(ed&&multi)||ds,dimCol:sel?sel.c:null,box:gbox,hsel:ed&&!multi?hsel:null,solo:hsolo,ax:axOn,hgrp:ed&&!multi?hgrp:null,acc:pal.accent,zones:czOn(),bg:bgArg(),fsel:mode==='edit'?fsel:null});
+  const ed=mode==='edit',ds=mode==='draw'&&dtool==='sel',g=geom(st,{S,view,sel:ed&&!multi?sel:null,msel:(ed&&multi)||ds?msel:null,interactive:(ed&&ucat!=='view')||ds,sub:(ed&&multi)||ds,dimCol:sel?sel.c:null,box:gbox,hsel:ed&&!multi&&!cpd?hsel:null,solo:hsolo,ax:axOn,hgrp:ed&&!multi?hgrp:null,acc:pal.accent,zones:czOn(),bg:bgArg(),fsel:mode==='edit'?fsel:null});
   if(czOn())g.art=g.art.filter(p=>p.c!=='zf');
   if(ed&&!isFree()){const sg=!multi&&sel&&sel.g!=null?sel:null;g.ui=g.ui.filter(p=>!/^h[hwcgps]$/.test(p.t)||(p.t==='hg'&&sg&&p.i===sg.g&&p.ci===sg.c&&p.pi===sg.p&&(p.si==null||p.si===(sg.s||0))));g.art=g.art.filter(p=>p.t!=='grip'||p.on)}
   if(ds){g.ui=g.ui.filter(p=>p.t==='hit');g.art=g.art.filter(p=>p.t!=='grip'&&p.c!=='hb'&&p.c!=='lk'&&p.c!=='lks')}
@@ -2257,7 +2353,7 @@ function renderEditor(){
       ed.innerHTML=`<div class="ed"><div class="edh"><b>已選 ${msel.length} 格</b></div><div class="seg ty" role="group">${(view==='in'?[['shelf','層板'],['rod','吊衣桿'],['idrawer','內抽'],['empty','空格']]:[['door','門片'],['drawer','抽屜'],['open','層板'],['empty','空櫃'],['blank','封板']]).map(x=>x[0]==='empty'?`<button data-act="subclear" aria-pressed="${memp}">${x[1]}</button>`:`<button data-mtype="${x[0]}" aria-pressed="${!memp&&same===x[0]}">${x[1]}</button>`).join('')}</div>${cnt&&!memp?`<label class="cnt"><span>${same==='drawer'||same==='idrawer'?'抽屜數量':'層板片數'}</span><input id="mqty" inputmode="numeric" maxlength="2" value="${wh[0].n}" aria-label="數量"></label>`:''}</div>`}
     return}
   if(hsel&&!hsOk())hsel=null;
-  if(cpd){say(cpd.k==='mv'?'移動：把準星移到新的位置（點圖面、拖觸控板、按箭頭都可以），紅色預覽線對了就按「確定」。再按一次「移動」取消。':(cpd.k==='v'?'直分隔':'橫分隔')+'：把準星移到要切的位置（點圖面、拖觸控板、按箭頭都可以），紅色預覽線對了就按「確定」。再按一次「'+(cpd.k==='v'?'直分隔':'橫分隔')+'」取消。');$('#editHome').hidden=true;$('#startTip').hidden=true;$('#frow').hidden=true;return}
+  if(cpd){say(cpd.k==='mv'?'移動：把準星移到新的位置（點圖面、拖觸控板、按箭頭都可以），預覽線對了就按「確定」或再按一次「移動」；按「返回」取消。':(cpd.k==='v'?'直分隔':'橫分隔')+'：把準星移到要切的位置（點圖面、拖觸控板、按箭頭都可以），預覽線對了就按「確定」或再按一次「'+(cpd.k==='v'?'直分隔':'橫分隔')+'」；按「返回」取消。');$('#editHome').hidden=true;$('#startTip').hidden=true;$('#frow').hidden=true;return}
   if(hsel){const h=hsel;let t,v;
     if(h.k==='w'){t='總寬';v=st.W}else if(h.k==='h'){t='總高';v=st.H}
     else if(h.k==='c'){t=`第 ${h.i+1}、${h.i+2} 區的分隔線`;v=st.cols[h.i].w+'｜'+st.cols[h.i+1].w}
@@ -2535,10 +2631,23 @@ function pt(e,M){M=M||inv();const q=lpt(e.clientX,e.clientY),r=M.r,v=M.v,k=M.s;r
 function listen(mv,up){window.addEventListener('pointermove',mv);const end=e=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',end);window.removeEventListener('pointercancel',end);up(e)};
   window.addEventListener('pointerup',end);window.addEventListener('pointercancel',end)}
 let vbNow=null;
-function drawRulers(){const g=svg.querySelector('#rul');if(!g)return;const ra=rulA(),rx=!!st.grid||axOn.x||ra,ry=!!st.grid||axOn.y||ra;if((!rx&&!ry)||!vbNow){g.innerHTML='';return}
+function drawPaper(){let g=svg.querySelector('#pgr');const on=simOn()&&npOn()&&!!vbNow&&!!st;if(!on){if(g)g.innerHTML='';return}
+  if(!g){g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='pgr';g.setAttribute('pointer-events','none')}const a=svg.querySelector('#art');if(a&&g.nextSibling!==a)svg.insertBefore(g,a);
+  const r=lrect(svg);if(!r.width)return;const v=vbNow,k=Math.max(v[2]/r.width,v[3]/r.height),cx=v[0]+v[2]/2,cy=v[1]+v[3]/2,x0=cx-r.width*k/2,x1=cx+r.width*k/2,y0=cy-r.height*k/2,y1=cy+r.height*k/2,f=x=>+x.toFixed(1);
+  const mi=[50,100,200,500,1000].find(m=>m/k>=9)||1000,ma=mi*5,E=st.dat==='R'?st.W:0,H=st.H;let a1='',a2='';
+  for(let x=E+Math.ceil((x0-E)/mi)*mi;x<=x1;x+=mi){const M=Math.abs(Math.round((x-E)/mi))%5===0;(M?(a2+=`M${f(x)} ${f(y0)}V${f(y1)}`):(a1+=`M${f(x)} ${f(y0)}V${f(y1)}`))}
+  for(let y=H+Math.ceil((y0-H)/mi)*mi;y<=y1;y+=mi){const M=Math.abs(Math.round((y-H)/mi))%5===0;(M?(a2+=`M${f(x0)} ${f(y)}H${f(x1)}`):(a1+=`M${f(x0)} ${f(y)}H${f(x1)}`))}
+  g.innerHTML=`<path d="${a1}" fill="none" stroke="${pal.mute}" stroke-opacity=".16" stroke-width="${f(.8*k)}"/><path d="${a2}" fill="none" stroke="${pal.mute}" stroke-opacity=".32" stroke-width="${f(1*k)}"/>`}
+function drawRulers(){try{drawPaper()}catch(e){}const g=svg.querySelector('#rul');if(!g)return;const ra=rulA(),rx=!!st.grid||axOn.x||ra,ry=!!st.grid||axOn.y||ra;if((!rx&&!ry)||!vbNow){g.innerHTML='';return}
   const r=lrect(svg);if(!r.width||!r.height)return;
   const k=Math.max(vbNow[2]/r.width,vbNow[3]/r.height),cx=vbNow[0]+vbNow[2]/2,cy=vbNow[1]+vbNow[3]/2;
-  g.innerHTML=toSVG(rulerPrims(st,k,[cx-r.width*k/2,cy-r.height*k/2,cx+r.width*k/2,cy+r.height*k/2],st.grid||100,rx,ry),k,pal).art}
+  const bx=[cx-r.width*k/2,cy-r.height*k/2,cx+r.width*k/2,cy+r.height*k/2];let z='';
+  {const f=v=>+v.toFixed(1),fs=11*k,rf=fs*.8,bw=ry?fs*1.8:0,bh=rx?fs*1.2:0,col=cCol(),E=st.dat==='R'?st.W:0,H=st.H,a=5*k,
+     tx=(x,y,an)=>`<text x="${f(x)}" y="${f(y)}" font-size="${f(rf)}" font-weight="700" text-anchor="${an}" fill="${col}" stroke="${pal.sheet}" stroke-width="${f(2.6*k)}" paint-order="stroke" font-family="'IBM Plex Mono','Noto Sans TC',sans-serif">0</text>`;
+   const aw=6.5*k,al=12*k,sw=`stroke="${pal.sheet}" stroke-width="${f(1.6*k)}" stroke-linejoin="round"`;
+   if(rx&&E>=bx[0]+bw&&E<=bx[2]){const y=bx[3]-bh;z+=`<polygon points="${f(E)},${f(y+1*k)} ${f(E-aw)},${f(y-al)} ${f(E+aw)},${f(y-al)}" fill="${col}" ${sw}/>`+tx(E,bx[3]-fs*.5,'middle')}
+   if(ry&&H>=bx[1]&&H<=bx[3]-bh){const x=bx[0]+bw;z+=`<polygon points="${f(x-1*k)},${f(H)} ${f(x+al)},${f(H-aw)} ${f(x+al)},${f(H+aw)}" fill="${col}" ${sw}/>`+tx(bx[0]+fs*.55,H+rf*.35,'start')}}
+  g.innerHTML=toSVG(rulerPrims(st,k,bx,st.grid||100,rx,ry),k,pal).art+z}
 let pkOpen={x:false,y:false},hsolo=false,axOn={x:false,y:false},axAuto={x:false,y:false},hgrp=[];
 const axOf=h=>h&&(h.k==='c'||h.k==='w'?'x':'y');
 function toggleAx(ax,on){axOn[ax]=on==null?!axOn[ax]:on;if(!axOn[ax]){pkOpen[ax]=false;if(axOf(hsel)===ax){hsel=null;hgrp=[];hsolo=false}}render()}
@@ -2691,6 +2800,9 @@ svg.addEventListener('pointerdown',e=>{
     if(cur.ex){if(hit&&hit.z==='t'){curTri(e,hit.d);return}if(hit||!h){lockPan(e,!!hit);return}}
     else if(false&&hit){curEv=e;const x0=e.clientX,y0=e.clientY;let mvd=false;
       listen(ev=>{if(Math.hypot(ev.clientX-x0,ev.clientY-y0)>8)mvd=true},ev=>{if(mvd||ev.type==='pointercancel'||tg)return;justDragged=true;setTimeout(()=>{justDragged=false},90);curEx(true)});return}}
+  if(!h&&!drag&&simOn()&&npOn()&&curLive()&&!multi){e.preventDefault();let p0={x:e.clientX,y:e.clientY};const q0=p0;let mvd=false;
+    listen(ev=>{if(tg||ptrs.size>1)return;const dpx=ev.clientX-p0.x,dpy=ev.clientY-p0.y;if(!mvd&&Math.hypot(ev.clientX-q0.x,ev.clientY-q0.y)<6)return;mvd=true;p0={x:ev.clientX,y:ev.clientY};const k=S/zoom.z*(LAND.matches?1:1.15);
+      if(cur.fine){const q=curSnap();cur.x=q.x;cur.y=q.y;cur.fine=false}curMove(dpx*k,dpy*k,false)},()=>{if(mvd){justDragged=true;setTimeout(()=>{justDragged=false},90)}});return}
   if(!h&&mode==='edit'&&!drag&&e.target.closest&&e.target.closest('[data-p]'))armLasso(e);
   if(!h){if(!drag){if(panOn())startPan(e);else if(panX())startPan(e,true)}return}
   if(drag)return;
@@ -2700,7 +2812,8 @@ svg.addEventListener('pointerdown',e=>{
   else if(drag.k==='p')drag.s0=st.cols[drag.c].parts[drag.i].h;else if(drag.k==='s')drag.s0=st.cols[drag.c].parts[drag.p].ins[drag.i].h;
   else if(drag.k==='c'){const L=freeL(drag.i);drag.s0=L>=0?st.cols[L].w:0}
   {const ai=freeL(st.cols.length-1);drag.ai=ai<0?st.cols.length-1:ai;drag.l0=st.cols[drag.ai].w;if(st.cols.some(c=>c.lock))drag.eqW=false}
-  if(drag.k==='g'){const pp=st.cols[drag.c].parts[drag.p],si=h.dataset.s!=null?+h.dataset.s:null;drag.x=si==null?pp:pp.ins[si];drag.g0=solidGaps(drag.x,si==null?pp.h-2*st.T:clearIn(pp,si,st.T),st.T)}
+  if(drag.k==='g'){const pp=st.cols[drag.c].parts[drag.p],si=h.dataset.s!=null?+h.dataset.s:null;drag.x=si==null?pp:pp.ins[si];drag.g0=solidGaps(drag.x,si==null?pp.h-2*st.T:clearIn(pp,si,st.T),st.T);
+    {const T=st.T,col=st.cols[drag.c];let y0=0;for(let j=0;j<drag.p;j++)y0+=col.parts[j].h;let top=y0+T;if(si!=null){let sy=y0;for(let j=0;j<si;j++)sy+=pp.ins[j].h;top=si?sy+T/2:y0+T}let b=top;for(let j=0;j<drag.i;j++)b+=drag.g0[j]+T;drag.base=b+T/2;drag.nb=nbYs(drag.c)}}
   if(drag.k!=='g'&&!multi){const key=drag.k==='r'?{k:'r',y:drag.y}:{k:drag.k,c:drag.c,p:drag.p,i:drag.i},all=hsel?[hsel].concat(hgrp):[],me=all.find(k=>hOn(k,key));drag.was=!!me&&!hgrp.length;
     if(me&&hgrp.length){hsel=me;hgrp=all.filter(k=>k!==me);drag.grp=true;drag.gd=0}else{hsel=key;hgrp=[]}
     hsolo=true;renderArtOnly()}
@@ -2772,9 +2885,9 @@ function nudge(d){if(hgrp.length&&hsOk()){push();const m=grpMove(d);if(!m){unpus
     if(Hn<=MAXH&&st.cols.every((c,i)=>eq[i]?Hn-st.kick>=c.parts.length*MIN:c.parts[0].h+d>=MIN)){st.cols.forEach((c,i)=>{if(eq[i])spread(c.parts,'h',Hn-st.kick);else c.parts[0].h+=d});st.H=Hn;ok=true}}
   else{const col=st.cols[h.c],list=h.k==='p'?col.parts:col.parts[h.p].ins,a=list[h.i],b=list[h.i+1],dd=clamp(d,MIN-a.h,b.h-MIN);if(dd&&a.h+b.h>=2*MIN){a.h+=dd;b.h-=dd;ok=true}}
   if(!ok){unpush();toast('已經到極限，不能再調了')}render()}
-function mirror(){if(isFree()){toast('自由繪圖還不能鏡射');return}push();st.cols.reverse();st.cols.forEach(c=>c.parts.forEach(p=>{if(p.t==='door')p.hinge=p.hinge==='L'?'R':'L'}));
+function mirror(){if(isFree()){toast('自由繪圖還不能鏡射');return}push();st.cols.reverse();if(st.dat==='R')delete st.dat;else st.dat='R';st.cols.forEach(c=>c.parts.forEach(p=>{if(p.t==='door')p.hinge=p.hinge==='L'?'R':'L'}));
   st.ann.forEach(a=>{if(a.k==='text')a.x=rd(st.W-a.x-txW(String(a.s),a.fz||13*S));else if(free(a.k))a.pts=a.pts.map(q=>[st.W-q[0],q[1]]);else{a.x1=st.W-a.x1;a.x2=st.W-a.x2}});
-  sel=null;msel=[];hsel=null;render();toast('已左右鏡射，不對可按「復原」')}
+  sel=null;msel=[];hsel=null;render();toast('已左右鏡射，基準也換到'+(st.dat==='R'?'右':'左')+'邊。不對可按「復原」')}
 function rowsAt(y){const l=[];st.cols.forEach(c=>{let t=0;for(let i=0;i<c.parts.length-1;i++){t+=c.parts[i].h;if(Math.abs(t-y)<.5){l.push({a:c.parts[i],b:c.parts[i+1]});break}}});return l}
 function onDrag(e){
   const q=pt(e,drag.M);
@@ -2784,7 +2897,7 @@ function onDrag(e){
   if(drag.k==='w'){const W=clamp(r10(drag.W0+q.x-drag.p0.x),drag.eqW?st.cols.length*MIN:drag.W0-drag.l0+MIN,MAXW);if(W!==st.W){if(drag.eqW)spread(st.cols,'w',W);else st.cols[drag.ai].w=drag.l0+W-drag.W0;st.W=W;drag.moved=true;renderArtOnly()}}
   else if(drag.k==='h'){const lo=Math.max(...st.cols.map((c,i)=>drag.eqH[i]?st.kick+c.parts.length*MIN:drag.H0-drag.tops[i]+MIN)),H=clamp(r10(drag.H0+drag.p0.y-q.y),lo,MAXH);if(H!==st.H){st.cols.forEach((c,i)=>{if(drag.eqH[i])spread(c.parts,'h',H-st.kick);else c.parts[0].h=drag.tops[i]+H-drag.H0});st.H=H;drag.moved=true;renderArtOnly()}}
   else if(drag.k==='g'){const g=drag.g0,i=drag.i,tt=g[i]+g[i+1],dy=q.y-drag.p0.y;if(tt<2*GMIN||(!drag.moved&&Math.abs(dy)<4*S/zoom.z))return;
-    const nv=clamp(r10(g[i]+dy),GMIN,tt-GMIN);if(nv!==drag.gv){drag.gv=nv;const a=g.slice();a[i]=nv;a[i+1]=tt-nv;drag.x.gs=a.slice(0,drag.x.n);drag.moved=true;renderArtOnly()}}
+    let nv=clamp(r10(g[i]+dy),GMIN,tt-GMIN);if(drag.base!=null){const raw=drag.base+g[i]+dy,tol=9*S/zoom.z;let bd=tol;drag.nb.forEach(Y=>{const d=Math.abs(raw-Y);if(d<bd&&Y-drag.base>=GMIN&&Y-drag.base<=tt-GMIN){bd=d;nv=Math.round((Y-drag.base)*10)/10}})}if(nv!==drag.gv){drag.gv=nv;const a=g.slice();a[i]=nv;a[i+1]=tt-nv;drag.x.gs=a.slice(0,drag.x.n);drag.moved=true;renderArtOnly()}}
   else if(drag.k==='k'){const dk=r10(drag.k0-(q.y-drag.p0.y))-st.kick;if(dk&&kickBy(dk)){drag.moved=true;renderArtOnly()}}
   else if(drag.k==='c'){const d=r10(drag.s0+q.x-drag.p0.x)-drag.s0-drag.cd;if(d){const m=moveColLine(drag.i,d);if(m){drag.cd+=m;drag.moved=true;renderArtOnly()}}}
   else if(drag.k==='r'){const R=drag.rows;if(!R.length)return;const d=clamp(r10(drag.y+q.y-drag.p0.y)-drag.y,Math.max(...R.map(r=>MIN-r.a0)),Math.min(...R.map(r=>r.b0-MIN)));
@@ -3005,10 +3118,11 @@ $('#fMine').onclick=()=>{savePop(false);if(cat!=='__files')lastCat=cat;cat='__fi
 $('#fStyle').onclick=()=>{savePop(false);if(cat==='__files')cat=lastCat;stylePop(true);if(cat==='my')refreshMine()};
 $('#stBack').onclick=()=>{stylePop(false);savePop(true)};
 $('#fAI').onclick=()=>{savePop(false);goAI()};
-$('#fBlank').onclick=()=>{savePop(false);closeDim(true);push();st=normalize({kind:'free',name:st.name,T:st.T,labels:st.labels,grid:st.grid||100,W:st.W,H:st.H,ann:[],bg:st.bg,wall:st.wall});resetSel();sel=null;msel=[];ftool={k:'ln',t:'board'};setMode('draw');
+$('#fBlank').onclick=()=>{savePop(false);closeDim(true);push();st=normalize({kind:'free',name:st.name,T:st.T,labels:st.labels,grid:st.grid||100,dat:st.dat,W:st.W,H:st.H,ann:[],bg:st.bg,wall:st.wall});resetSel();sel=null;msel=[];ftool={k:'ln',t:'board'};setMode('draw');
   toast('已換成空白圖面：在圖上拖就能畫線，停在哪裡線就到哪裡。原本那張可按「復原」回去');if(!LAND.matches)$('#sheet').scrollIntoView({behavior:'smooth',block:'start'})};
-$('#fNew').onclick=()=>{savePop(false);closeDim(true);pushP(1);savedPh=new Set();legacyPh=false;const o=normalize({W:2400,H:2400,kick:100,T:st.T,cols:[{w:2400,parts:[{t:'open',h:2300,n:0}]}]});o.sid=newSid();
-  setProject({id:'',name:'',cur:0,sheets:[o]});render();toast('已開新檔案。原本的檔案沒存的話，可按「復原」回去')};
+$('#fNew').onclick=()=>{savePop(false);nwOpen('file')};
+function newFile(W,H,K){closeDim(true);pushP(1);savedPh=new Set();legacyPh=false;const o=normalize({W,H,kick:K,T:st.T,cols:[{w:W,parts:[{t:'open',h:H-K,n:0}]}]});o.sid=newSid();
+  setProject({id:'',name:'',cur:0,sheets:[o]});render();toast('已開新檔案：'+W+' × '+H+'。原本的檔案沒存的話，可按「復原」回去')}
 $('#saveAs').onclick=()=>{pj.id='';savedPh=new Set();legacyPh=false;$('#saveDo').click()};
 document.addEventListener('pointerdown',e=>{if(!$('#stylePop').hidden&&!(e.target.closest&&e.target.closest('#stylePop,#fileBtn,#filePop,#qslots [data-k="file"]')))stylePop(false);
   if(!$('#filePop').hidden&&!(e.target.closest&&e.target.closest('#filePop,#fileBtn,#qslots [data-k="file"]')))savePop(false);
@@ -3028,9 +3142,10 @@ $('#shTabs').addEventListener('click',e=>{const b=e.target.closest('[data-sh]');
   if(i!==pj.cur){goSheet(i,'tab');return}
   if($('#shbar').hidden){if(zoom.m&&!onScr()){fly();return}shPop(true)}else{shPop(false);if(zoom.m&&!onScr())fly()}});
 $('#shAll').onclick=()=>{shPop(false);flyAll()};
-$('#shAdd').onclick=()=>{if(pj.sheets.length>=20){toast('一個檔案最多 20 個櫃體');return}closeDim(true);shPop(false);pushP();
-  const o=normalize({T:st.T,labels:st.labels,grid:st.grid,W:st.W,H:st.H,kick:st.kick,cols:[{w:st.W,parts:[{t:'open',h:st.H-st.kick,n:0}]}]});o.sid=newSid();pj.sheets.push(o);render();goSheet(pj.sheets.length-1,'tab');
-  toast('已新增「'+shName(pj.cur)+'」，接在最右邊。可以按「櫃體樣式」選一款')};
+$('#shAdd').onclick=()=>{if(pj.sheets.length>=20){toast('一個檔案最多 20 個櫃體');return}shPop(false);nwOpen('sheet')};
+function newSheet(W,H,K){closeDim(true);pushP();
+  const o=normalize({T:st.T,labels:st.labels,grid:st.grid,W,H,kick:K,cols:[{w:W,parts:[{t:'open',h:H-K,n:0}]}]});o.sid=newSid();pj.sheets.push(o);render();goSheet(pj.sheets.length-1,'tab');
+  toast('已新增「'+shName(pj.cur)+'」'+W+' × '+H+'，接在最右邊')}
 $('#shDup').onclick=()=>{if(pj.sheets.length>=20){toast('一個檔案最多 20 個櫃體');return}closeDim(true);pushP();photoStash();
   const o=normalize(JSON.parse(JSON.stringify(st))),e=photos.get(st.sid);o.sid=newSid();o.name=(shName(pj.cur)+' 副本').slice(0,24);if(e)photos.set(o.sid,Object.assign({},e));
   pj.sheets.splice(pj.cur+1,0,o);shPop(false);render();goSheet(pj.cur+1,'tab');if(e)bgKeep(true);toast('已複製成「'+o.name+'」，排在它的右邊')};
@@ -3076,6 +3191,8 @@ const stepHist=(from,to)=>{if(!from.length)return;const ksl=mode==='edit'&&!mult
   futBak=null;resetSel();if(st.sid===ks&&mode==='edit'&&!isFree()){if(kh){hsel=kh;hgrp=kg}else if(ki>=0){const R=RL();if(R.length===kr.length)hsel={k:'r',y:R[ki].y}}}if(!hsel&&ksl&&st.sid===ks&&mode==='edit'&&!isFree()){sel=ksl;if(!selObj())sel=null}render()};
 $('#undo').onclick=()=>{if(hist.length)edN--;stepHist(hist,fut)};$('#redo').onclick=()=>{if(fut.length)edN++;stepHist(fut,hist)};
 $('#lwIn').addEventListener('input',e=>{$('#lwVal').textContent=e.target.value});
+function lwStep(d){const i=$('#lwIn'),v=clamp(num(i.value,2)+d,1,12);if(String(v)===i.value)return;i.value=v;i.dispatchEvent(new Event('input'));i.dispatchEvent(new Event('change'));try{pvSync()}catch(e){}}
+$('#lwRow').addEventListener('click',e=>{const b=e.target.closest('[data-lw]');if(!b)return;e.preventDefault();lwStep(+b.dataset.lw)});
 $('#lwIn').addEventListener('change',e=>{const v=clamp(num(e.target.value,2),1,12),a=asel>=0&&st.ann[asel];
   if(a&&a.k==='text'){push();a.fz=rd((8+4*v)*S);render()}
   else if(a){push();a.lw=Math.max(1,rd(v*S*(a.k==='hl'?5:1)));render()}
@@ -3192,9 +3309,9 @@ $('#fK').addEventListener('change',e=>{const v=clamp(num(e.target.value,st.kick)
 $('#fT').addEventListener('change',e=>{const v=clamp(num(e.target.value,st.T),6,40);if(v!==st.T){push();st.T=v}render()});
 $('#ehDraw').onclick=()=>$('#mDraw').click();$('#tbSize').onclick=()=>setCat('size');$('#tbMark').onclick=()=>setCat('mark');
 {const mp=$('#morePop'),vp=$('#viewPanel'),n=vp.querySelector('.note');if(n)n.remove();while(vp.firstChild)mp.appendChild(vp.firstChild)}$('#quickCols').addEventListener('click',e=>{const b=e.target.closest('[data-qc]');if(b)quickCols(+b.dataset.qc)});
-$('#fNew').addEventListener('click',()=>{if(catNow()!=='size')setCat('size')});$('#shAdd').addEventListener('click',()=>{if(pj.sheets.length<=20&&catNow()!=='size')setCat('size')});$('#esubBar').addEventListener('click',e=>{const b=e.target.closest('[data-es]');if(b)setEs(b.dataset.es)});$('#toFreeBtn').addEventListener('click',()=>savePop(false));$('#szAdjBtn').onclick=()=>{adjTog();szAdj=adjOn()};
+$('#esubBar').addEventListener('click',e=>{const b=e.target.closest('[data-es]');if(b)setEs(b.dataset.es)});$('#toFreeBtn').addEventListener('click',()=>savePop(false));$('#szAdjBtn').onclick=()=>{adjTog();szAdj=adjOn()};
 $('#mirrorBtn').onclick=mirror;$('#evenAllBtn').onclick=evenAllCols;
-$('#fLabels').addEventListener('change',e=>{st.labels=e.target.checked;render()});
+$('#fLabels').addEventListener('change',e=>{const v=e.target.checked;vpSet('lbl',v);try{pj.sheets.forEach(x=>x.labels=v)}catch(_){}st.labels=v;render()});
 window.addEventListener('resize',debounce(()=>{if(!drag&&!draw&&!tg)render()},150));
 try{window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{render();buildStyles()});LANDQ.addEventListener('change',()=>setTimeout(render,60))}catch(e){}
 try{new MutationObserver(()=>render()).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']})}catch(e){}
@@ -3316,7 +3433,7 @@ async function runAI(){
     const res=await sampleFn.json(buildPrompt(text,hasImg),opt);
     if(!res||typeof res!=='object'||!Array.isArray(res.cols)||!res.cols.length)throw{code:'invalid_json'};
     const notes=Array.isArray(res.notes)?res.notes.map(String).filter(Boolean).slice(0,12):[];
-    push();const keep={id:st.id,ann:st.ann,labels:st.labels,grid:st.grid,bg:st.bg,wall:st.wall};
+    push();const keep={id:st.id,ann:st.ann,labels:st.labels,grid:st.grid,bg:st.bg,wall:st.wall,dat:st.dat};
     st=normalize(Object.assign({T:st.T},res,keep,{name:res.name||st.name}),notes);if(!pj.name&&!multiS()&&st.name){pj.name=st.name;st.name=''}sel=null;render();
     aiMsg('已照 AI 整理的資料重畫。請核對櫃外和櫃內兩張圖的尺寸，不對可以按「復原」。');
     $('#aiNotes').innerHTML=notes.map(n=>`<li>${esc(n)}</li>`).join('');
@@ -3352,7 +3469,7 @@ $('#stylePop').addEventListener('click',async e=>{
     try{await store.styleDel(x.dataset.mydel);mine=mine.filter(r=>r.id!==x.dataset.mydel);buildStyles();toast('樣式已刪除')}catch(_){toast('刪除沒有成功，請再試一次')}return}
   const m=e.target.closest('[data-my]');
   if(m){const r=mine.find(q=>q.id===m.dataset.my);if(!r)return;
-    try{const nx=normalize(JSON.parse(r.json));stylePop(false);push();nx.id=st.id;nx.name=st.name;nx.ann=[];nx.grid=st.grid;st=nx;applied('已套用「'+(r.name||'我的樣式')+'」，不合適可按「復原」')}catch(_){toast('這個樣式的資料讀不出來')}return}
+    try{const nx=normalize(JSON.parse(r.json));stylePop(false);push();nx.id=st.id;nx.name=st.name;nx.ann=[];nx.grid=st.grid;if(st.dat)nx.dat=st.dat;else delete nx.dat;st=nx;applied('已套用「'+(r.name||'我的樣式')+'」，不合適可按「復原」')}catch(_){toast('這個樣式的資料讀不出來')}return}
   const b=e.target.closest('[data-style]');if(!b)return;const k=b.dataset.style;
   if(k==='__save'){if(mine.length>=40){toast('我的樣式最多 40 個，請先刪掉幾個');return}b.disabled=true;
     try{const c2=JSON.parse(JSON.stringify(st));c2.id='';delete c2.sid;c2.ann=[];c2.grid=0;const nm=(st.name||pj.name||'我的樣式 '+today()).slice(0,24);
@@ -3421,7 +3538,7 @@ $('#bgAI').onclick=()=>{if(!bgSrc)return;bgCal=null;if(!sampleFn||!imgMax){toast
 /* diamond cursor */
 let padMode='cur',lkp=null;const mk={p1:null,end:null,mv:null},MK2={line:1,arrow:1,rect:1,circle:1,dim:1};const cur={on:false,x:1200,y:1200,a:null,fl:null,ex:false,tf:null,nos:false,gx:null,gy:null,gxv:null,gyv:null};let jv={x:0,y:0},jHeld=false,jRaf=0,jLast=0,jT0=0,jMv=false,cdp=null,cdT=0,cdRaf=0,cdTxt='',cdBtn='';
 function curSnap(){const g=cur.fine?1:(st.grid||10),tol=7*S/zoom.z,body=st.H-st.kick;let x=Math.round(cur.x/g)*g,y=st.H-Math.round((st.H-cur.y)/g)*g;
-  const xs=[0],ys=[0,body,st.H];let acc=0;st.cols.forEach(c=>{acc+=c.w;xs.push(acc)});if(cur.gxv!=null)xs.push(cur.gxv);if(cur.gyv!=null)ys.push(cur.gyv);
+  const xs=[0],ys=[0,body,st.H];let acc=0;st.cols.forEach(c=>{acc+=c.w;xs.push(acc)});if(cur.gxv!=null)xs.push(cur.gxv);if(cur.gyv!=null)ys.push(cur.gyv);if(typeof cpd!=='undefined'&&cpd&&cpd.k==='mv'&&sel&&sel.g!=null)nbYs(sel.c).forEach(v=>ys.push(v));
   const c=locCell({x:clamp(cur.x,1,st.W-1),y:clamp(cur.y,1,body-1)});if(c){let yy=0;c.col.parts.forEach(p=>{yy+=p.h;ys.push(yy)});if(c.s){let sy=c.y0;c.p.ins.forEach(q=>{sy+=q.h;ys.push(sy)})}}
   /* cur.nos: the spot was reached by single steps, so only the grid applies - a 10mm step next to a line would otherwise be pulled straight back onto it */
   let bx=cur.nos?.5:tol,by=bx;xs.forEach(v=>{const d=Math.abs(cur.x-v);if(d<bx){bx=d;x=v}});ys.forEach(v=>{const d=Math.abs(cur.y-v);if(d<by){by=d;y=v}});return{x,y,c}}
@@ -3536,15 +3653,31 @@ function drawCur(){const g=svg.querySelector('#cur');if(!g)return;if(!cur.on||(m
   else{const a=1-Math.exp(-clamp(now-cdT,4,34)/30);cdp.x+=(q.x-cdp.x)*a;cdp.y+=(q.y-cdp.y)*a;if(Math.hypot(q.x-cdp.x,q.y-cdp.y)<.4*k){cdp.x=q.x;cdp.y=q.y}}
   cdT=now;if(!cur.ex&&!(padMode==='lock'&&lkp)&&(cdp.x!==q.x||cdp.y!==q.y)&&!cdRaf)cdRaf=requestAnimationFrame(()=>{cdRaf=0;drawCur()});
   const ex=cur.ex,A2=curA()*k,p=ex?{x:q.x,y:q.y,c:q.c}:{x:cdp.x,y:cdp.y,c:q.c};
-  {const G=ex?2*A2+3*k:R+4*k,gl=(x1,y1,x2,y2)=>`<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" stroke="${col}" stroke-width="${f(1.1*k)}" stroke-dasharray="${f(6*k)} ${f(4*k)}" opacity=".85"/>`;
-    s+=gl(p.x-G,p.y,vb[0],p.y)+gl(p.x+G,p.y,vb[0]+vb[2],p.y)+gl(p.x,p.y-G,p.x,vb[1])+gl(p.x,p.y+G,p.x,vb[1]+vb[3])}
+  {const G=ex?2*A2+3*k:R+4*k,gl=(x1,y1,x2,y2)=>`<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" stroke="${col}" stroke-width="${f(.9*k)}" stroke-dasharray="${f(5*k)} ${f(5*k)}" opacity=".5"/>`;
+    s+=gl(p.x-G,p.y,vb[0],p.y)+gl(p.x+G,p.y,vb[0]+vb[2],p.y)+gl(p.x,p.y-G,p.x,vb[1])+gl(p.x,p.y+G,p.x,vb[1]+vb[3]);
+    /* distances from the cabinet's datum corner (bottom-left, or bottom-right when the datum is right): one dimension along the floor, one up the side panel */
+    const dr=st.dat==='R',E=dr?st.W:0,H=st.H,dx=Math.round(dr?st.W-q.x:q.x),dy=Math.round(H-q.y);
+    if(false&&datOn()&&dx>0&&dy>0){const DC='#C7DAD3',lw=1.2*k,tk=7*k,sd=dr?-1:1,ln=(x1,y1,x2,y2,w)=>`<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" stroke="${DC}" stroke-width="${f(w||lw)}" stroke-linecap="round"/>`,
+        lb=(x,y,t,an)=>`<text x="${f(x)}" y="${f(y)}" font-size="${f(14*k)}" font-weight="700" text-anchor="${an}" fill="${DC}" stroke="${pal.sheet}" stroke-width="${f(3.4*k)}" paint-order="stroke" stroke-linejoin="round" font-family="'IBM Plex Mono','Noto Sans TC',sans-serif" pointer-events="none">${t}</text>`,
+        tw=t=>String(t).length*8.6*k+10*k;
+      const ah=11*k,aw=4.6*k,hx0=Math.abs(q.x-E),hy0=H-q.y;
+      s+=ln(q.x,H,E+sd*Math.min(ah,hx0),H)+ln(E,q.y,E,H-Math.min(ah,hy0));
+      if(hx0>ah*.6)s+=`<polygon points="${f(E)},${f(H)} ${f(E+sd*ah)},${f(H-aw)} ${f(E+sd*ah)},${f(H+aw)}" fill="${DC}"/>`;
+      if(hy0>ah*.6)s+=`<polygon points="${f(E)},${f(H)} ${f(E-aw)},${f(H-ah)} ${f(E+aw)},${f(H-ah)}" fill="${DC}"/>`;
+      const hx=Math.abs(q.x-E);s+=hx>tw(dx)?lb((E+q.x)/2,H-6*k,dx,'middle'):lb(q.x+sd*6*k,H-6*k,dx,dr?'end':'start');
+      s+=dy>22*k?lb(E+sd*7*k,(H+q.y)/2+5*k,dy,dr?'end':'start'):lb(E+sd*7*k,q.y-6*k,dy,dr?'end':'start')}
+  }
   const tt=mode==='mark'?{t:null}:curTarget();if(mode==='mark')s+=mkDraw(q,k);
   if(cpd)cpdDraw(P,q,k);else if(cur.hl&&tt.t==='l')s+=tt.seg.map(L=>`<line x1="${f(L[0])}" y1="${f(L[1])}" x2="${f(L[2])}" y2="${f(L[3])}" stroke="${CHL}" stroke-width="${f(3.2*k)}" stroke-linecap="round"/>`).join('');
-  else if(cur.hl&&tt.t==='c'){const c=tt.c,K=tt.kr,rx=K?K.x:c.x0,rw=K?K.w:c.col.w,ry=K?K.y:(c.s?c.sy:c.y0),rh=K?K.h:(c.s||c.p).h;s+=`<rect x="${f(rx)}" y="${f(ry)}" width="${f(rw)}" height="${f(rh)}" fill="${CHL}" fill-opacity=".13" stroke="${CHL}" stroke-width="${f(2.2*k)}"/>`}
+  else if(cur.hl&&tt.t==='c'){const c=tt.c,K=tt.kr,rx=K?K.x:c.x0,rw=K?K.w:c.col.w,ry=K?K.y:(c.s?c.sy:c.y0),rh=K?K.h:(c.s||c.p).h;s+=`<rect x="${f(rx)}" y="${f(ry)}" width="${f(rw)}" height="${f(rh)}" fill="none" stroke="${CHL}" stroke-width="${f(2.4*k)}"/>`}
   if(cur.a){const A=cur.a,pl=curPlan(q),lw=1.8*k,z=12*k;P.push({t:'l',x1:A.x,y1:A.y,x2:p.x,y2:p.y,c:'an',col:'#1f66b3',lw:1.2*k},{t:'grip',x:A.x,y:A.y,on:false,col:'#1f66b3'});
     if(pl&&!pl.err){const c=pl.c,yy=clamp(A.y,2*z,body-z);
       if(pl.v)P.push({t:'l',x1:c.x0+pl.a,y1:0,x2:c.x0+pl.a,y2:body,c:'an',col,lw},{t:'t',x:c.x0+pl.a/2,y:yy,s:String(pl.a),c:'ant',col,a:'middle',z},{t:'t',x:c.x0+pl.a+pl.b/2,y:yy,s:String(pl.b),c:'ant',col,a:'middle',z});
       else P.push({t:'l',x1:c.x0,y1:pl.top+pl.a,x2:c.x0+c.col.w,y2:pl.top+pl.a,c:'an',col,lw},{t:'t',x:c.x0+c.col.w/2,y:pl.top+pl.a/2+z*.35,s:String(pl.a),c:'ant',col,a:'middle',z},{t:'t',x:c.x0+c.col.w/2,y:pl.top+pl.a+pl.b/2+z*.35,s:String(pl.b),c:'ant',col,a:'middle',z})}}
+  if(!cpd&&mode==='edit'&&!multi&&(hsel||(sel&&sel.g!=null))){const m=mvInfo();if(m){s+=m.segs.map(L=>`<line x1="${f(L[0])}" y1="${f(L[1])}" x2="${f(L[2])}" y2="${f(L[3])}" stroke="${CHL}" stroke-width="${f(3.4*k)}" stroke-linecap="round"/>`).join('');
+    const X=m.ax==='x',a0=Math.min(...m.segs.map(L=>X?L[1]:L[0])),a1=Math.max(...m.segs.map(L=>X?L[3]:L[2])),cx=X?m.v:(a0+a1)/2,cy=X?(a0+a1)/2:m.v;
+    const g=3.5*k,ah=10*k,aw=6*k,tri=(a,b)=>`<polygon points="${a.map(v=>f(v[0])+','+f(v[1])).join(' ')}" fill="${CHL}" stroke="${pal.sheet}" stroke-width="${f(1.4*k)}" stroke-linejoin="round"/>`+b;
+    s+=X?tri([[cx-g,cy],[cx-g-ah,cy-aw],[cx-g-ah,cy+aw]],'')+tri([[cx+g,cy],[cx+g+ah,cy-aw],[cx+g+ah,cy+aw]],''):tri([[cx,cy-g],[cx-aw,cy-g-ah],[cx+aw,cy-g-ah]],'')+tri([[cx,cy+g],[cx-aw,cy+g+ah],[cx+aw,cy+g+ah]],'')}}
   let mark;
   if(ex){const m=cdp,a=A2,pp=L=>L.map(v=>f(m.x+v[0])+','+f(m.y+v[1])).join(' '),T={u:[[-a,-a],[a,-a],[0,-2*a]],r:[[a,-a],[a,a],[2*a,0]],d:[[a,a],[-a,a],[0,2*a]],l:[[-a,a],[-a,-a],[-2*a,0]]},
       sq=pp([[-a,-a],[a,-a],[a,a],[-a,a]]),out=pp([[0,-2*a],[2*a,0],[0,2*a],[-2*a,0]]),tk=6*k,ln=(x1,y1,x2,y2)=>`<line x1="${f(m.x+x1)}" y1="${f(m.y+y1)}" x2="${f(m.x+x2)}" y2="${f(m.y+y2)}" stroke="${col}" stroke-width="${f(.9*k)}"/>`;
@@ -3556,7 +3689,7 @@ function drawCur(){const g=svg.querySelector('#cur');if(!g)return;if(!cur.on||(m
   let chip='';{const str='左 '+Math.round(q.x)+'　地 '+Math.round(st.H-q.y);
     if(ex){const m=cdp,right=m.x>vb[0]+vb[2]*.6,up=m.y<vb[1]+vb[3]*.22;chip=curChip(m.x+(right?-1:1)*A2*1.2,m.y+(up?A2*1.2+12*k:-A2*1.2-11*k),str,k,right)}
     else{const right=p.x>vb[0]+vb[2]*.6,up=p.y<vb[1]+vb[3]*.2;chip=curChip(p.x+(right?-1:1)*R*1.4,p.y+(up?R*1.9:-R*1.45),str,k,right)}}
-  s+=npDim(k)+toSVG(P,k,pal).art+mark+chip;
+  s+=npDim(k)+toSVG(P,k,pal).art+mark;
   g.innerHTML=s;const inC=q.x>=0&&q.x<=st.W&&q.y>=0&&q.y<=st.H,c=q.c&&q.x>0&&q.x<st.W&&q.y>0&&q.y<body?q.c:null;
   const txt=`<span>${tt.t==='l'?tt.name:tt.t==='c'?`第 ${tt.c.ci+1} 區 ${view==='in'&&tt.c.s?INS[tt.c.s.t]:TYPES[tt.c.p.t]}`:inC?'這裡沒有可以選的':'在櫃體外面'}</span>`,has=!!(hsel||selObj()),same=!cpd&&(tt.t==='l'?(tt.g?!!(sel&&sel.g===tt.g.i&&sel.c===tt.g.c&&sel.p===tt.g.p&&(sel.s||0)===(tt.g.s||0)):!!(hsel&&hOn(hsel,tt.h))):tt.t==='c'?!!(!hsel&&sel&&sel.g==null&&selObj()&&sel.c===tt.key.c&&sel.p===tt.key.p&&(sel.s||0)===tt.key.s&&(sel.k==null?null:sel.k)===(tt.k==null?null:tt.k)):false),
     btn=mode==='mark'?mkLab(q)[0]:multi?mLab()[0]:menuOn()?'完成':cur.dm&&!cpd?'改這個尺寸':cpd?(cpd.k==='mv'?'確定　移到這裡':cpd.k==='v'?'確定　加直分隔':'確定　加橫分隔'):same?(tt.t==='c'&&tt.k!=null?'選取整格':'已選取'):tt.t==='l'?(tt.g?'選取這片層板':'選取這條線'):tt.t==='c'?(tt.kr?(tt.c.p.t==='drawer'&&view!=='in'?'選取這個抽屜':'選取這一層'):'選取這一格'):has?'取消選取':'選取',bcl=mode==='mark'?mkLab(q)[1]:multi?mLab()[1]:menuOn()||cur.dm||cpd?'':same&&!(tt.t==='c'&&tt.k!=null)?'none':tt.t?'':has?'off':'none';
@@ -3587,10 +3720,10 @@ $('#aimBtn').onclick=()=>{if(cur.on){cur.on=false;syncTabs();render();return}let
 $('#tStep').onclick=()=>{const i=TSTEPS.indexOf(cset.step||1);cset.step=TSTEPS[(i+1)%TSTEPS.length];cSave();tStepSync();toast('箭頭每按一下移 '+cset.step+' mm')};
 $('#tpad').addEventListener('pointerdown',e=>{if(e.button)return;const ab=e.target.closest('[data-ta]');
   if(ab){e.preventDefault();const d=ab.dataset.ta;padArrow(d);let n=0,t=setTimeout(function rp(){padArrow(d);t=setTimeout(rp,++n>12?45:95)},400);listen(()=>{},()=>clearTimeout(t));return}
-  if(e.target.closest('#tStep,#tX'))return;e.preventDefault();let p0=lpt(e.clientX,e.clientY);const el=$('#tpad');el.classList.add('on');
-  listen(ev=>{const p=lpt(ev.clientX,ev.clientY),k=S/zoom.z*TGAIN*cset.speed/100,dx=(p.x-p0.x)*k,dy=(p.y-p0.y)*k;p0=p;if(!dx&&!dy)return;
+  if(e.target.closest('#tStep,#tX'))return;e.preventDefault();let p0=lpt(e.clientX,e.clientY);const el=$('#tpad');el.classList.add('on');const t0=performance.now(),q0=p0;let far=false;
+  listen(ev=>{const p=lpt(ev.clientX,ev.clientY);if(Math.hypot(p.x-q0.x,p.y-q0.y)>8)far=true;const k=S/zoom.z*TGAIN*cset.speed/100,dx=(p.x-p0.x)*k,dy=(p.y-p0.y)*k;p0=p;if(!dx&&!dy)return;
     if(padEff()!=='cur'){flyStop();zoom.m=true;zoom.cx-=dx;zoom.cy-=dy;cdp=null;applyView();if(cur.on){cur.hl=true;cur.tp=null;cur.dm=null;cdp=null;drawCur()}return}
-    if(cur.fine){const q=curSnap();cur.x=q.x;cur.y=q.y;cur.fine=false}curMove(dx,dy,false)},()=>el.classList.remove('on'))});
+    if(cur.fine){const q=curSnap();cur.x=q.x;cur.y=q.y;cur.fine=false}curMove(dx,dy,false)},()=>{el.classList.remove('on');if(!far&&performance.now()-t0<400&&npOn()&&el.closest('#nTp'))fineTog()})});
 $('#tpad').addEventListener('contextmenu',e=>e.preventDefault());
 $('#mCur').onclick=()=>{if(isFree()){toast('自由繪圖先用手指畫線，準星之後再接上');return}const on=!(cur.on&&mode==='edit');if(on&&mode!=='edit')setMode('edit');cur.on=on;cur.a=null;cur.ex=false;cur.gx=cur.gy=cur.gxv=cur.gyv=null;if(on){closeDim(true);cur.x=st.W/2;cur.y=(st.H-st.kick)/2;pkOpen={x:false,y:false}}syncTabs();render();
   if(on&&!LAND.matches)$('#sheet').scrollIntoView({behavior:'smooth',block:'start'})};
@@ -3685,7 +3818,7 @@ const qSave=()=>{try{localStorage.setItem('sc-cab-qbar',JSON.stringify({v:6,b:qb
 const qLab=(t,brk)=>{const c=[...String(t)];if(c.length<brk)return esc(t);const k=Math.ceil(c.length/2);return esc(c.slice(0,k).join(''))+'<br>'+esc(c.slice(k).join(''))};
 const adjOn=()=>mode==='edit'&&(axOn.x||axOn.y);
 function adjTog(){axAuto={x:false,y:false};const on=adjOn();if(mode!=='edit')setMode('edit');closeDim(true);axOn.x=axOn.y=!on;pkOpen={x:false,y:false};if(on){hsel=null;hgrp=[];hsolo=false}render()}
-function qState(a){if(QCAT.includes(a[0])){const k=a[0],mkk=mkLive()&&(k==='move'||k==='del2');return{dis:mkk?false:k==='del2'?(mode!=='edit'||isFree()):(!curLive()||multi),on:mode==='mark'?(k==='move'&&!!mk.mv):!!cpd&&cpd.k==={vsplit:'v',hsplit:'h',move:'mv'}[k],lab:a[1]}}if(a[0]==='adj')return{dis:isFree()||multi,on:adjOn(),lab:a[1]};if(!a[2]){const ax=a[0]==='axx'?'x':'y';return{dis:mode!=='edit'||multi,on:axOn[ax],lab:a[1]}}
+function qState(a){if(QCAT.includes(a[0])){const k=a[0],mkk=mkLive()&&(k==='move'||k==='del2');return{dis:mkk?false:k==='del2'?(mode!=='edit'||isFree()):(k==='vsplit'||k==='hsplit')?!(cellPicked()||(cpd&&cpd.k===(k==='vsplit'?'v':'h'))):(!curLive()||multi),on:mode==='mark'?(k==='move'&&!!mk.mv):!!cpd&&cpd.k==={vsplit:'v',hsplit:'h',move:'mv'}[k],lab:a[1]}}if(a[0]==='adj')return{dis:isFree()||multi,on:adjOn(),lab:a[1]};if(!a[2]){const ax=a[0]==='axx'?'x':'y';return{dis:mode!=='edit'||multi,on:axOn[ax],lab:a[1]}}
   const t=$(a[2]);return{dis:!t||t.disabled||t.hidden||!!(a[3]&&mode!=='edit'),on:!!t&&t.getAttribute('aria-pressed')==='true',lab:a[0]==='grid'||a[0]==='lock'?t.textContent:a[1]}}
 const QICO={edit:'<path d="M11.5 5H6.5A1.5 1.5 0 005 6.5v11A1.5 1.5 0 006.5 19h11a1.5 1.5 0 001.5-1.5v-5"/><path d="M17.5 4l2.5 2.5-7.5 7.500-3 .500.5-3z"/>',view:'<path d="M2.500 12s3.500-6 9.500-6 9.500 6 9.500 6-3.500 6-9.500 6-9.500-6-9.500-6z"/><circle cx="12" cy="12" r="2.500"/>',sel:'<circle cx="12" cy="12" r="6"/><path d="M12 3v5M12 16v5M3 12h5M16 12h5"/>',draw:'<rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M12 4v16" stroke-dasharray="2.6 2.4"/>',
   adj:'<path d="M12 2.5v4M12 17.5v4"/><path d="M12 6.5l5.5 5.5-5.5 5.5L6.500 12z"/>',mark:'<path d="M4.500 5.500h15v10h-8l-4 3.500v-3.500h-3z"/><path d="M8 9.200h8M8 12.200h5"/>',
@@ -3714,7 +3847,7 @@ function syncQuick(){if(qFix())qSave();const box=$('#qslots');if(box.children.le
     const q=qState(a),c=qColOf(id);b.className='qs'+(q.dis?' dis':'')+([...q.lab].length>=brk?' l3':'');b.dataset.k=id;b.innerHTML=qIco(id)+'<span>'+qLab(q.lab,brk)+'</span>';b.setAttribute('aria-pressed',q.on);b.setAttribute('aria-disabled',q.dis);b.removeAttribute('aria-label');if(c)b.style.setProperty('--bc',c);else b.style.removeProperty('--bc')});
   const d=qFind(qLast)||qFind({edit:'sel',draw:'draw',mark:'mark',size:'size',bg:'bg'}[mode]);$('#qdesc').textContent=d?'「'+d[1]+'」'+(isFree()&&d[0]==='draw'?'在圖上拖出線，放開的地方就是終點；也可以先選門片、抽屜，再點格子套用。':isFree()&&d[0]==='sel'?'點線或格子來選，再改種類、拖著移動或輸入位置。':d[4]):'';
   document.documentElement.style.setProperty('--qh',(LAND.matches?0:$('#deck').offsetHeight)+'px')}
-function qRun(id){const a=qFind(id);if(!a)return;if(qState(a).dis)toast(a[0]==='adj'?(isFree()?'自由繪圖請關掉其他工具，直接點線來移動':'先關掉「多選」再調線'):'現在不能用「'+a[1]+'」'+(mode==='mark'?'，標註裡只有「移動」「刪除」':mode!=='edit'?'，先回到編輯':multi?'，先關掉「多選」':isFree()?'（自由繪圖用「畫線」）':a[3]?'，先選格子':''));
+function qRun(id){const a=qFind(id);if(!a)return;if(qState(a).dis)toast(a[0]==='adj'?(isFree()?'自由繪圖請關掉其他工具，直接點線來移動':'先關掉「多選」再調線'):(a[0]==='vsplit'||a[0]==='hsplit')&&mode==='edit'&&!multi?'先選一格，再按「'+a[1]+'」':'現在不能用「'+a[1]+'」'+(mode==='mark'?'，標註裡只有「移動」「刪除」':mode!=='edit'?'，先回到編輯':multi?'，先關掉「多選」':isFree()?'（自由繪圖用「畫線」）':a[3]?'，先選格子':''));
   else if(QCAT.includes(a[0]))cpdKey(a[0]);else if(a[0]==='adj')adjTog();else if(!a[2])toggleAx(a[0]==='axx'?'x':'y');else{cpd=null;mk.p1=mk.end=mk.mv=null;$(a[2]).click()}
   qLast=id;syncQuick()}
 $('#qslots').addEventListener('click',e=>{const b=e.target.closest('[data-qi]');if(!b)return;if(qSupp){qSupp=false;return}const id=qb[+b.dataset.qi];if(!id){qOpen(+b.dataset.qi);return}qRun(id)});
@@ -3760,7 +3893,7 @@ function hsSync(){document.querySelectorAll('.hs').forEach(el=>{el.classList.tog
 document.querySelectorAll('.hs').forEach(el=>el.addEventListener('scroll',hsSync,{passive:true}));
 
 /* cursor settings */
-const CACT=[['csel','選取'],['cstart','起點'],['cend','終點'],['ccancel','取消']],CDEF={v:2,style:'aim',size:100,color:'',speed:100,step:1,keys:{u:'csel',r:'cend',d:'ccancel',l:'cstart'}},
+const CACT=[['csel','選取'],['cstart','起點'],['cend','終點'],['ccancel','取消']],CDEF={v:3,style:'aim',size:100,color:'',speed:100,step:50,keys:{u:'csel',r:'cend',d:'ccancel',l:'cstart'}},
   CCOLS=['','ink','#c8372d','#ee7d1c','#b8860b','#2f8a57','#0f9d9d','#1f66b3','#8e44ad'],CDIR=[['u','上'],['r','右'],['d','下'],['l','左']],
   CMK={aim:['準星',[['C',100,100,64,7],['L',100,14,100,186,6],['L',14,100,186,100,6]],0],frame:['框接',[['R',43.4,43.4,84.2,24,'u'],['R',132.6,43.4,24,84.2,'r'],['R',72.4,132.6,84.2,24,'d'],['R',43.4,72.4,24,84.2,'l']],45],
     grid:['三川成格',[['D',8],['L',100,40,100,160,8],['L',72,68,72,132,8],['L',128,68,128,132,8],['L',40,100,160,100,8],['L',68,72,132,72,8],['L',68,128,132,128,8]],0],
@@ -3770,7 +3903,7 @@ const CACT=[['csel','選取'],['cstart','起點'],['cend','終點'],['ccancel','
     flow:['三川流',[['D',8],['W',100,46,154],['W',73,74,126],['W',127,74,126]],0]};
 let cset=JSON.parse(JSON.stringify(CDEF));
 const cOk=id=>id===''||CACT.some(x=>x[0]===id)||!!qFind(id);
-try{const v=JSON.parse(localStorage.getItem('sc-cab-cur')||'null');if(v&&typeof v==='object'){if(CMK[v.style]&&v.v>=2)cset.style=v.style;if(v.size>=60&&v.size<=200)cset.size=+v.size;if(CCOLS.includes(v.color))cset.color=v.color;if(v.speed>=30&&v.speed<=300)cset.speed=+v.speed;if([1,5,10,50].includes(v.step))cset.step=v.step;
+try{const v=JSON.parse(localStorage.getItem('sc-cab-cur')||'null');if(v&&typeof v==='object'){if(CMK[v.style]&&v.v>=2)cset.style=v.style;if(v.size>=60&&v.size<=200)cset.size=+v.size;if(CCOLS.includes(v.color))cset.color=v.color;if(v.speed>=30&&v.speed<=300)cset.speed=+v.speed;if(v.v>=3&&[1,5,10,50].includes(v.step))cset.step=v.step;
   if(v.keys&&typeof v.keys==='object')CDIR.forEach(d=>{if(typeof v.keys[d[0]]==='string'&&cOk(v.keys[d[0]]))cset.keys[d[0]]=v.keys[d[0]]})}}catch(e){}
 const cSave=()=>{try{localStorage.setItem('sc-cab-cur',JSON.stringify(cset))}catch(e){}},cLab=id=>{const a=CACT.find(x=>x[0]===id)||qFind(id);return a?a[1]:''};
 function cCol(){return cset.color==='ink'?pal.ink:cset.color||CHL}
@@ -3886,8 +4019,14 @@ function mvInfo(){if(mode!=='edit'||multi||isFree())return null;const body=st.H-
 function cpdTarget(){const m=mvInfo();if(!m||!cpd)return null;const q=curSnap(),raw=m.ax==='x'?q.x:q.y,now=m.ax==='x'?cur.x:cur.y;let tv=now===cpd.c0?m.v:raw;tv=m.lo<=m.hi?clamp(tv,m.lo,m.hi):m.v;if(m.t==='h')tv=Math.round(tv);return{m,tv}}
 function cpdDraw(P0,q,k){const P={push:(...a)=>P0.push(...a.map(o=>o.t==='l'&&o.c==='an'?Object.assign(o,{dash:7*k}):o))};const col=CHL,lw=2.4*k,z=12*k,body=st.H-st.kick,T=(x,y,s2)=>P.push({t:'t',x,y,s:s2,c:'ant',col,a:'middle',z});
   if(cpd.k==='mv'){const r=cpdTarget();if(!r)return;const m=r.m,tv=r.tv,dd=tv-m.v,A=m.a0!=null?m.a0+dd:null,B=m.b0!=null?m.b0-dd:null;
+    /* how far the line may go: shown on the ruler (bottom ruler for an upright line, left ruler for a level one), not on the drawing */
+    {const r2=lrect(svg),v=vbNow||fullVB;if(r2.width&&r2.height){const X=m.ax==='x',kk=Math.max(v[2]/r2.width,v[3]/r2.height),mx=v[0]+v[2]/2,my=v[1]+v[3]/2,bx0=mx-r2.width*kk/2,bx1=mx+r2.width*kk/2,by0=my-r2.height*kk/2,by1=my+r2.height*kk/2,bwr=19.8*kk,bhr=13.2*kk,
+      A0=X?bx0+bwr:by0,A1=X?bx1:by1-bhr,lo=clamp(m.lo>-1e8?m.lo:A0,A0,A1),hi=clamp(m.hi<1e8?m.hi:A1,A0,A1);
+      if(hi>lo){P0.push(X?{t:'r',x:lo,y:by1-bhr,w:hi-lo,h:bhr,c:'band',col,op:.32}:{t:'r',x:bx0,y:lo,w:bwr,h:hi-lo,c:'band',col,op:.32});
+        [[m.lo,lo],[m.hi,hi]].forEach(z=>{if(Math.abs(z[0])<1e8)P0.push(X?{t:'l',x1:z[1],y1:by1-bhr,x2:z[1],y2:by1,c:'an',col,lw:2*kk}:{t:'l',x1:bx0,y1:z[1],x2:bx0+bwr,y2:z[1],c:'an',col,lw:2*kk})})}}}
     m.segs.forEach(L=>P.push(m.ax==='x'?{t:'l',x1:tv,y1:L[1],x2:tv,y2:L[3],c:'an',col,lw}:{t:'l',x1:L[0],y1:tv,x2:L[2],y2:tv,c:'an',col,lw}));
-    if(m.ax==='x'){const yy=clamp(q.y-2.2*z,2*z,body-z);if(A!=null)T(tv-A/2,yy,fmt(A));if(B!=null)T(tv+B/2,yy,fmt(B))}
+    if(m.t==='g'){const ci=sel.c;[ci-1,ci+1].forEach(j=>{if(!st.cols[j]||!colYs(j).some(Y=>Math.abs(Y-tv)<.06))return;let x0=0;for(let i=0;i<j;i++)x0+=st.cols[i].w;P.push({t:'l',x1:x0,y1:tv,x2:x0+st.cols[j].w,y2:tv,c:'an',col,lw:1.2*k})})}
+    if(m.ax==='x'){const yy=Math.max(...m.segs.map(L=>L[3]))-z*.9;if(A!=null)T(tv-A/2,yy,fmt(A));if(B!=null)T(tv+B/2,yy,fmt(B))}
     else{const L=m.segs[0],xx=L?(L[0]+L[2])/2:st.W/2;if(A!=null)T(xx,tv-A/2+z*.35,fmt(A));if(B!=null)T(xx,tv+B/2+z*.35,fmt(B))}
     return}
   const r=splitPlan(cpd.k==='v'),pl=r.pl;if(!pl)return;const c=pl.c;
@@ -3904,11 +4043,11 @@ function cpdKey(k){
   cur.tp=k==='pick'?cur.tp:null;
   if(k==='pick'){if(cpd)cpdGo();else if(menuOn()){closeDim(true);hsel=null;hgrp=[];hsolo=false;sel=null;zOps=false;render()}else if(cur.dm){const d=cur.dm,el=[...document.querySelectorAll('#ui [data-d]')].find(e=>e.dataset.d===d.d&&e.dataset.dc===d.dc&&e.dataset.dp===d.dp&&e.dataset.ds===d.ds);cur.dm=null;drawCur();if(el)openDim(el)}else curPick();return}
   if(k==='del2'){if(cpd){cpdOff('已取消');return}smartDel();return}
-  const want={vsplit:'v',hsplit:'h',move:'mv'}[k];if(cpd&&cpd.k===want){cpdOff('已取消');return}
+  const want={vsplit:'v',hsplit:'h',move:'mv'}[k];if(cpd&&cpd.k===want){cpdGo();return}
   if(!curLive()){toast('這裡不能用，先回到編輯');return}closeDim(true);
   if(want==='mv'){const m=mvInfo();if(!m){toast(hsel||(sel&&sel.g!=null)?'這條線是固定的，不能移動':'先點要移動的線，再按「移動」');return}
     if(m.ax==='x')cur.x=m.v;else cur.y=m.v;cpd={k:'mv',sid:st.sid,c0:m.ax==='x'?cur.x:cur.y}}
-  else{cpd={k:want,sid:st.sid};sel=null;hsel=null;hgrp=[];hsolo=false}
+  else{splitMid(want==='v');cpd={k:want,sid:st.sid};sel=null;hsel=null;hgrp=[];hsolo=false}
   cur.a=null;cur.ex=false;cur.hl=false;render()}
 
 /* ===== 選格 ===== */
@@ -3962,12 +4101,12 @@ function mkPick(){const q=curSnap(),a=asel>=0?st.ann[asel]:null;
 function mkKey(k){if(!mkLive())return;const a=asel>=0?st.ann[asel]:null;
   if(k==='pick'){mkPick();return}
   if(k==='del2'){if(mk.p1||mk.end||mk.mv){mk.p1=mk.end=mk.mv=null;render();toast('已取消');return}if(!a){toast('先選取要刪除的標註：準星移過去，按「選取」');return}push();st.ann.splice(asel,1);asel=-1;render();return}
-  if(k==='move'){if(mk.mv){mk.mv=null;render();toast('已取消');return}if(!a){toast('先選取要移動的標註：準星移過去，按「選取」');return}
+  if(k==='move'){if(mk.mv){mkPick();return}if(!a){toast('先選取要移動的標註：準星移過去，按「選取」');return}
     const b=annBox(asel);if(b){cur.x=Math.round(b.x+b.w/2);cur.y=Math.round(b.y+b.h/2)}cur.nos=true;cur.tp=null;const q=curSnap();mk.end=null;mk.p1=null;mk.mv={x:q.x,y:q.y};if(tool&&!free(tool)){tool=null}render();return}
   toast('標註裡只有「移動」和「刪除」；分隔請先關掉上面的「標註」')}
 function mkSync(){backSync();ctlSync();npSync();document.querySelectorAll('#tools [data-tool]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.tool===tool));if(!mkLive())return;
   const a=asel>=0?st.ann[asel]:null,h=$('#markHint');let t;
-  if(a&&mk.mv)t='移動：把準星移到新的位置，看預覽對了就按「確定」。再按一次「移動」取消。';
+  if(a&&mk.mv)t='移動：把準星移到新的位置，看預覽對了就按「確定」或再按一次「移動」；按「返回」取消。';
   else if(a&&mk.end)t='把準星移到新的位置，預覽對了就按「確定」。按「刪除」取消。';
   else if(MK2[tool])t=mk.p1?'第二點：把準星移過去，預覽對了就按「確定」。按「刪除」取消。':'第一點：把準星移到起點（點圖面、拖觸控板、按箭頭都可以），按「選取」。';
   else if(tool==='text')t=$('#markHint').textContent;
@@ -4017,31 +4156,32 @@ function menuSync(){const on=menuOn(),hd=$('#selHead'),am=$('#actm'),ed=$('#edit
 $('#selHead').addEventListener('click',e=>{const gp=e.target.closest('[data-grp]');if(gp){togGrp(gp.dataset.grp);return}const cz=e.target.closest('[data-cz]');if(cz){pickCell(cz.dataset.cz);return}const b=e.target.closest('[data-act]');if(b&&!b.disabled)act(b.dataset.act,b.dataset.v)});
 
 /* ===== (23) upright control area ===== */
-var npG='view',npAuto=false,npHad=false,edOpen=false,mkMore=false,npSig='',npRW=0;
+var fineOn=false,npG='view',npAuto=false,npHad=false,edOpen=false,mkMore=false,npSig='',npRW=0;
 function npOn(){return!LAND.matches&&!isFree()&&(mode==='edit'||mode==='mark')}
+function fineTog(){if(!cur.on){toast('先點一下圖面，叫出準星');return}fineOn=!fineOn;npSig='';render();toast(fineOn?'微調開啟：準星四周出現三角形，按一下走一步，按住連續走；旁邊的步距鍵換一步多遠。再點一下圓盤中心收起':'微調已收起')}
 function npIc(d){return'<svg viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>'}
 function npTi(t){const b=document.querySelector('#tools [data-tool="'+t+'"] svg');return b?b.outerHTML:''}
 function npQs(id){const a=qFind(id),x=a?qState(a):{dis:true};return x.on?'act':x.dis?'off':'on'}
-function npKeys(){const P=q=>$(q).getAttribute('aria-pressed')==='true';
-  if(npG==='cab')return[{t:'直分隔',i:npIc('<path d="M12 4v16"/>'),s:npQs('vsplit')},{t:'橫分隔',i:npIc('<path d="M4 12h16"/>'),s:npQs('hsplit')},{t:'刪除',i:npIc('<path d="M9 5h9a2 2 0 012 2v10a2 2 0 01-2 2H9l-6-7zM12.500 9.500l5 5M17.500 9.500l-5 5"/>'),s:npQs('del2')},
+function cellPicked(){return mode==='edit'&&!multi&&!isFree()&&!hsel&&!!selObj()&&!(sel&&sel.g!=null)}
+function npKeys(){const P=q=>$(q).getAttribute('aria-pressed')==='true',sp=cellPicked()||(!!cpd&&cpd.k!=='mv');
+  if(npG==='cab')return[sp?{t:'直分隔',i:npIc('<path d="M12 4v16"/>'),s:npQs('vsplit')}:{t:'',s:'hide'},sp?{t:'橫分隔',i:npIc('<path d="M4 12h16"/>'),s:npQs('hsplit')}:{t:'',s:'hide'},{t:'刪除',i:npIc('<path d="M9 5h9a2 2 0 012 2v10a2 2 0 01-2 2H9l-6-7zM12.500 9.500l5 5M17.500 9.500l-5 5"/>'),s:npQs('del2')},
     {t:'編輯',i:npIc('<path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/>'),s:edOpen?'act':'on'},{t:'多選',i:npIc('<rect x="4" y="8" width="12" height="12" rx="2"/><path d="M8 8V6a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2h-2"/>'),s:multi?'act':npQs('multi')},{t:'重做',i:npIc('<path d="M15 6l4.500 4.500L15 15M19.500 10.500H10a4.500 4.500 0 000 9h3"/>'),s:npQs('redo')}];
   if(npG==='mark'){const T=(t,l)=>({t:l,i:npTi(t),s:tool===t?'act':'on'});return[T('line','直線'),T('rect','方框'),T('dim','量尺'),T('text','文字'),T('circle','圓形'),{t:'更多',i:npIc('<circle cx="6" cy="12" r="1.300"/><circle cx="12" cy="12" r="1.300"/><circle cx="18" cy="12" r="1.300"/>'),s:mkMore?'act':'on'}]}
   const lk=$('#cLock'),io=$('#cIO');
-  return[{t:'鎖定準星',s:lk.disabled?'off':P('#cLock')?'act':'on'},{t:'置中放大',s:'on'},{h:'<span class="nsw">'+(view==='out'?'櫃內':'櫃外')+npIc('<path d="M4 9h15l-3.500-3.500M20 15H5l3.500 3.500"/>')+'</span>',t:'io'+view,s:io.disabled?'off':'on',a:view==='out'?'切換到櫃內':'切換到櫃外'},
-    {t:'+',n:1,s:$('#cZin').disabled?'off':'on',a:'放大'},{t:'−',n:1,s:$('#cZout').disabled?'off':'on',a:'縮小'},{t:'還原',s:$('#cZreset').disabled?'off':'on'}]}
+  return[0,1,2,3,4,5].map(()=>({t:'',s:'hide'}))}
 function npShort(t){t=String(t||'').split('　')[0];if(t.indexOf('確定')===0)return'確定';if(t.indexOf('選取')===0)return'選取';if(t==='改這個尺寸')return'改尺寸';if(t.indexOf('多選中')===0)return'多選中';if(t.indexOf('直接用手指')===0)return'用手畫';return t.length>4?t.slice(0,4):t}
 function npRingSt(){const ts=$('#tSel'),tm=$('#tMove'),bk=backKind();
   return[{t:npShort(ts.textContent),s:/\bnone\b/.test(ts.className)?'off':/\boff\b/.test(ts.className)?'on':'act',a:ts.textContent},{t:bk==='u'?'返回':'取消',s:bk==='u'&&$('#undo').disabled?'off':'on',a:bk==='u'?'復原上一步':bk==='d'?'取消選取':'取消'},
     {t:'移動',s:tm.getAttribute('aria-pressed')==='true'?'act':tm.classList.contains('dis')?'off':'on'},{t:'視角',s:$('#cView').getAttribute('aria-pressed')==='true'?'act':'on'}]}
-function npShape(d,st){return st==='act'?'<path d="'+d+'" style="fill:var(--paper);stroke:var(--cyan);stroke-width:1.6"/>':'<path d="'+d+'" style="fill:var(--paper);stroke:var('+(st==='on'?'--dash':'--dash2')+')" stroke-dasharray="3 3"/>'}
+function npShape(d,st,ac){return st==='act'?'<path d="'+d+'" style="fill:var(--paper);stroke:var('+(ac||'--cyan')+');stroke-width:1.6"/>':'<path d="'+d+'" style="fill:var(--paper);stroke:var('+(st==='on'?'--dash':'--dash2')+')" stroke-dasharray="3 3"/>'}
 function npDraw(W,K,R){const CX=W/2,CY=90,HR=95,f=v=>+v.toFixed(1),xa=y=>CX-Math.sqrt(Math.max(0,HR*HR-(y-CY)*(y-CY))),ROWS=[[0,56],[62,118],[124,180]],r=3;let s='';
   const kp=(L,y1,y2)=>{const a=xa(y1),b=xa(y2);return L?'M'+r+' '+y1+'H'+f(a)+'A'+HR+' '+HR+' 0 0 0 '+f(b)+' '+y2+'H'+r+'A'+r+' '+r+' 0 0 1 0 '+(y2-r)+'V'+(y1+r)+'A'+r+' '+r+' 0 0 1 '+r+' '+y1+'Z':'M'+f(W-r)+' '+y1+'H'+f(W-a)+'A'+HR+' '+HR+' 0 0 1 '+f(W-b)+' '+y2+'H'+f(W-r)+'A'+r+' '+r+' 0 0 0 '+f(W)+' '+(y2-r)+'V'+(y1+r)+'A'+r+' '+r+' 0 0 0 '+f(W-r)+' '+y1+'Z'};
-  K.forEach((k,i)=>{const row=ROWS[i%3];s+=npShape(kp(i<3,row[0],row[1]),k.s)});
+  K.forEach((k,i)=>{if(k.s==='hide')return;const row=ROWS[i%3];s+=npShape(kp(i<3,row[0],row[1]),k.s)});
   const pt=(rr,dg)=>{const t=dg*Math.PI/180;return f(CX+rr*Math.sin(t))+' '+f(CY-rr*Math.cos(t))},sec=(a1,a2)=>{const ro=90,ri=56,dO=Math.asin(2/ro)*180/Math.PI,dI=Math.asin(2/ri)*180/Math.PI;return'M'+pt(ro,a1+dO)+'A'+ro+' '+ro+' 0 0 1 '+pt(ro,a2-dO)+'L'+pt(ri,a2-dI)+'A'+ri+' '+ri+' 0 0 0 '+pt(ri,a1+dI)+'Z'};
-  s+=npShape(sec(-45,45),R[0].s)+npShape(sec(45,135),R[2].s)+npShape(sec(135,225),R[3].s)+npShape(sec(225,315),R[1].s);
+  s+=npShape(sec(-45,45),R[0].s,'--sub')+npShape(sec(45,135),R[2].s)+npShape(sec(135,225),R[3].s)+npShape(sec(225,315),R[1].s);
   let mn='',mj='';for(let d=0;d<360;d+=10){if(d%90===0)mj+='M'+pt(46,d)+'L'+pt(54,d);else mn+='M'+pt(47,d)+'L'+pt(d%30===0?53:51,d)}
   s+='<path d="'+mn+'" style="fill:none;stroke:var(--dash)"/><path d="'+mj+'" style="fill:none;stroke:var(--sub);stroke-width:1.4"/><circle cx="'+f(CX)+'" cy="'+CY+'" r="44" style="fill:var(--paper);stroke:var(--dash)"/>';
-  s+='<circle cx="'+f(CX)+'" cy="'+CY+'" r="12" style="fill:var(--paper);stroke:var(--cyan);stroke-width:2.2"/><circle cx="'+f(CX)+'" cy="'+CY+'" r="3.4" style="fill:var(--ink)"/>';
+  s+='<circle cx="'+f(CX)+'" cy="'+CY+'" r="12" style="fill:'+(fineOn?'var(--cyan)':'var(--paper)')+';stroke:var(--cyan);stroke-width:2.2"/><circle cx="'+f(CX)+'" cy="'+CY+'" r="3.4" style="fill:'+(fineOn?'var(--paper)':'var(--ink)')+'"/><text x="'+f(CX)+'" y="'+(CY+30)+'" text-anchor="middle" style="font-size:11px;font-weight:700;letter-spacing:.08em;fill:'+(fineOn?'var(--cyan)':'var(--sub)')+'">微調</text>';
   const a=$('#nArt');a.setAttribute('viewBox','0 0 '+f(W)+' 180');a.innerHTML=s}
 function npRulDraw(W){const a=$('#nRulA'),f=v=>+v.toFixed(1),m=W/2,y=40;a.setAttribute('viewBox','0 0 '+f(W)+' 50');
   a.innerHTML='<path d="M8 '+y+'H'+f(W-8)+'M8 33V47M'+f(W-8)+' 33V47M'+f(m)+' 30V47" style="fill:none;stroke:var(--cyan);stroke-width:1.3"/><path d="M8 '+y+'l8-3.6v7.2zM'+f(W-8)+' '+y+'l-8-3.600v7.200z" style="fill:var(--cyan)"/><circle cx="'+f(m)+'" cy="22.500" r="6.500" style="fill:var(--paper);stroke:var(--cyan);stroke-width:2"/><circle cx="'+f(m)+'" cy="22.500" r="2" style="fill:var(--ink)"/>'}
@@ -4070,28 +4210,27 @@ function npRul(W){if(W!==npRW){npRW=W;npRulDraw(W)}const ra=$('#nRa'),rb=$('#nRb
   put(ra,a,ka);put(rb,b,kb);const l=$('#nRl'),r=$('#nRr');if(l.textContent!==la){l.textContent=la;r.textContent=lb;ra.setAttribute('aria-label',la==='L'?'離左邊的線':'離上面的距離');rb.setAttribute('aria-label',lb==='R'?'離右邊的線':'離下面的距離')}}
 function npSync(){if(!npOn()){npSig='';return}npG=npG||'view';const pad=$('#nPad'),am=$('#actm'),pn=$('#panel');
   const has=mode==='edit'&&!multi&&!!(hsel||selObj());
-  if(mode==='mark')npG='mark';else{if(npG==='mark')npG='view';if(has&&!npHad&&npG==='view'){npG='cab';npAuto=true}else if(!has&&npHad&&npAuto&&npG==='cab'&&!cpd){npG='view';npAuto=false}}
+  npG=mode==='mark'?'mark':'cab';if(0){if(npG==='mark')npG='view';if(has&&!npHad&&npG==='view'){npG='cab';npAuto=true}else if(!has&&npHad&&npAuto&&npG==='cab'&&!cpd){npG='view';npAuto=false}}
   npHad=has;if(mode!=='mark')mkMore=false;if(mode!=='edit'||npG!=='cab')edOpen=false;else if(multi){if(edOpen&&edOpen!=='multi')edOpen='multi'}else if(edOpen==='multi')edOpen=false;else if(edOpen==='sel'&&!has)edOpen=false;else if(edOpen==='home'&&has)edOpen='sel';
   const what=menuOn()?'sel':mode==='edit'&&multi&&edOpen?'multi':edOpen==='home'?'home':mkMore?'mark':'',eh=$('#editHome'),mb=$('#markbar'),fr=$('#frow');
   if(what==='home'){if(eh.parentNode!==am)am.appendChild(eh)}else if(eh.parentNode===am)pn.insertBefore(eh,$('#startTip'));
   if(what==='mark'){if(mb.parentNode!==am)am.appendChild(mb)}else if(mb.parentNode===am)pn.insertBefore(mb,$('#aiPanel'));
   if(what==='multi'){if(fr.parentNode!==am)am.appendChild(fr)}else if(what!=='sel'&&fr.parentNode===am)pn.insertBefore(fr,$('#drawbar'));
   if(am.hidden!==!what)am.hidden=!what;{const hp=!!what&&!simOn();if(pad.hidden!==hp)pad.hidden=hp;pad.style.visibility=what&&simOn()?'hidden':''}
-  const W=pad.clientWidth||$('#nRul').clientWidth||350,K=npKeys(),R=npRingSt(),sig=W+'|'+npG+'|'+K.map(k=>k.t+k.s).join(',')+'|'+R.map(k=>k.t+k.s).join(',');
+  const W=pad.clientWidth||$('#nRul').clientWidth||350,K=npKeys(),R=npRingSt(),sig=W+'|'+fineOn+'|'+npG+'|'+K.map(k=>k.t+k.s).join(',')+'|'+R.map(k=>k.t+k.s).join(',');
   if(sig!==npSig&&!what){npSig=sig;npDraw(W,K,R);
-    pad.querySelectorAll('.nk').forEach((b,i)=>{const k=K[i];b.dataset.s=k.s;b.className='nk'+(k.n?' num':'');b.innerHTML=k.h||((k.i||'')+k.t);b.setAttribute('aria-disabled',k.s==='off');if(k.a)b.setAttribute('aria-label',k.a);else b.removeAttribute('aria-label');if(npG!=='view')b.setAttribute('aria-pressed',k.s==='act');else b.removeAttribute('aria-pressed')});
+    pad.querySelectorAll('.nk').forEach((b,i)=>{const k=K[i];b.dataset.s=k.s;b.className='nk'+(k.n?' num':'');b.innerHTML=k.h||((k.i||'')+k.t);b.setAttribute('aria-disabled',k.s==='off');b.style.visibility=k.s==='hide'?'hidden':'';if(k.a)b.setAttribute('aria-label',k.a);else b.removeAttribute('aria-label');if(npG!=='view')b.setAttribute('aria-pressed',k.s==='act');else b.removeAttribute('aria-pressed')});
     [['#nSel',0],['#nBack',1],['#nMove',2],['#nView',3]].forEach(x=>{const b=$(x[0]),k=R[x[1]];b.dataset.s=k.s;b.textContent=k.t;if(k.a)b.setAttribute('aria-label',k.a)});
     document.querySelectorAll('#nGrp [data-g]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.g===npG))}
   else if(what)npSig='';
   npRul($('#nRul').clientWidth||W)}
-function npFocus(){flyStop();if(cur.on){const q=curSnap();zoom.cx=q.x;zoom.cy=q.y}zoom.z=clamp(4,zMin,8);zoom.m=true;if(padMode==='lock'&&cur.on)lkp={ox:cur.x-zoom.cx,oy:cur.y-zoom.cy,z:zoom.z,cx:zoom.cx,cy:zoom.cy,zz:zoom.z,ux:cur.x,uy:cur.y};cdp=null;applyView();render();toast('已放大 4 倍，準星在畫面中間。按「還原」回到整張圖')}
 $('#nGrp').addEventListener('click',e=>{const b=e.target.closest('[data-g]');if(!b)return;const g=b.dataset.g;npAuto=false;edOpen=false;mkMore=false;
   if(g==='mark'){if(mode!=='mark')setCat('mark');else render();return}
   npG=g;if(mode==='mark'){setCat('edit');return}render()});
 $('#nPad').addEventListener('click',e=>{const r=e.target.closest('#nRing button');
   if(r){if(r.id==='nSel')$('#tSel').click();else if(r.id==='nBack')backKey();else if(r.id==='nMove')$('#tMove').click();else $('#cView').click();return}
-  const b=e.target.closest('.nk');if(!b)return;const i=b.dataset.nk;
-  if(npG==='view'){if(i==='l1'){npFocus();return}const t=$({l0:'#cLock',l2:'#cIO',r0:'#cZin',r1:'#cZout',r2:'#cZreset'}[i]);if(t.disabled){if(i==='r2')toast('現在就是整張圖');else if(i==='l0')toast('這裡沒有準星可以鎖定');return}t.click();return}
+  const b=e.target.closest('.nk');if(!b||b.dataset.s==='hide')return;const i=b.dataset.nk;
+  if(npG==='view')return;
   if(npG==='cab'){if(i==='r0'){edOpen=edOpen?false:multi?'multi':(mode==='edit'&&(hsel||selObj())?'sel':'home');render();return}qRun({l0:'vsplit',l1:'hsplit',l2:'del2',r1:'multi',r2:'redo'}[i]);npSig='';npSync();return}
   if(i==='r2'){mkMore=!mkMore;render();return}const tb=document.querySelector('#tools [data-tool="'+{l0:'line',l1:'rect',l2:'dim',r0:'text',r1:'circle'}[i]+'"]');if(tb)tb.click();npSig='';npSync()});
 $('#amDone').onclick=()=>{edOpen=false;mkMore=false;render()};
@@ -4113,6 +4252,7 @@ $('#topiBtn').onclick=()=>{const on=!topiOn();try{localStorage.setItem('sc-cab-t
 var SZLK0='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.8"/></svg>',SZLK1='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 
 /* ===== (26) 檢視 › 格子寫尺寸 (same switch the size page used to have) ===== */
+$('#swBtn').onclick=()=>{const on=!swingOn();vpSet('swing',on);$('#swBtn').setAttribute('aria-pressed',on);render();toast(on?'門片畫出開門方向的斜線':'門片不畫開門斜線')};{const b=$('#swBtn');if(b)b.setAttribute('aria-pressed',swingOn())}
 $('#lblBtn').onclick=()=>{$('#fLabels').click();const on=$('#fLabels').checked;$('#lblBtn').setAttribute('aria-pressed',on);toast(on?'每一格上會寫名稱和尺寸':'每一格上不寫名稱和尺寸')};
 
 /* ===== (27) arrows at the ends of the crosshair lines, and a dot on each ruler you can drag ===== */
@@ -4120,7 +4260,7 @@ var ovEl=null;
 function ovMk(){if(ovEl)return ovEl;const o=document.createElement('div');o.id='cOv';o.hidden=true;
   const rot={u:0,r:90,d:180,l:270},nm={u:'上',d:'下',l:'左',r:'右'};
   o.innerHTML='urdl'.split('').map(d=>`<button class="ova" data-oa="${d}" aria-label="準星往${nm[d]}一步"><svg viewBox="-10 -10 20 20" aria-hidden="true"><path d="M0 -8L7 5H-7Z" transform="rotate(${rot[d]})"/></svg></button>`).join('')+
-    '<button class="ovm" data-om="x" aria-label="拖動：準星左右移動"><i></i></button><button class="ovm" data-om="y" aria-label="拖動：準星上下移動"><i></i></button>';
+    '<button id="ovStep" aria-label="切換微調每一步的距離">50 mm</button><button class="ovm" data-om="x" aria-label="拖動：準星左右移動"><svg viewBox="-15 -15 30 30" aria-hidden="true"><circle r="7.5"/><path d="M0 -14V14"/></svg></button><button class="ovm" data-om="y" aria-label="拖動：準星上下移動"><svg viewBox="-15 -15 30 30" aria-hidden="true"><circle r="7.5"/><path d="M-14 0H14"/></svg></button>';
   document.body.appendChild(o);ovEl=o;
   o.addEventListener('pointerdown',e=>{const a=e.target.closest('[data-oa]'),m=e.target.closest('[data-om]');if(!a&&!m)return;e.preventDefault();e.stopPropagation();
     if(a){const d=a.dataset.oa;padArrow(d);let n=0,t=setTimeout(function rp(){padArrow(d);t=setTimeout(rp,++n>12?45:95)},400);listen(()=>{},()=>clearTimeout(t));return}
@@ -4128,23 +4268,68 @@ function ovMk(){if(ovEl)return ovEl;const o=document.createElement('div');o.id='
     const mv=ev=>{const M=svg.getScreenCTM();if(!M)return;const p=new DOMPoint(ev.clientX,ev.clientY).matrixTransform(M.inverse());cdp=null;
       if(ax==='x')curMove(p.x-cur.x,0,false);else curMove(0,p.y-cur.y,false)};
     mv(e);listen(mv,()=>{m.classList.remove('on');drawCur()})});
-  o.addEventListener('click',e=>{e.stopPropagation()});
+  o.addEventListener('click',e=>{e.stopPropagation();if(e.target.closest('#ovStep')){$('#tStep').click();ovSync()}});
   return o}
 function ovSync(){const o=ovMk();const on=!!st&&cur.on&&(mode==='edit'||mode==='mark')&&!!vbNow&&!szw;if(!on){if(!o.hidden)o.hidden=true;return}
   const r=svg.getBoundingClientRect(),M=svg.getScreenCTM();if(!r.width||!r.height||!M){o.hidden=true;return}
-  const q=cur.ex||!cdp?curSnap():cdp,pt=new DOMPoint(q.x,q.y).matrixTransform(M),rx=true,ry=true,bh=rx?13.2:0,bw=ry?19.8:0;
-  const X=clamp(pt.x-r.left,18,r.width-bw-18),Y=clamp(pt.y-r.top,18,r.height-bh-18),put=(sel,x,y,show)=>{const b=o.querySelector(sel);b.hidden=!show;if(show){b.style.left=x.toFixed(1)+'px';b.style.top=y.toFixed(1)+'px'}};
-  o.hidden=false;o.style.left=r.left+'px';o.style.top=r.top+'px';
-  put('[data-oa="u"]',X,16,true);put('[data-oa="d"]',X,r.height-bh-18,true);put('[data-oa="l"]',16,Y,true);put('[data-oa="r"]',r.width-bw-16,Y,true);
-  put('[data-om="x"]',X,r.height-bh/2,rx);put('[data-om="y"]',r.width-bw/2,Y,ry)}
+  const q=cur.ex||!cdp?curSnap():cdp,pt=new DOMPoint(q.x,q.y).matrixTransform(M),bh=13.2,bw=19.8,dr=st.dat==='R',lw=bw,rw=0;
+  const X=clamp(pt.x-r.left,lw+18,r.width-rw-18),Y=clamp(pt.y-r.top,18,r.height-bh-18),put=(sel,x,y,show)=>{const b=o.querySelector(sel);b.hidden=!show;if(show){b.style.left=x.toFixed(1)+'px';b.style.top=y.toFixed(1)+'px'}};
+  o.hidden=false;o.classList.toggle('fine',fineOn);o.style.left=r.left+'px';o.style.top=r.top+'px';
+  const D=100,PX=pt.x-r.left,PY=pt.y-r.top,cx=v=>clamp(v,lw+26,r.width-26),cy=v=>clamp(v,26,r.height-bh-26);put('[data-oa="u"]',PX,cy(PY-D),true);put('[data-oa="d"]',PX,cy(PY+D),true);put('[data-oa="l"]',cx(PX-D),PY,true);put('[data-oa="r"]',cx(PX+D),PY,true);
+  {const sb=o.querySelector('#ovStep');sb.textContent=(cset.step||1)+' mm';const sx=PX+D*.72,sy=PY+D*.72;put('#ovStep',sx>r.width-40?PX-D*.72:sx,sy>r.height-bh-24?PY-D*.72:sy,fineOn)}
+  {const col=cCol(),sz=+(37.5*cset.size/100).toFixed(1),sig=col+'|'+sz+'|'+pal.sheet;if(o.dataset.ms!==sig){o.dataset.ms=sig;o.style.setProperty('--om',sz+'px');
+    const mk=v=>{const L=v?'x1="100" y1="14" x2="100" y2="186"':'x1="14" y1="100" x2="186" y2="100"',H=`stroke:${pal.sheet};fill:none;stroke-width:18`,C=`stroke:${col};fill:none`;
+      return`<svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="64" style="${H}"/><line ${L} style="${H}"/><circle cx="100" cy="100" r="64" style="${C};stroke-width:7;stroke-dasharray:16 11"/><line ${L} style="${C};stroke-width:6"/></svg>`};
+    o.querySelector('[data-om="x"]').innerHTML=mk(1);o.querySelector('[data-om="y"]').innerHTML=mk(0)}}
+  put('[data-om="x"]',X,r.height-bh/2,true);put('[data-om="y"]',Math.max(bw/2,37.5*cset.size/200+1.5),Y,true)}
 {const _dc=drawCur;drawCur=function(){_dc();try{ovSync()}catch(e){}}}
 window.addEventListener('scroll',()=>{try{ovSync()}catch(e){}},{passive:true,capture:true});
 try{drawCur()}catch(e){}requestAnimationFrame(()=>{try{drawCur()}catch(e){}});
 
+/* ===== (41) on the paper: ＋ − 還原 at the top right; in 標註 the colours and line width at the top left ===== */
+var pvEl=null;
+function pvMk(){if(pvEl)return pvEl;const o=document.createElement('div');o.id='pOv';o.hidden=true;
+  o.innerHTML='<div id="pvB"><button id="pvFine" aria-label="微調">微調</button><button data-pz="reset" aria-label="還原圖面大小和位置">還原</button><button id="pvIO" aria-label="切換櫃外、櫃內">櫃外</button></div>'+
+    '<div id="pvM">'+[...document.querySelectorAll('#colors [data-col]')].map(b=>`<button class="pvc" data-pc="${b.dataset.col}" style="--c:${b.dataset.col}" aria-label="${b.getAttribute('aria-label')}"></button>`).join('')+
+    '<span class="pvd"></span><button data-pl="-1" aria-label="線細一點">−</button><b id="pvLw">2</b><button data-pl="1" aria-label="線粗一點">＋</button></div>';
+  document.body.appendChild(o);pvEl=o;
+  o.addEventListener('click',e=>{e.stopPropagation();
+    if(e.target.closest('#pvFine')){fineTog();return}
+    if(e.target.closest('#pvIO')){const t=$('#cIO');if(t.disabled){toast('自由繪圖沒有櫃內');return}t.click();pvSync();return}
+    const z=e.target.closest('[data-pz]'),c=e.target.closest('[data-pc]'),l=e.target.closest('[data-pl]');
+    if(z){const t=$({in:'#cZin',out:'#cZout',reset:'#cZreset'}[z.dataset.pz]);if(t.disabled){if(z.dataset.pz==='reset')toast('現在就是整張圖');return}t.click();pvSync();return}
+    if(c){const b=document.querySelector('#colors [data-col="'+c.dataset.pc+'"]');if(b)b.click();pvSync();return}
+    if(l)lwStep(+l.dataset.pl)});
+  o.addEventListener('pointerdown',e=>{if(e.target.closest('button'))e.stopPropagation()});
+  return o}
+function pvSync(){const o=pvMk(),on=!!st&&npOn()&&!!vbNow&&!szw;if(!on){if(!o.hidden)o.hidden=true;return}
+  const r=svg.getBoundingClientRect();if(!r.width||!r.height){o.hidden=true;return}
+  o.hidden=false;o.style.left=r.left+'px';o.style.top=r.top+'px';o.style.width=r.width+'px';o.style.setProperty('--ph',Math.max(120,Math.min(r.bottom,window.innerHeight)-r.top)+'px');
+  {const fb=$('#pvFine');fb.hidden=!simOn();fb.setAttribute('aria-pressed',fineOn);fb.classList.toggle('dis',!cur.on);const ib=$('#pvIO'),t=view==='in'?'櫃內':'櫃外';if(ib.textContent!==t)ib.textContent=t;ib.setAttribute('aria-pressed',view==='in');ib.setAttribute('aria-label','現在是'+t+'，點一下切換到'+(view==='in'?'櫃外':'櫃內'));ib.classList.toggle('dis',isFree())}
+  o.querySelectorAll('[data-pz]').forEach(b=>{const t=$({in:'#cZin',out:'#cZout',reset:'#cZreset'}[b.dataset.pz]);b.classList.toggle('dis',!!t.disabled)});
+  const m=$('#pvM'),mk=mode==='mark';m.hidden=!mk;
+  if(mk){o.querySelectorAll('[data-pc]').forEach(b=>{const x=document.querySelector('#colors [data-col="'+b.dataset.pc+'"]');b.setAttribute('aria-pressed',!!x&&x.getAttribute('aria-pressed')==='true')});
+    const v=$('#lwIn').value;$('#pvLw').textContent=v;o.querySelector('[data-pl="-1"]').classList.toggle('dis',+v<=1);o.querySelector('[data-pl="1"]').classList.toggle('dis',+v>=12)}}
+{const _dc=drawCur;drawCur=function(){_dc();try{pvSync()}catch(e){}}}
+{const _r=render;render=function(){_r();try{pvSync()}catch(e){}}}
+window.addEventListener('resize',()=>{try{pvSync()}catch(e){}});window.addEventListener('scroll',()=>{try{pvSync()}catch(e){}},{passive:true,capture:true});
+try{pvSync()}catch(e){}
+
+/* ===== (47) ☰ menu, 標註中 chip ===== */
+function hmOpen(on){const de=document.documentElement;de.classList.toggle('hmOpen',!!on);$('#hmBtn').setAttribute('aria-expanded',!!on);
+  if(on){const r=lrect($('#hmBtn')),tb=$('#topbar'),w=Math.min(220,vpW()-16);tb.style.width=w+'px';tb.style.left=clamp(r.right-w,8,vpW()-w-8)+'px';tb.style.top=(r.bottom+6)+'px';$('#tbSimp').textContent=simOn()?'換回圓盤':'極簡模式'}}
+$('#hmBtn').onclick=e=>{e.stopPropagation();hmOpen(!document.documentElement.classList.contains('hmOpen'))};
+$('#topbar').addEventListener('click',e=>{if(!document.documentElement.classList.contains('npx'))return;if(e.target.closest('button'))setTimeout(()=>hmOpen(false),0)});
+document.addEventListener('pointerdown',e=>{if(document.documentElement.classList.contains('hmOpen')&&!(e.target.closest&&e.target.closest('#topbar,#hmBtn')))hmOpen(false)},true);
+$('#tbSimp').onclick=()=>{$('#simBtn').click()};
+$('#mkExit').onclick=()=>{setCat('edit')};
+{const _ps=pvSync;pvSync=function(){_ps();const x=$('#mkExit');if(x){const on=npOn()&&mode==='mark';if(x.hidden===on)x.hidden=!on}
+  document.documentElement.classList.toggle('nsel',mode==='mark'||multi||!!cpd||(mode==='edit'&&!!(hsel||selObj())))}}
+
 /* ===== (29) rulers with the crosshair; 簡易面板 switch ===== */
 function rulA(){return!!st&&cur.on&&(mode==='edit'||mode==='mark')}
 function simOn(){try{return localStorage.getItem('sc-cab-simp')==='1'}catch(e){return false}}
-$('#simBtn').onclick=()=>{const on=!simOn();try{localStorage.setItem('sc-cab-simp',on?'1':'0')}catch(e){}if(on&&padMode==='view')padMode='cur';portC=null;npSig='';$('#simBtn').setAttribute('aria-pressed',on);render();toast(on?'簡易面板：拿掉圓盤，圖面變大。準星用點圖、拖刻度上的圓點、四邊箭頭移動':'換回圓盤')};
+$('#simBtn').onclick=()=>{const on=!simOn();try{localStorage.setItem('sc-cab-simp',on?'1':'0')}catch(e){}if(on&&padMode==='view')padMode='cur';portC=null;npSig='';$('#simBtn').setAttribute('aria-pressed',on);render();toast(on?'極簡模式：整個畫面都是圖紙。單指在圖上拖＝移動準星，點一下＝準星跳過去，兩指＝移動、縮放畫面':'換回圓盤')};
 {const b=$('#simBtn');if(b)b.setAttribute('aria-pressed',simOn())}
 
 /* ===== (30) 把手／取手縫／無把手, 等分, size-page rows ===== */
@@ -4201,18 +4386,51 @@ $('#szwImg').addEventListener('click',e=>{const g=document.querySelector('#szwIm
 
 /* ===== (31) the whole ruler is a track: touch anywhere on it and slide ===== */
 var ovQuiet=0;
-function bandHit(x,y){if(!rulA()||!svg)return false;const r=svg.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom&&(y>=r.bottom-16||x>=r.right-22)}
+function bandHit(x,y){if(!rulA()||!svg)return false;const r=svg.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom&&(y>=r.bottom-16||x<=r.left+22)}
 {const o=ovMk();o.insertAdjacentHTML('afterbegin','<div class="ovt" data-ot="x" aria-label="拖動：準星左右移動"></div><div class="ovt" data-ot="y" aria-label="拖動：準星上下移動"></div>');
   const drag=(e,ax)=>{e.preventDefault();e.stopPropagation();const m=o.querySelector('[data-om="'+ax+'"]');if(m)m.classList.add('on');
-    const mv=ev=>{const M=svg.getScreenCTM();if(!M)return;const p=new DOMPoint(ev.clientX,ev.clientY).matrixTransform(M.inverse());cdp=null;if(ax==='x')curMove(p.x-cur.x,0,false);else curMove(0,p.y-cur.y,false)};
-    mv(e);listen(mv,()=>{if(m)m.classList.remove('on');ovQuiet=performance.now();justDragged=true;setTimeout(()=>{justDragged=false},350);drawCur()})};
+    const at=ev=>{const M=svg.getScreenCTM();return M?new DOMPoint(ev.clientX,ev.clientY).matrixTransform(M.inverse()):null};let last=at(e);if(!last)return;
+    {const q0=curSnap();cur.x=q0.x;cur.y=q0.y}
+    const mv=ev=>{const p=at(ev);if(!p)return;const d=ax==='x'?p.x-last.x:p.y-last.y;last=p;if(!d)return;cdp=null;if(ax==='x')curMove(d,0,false);else curMove(0,d,false)};
+    listen(mv,()=>{if(m)m.classList.remove('on');ovQuiet=performance.now();justDragged=true;setTimeout(()=>{justDragged=false},350);drawCur()})};
   o.addEventListener('pointerdown',e=>{const t=e.target.closest('[data-ot]');if(t)drag(e,t.dataset.ot)},true);
   o.addEventListener('touchstart',e=>{if(e.target.closest('[data-ot],[data-oa],[data-om]'))e.preventDefault()},{passive:false});}
 {const _os=ovSync;ovSync=function(){_os();const o=ovEl;if(!o||o.hidden)return;const r=svg.getBoundingClientRect(),bh=13.2,bw=19.8,X=o.querySelector('[data-ot="x"]'),Y=o.querySelector('[data-ot="y"]');
-  X.style.cssText=`left:0;top:${(r.height-bh-8).toFixed(1)}px;width:${(r.width-bw).toFixed(1)}px;height:${(bh+16).toFixed(1)}px`;
-  Y.style.cssText=`left:${(r.width-bw-8).toFixed(1)}px;top:0;width:${(bw+16).toFixed(1)}px;height:${(r.height-bh).toFixed(1)}px`}}
+  X.style.cssText=`left:${bw}px;top:${(r.height-bh-8).toFixed(1)}px;width:${(r.width-bw).toFixed(1)}px;height:${(bh+16).toFixed(1)}px`;
+  Y.style.cssText=`left:-8px;top:0;width:${(bw+16).toFixed(1)}px;height:${(r.height-bh).toFixed(1)}px`}}
 /* a tap or release that lands on the rulers never moves the crosshair to the finger */
 ['pointerdown','click'].forEach(t=>svg.addEventListener(t,e=>{if(bandHit(e.clientX,e.clientY)||performance.now()-ovQuiet<400){e.stopImmediatePropagation();if(t==='click')e.preventDefault()}},true));
+/* ===== (32) datum side, distances to floor and side panel, splits from the middle, shelves meet the next bay ===== */
+function datOn(){return!!st&&!isFree()&&(mode==='edit'||mode==='mark')&&!cpd&&!(typeof rulGeo==='function'&&npOn()&&mode==='edit'&&rulGeo().g)}
+function colYs(ci){const c=st.cols[ci];if(!c)return[];const T=st.T,w=c.w,ys=[];let y=0;
+  c.parts.forEach((p,pi)=>{if(pi)ys.push(y);const roomy=w>4*T&&p.h>4*T;
+    if(p.t==='open'&&roomy&&p.n>0){const g=gapsOf(p,p.h-2*T,T);let sy=y+T;for(let j=0;j<p.n;j++){ys.push(sy+g[j]+T/2);sy+=g[j]+T}}
+    else if(view==='in'&&p.t==='door'&&roomy&&p.ins){let sy=y;p.ins.forEach((s,si)=>{if(si)ys.push(sy);const top=si?sy+T/2:y+T,bot=si<p.ins.length-1?sy+s.h-T/2:y+p.h-T;
+      if(s.t==='shelf'&&s.n&&bot-top>s.n*T+(s.n+1)*10){const g=gapsOf(s,bot-top,T);let yy=top;for(let j=0;j<s.n;j++){ys.push(yy+g[j]+T/2);yy+=g[j]+T}}sy+=s.h})}
+    y+=p.h});return ys}
+function nbYs(ci){return colYs(ci-1).concat(colYs(ci+1))}
+/* 直分隔 / 橫分隔: the preview starts in the middle of the cell (the picked one, else the one under the crosshair) */
+function splitMid(v){const o=selObj();let x0,w,top,h;
+  if(o&&sel.k==null&&sel.g==null){x0=0;for(let i=0;i<sel.c;i++)x0+=st.cols[i].w;w=o.col.w;let y=0;for(let i=0;i<sel.p;i++)y+=o.col.parts[i].h;top=y;h=o.p.h;if(view==='in'&&o.s){for(let i=0;i<(sel.s||0);i++)top+=o.p.ins[i].h;h=o.s.h}}
+  else{const q=curSnap(),c=locCell({x:q.x,y:q.y});if(!c)return;x0=c.x0;w=c.col.w;top=c.s?c.sy:c.y0;h=(c.s||c.p).h}
+  if(v){cur.x=Math.round(x0+w/2);if(!(cur.y>top&&cur.y<top+h))cur.y=Math.round(top+h/2)}else{cur.y=Math.round(top+h/2);if(!(cur.x>x0&&cur.x<x0+w))cur.x=Math.round(x0+w/2)}
+  cur.fine=true;cur.nos=true;cur.tp=null;cdp=null}
+function datSync(){const b=$('#datBtn');if(!b||!st)return;const r=st.dat==='R';b.textContent='基準：'+(r?'右':'左');b.setAttribute('aria-pressed',r)}
+$('#datBtn').onclick=()=>{if(isFree()){toast('自由繪圖沒有基準邊');return}push();if(st.dat==='R')delete st.dat;else st.dat='R';portC=null;render();toast(st.dat==='R'?'基準在右邊：下方刻度由右往左量':'基準在左邊：下方刻度由左往右量')};
+{const _rs=renderEditor;renderEditor=function(){_rs();datSync()}}
+/* ===== (35) new file / new cabinet: size first ===== */
+const NWP=[['高櫃',2400,2400,100],['衣櫃',1800,2400,100],['書櫃',900,2000,80],['鞋櫃',900,1100,100],['電視櫃',1800,450,80],['吊櫃',1200,700,0]];let nwFor='file';
+function nwFill(W,H,K){$('#nwW').value=W;$('#nwH').value=H;$('#nwK').value=K;document.querySelectorAll('#nwPre button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.w===W&&+b.dataset.h===H&&+b.dataset.k===K))}
+function nwOpen(f){nwFor=f;closeDim(true);$('#nwT').textContent=f==='file'?'新檔案':'新增櫃體（分頁）';
+  $('#nwPre').innerHTML=NWP.map(x=>`<button data-w="${x[1]}" data-h="${x[2]}" data-k="${x[3]}"><b>${x[0]}</b><span>${x[1]/10} × ${x[2]/10}</span></button>`).join('');
+  if(f==='sheet')nwFill(st.W,st.H,st.kick);else nwFill(2400,2400,100);$('#nwBox').hidden=false}
+$('#nwPre').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b)nwFill(+b.dataset.w,+b.dataset.h,+b.dataset.k)});
+['#nwW','#nwH','#nwK'].forEach(k=>$(k).addEventListener('input',()=>document.querySelectorAll('#nwPre button').forEach(b=>b.setAttribute('aria-pressed',false))));
+$('#nwNo').onclick=()=>{$('#nwBox').hidden=true};$('#nwBox').addEventListener('click',e=>{if(e.target===$('#nwBox'))$('#nwBox').hidden=true});
+$('#nwGo').onclick=()=>{const W=num($('#nwW').value,0),H=num($('#nwH').value,0),K=num($('#nwK').value,0);
+  if(!(W>=MIN&&W<=MAXW)){toast('總寬請輸入 '+MIN+'～'+MAXW+'（公釐）');return}if(!(H>=150&&H<=MAXH)){toast('總高請輸入 150～'+MAXH+'（公釐）');return}if(!(K>=0&&K<=H-MIN)){toast('踢腳板請輸入 0～'+(H-MIN));return}
+  $('#nwBox').hidden=true;if(nwFor==='file')newFile(W,H,K);else newSheet(W,H,K)};
+$('#nwBox').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();$('#nwGo').click()}});
 try{drawCur()}catch(e){}
 store.rules().then(t=>{if(t)$('#rules').value=t}).catch(()=>{});
 use('sample').then(async s=>{sampleFn=s;
