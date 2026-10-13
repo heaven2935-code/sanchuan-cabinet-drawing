@@ -52,3 +52,8 @@ Safari 開啟網站 → 分享 → 加入主畫面 → 打開為網頁 App → �
 - V1.5.1：按鍵視覺恢復原深色工具列風格，commonActions 圖示上下排列、暖色選取框；cursorSelectLabel 更新文字避免重畫圖示。維持 V1.5 功能與下方配置；真機視覺待驗。
 
 - V1.6.0 最新方向：使用者取消儲存格操作。預設 select，cells 舊模式入口映射 select；gridOverlay 改為直接尺寸標示，不再有字母／數字欄列頭、框選與格子高亮。數值點選經 dimensionEdit；總尺寸按比例調整，局部尺寸依 localPosition 移動相鄰線且外框固定。原 gridCells 只作相容幾何資料，保留舊圖面；合併／等分 UI 隱藏。測試：grid_interactions 驗證總寬高及兩側局部尺寸、無效值拒絕、取消與復原；cursor_interactions 驗證線條／端點／繪圖。iPhone 真機視覺待驗證。
+
+
+## 2026-10-13 主網址改版（保留 elevation）
+
+主網址 https://heaven2935-code.github.io/sanchuan-cabinet-drawing/ 已換成新版手機繪圖程式，包含直接點選、情境編輯與 X/Y 尺軌。/elevation/ 完整保留原樣。新版維護使用 scripts/build_mobile_root.py。

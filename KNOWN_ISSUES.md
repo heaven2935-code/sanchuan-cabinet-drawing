@@ -32,3 +32,8 @@
 
 - V1.9 本次雲端瀏覽器建立頁面逾時，未取得實際畫面。互動測試通過僅代表 JavaScript 行為；新版 CSS 的直／橫式、safe-area 與真機視覺須另行確認。
 - 直式頂部為完整品牌列及檔名列；滿版模式收起品牌列，觸控板可從上方工具收合。
+
+
+## 2026-10-13 主網址改版（保留 elevation）
+
+新版根目錄使用 sc-mobile-cab IndexedDB 與 sc-mobile-* localStorage，與 elevation/ 的 sc-cab 資料隔離。原根目錄舊圖面資料未刪除，也未自動轉換至新版。iPhone 真機尚未驗證。

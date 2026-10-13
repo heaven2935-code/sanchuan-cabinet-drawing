@@ -36,3 +36,8 @@
 - V1.8：drawingControls 是 stage 外的 footer，依序 cellActions（結構情境）、cursorConfirmation（結構預覽確認）、commonActions（undo/cursorSelect/commonPan）、cursorDock（長方形相對觸控板）。auxiliaryActions 於 stage 上方處理自由圖形、板件及非結構預覽確認，cursorDraftFields 浮於 stage 上緣。selectWholeLine 將 gridLine.local=false，保留 axis/value、全高或全寬；moveGridLine／cursorDraft／直接拖曳均呼叫 Grid.move，刪整列逐段 removeLocal 並單次 history。regionAt 只作新增分隔定位，不恢復儲存格選取模式。controlledCursorMove 在 pan 模式更新 view，其餘更新 cursor；setDock 重繪 viewBox 不重算適屏。最末 V1.8 CSS 覆寫舊規則，topbar 明確 display:flex、固定單列及 safe-area 外層。
 
 - V1.9：全部樣式由 ui.css 提供，index.html 不再含 inline style block。design tokens 依初版 palette，24px viewBox SVG icons 為靜態 HTML；toggleCursorDockLabel／toggleInspectorLabel 用來更新文字，保持圖示。canvas-top 為六工具 nav；portrait 600px 以下使用明確 grid areas（品牌列／檔名列），landscape 高度 480px 以下 compact；結構 cellActions 四欄加獨立數值列、白色卡片面板。保留 V1.8 ID／事件處理器相容性。CSS 檔案與版本參數加入 install_assets 檢查。
+
+
+## 2026-10-13 主網址改版（保留 elevation）
+
+主入口 index.html 為新版手機繪圖，mobile-source/ 保存新版來源，scripts/build_mobile_root.py 建置至根目錄。elevation/ 為獨立保留的原程式，本次沒有修改。

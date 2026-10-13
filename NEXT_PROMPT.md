@@ -26,3 +26,8 @@
 - V1.8.0 最新使用者方向：恢復最初長方形游標觸控板於下方，預設 dockOpen=true，觸控板上方 commonActions 僅「復原／選取／平移」。下方只放結構線／開口的編輯動作；繪圖／尺寸標記／板件／自由圖形編輯及完成取消都在上方。選取整列／整欄用 selected.local=false，數值、cursor move 和 native drag 必須全座標連動，請維持測試。頂部改單列 Flex 避免舊 Grid 隱含列被 48px 高度裁切。不要恢復浮動圓形控制器或六鍵底列。真機排版待驗；DOM 測試不能代替真機。
 
 - V1.9.0 最新：使用者要求恢復第一版的完整設計品質。ui.css 已取代 index 全部累積的 style rules，請以此統一樣式維護，勿再次加入連續覆寫。深灰工具、米白卡片、暖色選取框、24×24 stroke 1.5 SVG；下方三鍵仍復原／選取／平移，結構情境動作四欄+位置數值列，其餘在頂部。品牌＋檔名兩列直式、橫式單列。雲端 browser 開頁逾時，真實截圖及 iPhone 排版尚未確認；不要用 DOM 回歸宣稱視覺通過。
+
+
+## 2026-10-13 主網址改版（保留 elevation）
+
+使用者最新指定：保留 /elevation/ 原樣，只將主網址 /sanchuan-cabinet-drawing/ 舊程式換成手機新版。新版來源 mobile-source/；建置 scripts/build_mobile_root.py；資料命名 sc-mobile-*。不得將新版發布至 elevation/。

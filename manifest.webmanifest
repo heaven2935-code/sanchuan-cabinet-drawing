@@ -1,22 +1,20 @@
 {
-  "name": "三川工方｜櫃體立面繪圖",
-  "short_name": "三川繪圖",
-  "description": "櫃體立面手機精準繪圖工具",
-  "lang": "zh-TW",
+  "name": "三川工方｜手機繪圖",
+  "short_name": "手機繪圖",
+  "lang": "zh-Hant",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "landscape",
-  "background_color": "#222a30",
-  "theme_color": "#222a30",
+  "background_color": "#f4f6f7",
+  "theme_color": "#f4f6f7",
   "icons": [
     {
-      "src": "./icon-180.png?v=1.9.0",
+      "src": "icon-180.png",
       "sizes": "180x180",
       "type": "image/png"
     },
     {
-      "src": "./icon-512.png?v=1.9.0",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
