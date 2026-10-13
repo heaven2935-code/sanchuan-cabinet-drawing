@@ -37,6 +37,9 @@ placeTiles=function(cw,hp,lay){tiles=[{i:pj.cur,S:lay.S,vb:lay.vb,ox:0,oy:0}];wo
 forceLand=false;axOn.x=axOn.y=false;esub='line';padMode='cur';lkp=null;
 const mEngineRender=render;
 render=function(){
+  document.documentElement.dataset.canvasTheme=displaySettings.theme;
+  darkSheet=displaySettings.theme==='dark';
+  const themeMeta=document.querySelector('meta[name="theme-color"]');if(themeMeta)themeMeta.content=darkSheet?'#151f27':'#ffffff';
   st.grid=displaySettings.gridStyle==='none'?0:displaySettings.gridSize;
   st.labels=displaySettings.names;
   cur.on=true;esub='line';
@@ -106,10 +109,10 @@ function mDisplayOpen(){
   const p=displaySettings,select=(id,label,options,value)=>`<label class="m-field">${label}<select id="${id}">${options.map(([v,t])=>`<option value="${v}"${value===v?' selected':''}>${t}</option>`).join('')}</select></label>`;
   const toggle=(id,label,value)=>`<label class="m-display-toggle"><span>${label}</span><input id="${id}" type="checkbox"${value?' checked':''}></label>`;
   const swatch=(id,label,value)=>`<label class="m-field m-color-field">${label}<input id="${id}" type="color" value="${value}"></label>`;
-  mOpenSheet('圖面顯示與尺軌',`<form id="mForm"><p class="m-section-label">顯示內容</p>${toggle('mShowSwing','門片開啟斜線',p.doorSwing)}${toggle('mShowDims','尺寸標示',p.dimensions)}${toggle('mShowNames','格內名稱與尺寸',p.names)}<p class="m-sheet-note">尺寸關閉時，選取線條仍會顯示相關尺寸，方便調整。</p><p class="m-section-label">格線</p><div class="m-form-grid">${select('mGridStyle','樣式',[['lines','細格線'],['dots','點陣'],['none','無格線']],p.gridStyle)}${mField('mGridSize','格距 · mm',p.gridSize,10,1000)}</div>${swatch('mGridColor','格線顏色',p.gridColor)}<p class="m-sheet-note">細格線每 5 格加深一條。縮小時會簡化過密格線，設定格距仍用於對齊。</p><p class="m-section-label">標示顏色</p><div class="m-form-grid">${swatch('mSelectionColor','選取線與菱形',p.selectionColor)}${swatch('mDimensionColor','一般尺寸',p.dimensionColor)}</div>${select('mRulerSide','直向尺的位置',[['right','右側'],['left','左側']],p.rulerSide)}${mFormButtons}</form>`,'display');
+  mOpenSheet('圖面顯示與尺軌',`<form id="mForm">${select('mTheme','介面版本',[['light','淺色'],['dark','深色']],p.theme)}<p class="m-section-label">顯示內容</p>${toggle('mShowSwing','門片開啟斜線',p.doorSwing)}${toggle('mShowDims','尺寸標示',p.dimensions)}${toggle('mShowNames','格內名稱與尺寸',p.names)}<p class="m-sheet-note">尺寸關閉時，選取線條仍會顯示相關尺寸，方便調整。</p><p class="m-section-label">格線</p><div class="m-form-grid">${select('mGridStyle','樣式',[['lines','細格線'],['dots','點陣'],['none','無格線']],p.gridStyle)}${mField('mGridSize','格距 · mm',p.gridSize,10,1000)}</div>${swatch('mGridColor','格線顏色',p.gridColor)}<p class="m-sheet-note">細格線每 5 格加深一條。縮小時會簡化過密格線，設定格距仍用於對齊。</p><p class="m-section-label">櫃體線條</p>${swatch('mLineColor','櫃體線條顏色',p.lineColor)}<p class="m-section-label">標示顏色</p><div class="m-form-grid">${swatch('mSelectionColor','選取線與菱形',p.selectionColor)}${swatch('mDimensionColor','一般尺寸',p.dimensionColor)}</div>${select('mRulerSide','直向尺的位置',[['right','右側'],['left','左側']],p.rulerSide)}${mFormButtons}</form>`,'display');
   mobileUI.submit=()=>{
     const size=Number($('#mGridSize').value);if(!Number.isFinite(size)||size<10||size>1000){toast('格距請輸入 10–1000 mm');return;}
-    Object.assign(displaySettings,DisplayStyle.normalize({doorSwing:$('#mShowSwing').checked,dimensions:$('#mShowDims').checked,names:$('#mShowNames').checked,gridStyle:$('#mGridStyle').value,gridSize:size,gridColor:$('#mGridColor').value,selectionColor:$('#mSelectionColor').value,dimensionColor:$('#mDimensionColor').value,rulerSide:$('#mRulerSide').value}));
+    Object.assign(displaySettings,DisplayStyle.themeChange(p,$('#mTheme').value,{lineColor:$('#mLineColor').value,doorSwing:$('#mShowSwing').checked,dimensions:$('#mShowDims').checked,names:$('#mShowNames').checked,gridStyle:$('#mGridStyle').value,gridSize:size,gridColor:$('#mGridColor').value,selectionColor:$('#mSelectionColor').value,dimensionColor:$('#mDimensionColor').value,rulerSide:$('#mRulerSide').value}));
     try{localStorage.setItem('sc-mobile-display-v1',JSON.stringify(displaySettings))}catch(_){}
     othCache.clear();mCloseSheet(true);toast('圖面顯示已更新');
   };

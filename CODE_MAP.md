@@ -46,3 +46,8 @@
 ## 2026-10-14 圖面顯示設定
 
 正式入口為 GitHub 根目錄，elevation/ 保留不動。display-style.js 管理裝置顯示偏好、格線與中點幾何；scripts/build.py 將偏好注入原引擎與匯出流程。mobile-ui.js 的 mDisplayOpen 提供設定與儲存，mobile-rulers.js 支援左右尺軌。
+
+
+## 2026-10-14 線條選色與深色版
+
+新增 DisplayStyle.lineColor、theme、themeColors/themeChange 與 palette。mDisplayOpen 提供線色及淺／深版本；render 設定 data-canvas-theme；mobile-ui.css 與 mobile-rulers.js 實作深色介面。toSVG/exportSVG 使用同一色盤。

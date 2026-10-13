@@ -36,3 +36,8 @@
 ## 2026-10-14 圖面顯示設定
 
 只維護 GitHub 主網址新版，elevation/ 保留原樣。顯示偏好 display-style.js / sc-mobile-display-v1；執行 python scripts/build.py、node tests/verify.cjs、node tests/display.cjs。根目錄建置 scripts/build_mobile_root.py。勿改回每條線不同色或非中點標記。
+
+
+## 2026-10-14 線條選色與深色版
+
+正式程式在主網址，elevation/ 不改。顯示偏好 sc-mobile-display-v1 包含 theme 及 lineColor；維護 mobile-source/display-style.js、mobile-ui.js、mobile-ui.css。執行 scripts/build.py、tests/verify.cjs、tests/display.cjs。自訂線色保留，主題預設色可隨版本調整。

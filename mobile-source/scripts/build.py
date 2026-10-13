@@ -23,6 +23,10 @@ geom=function(st,o){
   const g=displayGeom(shape,options),H=handleModel(shape,o.view==='in',o.sel?o.sel.c:null);
   return DisplayStyle.decorate(g,shape,options,displaySettings,H);
 };
+const displaySVG=toSVG;
+toSVG=function(P,S,pal,U,W){return displaySVG(P,S,DisplayStyle.palette(displaySettings,pal),U,W)};
+const displayExport=exportSVG;
+exportSVG=function(st,pal,bg){return displayExport(st,DisplayStyle.palette(displaySettings,pal||XPAL),bg)};
 '''
 src=src.replace("if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={",wrapper+"if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={DisplayStyle,displaySettings,",1)
 src=src.replace("bg:bgArg(),fsel:","bg:bgArg(),gridScale:S/zoom.z,fsel:")
@@ -40,7 +44,7 @@ assert pos>0
 src=src[:pos]+'\n/* Mobile interaction layer */\n'+js+'\n'+src[pos:]
 src=src.replace("indexedDB.open('sc-cab',1)","indexedDB.open('sc-mobile-cab',1)")
 src=src.replace("'sc-cab-","'sc-mobile-")
-src=src.replace('?v=1','?v=display-20261014')
+src=src.replace('?v=1','?v=theme-20261014')
 dist=root/'dist'
 dist.mkdir(exist_ok=True)
 (dist/'index.html').write_text(src)

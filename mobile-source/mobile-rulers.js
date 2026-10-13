@@ -46,7 +46,7 @@ function mRulersSync(){
   const inX=p.x>=x0&&p.x<=x1,inY=p.y>=0&&p.y<=Y;
   if(inX)art+=line(p.x,0,p.x,Y+8,'#2b9baa','5 4');if(inY)art+=line(left?x0-8:0,p.y,left?W:x1+8,p.y,'#2b9baa','5 4');
   if(inX&&inY)art+=`<circle cx="${f(p.x)}" cy="${f(p.y)}" r="5" fill="#fff" stroke="#147c88" stroke-width="1.5"/><circle cx="${f(p.x)}" cy="${f(p.y)}" r="1.5" fill="#147c88"/>`;
-  const artNode=$('#mRulerArt');artNode.setAttribute('viewBox',`0 0 ${W} ${H}`);artNode.innerHTML=art;
+  const artNode=$('#mRulerArt');artNode.setAttribute('viewBox',`0 0 ${W} ${H}`);artNode.innerHTML=displaySettings.theme==='dark'?art.replaceAll('#f5f9fa','#1d2a34').replaceAll('#d8e5e9','#364955').replaceAll('#b3c7cf','#607d8b').replaceAll('#7b949e','#a5bac6'):art;
   const mx=$('#mRailXM'),my=$('#mRailYM'),px=clamp(p.x-x0,2,x1-x0-2),py=clamp(p.y,2,Y-2),markerLeft=clamp(px-40,2,Math.max(2,x1-x0-82)),top=clamp(py-22,2,Math.max(2,Y-46));
   mx.style.left=markerLeft+'px';mx.style.setProperty('--pin-x',(px-markerLeft)+'px');my.style.top=top+'px';my.style.setProperty('--pin-y',(py-top)+'px');
   const vx=Math.round(q.x),vy=Math.round(st.H-q.y);mx.querySelector('b').textContent=vx;my.querySelector('b').textContent=vy;

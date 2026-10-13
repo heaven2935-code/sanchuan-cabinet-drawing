@@ -140,6 +140,25 @@ html,body,#app,#app main{background:#fff!important}
 .m-display-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:50px;border-bottom:1px solid #e5ecef}
 #mShell .m-display-toggle input{appearance:auto;-webkit-appearance:checkbox;accent-color:#147c88;width:24px;height:24px;flex-shrink:0}
 #mShell .m-color-field input{height:44px;width:100%;padding:4px;border:1px solid #dce5e8;border-radius:9px;background:#fff}
+/* Dark edition: graphite paper, calm blue-gray controls and amber selection. */
+html[data-canvas-theme=dark]{color-scheme:dark;--paper:#101820!important;--sheet:#151f27!important;--tint:#202e38!important;--ink:#dce6ec!important;--sub:#b8cbd6!important;--mute:#8b9fab!important;--line:#344754!important}
+html[data-canvas-theme=dark],html[data-canvas-theme=dark] body,html[data-canvas-theme=dark] #app,html[data-canvas-theme=dark] #app main,html[data-canvas-theme=dark] #sheet{background:#151f27!important}
+html[data-canvas-theme=dark] #mShell{color:#dce6ec}
+html[data-canvas-theme=dark] .m-header{background:rgba(21,31,39,.96);border-color:#344754}
+html[data-canvas-theme=dark] .m-tools,html[data-canvas-theme=dark] #mFit,html[data-canvas-theme=dark] #mView,html[data-canvas-theme=dark] .m-context,html[data-canvas-theme=dark] #mOperation,html[data-canvas-theme=dark] #mToolStrip,html[data-canvas-theme=dark] #mSheet{background:#202e38!important;border-color:#3c505e!important;box-shadow:0 5px 25px #0004}
+html[data-canvas-theme=dark] #mShell .m-menu-grid button,html[data-canvas-theme=dark] #mSheetClose,html[data-canvas-theme=dark] #mShell .m-field input,html[data-canvas-theme=dark] #mShell .m-field select,html[data-canvas-theme=dark] #mOffset,html[data-canvas-theme=dark] #mShell .m-color-field input{background-color:#17232c!important;border-color:#3c505e!important;color:#e1eaf0!important}
+html[data-canvas-theme=dark] #mShell .m-menu-grid button.m-accent,html[data-canvas-theme=dark] #mActions .m-primary{background:#193d46!important;color:#8ed6df!important;border-color:#35616b!important}
+html[data-canvas-theme=dark] #mSubtitle,html[data-canvas-theme=dark] .m-sheet-note,html[data-canvas-theme=dark] .m-field,html[data-canvas-theme=dark] .m-section-label,html[data-canvas-theme=dark] #mOperationNote,html[data-canvas-theme=dark] .m-op-label,html[data-canvas-theme=dark] #mToolText,html[data-canvas-theme=dark] .m-row-action small,html[data-canvas-theme=dark] .m-cancel,html[data-canvas-theme=dark] .m-selection-heading{color:#a9becb!important}
+html[data-canvas-theme=dark] .m-menu-grid button svg{color:#9cc3d1}
+html[data-canvas-theme=dark] .m-sheet-head,html[data-canvas-theme=dark] #mShell .m-row-action,html[data-canvas-theme=dark] .m-file-row,html[data-canvas-theme=dark] .m-display-toggle{border-color:#344754!important}
+html[data-canvas-theme=dark] .m-grabber{background:#536c7b}
+html[data-canvas-theme=dark] #mHint{background:#202e38;color:#b8cbd6;border-color:#3c505e}
+html[data-canvas-theme=dark] #mShell .m-form-actions button{background:#30444f!important;color:#c6d7e0!important}
+html[data-canvas-theme=dark] #mShell .m-form-actions button.m-confirm{background:#147c88!important;color:#fff!important}
+html[data-canvas-theme=dark] #mScrim{background:#0008}
+html[data-canvas-theme=dark] #mShell .m-axis-marker{background:#183942!important;border-color:#4d8590!important;color:#9ddce5!important}
+html[data-canvas-theme=dark] #mRailCorner{color:#a9becb}
+html[data-canvas-theme=dark] #pvw{background:#151f27!important}
 #mRailCorner{position:absolute;display:flex;justify-content:center;align-items:center;color:#8da4ae;font-size:9px;font-family:var(--num);pointer-events:none;background:#f5f9fa;border-left:1px solid #d8e5e9}
 #mRailSafe{position:absolute;left:0;bottom:0;height:env(safe-area-inset-bottom,0px);width:1px;pointer-events:none;visibility:hidden}
 .m-header,.m-dock,.m-context,#mOperation,#mToolStrip{z-index:3}

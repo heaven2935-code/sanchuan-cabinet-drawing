@@ -1,8 +1,11 @@
 /* Device display preferences, independent of cabinet geometry and saved dimensions. */
 const DisplayStyle=(()=>{
-  const defaults=Object.freeze({doorSwing:false,dimensions:false,names:false,gridStyle:'lines',gridSize:100,gridColor:'#8a9aa3',selectionColor:'#e5822d',dimensionColor:'#465c68',rulerSide:'right'});
+  const defaults=Object.freeze({theme:'light',lineColor:'#203038',doorSwing:false,dimensions:false,names:false,gridStyle:'lines',gridSize:100,gridColor:'#8a9aa3',selectionColor:'#e5822d',dimensionColor:'#465c68',rulerSide:'right'});
   const color=(v,fallback)=>/^#[0-9a-f]{6}$/i.test(v||'')?v.toLowerCase():fallback;
-  function normalize(raw={}){raw=raw&&typeof raw==='object'?raw:{};const n=Number(raw.gridSize);return{doorSwing:raw.doorSwing===true,dimensions:raw.dimensions===true,names:raw.names===true,gridStyle:['lines','dots','none'].includes(raw.gridStyle)?raw.gridStyle:defaults.gridStyle,gridSize:Number.isFinite(n)?Math.max(10,Math.min(1000,Math.round(n))):defaults.gridSize,gridColor:color(raw.gridColor,defaults.gridColor),selectionColor:color(raw.selectionColor,defaults.selectionColor),dimensionColor:color(raw.dimensionColor,defaults.dimensionColor),rulerSide:raw.rulerSide==='left'?'left':'right'};}
+  const themeColors=theme=>theme==='dark'?{lineColor:'#dce6ec',gridColor:'#718592',dimensionColor:'#b8cbd6'}:{lineColor:defaults.lineColor,gridColor:defaults.gridColor,dimensionColor:defaults.dimensionColor};
+  function normalize(raw={}){raw=raw&&typeof raw==='object'?raw:{};const n=Number(raw.gridSize),theme=raw.theme==='dark'?'dark':'light',base=themeColors(theme);return{theme,lineColor:color(raw.lineColor,base.lineColor),doorSwing:raw.doorSwing===true,dimensions:raw.dimensions===true,names:raw.names===true,gridStyle:['lines','dots','none'].includes(raw.gridStyle)?raw.gridStyle:defaults.gridStyle,gridSize:Number.isFinite(n)?Math.max(10,Math.min(1000,Math.round(n))):defaults.gridSize,gridColor:color(raw.gridColor,base.gridColor),selectionColor:color(raw.selectionColor,defaults.selectionColor),dimensionColor:color(raw.dimensionColor,base.dimensionColor),rulerSide:raw.rulerSide==='left'?'left':'right'};}
+  function themeChange(p,theme,values){const old=themeColors(p.theme),next=themeColors(theme),out={...values,theme};for(const key of ['lineColor','gridColor','dimensionColor'])if(values[key]===old[key])out[key]=next[key];return normalize(out);}
+  function palette(p,pal){return{...pal,ink:p.lineColor,...(p.theme==='dark'?{sheet:'#151f27',tint:'#202e38',mute:'#8b9fab',sub:'#b8cbd6'}:{})};}
   function segment(st,h){
     const body=st.H-st.kick,xs=[0];st.cols.forEach(c=>xs.push(xs.at(-1)+c.w));
     if(h.ax==='x')return{x1:h.v,y1:0,x2:h.v,y2:h.k==='w'?st.H:body};
@@ -41,6 +44,6 @@ const DisplayStyle=(()=>{
     art.splice(idx<0?art.length:idx,0,...background);art.push(...grips);return{art,ui};
   }
   function rails(W,H,safe,side){const width=34,bottom=36,left=side==='left',x0=left?width:0,x1=left?W:W-width;return{left,width,bottom,x0,x1,y:H-safe-bottom,railX:left?0:x1,borderX:left?width:x1};}
-  return{defaults,normalize,segment,handles,grid,decorate,rails};
+  return{defaults,normalize,themeColors,themeChange,palette,segment,handles,grid,decorate,rails};
 })();
 if(typeof module!=='undefined')module.exports=DisplayStyle;

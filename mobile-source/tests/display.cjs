@@ -15,11 +15,20 @@ check('invalid preference input cannot inject SVG colors or create infinite grid
 check('left and right rulers reserve equal paper area and correct corner placement',()=>{for(const [W,H,safe] of [[390,720,34],[844,320,0]]){const l=D.rails(W,H,safe,'left'),r=D.rails(W,H,safe,'right');assert.equal(l.x1-l.x0,r.x1-r.x0);assert.equal(l.railX,0);assert.equal(l.borderX,34);assert.equal(r.railX,W-34);assert.equal(l.y,H-safe-36);}});
 check('real settings submit validates spacing and persists all preferences across reload',()=>{
   const ui=fs.readFileSync(path.join(root,'mobile-ui.js'),'utf8'),fn=ui.slice(ui.indexOf('function mDisplayOpen(){'),ui.indexOf('function mAddOpen(){'));
-  const inputs={'#mGridSize':{value:'125'},'#mShowSwing':{checked:true},'#mShowDims':{checked:true},'#mShowNames':{checked:false},'#mGridStyle':{value:'dots'},'#mGridColor':{value:'#aabbcc'},'#mSelectionColor':{value:'#bb55aa'},'#mDimensionColor':{value:'#123456'},'#mRulerSide':{value:'left'}};
+  const inputs={'#mTheme':{value:'dark'},'#mLineColor':{value:'#fedcba'},'#mGridSize':{value:'125'},'#mShowSwing':{checked:true},'#mShowDims':{checked:true},'#mShowNames':{checked:false},'#mGridStyle':{value:'dots'},'#mGridColor':{value:'#aabbcc'},'#mSelectionColor':{value:'#bb55aa'},'#mDimensionColor':{value:'#123456'},'#mRulerSide':{value:'left'}};
   let saved={},closed=false,cleared=false,sheet='';const prefs=D.normalize(),ctx={displaySettings:prefs,DisplayStyle:D,mobileUI:{},$:s=>inputs[s],mField:()=>'',mFormButtons:'',mOpenSheet:(title,html)=>sheet=html,toast:()=>{},othCache:{clear:()=>cleared=true},mCloseSheet:()=>closed=true,localStorage:{setItem:(k,v)=>saved[k]=v}};
   vm.runInNewContext(fn+'\nmDisplayOpen();',ctx);assert(sheet.includes('mSelectionColor'));ctx.mobileUI.submit();assert(closed&&cleared);assert.equal(prefs.gridSize,125);assert.equal(prefs.rulerSide,'left');assert(saved['sc-mobile-display-v1']);
-  const reload={...sandbox,module:{exports:{}},localStorage:{getItem:k=>saved[k]||null}};vm.runInNewContext(code,reload);assert.equal(reload.module.exports.displaySettings.gridColor,'#aabbcc');assert.equal(reload.module.exports.displaySettings.rulerSide,'left');
+  const reload={...sandbox,module:{exports:{}},localStorage:{getItem:k=>saved[k]||null}};vm.runInNewContext(code,reload);assert.equal(reload.module.exports.displaySettings.gridColor,'#aabbcc');assert.equal(reload.module.exports.displaySettings.rulerSide,'left');assert.equal(reload.module.exports.displaySettings.lineColor,'#fedcba');assert.equal(reload.module.exports.displaySettings.theme,'dark');
   const before=JSON.stringify(saved);inputs['#mGridSize'].value='0';ctx.mobileUI.submit();assert.equal(JSON.stringify(saved),before);
+});
+check('custom cabinet ink affects outlines, partitions, shelves and handles while selection and dimensions retain separate colors',()=>{
+  set({lineColor:'#236abc',dimensions:true,selectionColor:'#e5822d',dimensionColor:'#465c68'});const s=state(),g=e.geom(s,{S:8,view:'out',interactive:true,hsel:{k:'w'}}),out=e.toSVG(g.art,8,pal).art;
+  for(const q of g.art.filter(q=>['out','in','thin','hd'].includes(q.c)))assert(e.toSVG([q],8,pal).art.includes('stroke="#236abc"'));
+  assert(out.includes('stroke="#e5822d"'));assert(e.toSVG(e.geom(s,{S:8,view:'out'}).art,8,pal).art.includes('stroke="#465c68"'));assert.equal(D.normalize({lineColor:'bad'}).lineColor,'#203038');
+});
+check('dark theme has a dark export paper, legible defaults and preserves custom ink on theme changes',()=>{
+  set({theme:'dark'});assert.equal(p.lineColor,'#dce6ec');const out=e.exportSVG(state()).svg;assert(out.includes('#151f27'));assert(out.includes('stroke="#dce6ec"'));
+  const light=D.normalize(),dark=D.themeChange(light,'dark',light);assert.equal(dark.lineColor,'#dce6ec');assert.equal(D.themeChange(dark,'light',dark).lineColor,'#203038');const custom={...light,lineColor:'#236abc'};assert.equal(D.themeChange(custom,'dark',custom).lineColor,'#236abc');
 });
 check('actual ruler rendering places the Y track and X markers correctly on both sides',()=>{
   const policy=require('../ui-policy.js'),rulers=fs.readFileSync(path.join(root,'mobile-rulers.js'),'utf8');

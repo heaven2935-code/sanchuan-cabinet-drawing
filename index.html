@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>三川工方｜手機繪圖</title>
-<link rel="icon" type="image/svg+xml" href="./logo.svg?v=display-20261014">
-<link rel="apple-touch-icon" href="./icon-180.png?v=display-20261014">
-<link rel="manifest" href="./manifest.webmanifest?v=display-20261014">
+<link rel="icon" type="image/svg+xml" href="./logo.svg?v=theme-20261014">
+<link rel="apple-touch-icon" href="./icon-180.png?v=theme-20261014">
+<link rel="manifest" href="./manifest.webmanifest?v=theme-20261014">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1472,6 +1472,25 @@ html,body,#app,#app main{background:#fff!important}
 .m-display-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:50px;border-bottom:1px solid #e5ecef}
 #mShell .m-display-toggle input{appearance:auto;-webkit-appearance:checkbox;accent-color:#147c88;width:24px;height:24px;flex-shrink:0}
 #mShell .m-color-field input{height:44px;width:100%;padding:4px;border:1px solid #dce5e8;border-radius:9px;background:#fff}
+/* Dark edition: graphite paper, calm blue-gray controls and amber selection. */
+html[data-canvas-theme=dark]{color-scheme:dark;--paper:#101820!important;--sheet:#151f27!important;--tint:#202e38!important;--ink:#dce6ec!important;--sub:#b8cbd6!important;--mute:#8b9fab!important;--line:#344754!important}
+html[data-canvas-theme=dark],html[data-canvas-theme=dark] body,html[data-canvas-theme=dark] #app,html[data-canvas-theme=dark] #app main,html[data-canvas-theme=dark] #sheet{background:#151f27!important}
+html[data-canvas-theme=dark] #mShell{color:#dce6ec}
+html[data-canvas-theme=dark] .m-header{background:rgba(21,31,39,.96);border-color:#344754}
+html[data-canvas-theme=dark] .m-tools,html[data-canvas-theme=dark] #mFit,html[data-canvas-theme=dark] #mView,html[data-canvas-theme=dark] .m-context,html[data-canvas-theme=dark] #mOperation,html[data-canvas-theme=dark] #mToolStrip,html[data-canvas-theme=dark] #mSheet{background:#202e38!important;border-color:#3c505e!important;box-shadow:0 5px 25px #0004}
+html[data-canvas-theme=dark] #mShell .m-menu-grid button,html[data-canvas-theme=dark] #mSheetClose,html[data-canvas-theme=dark] #mShell .m-field input,html[data-canvas-theme=dark] #mShell .m-field select,html[data-canvas-theme=dark] #mOffset,html[data-canvas-theme=dark] #mShell .m-color-field input{background-color:#17232c!important;border-color:#3c505e!important;color:#e1eaf0!important}
+html[data-canvas-theme=dark] #mShell .m-menu-grid button.m-accent,html[data-canvas-theme=dark] #mActions .m-primary{background:#193d46!important;color:#8ed6df!important;border-color:#35616b!important}
+html[data-canvas-theme=dark] #mSubtitle,html[data-canvas-theme=dark] .m-sheet-note,html[data-canvas-theme=dark] .m-field,html[data-canvas-theme=dark] .m-section-label,html[data-canvas-theme=dark] #mOperationNote,html[data-canvas-theme=dark] .m-op-label,html[data-canvas-theme=dark] #mToolText,html[data-canvas-theme=dark] .m-row-action small,html[data-canvas-theme=dark] .m-cancel,html[data-canvas-theme=dark] .m-selection-heading{color:#a9becb!important}
+html[data-canvas-theme=dark] .m-menu-grid button svg{color:#9cc3d1}
+html[data-canvas-theme=dark] .m-sheet-head,html[data-canvas-theme=dark] #mShell .m-row-action,html[data-canvas-theme=dark] .m-file-row,html[data-canvas-theme=dark] .m-display-toggle{border-color:#344754!important}
+html[data-canvas-theme=dark] .m-grabber{background:#536c7b}
+html[data-canvas-theme=dark] #mHint{background:#202e38;color:#b8cbd6;border-color:#3c505e}
+html[data-canvas-theme=dark] #mShell .m-form-actions button{background:#30444f!important;color:#c6d7e0!important}
+html[data-canvas-theme=dark] #mShell .m-form-actions button.m-confirm{background:#147c88!important;color:#fff!important}
+html[data-canvas-theme=dark] #mScrim{background:#0008}
+html[data-canvas-theme=dark] #mShell .m-axis-marker{background:#183942!important;border-color:#4d8590!important;color:#9ddce5!important}
+html[data-canvas-theme=dark] #mRailCorner{color:#a9becb}
+html[data-canvas-theme=dark] #pvw{background:#151f27!important}
 #mRailCorner{position:absolute;display:flex;justify-content:center;align-items:center;color:#8da4ae;font-size:9px;font-family:var(--num);pointer-events:none;background:#f5f9fa;border-left:1px solid #d8e5e9}
 #mRailSafe{position:absolute;left:0;bottom:0;height:env(safe-area-inset-bottom,0px);width:1px;pointer-events:none;visibility:hidden}
 .m-header,.m-dock,.m-context,#mOperation,#mToolStrip{z-index:3}
@@ -1921,9 +1940,12 @@ function rulerPrims(st,S,b,gr,sx,sy){
   return P}
 /* Device display preferences, independent of cabinet geometry and saved dimensions. */
 const DisplayStyle=(()=>{
-  const defaults=Object.freeze({doorSwing:false,dimensions:false,names:false,gridStyle:'lines',gridSize:100,gridColor:'#8a9aa3',selectionColor:'#e5822d',dimensionColor:'#465c68',rulerSide:'right'});
+  const defaults=Object.freeze({theme:'light',lineColor:'#203038',doorSwing:false,dimensions:false,names:false,gridStyle:'lines',gridSize:100,gridColor:'#8a9aa3',selectionColor:'#e5822d',dimensionColor:'#465c68',rulerSide:'right'});
   const color=(v,fallback)=>/^#[0-9a-f]{6}$/i.test(v||'')?v.toLowerCase():fallback;
-  function normalize(raw={}){raw=raw&&typeof raw==='object'?raw:{};const n=Number(raw.gridSize);return{doorSwing:raw.doorSwing===true,dimensions:raw.dimensions===true,names:raw.names===true,gridStyle:['lines','dots','none'].includes(raw.gridStyle)?raw.gridStyle:defaults.gridStyle,gridSize:Number.isFinite(n)?Math.max(10,Math.min(1000,Math.round(n))):defaults.gridSize,gridColor:color(raw.gridColor,defaults.gridColor),selectionColor:color(raw.selectionColor,defaults.selectionColor),dimensionColor:color(raw.dimensionColor,defaults.dimensionColor),rulerSide:raw.rulerSide==='left'?'left':'right'};}
+  const themeColors=theme=>theme==='dark'?{lineColor:'#dce6ec',gridColor:'#718592',dimensionColor:'#b8cbd6'}:{lineColor:defaults.lineColor,gridColor:defaults.gridColor,dimensionColor:defaults.dimensionColor};
+  function normalize(raw={}){raw=raw&&typeof raw==='object'?raw:{};const n=Number(raw.gridSize),theme=raw.theme==='dark'?'dark':'light',base=themeColors(theme);return{theme,lineColor:color(raw.lineColor,base.lineColor),doorSwing:raw.doorSwing===true,dimensions:raw.dimensions===true,names:raw.names===true,gridStyle:['lines','dots','none'].includes(raw.gridStyle)?raw.gridStyle:defaults.gridStyle,gridSize:Number.isFinite(n)?Math.max(10,Math.min(1000,Math.round(n))):defaults.gridSize,gridColor:color(raw.gridColor,base.gridColor),selectionColor:color(raw.selectionColor,defaults.selectionColor),dimensionColor:color(raw.dimensionColor,base.dimensionColor),rulerSide:raw.rulerSide==='left'?'left':'right'};}
+  function themeChange(p,theme,values){const old=themeColors(p.theme),next=themeColors(theme),out={...values,theme};for(const key of ['lineColor','gridColor','dimensionColor'])if(values[key]===old[key])out[key]=next[key];return normalize(out);}
+  function palette(p,pal){return{...pal,ink:p.lineColor,...(p.theme==='dark'?{sheet:'#151f27',tint:'#202e38',mute:'#8b9fab',sub:'#b8cbd6'}:{})};}
   function segment(st,h){
     const body=st.H-st.kick,xs=[0];st.cols.forEach(c=>xs.push(xs.at(-1)+c.w));
     if(h.ax==='x')return{x1:h.v,y1:0,x2:h.v,y2:h.k==='w'?st.H:body};
@@ -1962,7 +1984,7 @@ const DisplayStyle=(()=>{
     art.splice(idx<0?art.length:idx,0,...background);art.push(...grips);return{art,ui};
   }
   function rails(W,H,safe,side){const width=34,bottom=36,left=side==='left',x0=left?width:0,x1=left?W:W-width;return{left,width,bottom,x0,x1,y:H-safe-bottom,railX:left?0:x1,borderX:left?width:x1};}
-  return{defaults,normalize,segment,handles,grid,decorate,rails};
+  return{defaults,normalize,themeColors,themeChange,palette,segment,handles,grid,decorate,rails};
 })();
 if(typeof module!=='undefined')module.exports=DisplayStyle;
 
@@ -2376,6 +2398,10 @@ geom=function(st,o){
   const g=displayGeom(shape,options),H=handleModel(shape,o.view==='in',o.sel?o.sel.c:null);
   return DisplayStyle.decorate(g,shape,options,displaySettings,H);
 };
+const displaySVG=toSVG;
+toSVG=function(P,S,pal,U,W){return displaySVG(P,S,DisplayStyle.palette(displaySettings,pal),U,W)};
+const displayExport=exportSVG;
+exportSVG=function(st,pal,bg){return displayExport(st,DisplayStyle.palette(displaySettings,pal||XPAL),bg)};
 if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={DisplayStyle,displaySettings,freeFaces,freeFix,toFree,geomFree,homog,hmap,wallExt,wallItems,scanParse,zones,zoneName,grpPlan,handleModel,rulerPrims,CATS,thumbOf,gapsOf,solidGaps,fixGs,clearIn,sample0,normalize,layout,geom,annPrims,annOf,toSVG,exportSVG,toDXF,zip1,crc32,fit,spread,isEven,fixAll,sheet,STYLES,styleState,styleThumb};return}
 
 /* ---------- page ---------- */
@@ -4510,6 +4536,9 @@ placeTiles=function(cw,hp,lay){tiles=[{i:pj.cur,S:lay.S,vb:lay.vb,ox:0,oy:0}];wo
 forceLand=false;axOn.x=axOn.y=false;esub='line';padMode='cur';lkp=null;
 const mEngineRender=render;
 render=function(){
+  document.documentElement.dataset.canvasTheme=displaySettings.theme;
+  darkSheet=displaySettings.theme==='dark';
+  const themeMeta=document.querySelector('meta[name="theme-color"]');if(themeMeta)themeMeta.content=darkSheet?'#151f27':'#ffffff';
   st.grid=displaySettings.gridStyle==='none'?0:displaySettings.gridSize;
   st.labels=displaySettings.names;
   cur.on=true;esub='line';
@@ -4579,10 +4608,10 @@ function mDisplayOpen(){
   const p=displaySettings,select=(id,label,options,value)=>`<label class="m-field">${label}<select id="${id}">${options.map(([v,t])=>`<option value="${v}"${value===v?' selected':''}>${t}</option>`).join('')}</select></label>`;
   const toggle=(id,label,value)=>`<label class="m-display-toggle"><span>${label}</span><input id="${id}" type="checkbox"${value?' checked':''}></label>`;
   const swatch=(id,label,value)=>`<label class="m-field m-color-field">${label}<input id="${id}" type="color" value="${value}"></label>`;
-  mOpenSheet('圖面顯示與尺軌',`<form id="mForm"><p class="m-section-label">顯示內容</p>${toggle('mShowSwing','門片開啟斜線',p.doorSwing)}${toggle('mShowDims','尺寸標示',p.dimensions)}${toggle('mShowNames','格內名稱與尺寸',p.names)}<p class="m-sheet-note">尺寸關閉時，選取線條仍會顯示相關尺寸，方便調整。</p><p class="m-section-label">格線</p><div class="m-form-grid">${select('mGridStyle','樣式',[['lines','細格線'],['dots','點陣'],['none','無格線']],p.gridStyle)}${mField('mGridSize','格距 · mm',p.gridSize,10,1000)}</div>${swatch('mGridColor','格線顏色',p.gridColor)}<p class="m-sheet-note">細格線每 5 格加深一條。縮小時會簡化過密格線，設定格距仍用於對齊。</p><p class="m-section-label">標示顏色</p><div class="m-form-grid">${swatch('mSelectionColor','選取線與菱形',p.selectionColor)}${swatch('mDimensionColor','一般尺寸',p.dimensionColor)}</div>${select('mRulerSide','直向尺的位置',[['right','右側'],['left','左側']],p.rulerSide)}${mFormButtons}</form>`,'display');
+  mOpenSheet('圖面顯示與尺軌',`<form id="mForm">${select('mTheme','介面版本',[['light','淺色'],['dark','深色']],p.theme)}<p class="m-section-label">顯示內容</p>${toggle('mShowSwing','門片開啟斜線',p.doorSwing)}${toggle('mShowDims','尺寸標示',p.dimensions)}${toggle('mShowNames','格內名稱與尺寸',p.names)}<p class="m-sheet-note">尺寸關閉時，選取線條仍會顯示相關尺寸，方便調整。</p><p class="m-section-label">格線</p><div class="m-form-grid">${select('mGridStyle','樣式',[['lines','細格線'],['dots','點陣'],['none','無格線']],p.gridStyle)}${mField('mGridSize','格距 · mm',p.gridSize,10,1000)}</div>${swatch('mGridColor','格線顏色',p.gridColor)}<p class="m-sheet-note">細格線每 5 格加深一條。縮小時會簡化過密格線，設定格距仍用於對齊。</p><p class="m-section-label">櫃體線條</p>${swatch('mLineColor','櫃體線條顏色',p.lineColor)}<p class="m-section-label">標示顏色</p><div class="m-form-grid">${swatch('mSelectionColor','選取線與菱形',p.selectionColor)}${swatch('mDimensionColor','一般尺寸',p.dimensionColor)}</div>${select('mRulerSide','直向尺的位置',[['right','右側'],['left','左側']],p.rulerSide)}${mFormButtons}</form>`,'display');
   mobileUI.submit=()=>{
     const size=Number($('#mGridSize').value);if(!Number.isFinite(size)||size<10||size>1000){toast('格距請輸入 10–1000 mm');return;}
-    Object.assign(displaySettings,DisplayStyle.normalize({doorSwing:$('#mShowSwing').checked,dimensions:$('#mShowDims').checked,names:$('#mShowNames').checked,gridStyle:$('#mGridStyle').value,gridSize:size,gridColor:$('#mGridColor').value,selectionColor:$('#mSelectionColor').value,dimensionColor:$('#mDimensionColor').value,rulerSide:$('#mRulerSide').value}));
+    Object.assign(displaySettings,DisplayStyle.themeChange(p,$('#mTheme').value,{lineColor:$('#mLineColor').value,doorSwing:$('#mShowSwing').checked,dimensions:$('#mShowDims').checked,names:$('#mShowNames').checked,gridStyle:$('#mGridStyle').value,gridSize:size,gridColor:$('#mGridColor').value,selectionColor:$('#mSelectionColor').value,dimensionColor:$('#mDimensionColor').value,rulerSide:$('#mRulerSide').value}));
     try{localStorage.setItem('sc-mobile-display-v1',JSON.stringify(displaySettings))}catch(_){}
     othCache.clear();mCloseSheet(true);toast('圖面顯示已更新');
   };
@@ -4793,7 +4822,7 @@ function mRulersSync(){
   const inX=p.x>=x0&&p.x<=x1,inY=p.y>=0&&p.y<=Y;
   if(inX)art+=line(p.x,0,p.x,Y+8,'#2b9baa','5 4');if(inY)art+=line(left?x0-8:0,p.y,left?W:x1+8,p.y,'#2b9baa','5 4');
   if(inX&&inY)art+=`<circle cx="${f(p.x)}" cy="${f(p.y)}" r="5" fill="#fff" stroke="#147c88" stroke-width="1.5"/><circle cx="${f(p.x)}" cy="${f(p.y)}" r="1.5" fill="#147c88"/>`;
-  const artNode=$('#mRulerArt');artNode.setAttribute('viewBox',`0 0 ${W} ${H}`);artNode.innerHTML=art;
+  const artNode=$('#mRulerArt');artNode.setAttribute('viewBox',`0 0 ${W} ${H}`);artNode.innerHTML=displaySettings.theme==='dark'?art.replaceAll('#f5f9fa','#1d2a34').replaceAll('#d8e5e9','#364955').replaceAll('#b3c7cf','#607d8b').replaceAll('#7b949e','#a5bac6'):art;
   const mx=$('#mRailXM'),my=$('#mRailYM'),px=clamp(p.x-x0,2,x1-x0-2),py=clamp(p.y,2,Y-2),markerLeft=clamp(px-40,2,Math.max(2,x1-x0-82)),top=clamp(py-22,2,Math.max(2,Y-46));
   mx.style.left=markerLeft+'px';mx.style.setProperty('--pin-x',(px-markerLeft)+'px');my.style.top=top+'px';my.style.setProperty('--pin-y',(py-top)+'px');
   const vx=Math.round(q.x),vy=Math.round(st.H-q.y);mx.querySelector('b').textContent=vx;my.querySelector('b').textContent=vy;
