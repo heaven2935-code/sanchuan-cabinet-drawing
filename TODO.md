@@ -42,8 +42,3 @@
 - [x] 功能、保存、上下工具分組及新版樣式資產版本檢查。
 - [ ] 瀏覽器實際截圖檢查：本次雲端 Browser 開頁逾時，尚未完成。
 - [ ] iPhone 直橫式、鍵盤、安全留白和板件面板真機驗證。
-
-
-## 2026-10-13：手機版 elevation/
-
-新版位於 elevation/index.html，原網址保持 https://heaven2935-code.github.io/sanchuan-cabinet-drawing/elevation/ 。以圖面為主、點選顯示操作；需要位置調整時顯示可拖動的 XY 尺軌。程式來源、驗證與詳細文件位於 elevation/source/；重建使用 python3 scripts/build_mobile_elevation.py。既有資料沿用 sc-cab 存檔位置。舊版已備份至 backup/elevation-before-mobile-20261013-4ae2031。

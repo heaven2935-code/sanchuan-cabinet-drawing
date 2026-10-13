@@ -96,8 +96,3 @@
 - 用 visualViewport 可視高度修正 Safari 橫向畫面裁切。
 - 新增首次按滿版時的主畫面安裝說明。
 - 保留 V1.1 既有本機儲存鍵，避免覆蓋資料。
-
-
-## 2026-10-13：手機版 elevation/
-
-新版位於 elevation/index.html，原網址保持 https://heaven2935-code.github.io/sanchuan-cabinet-drawing/elevation/ 。以圖面為主、點選顯示操作；需要位置調整時顯示可拖動的 XY 尺軌。程式來源、驗證與詳細文件位於 elevation/source/；重建使用 python3 scripts/build_mobile_elevation.py。既有資料沿用 sc-cab 存檔位置。舊版已備份至 backup/elevation-before-mobile-20261013-4ae2031。
