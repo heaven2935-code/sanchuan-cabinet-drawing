@@ -28,7 +28,7 @@ function mRulersInstall(){
   });
 }
 function mRulersSync(){
-  const root=mobileUI.rulerRoot;if(!root)return;const q=mCursorPoint(),on=!!q&&!mobileUI.panel&&!!vbNow;
+  const root=mobileUI.rulerRoot;if(!root)return;const q=mCursorPoint(),on=!!q&&!mobileUI.panel&&!!vbNow&&(typeof precision==='undefined'||precision.rulers);
   root.hidden=!on;mShell.classList.toggle('has-rulers',on);if(!on){mobileUI.railDrags.clear();return;}
   const {rect,map}=mRulerMap();if(!rect.width||!rect.height)return;
   root.style.left=rect.left+'px';root.style.top=rect.top+'px';root.style.width=rect.width+'px';root.style.height=rect.height+'px';

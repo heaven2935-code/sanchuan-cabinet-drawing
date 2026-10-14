@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "verify": "node tests/verify.cjs && node tests/display.cjs && node tests/depth.cjs && node tests/audit.cjs"
+    "verify": "node tests/verify.cjs && node tests/display.cjs && node tests/depth.cjs && node tests/audit.cjs && node tests/precision.cjs"
   },
   "devDependencies": {
     "fake-indexeddb": "6.2.5",

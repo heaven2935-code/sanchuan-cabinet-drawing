@@ -168,3 +168,21 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
 #mScrim{z-index:8}
 #mSheet{z-index:9}
 @media(orientation:landscape) and (max-height:540px){#app .stage{inset:calc(46px + env(safe-area-inset-top,0px)) 0 0!important}.has-rulers #mOperation{top:calc(50px + env(safe-area-inset-top,0px));left:10px;right:auto;width:340px;max-width:calc(100% - 65px);padding:7px 10px}.has-rulers .m-operation-top{margin-bottom:3px}.has-rulers #mOperationNote{font-size:9px}.m-dock{bottom:calc(7px + env(safe-area-inset-bottom,0px))}}
+/* Style picker is bounded by the visible phone viewport, independent of hidden desktop anchors. */
+#stylePop{top:calc(64px + env(safe-area-inset-top,0px))!important;bottom:auto!important;left:max(8px,env(safe-area-inset-left,0px))!important;right:max(8px,env(safe-area-inset-right,0px))!important;width:auto!important;max-width:680px!important;max-height:calc(100dvh - 80px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;margin:0 auto!important;overflow-y:auto!important;overscroll-behavior:contain;box-sizing:border-box}
+#stylePop .stTop{position:sticky;top:-10px;z-index:2;background:var(--paper);padding:8px 0}
+#styles{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#stylePop button{min-height:44px}
+/* Precision controls stay on the paper and only appear during editing. */
+#mPrecision{margin:8px 0 10px;display:flex;flex-direction:column;gap:7px}
+.m-precision-options{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+#mShell .m-precision-options select{min-height:40px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:var(--sheet);color:var(--ink);padding:5px;max-width:100%;min-width:0}
+#mMeasure{flex:1}
+#mShell .m-precision-options button{min-height:40px;font-size:11px;padding:0 6px;color:var(--sub)}
+#mNudge{display:flex;justify-content:flex-end;gap:8px}
+#mNudge.m-left-hand{justify-content:flex-start}
+#mShell #mNudge button{width:48px;height:44px;font-size:24px;background:var(--tint);border:1px solid var(--line);border-radius:10px;color:var(--ink)}
+#mOperation{max-height:calc(100dvh - 74px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow-y:auto}
+#mOffsetLabel{max-width:100px;white-space:normal;line-height:1.4}
+#mOffset{width:90px}
+@media(orientation:landscape) and (max-height:540px){#stylePop{top:calc(49px + env(safe-area-inset-top,0px))!important;max-height:calc(100dvh - 60px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important}#styles{grid-template-columns:repeat(3,minmax(0,1fr))!important}#mOperation{left:auto;right:12px;width:360px;max-width:calc(100% - 24px);padding:8px 12px}.m-operation-top{margin-bottom:4px}#mPrecision{margin:4px 0}.m-precision-options{gap:3px}}

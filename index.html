@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>三川工方｜手機繪圖</title>
-<link rel="icon" type="image/svg+xml" href="./logo.svg?v=depth-20261014">
-<link rel="apple-touch-icon" href="./icon-180.png?v=depth-20261014">
-<link rel="manifest" href="./manifest.webmanifest?v=depth-20261014">
+<link rel="icon" type="image/svg+xml" href="./logo.svg?v=precision-20261014">
+<link rel="apple-touch-icon" href="./icon-180.png?v=precision-20261014">
+<link rel="manifest" href="./manifest.webmanifest?v=precision-20261014">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1500,6 +1500,24 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
 #mScrim{z-index:8}
 #mSheet{z-index:9}
 @media(orientation:landscape) and (max-height:540px){#app .stage{inset:calc(46px + env(safe-area-inset-top,0px)) 0 0!important}.has-rulers #mOperation{top:calc(50px + env(safe-area-inset-top,0px));left:10px;right:auto;width:340px;max-width:calc(100% - 65px);padding:7px 10px}.has-rulers .m-operation-top{margin-bottom:3px}.has-rulers #mOperationNote{font-size:9px}.m-dock{bottom:calc(7px + env(safe-area-inset-bottom,0px))}}
+/* Style picker is bounded by the visible phone viewport, independent of hidden desktop anchors. */
+#stylePop{top:calc(64px + env(safe-area-inset-top,0px))!important;bottom:auto!important;left:max(8px,env(safe-area-inset-left,0px))!important;right:max(8px,env(safe-area-inset-right,0px))!important;width:auto!important;max-width:680px!important;max-height:calc(100dvh - 80px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;margin:0 auto!important;overflow-y:auto!important;overscroll-behavior:contain;box-sizing:border-box}
+#stylePop .stTop{position:sticky;top:-10px;z-index:2;background:var(--paper);padding:8px 0}
+#styles{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#stylePop button{min-height:44px}
+/* Precision controls stay on the paper and only appear during editing. */
+#mPrecision{margin:8px 0 10px;display:flex;flex-direction:column;gap:7px}
+.m-precision-options{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+#mShell .m-precision-options select{min-height:40px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:var(--sheet);color:var(--ink);padding:5px;max-width:100%;min-width:0}
+#mMeasure{flex:1}
+#mShell .m-precision-options button{min-height:40px;font-size:11px;padding:0 6px;color:var(--sub)}
+#mNudge{display:flex;justify-content:flex-end;gap:8px}
+#mNudge.m-left-hand{justify-content:flex-start}
+#mShell #mNudge button{width:48px;height:44px;font-size:24px;background:var(--tint);border:1px solid var(--line);border-radius:10px;color:var(--ink)}
+#mOperation{max-height:calc(100dvh - 74px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow-y:auto}
+#mOffsetLabel{max-width:100px;white-space:normal;line-height:1.4}
+#mOffset{width:90px}
+@media(orientation:landscape) and (max-height:540px){#stylePop{top:calc(49px + env(safe-area-inset-top,0px))!important;max-height:calc(100dvh - 60px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important}#styles{grid-template-columns:repeat(3,minmax(0,1fr))!important}#mOperation{left:auto;right:12px;width:360px;max-width:calc(100% - 24px);padding:8px 12px}.m-operation-top{margin-bottom:4px}#mPrecision{margin:4px 0}.m-precision-options{gap:3px}}
 </style>
 <script>(function(root){
   'use strict';
@@ -1895,13 +1913,14 @@ function normalize(d,notes){
   notes=notes||[];d=d||{};
   const o={id:String(d.id||''),name:String(d.name||'').slice(0,60),labels:d.labels!==false,grid:Number.isFinite(+d.grid)&&+d.grid>=10?clamp(Math.round(+d.grid),10,1000):0};if(d.sid)o.sid=String(d.sid).slice(0,24);
   o.W=clamp(num(d.W,2400),100,MAXW);o.H=clamp(num(d.H,2400),150,MAXH);o.kick=clamp(num(d.kick,0),0,o.H-MIN);o.T=clamp(num(d.T,18),6,40);
+  o.kickSetback=clamp(num(d.kickSetback,50),0,300);o.faceGap=clamp(num(d.faceGap,4),0,20);
   const body=o.H-o.kick;
   const src=Array.isArray(d.cols)&&d.cols.length?d.cols.slice(0,20):[{w:o.W}];
   o.cols=src.map(c=>{c=c||{};const w=Math.max(1,num(c.w,600));
     const ps=Array.isArray(c.parts)&&c.parts.length?c.parts.slice(0,12):[{t:'door',h:body}];
     return{w,parts:ps.map(p=>{p=p||{};const t=TYPES[p.t]?p.t:'door',h=Math.max(1,num(p.h,300));
       const lim=t==='door'?[1,2]:t==='open'?[0,10]:[1,10];
-      const q={t,h,n:clamp(num(p.n,defN(t,w,h)),lim[0],lim[1]),hinge:p.hinge==='R'?'R':'L'};if((t==='door'||t==='drawer')&&(p.pull==='groove'||p.pull==='none')){q.pull=p.pull;if(p.pull==='groove'){q.gp=['s','t','b'].includes(p.gp)?p.gp:(t==='door'?'s':'t');q.gw=clamp(num(p.gw,30),5,120)}}
+      const q={t,h,n:clamp(num(p.n,defN(t,w,h)),lim[0],lim[1]),hinge:p.hinge==='R'?'R':'L'};if((t==='door'||t==='drawer')&&(p.pull==='groove'||p.pull==='none')){q.pull=p.pull;if(p.pull==='groove'){q.gp=['s','t','b'].includes(p.gp)?p.gp:(t==='door'?'s':'t');q.gw=clamp(num(p.gw,25),5,120)}}
       if(t==='door'&&Array.isArray(p.ins)&&p.ins.length)q._ins=p.ins;if(t==='open')keepGs(q,p.gs);return q})}});
   src.forEach((c,i)=>{if(c&&c.lock&&o.cols[i])o.cols[i].lock=true});
   const sw=sum(o.cols,'w');
@@ -2032,6 +2051,35 @@ const CabinetDepth=(()=>{
   return{point,clip,regions,art,apply,distance,freePick,annotationPick};
 })();
 if(typeof module!=='undefined')module.exports=CabinetDepth;
+
+/* Physical front gaps use millimeters; line stroke remains readable on a phone. */
+const CabinetFaces=(()=>{
+  function apply(g,st,o,p){
+    if(st.kind==='free')return g;
+    const gap=st.faceGap??4,extra=[];let x=0;
+    if(o.view!=='in'&&gap>0&&!o.bare&&(!o.interactive||gap/(o.gridScale||o.S)>=1.2)){
+      // Replace zero-width door/drawer seams with true face boundaries. Handles,
+      // groove openings, selection hit areas and model partitions stay intact.
+      const seams=[];
+      const front=a=>a.t==='door'||a.t==='drawer';
+      st.cols.forEach((c,ci)=>{let y=0;if(ci&&c.parts.every(front)&&st.cols[ci-1].parts.every(front))seams.push({x,y0:0,y1:st.H-st.kick});c.parts.forEach((a,pi)=>{if(a.t==='door'||a.t==='drawer'){
+        if(pi&&front(c.parts[pi-1]))seams.push({y,x0:x,x1:x+c.w});
+        const n=a.n;
+        for(let i=0;i<n;i++){
+          const vertical=a.t==='door',w=vertical?c.w/n:c.w,h=vertical?a.h:a.h/n;
+          if(w>gap&&h>gap)extra.push({t:'r',x:x+(vertical?i*w:0)+gap/2,y:y+(vertical?0:i*h)+gap/2,w:w-gap,h:h-gap,c:'face-edge'});
+          if(i)seams.push(vertical?{x:x+i*w,y0:y,y1:y+a.h}:{y:y+i*h,x0:x,x1:x+c.w});
+        }
+      }y+=a.h});x+=c.w});
+      g.art=g.art.filter(a=>!(a.t==='l'&&a.c==='in'&&seams.some(s=>s.x!=null?Math.abs(a.x1-s.x)<.01&&Math.abs(a.x2-s.x)<.01&&a.y1===s.y0&&a.y2===s.y1:Math.abs(a.y1-s.y)<.01&&Math.abs(a.y2-s.y)<.01&&a.x1===s.x0&&a.x2===s.x1)));
+    }
+    if(st.kick>0&&(st.kickSetback??50)>0){const h=Math.min(st.kick*.2,12);extra.push({t:'r',x:0,y:st.H-st.kick,w:st.W,h,c:'toe-shade'});}
+    // Place decorative fronts before selection diamonds and all dimension text.
+    const at=g.art.findIndex(a=>a.t==='grip'||a.t==='t');g.art.splice(at<0?g.art.length:at,0,...extra);return g;
+  }
+  return{apply};
+})();
+if(typeof module!=='undefined')module.exports=CabinetFaces;
 
 const depthRuntime={editing:false,previewing:false,fixedEdge:null,view:'out'};
 let displaySettings=DisplayStyle.normalize();
@@ -2298,6 +2346,8 @@ function toSVG(P,S,pal,U,W){
     'depth-right':`fill="${displaySettings.theme==='dark'?'#233540':'#dae4e9'}" stroke="${pal.ink}" stroke-opacity=".45" stroke-width="${f(.55*S)}"`,
     'depth-top':`fill="${displaySettings.theme==='dark'?'#182730':'#dce6eb'}" stroke="${pal.ink}" stroke-opacity=".45" stroke-width="${f(.55*S)}"`,
     'depth-bottom':`fill="${displaySettings.theme==='dark'?'#314652':'#f5f8fa'}" stroke="${pal.ink}" stroke-opacity=".45" stroke-width="${f(.55*S)}"`,
+    'face-edge':`fill="none" stroke="${pal.ink}" stroke-width="${f(.65*S)}"`,
+    'toe-shade':`fill="${pal.ink}" fill-opacity="${displaySettings.theme==='dark'?.15:.10}" stroke="none"`,
     rt:`fill="none" stroke="${pal.sub}" stroke-width="${f(.6*S)}"`,
     rb:`fill="${pal.sheet}" fill-opacity=".9" stroke="none"`,
     hb:`fill="${pal.tint}" fill-opacity=".8" stroke="none"`,
@@ -2357,7 +2407,7 @@ function exportSVG(st,xp,bg){
   return{w,h,svg:`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="${v.map(n=>+n.toFixed(1)).join(' ')}"><rect x="${v[0]}" y="${v[1]}" width="${v[2]}" height="${v[3]}" fill="${xp.sheet}"/>${toSVG(sh.P,sh.S,xp).art}</svg>`}}
 function toDXF(st){
   const H=st.H,o=[],f=v=>(+v).toFixed(2),P=sheet(st,true).P;
-  const LY={out:'CABINET',in:'CABINET',fo:'CABINET',thin:'CABINET',hd:'CABINET',dash:'SWING',dim:'DIM',an:'MARK',anh:'MARK',anf:'MARK'};
+  const LY={'face-edge':'CABINET',out:'CABINET',in:'CABINET',fo:'CABINET',thin:'CABINET',hd:'CABINET',dash:'SWING',dim:'DIM',an:'MARK',anh:'MARK',anf:'MARK'};
   const ln=(x1,y1,x2,y2,ly)=>o.push('0','LINE','8',ly,'10',f(x1),'20',f(H-y1),'11',f(x2),'21',f(H-y2));
   const path=(pts,ly,close)=>{for(let i=1;i<pts.length;i++)ln(pts[i-1][0],pts[i-1][1],pts[i][0],pts[i][1],ly);if(close&&pts.length>2)ln(pts[pts.length-1][0],pts[pts.length-1][1],pts[0][0],pts[0][1],ly)};
   for(const p of P){const ly=LY[p.c];
@@ -2446,7 +2496,7 @@ const displayGeom=geom;
 geom=function(st,o){
   const shape=Object.assign({},st,{labels:displaySettings.names,grid:0});
   const options=Object.assign({},o,{acc:displaySettings.selectionColor});
-  const g=displayGeom(shape,options),H=handleModel(shape,o.view==='in',o.sel?o.sel.c:null);
+  const g=CabinetFaces.apply(displayGeom(shape,options),shape,options,displaySettings),H=handleModel(shape,o.view==='in',o.sel?o.sel.c:null);
   return CabinetDepth.apply(DisplayStyle.decorate(g,shape,options,displaySettings,H),shape,options,displaySettings,depthRuntime,gapsOf);
 };
 const displaySVG=toSVG;
@@ -2460,7 +2510,7 @@ exportSVG=function(st,pal,bg){
   }
   return displayExport(st,xp,bg);
 };
-if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={CabinetDepth,depthRuntime,DisplayStyle,displaySettings,freeFaces,freeFix,toFree,geomFree,homog,hmap,wallExt,wallItems,scanParse,zones,zoneName,grpPlan,handleModel,rulerPrims,CATS,thumbOf,gapsOf,solidGaps,fixGs,clearIn,sample0,normalize,layout,geom,annPrims,annOf,toSVG,exportSVG,toDXF,zip1,crc32,fit,spread,isEven,fixAll,sheet,STYLES,styleState,styleThumb};return}
+if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={CabinetFaces,CabinetDepth,depthRuntime,DisplayStyle,displaySettings,freeFaces,freeFix,toFree,geomFree,homog,hmap,wallExt,wallItems,scanParse,zones,zoneName,grpPlan,handleModel,rulerPrims,CATS,thumbOf,gapsOf,solidGaps,fixGs,clearIn,sample0,normalize,layout,geom,annPrims,annOf,toSVG,exportSVG,toDXF,zip1,crc32,fit,spread,isEven,fixAll,sheet,STYLES,styleState,styleThumb};return}
 
 /* ---------- page ---------- */
 const svg=$('#dw');
@@ -3317,7 +3367,7 @@ const fileAnchor=()=>document.querySelector('#qslots [data-k="file"]')||$('#file
 function popSide(pp,r,w){pp.style.left=clamp(r.left,8,Math.max(8,vpW()-w-8))+'px';popY(pp,r)}
 function popY(pp,r){const H=vpH(),below=H-r.bottom-14,above=r.top-14;if(below>=above||below>=300){pp.style.top=(r.bottom+6)+'px';pp.style.bottom='auto';pp.style.maxHeight=Math.max(120,below)+'px'}else{pp.style.top='auto';pp.style.bottom=(H-r.top+6)+'px';pp.style.maxHeight=Math.max(120,above)+'px'}}
 const stylePop=on=>{const pp=$('#stylePop'),b=$('#fileBtn');if(on){buildStyles();if(cat==='__files')refreshList()}pp.hidden=!on;
-  if(on){const r=lrect(b),w=Math.min(384,vpW()-16);pp.style.width=w+'px';popSide(pp,lrect(fileAnchor()),w)}};
+  if(on){pp.removeAttribute('style')}};
 const savePop=on=>{const pp=$('#filePop'),b=$('#fileBtn');pp.hidden=!on;b.setAttribute('aria-expanded',on);
   if(on){const r=lrect(b),w=Math.min(320,vpW()-16);pp.style.width=w+'px';popSide(pp,lrect(fileAnchor()),w)}};
 $('#fileBtn').onclick=()=>{morePop(false);savePop($('#filePop').hidden)};
@@ -3691,7 +3741,7 @@ $('#stylePop').addEventListener('click',async e=>{
     catch(err){toast(err&&err.code==='quota_exceeded'?'儲存空間滿了，請先刪掉幾個舊樣式':'樣式儲存沒有成功，請再試一次')}
     finally{b.disabled=false}return}
   const s=STYLES.find(q=>q.id===k);if(!s)return;
-  stylePop(false);push();st=styleState(s,st);applied('已套用「'+s.name+'」，不合適可按「復原」')});
+  stylePop(false);push();const prior=st;st=styleState(s,st);st.faceGap=prior.faceGap;st.kickSetback=prior.kickSetback;zoom.m=false;applied('已套用「'+s.name+'」，不合適可按「復原」')});
 $('#aiGo').onclick=runAI;
 $('#aiStop').onclick=()=>{if(aiCtl)aiCtl.abort()};
 
@@ -3751,7 +3801,7 @@ $('#bgAI').onclick=()=>{if(!bgSrc)return;bgCal=null;if(!sampleFn||!imgMax){toast
 
 /* diamond cursor */
 let padMode='cur',lkp=null;const mk={p1:null,end:null,mv:null},MK2={line:1,arrow:1,rect:1,circle:1,dim:1};const cur={on:false,x:1200,y:1200,a:null,fl:null,ex:false,tf:null,nos:false,gx:null,gy:null,gxv:null,gyv:null};let jv={x:0,y:0},jHeld=false,jRaf=0,jLast=0,jT0=0,jMv=false,cdp=null,cdT=0,cdRaf=0,cdTxt='',cdBtn='';
-function curSnap(){const g=cur.fine?1:(st.grid||10),tol=7*S/zoom.z,body=st.H-st.kick;let x=Math.round(cur.x/g)*g,y=st.H-Math.round((st.H-cur.y)/g)*g;
+function curSnap(){const g=cur.fine?.5:(st.grid||10),tol=7*S/zoom.z,body=st.H-st.kick;let x=Math.round(cur.x/g)*g,y=st.H-Math.round((st.H-cur.y)/g)*g;
   const xs=[0],ys=[0,body,st.H];let acc=0;st.cols.forEach(c=>{acc+=c.w;xs.push(acc)});if(cur.gxv!=null)xs.push(cur.gxv);if(cur.gyv!=null)ys.push(cur.gyv);
   const c=locCell({x:clamp(cur.x,1,st.W-1),y:clamp(cur.y,1,body-1)});if(c){let yy=0;c.col.parts.forEach(p=>{yy+=p.h;ys.push(yy)});if(c.s){let sy=c.y0;c.p.ins.forEach(q=>{sy+=q.h;ys.push(sy)})}}
   /* cur.nos: the spot was reached by single steps, so only the grid applies - a 10mm step next to a line would otherwise be pulled straight back onto it */
@@ -4480,17 +4530,17 @@ $('#simBtn').onclick=()=>{const on=!simOn();try{localStorage.setItem('sc-mobile-
 
 /* ===== (30) 把手／取手縫／無把手, 等分, size-page rows ===== */
 var eqDir='y',szOpen=null,edHome=null;
-function gvDoor(f,ox,y,h,p){const G=Math.min(p.gw||30,f.w*.25,h*.25),gp=p.gp||'s',R=[],A2=[];
+function gvDoor(f,ox,y,h,p){const G=Math.min(p.gw||25,f.w*.25,h*.25),gp=p.gp||'s',R=[],A2=[];
   if(gp==='t'){R.push({t:'r',x:f.x,y,w:f.w,h:G,c:'f-open'});A2.push({t:'l',x1:f.x,y1:y+G,x2:f.x+f.w,y2:y+G,c:'in'})}
   else if(gp==='b'){R.push({t:'r',x:f.x,y:y+h-G,w:f.w,h:G,c:'f-open'});A2.push({t:'l',x1:f.x,y1:y+h-G,x2:f.x+f.w,y2:y+h-G,c:'in'})}
   else{const lft=Math.abs(ox-f.x)<.5,x0=lft?f.x:ox-G,xl=lft?f.x+G:ox-G;R.push({t:'r',x:x0,y,w:G,h,c:'f-open'});A2.push({t:'l',x1:xl,y1:y,x2:xl,y2:y+h,c:'in'})}
   return{f:R,a:A2}}
-function gvDrawer(x,y,w,dh,p){const G=Math.min(p.gw||30,dh*.3),b=p.gp==='b';return{f:[{t:'r',x,y:b?y+dh-G:y,w,h:G,c:'f-open'}],a:[{t:'l',x1:x,y1:b?y+dh-G:y+G,x2:x+w,y2:b?y+dh-G:y+G,c:'in'}]}}
+function gvDrawer(x,y,w,dh,p){const G=Math.min(p.gw||25,dh*.3),b=p.gp==='b';return{f:[{t:'r',x,y:b?y+dh-G:y,w,h:G,c:'f-open'}],a:[{t:'l',x1:x,y1:b?y+dh-G:y+G,x2:x+w,y2:b?y+dh-G:y+G,c:'in'}]}}
 function cellX(){if(isFree()||!sel||sel.k!=null)return'';const o=selObj();if(!o)return'';const inV=view==='in',x=inV?o.s:o.p;let s='';
   if(!inV&&(x.t==='door'||x.t==='drawer')){const pu=x.pull||'bar';
     s+=`<p class="cxh">把手</p><div class="seg" role="group">${[['bar','把手'],['groove','取手縫'],['none','無把手']].map(a=>`<button data-pull="${a[0]}" aria-pressed="${pu===a[0]}">${a[1]}</button>`).join('')}</div>`;
     if(pu==='groove'){const gp=x.gp||(x.t==='door'?'s':'t'),L=x.t==='door'?[['s','開門側'],['t','上方'],['b','下方']]:[['t','上方'],['b','下方']];
-      s+=`<div class="seg cxg" role="group">${L.map(a=>`<button data-gp="${a[0]}" aria-pressed="${gp===a[0]}">${a[1]}</button>`).join('')}<label class="cxw">縫寬<input data-gw inputmode="numeric" maxlength="3" value="${x.gw||30}" aria-label="取手縫寬度"></label></div>`}}
+      s+=`<div class="seg cxg" role="group">${L.map(a=>`<button data-gp="${a[0]}" aria-pressed="${gp===a[0]}">${a[1]}</button>`).join('')}<label class="cxw">縫寬<input data-gw inputmode="numeric" maxlength="3" value="${x.gw||25}" aria-label="取手縫寬度"></label></div>`}}
   const d=inV?'y':eqDir;
   s+=`<p class="cxh">等分</p>${inV?'':`<div class="seg" role="group"><button data-eqd="y" aria-pressed="${d==='y'}">上下</button><button data-eqd="x" aria-pressed="${d==='x'}">左右（整區）</button></div>`}<div class="cxn">${[2,3,4,5].map(n=>`<button data-eqn="${n}">${n} 份</button>`).join('')}<input data-eqi inputmode="numeric" maxlength="2" placeholder="其他" aria-label="分成幾份"></div>`;
   return s}
@@ -4504,7 +4554,7 @@ function eqSplit(d,n){const o=selObj();if(!o||isFree()||!sel||sel.k!=null)return
   L.splice(i,1,...hs.map(h=>{const c=JSON.parse(JSON.stringify(x));c.h=h;delete c.gs;c.n=cnt(c.t);if(c.ins)fit(c.ins,'h',h);return c}));
   render();toast(`已上下分成 ${n} 格，每格 ${hs[0]}${hs[0]!==hs[n-1]?'～'+hs[n-1]:''}`)}
 function pullSet(k,v){const o=selObj();if(!o||!sel||sel.k!=null||view==='in')return;const x=o.p;if(x.t!=='door'&&x.t!=='drawer')return;
-  if(k==='pull'){if((x.pull||'bar')===v)return;push();if(v==='bar'){delete x.pull;delete x.gp;delete x.gw}else{x.pull=v;if(v==='groove'){x.gp=x.gp||(x.t==='door'?'s':'t');x.gw=x.gw||30}else{delete x.gp;delete x.gw}}}
+  if(k==='pull'){if((x.pull||'bar')===v)return;push();if(v==='bar'){delete x.pull;delete x.gp;delete x.gw}else{x.pull=v;if(v==='groove'){x.gp=x.gp||(x.t==='door'?'s':'t');x.gw=x.gw||25}else{delete x.gp;delete x.gw}}}
   else if(k==='gp'){if(x.gp===v)return;push();x.gp=v}
   else if(k==='gw'){const w=clamp(Math.round(num(v,30)),5,120);if(w===x.gw)return;push();x.gw=w}
   render()}
@@ -4652,7 +4702,7 @@ function mNative(id){const e=$(id);if(!e)return;mobileUI.native.push({el:e,paren
 function mFinish(){
   const returnView=mobileUI.returnView;mobileUI.returnView=null;mobileUI.fixedEdge=null;
   if(mobileUI.op&&mobileUI.op.kind==='annmove'&&!mobileUI.op.committed)st.ann[mobileUI.op.index]=mobileUI.op.original;
-  mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
+  mobileUI.invalidOffset=false;mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
   mk.p1=mk.end=mk.mv=null;tool=null;asel=-1;sel=null;hsel=null;hgrp=[];hsolo=false;fsel=null;msel=[];multi=false;mode='edit';ucat='edit';cur.tp=null;cur.dm=null;cur.on=false;cur.fine=false;padMode='cur';lkp=null;if(returnView&&view!==returnView)setView(returnView);else render();
 }
 function mTransaction(fn){
@@ -4699,18 +4749,18 @@ const mFormButtons='<div class="m-form-actions"><button type="button" data-m="ca
 function mFormValuesValid(){const form=$('#mForm');if(!form)return true;for(const e of form.querySelectorAll('input[type="number"]')){const n=Number(e.value),min=e.getAttribute('min'),max=e.getAttribute('max');if(!String(e.value).trim()||!Number.isFinite(n)||!Number.isInteger(n)||(min!==null&&n<Number(min))||(max!==null&&n>Number(max))){toast('請檢查數值，輸入允許範圍內的整數');e.focus();return false;}}return true;}
 function mOverall(){
   const fr=isFree();
-  mOpenSheet('整體尺寸 · mm',`<form id="mForm"><div class="m-form-grid">${mField('mW','總寬',st.W,st.cols?st.cols.length*MIN:100,MAXW)}${mField('mH','總高',st.H,150,MAXH)}${mField('mT','板厚',st.T||18,6,40)}${fr?'':mField('mK','踢腳板',st.kick||0,0,st.H-MIN)}</div><p class="m-sheet-note">${fr?'修改總寬與總高會按比例調整現有板線的位置與長度。':'修改整體尺寸會同步調整各區配置。'}圖面尺寸以公釐（mm）表示。</p>${mFormButtons}</form>`,'overall');
-  mobileUI.submit=()=>{const w=Number($('#mW').value),h=Number($('#mH').value),t=Number($('#mT').value),k=$('#mK')?.value;mTransaction(()=>{if(fr){const sx=w/st.W,sy=h/st.H;st.ln.forEach(l=>{l.x1=Math.round(l.x1*sx);l.x2=Math.round(l.x2*sx);l.z1=Math.round(l.z1*sy);l.z2=Math.round(l.z2*sy)});(st.cl||[]).forEach(c=>{c.x*=sx;c.z*=sy});st.W=w;st.H=h;st.T=t;freeFix(st);}else{applyDim({k:'W'},w);applyDim({k:'H'},h);applyDim({k:'K'},k);st.T=t;fixAll(st);}});mCloseSheet(true);toast('整體尺寸已套用');};
+  mOpenSheet('整體尺寸 · mm',`<form id="mForm"><div class="m-form-grid">${mField('mW','總寬',st.W,st.cols?st.cols.length*MIN:100,MAXW)}${mField('mH','總高',st.H,150,MAXH)}${mField('mT','板厚',st.T||18,6,40)}${fr?'':mField('mK','踢腳高度',st.kick||0,0,st.H-MIN)+mField('mKS','踢腳內退',st.kickSetback??50,0,300)+mField('mGap','門片／抽屜總縫寬',st.faceGap??4,0,20)}</div><p class="m-sheet-note">${fr?'修改總寬與總高會按比例調整現有板線的位置與長度。':'修改整體尺寸會同步調整各區配置。'}圖面尺寸以公釐（mm）表示。踢腳內退以桶身前緣為基準，0 為齊平；門縫為兩片面板間總縫寬。</p>${mFormButtons}</form>`,'overall');
+  mobileUI.submit=()=>{const w=Number($('#mW').value),h=Number($('#mH').value),t=Number($('#mT').value),k=$('#mK')?.value;mTransaction(()=>{if(fr){const sx=w/st.W,sy=h/st.H;st.ln.forEach(l=>{l.x1=Math.round(l.x1*sx);l.x2=Math.round(l.x2*sx);l.z1=Math.round(l.z1*sy);l.z2=Math.round(l.z2*sy)});(st.cl||[]).forEach(c=>{c.x*=sx;c.z*=sy});st.W=w;st.H=h;st.T=t;freeFix(st);}else{applyDim({k:'W'},w);applyDim({k:'H'},h);applyDim({k:'K'},k);st.T=t;st.kickSetback=Number($('#mKS').value);st.faceGap=Number($('#mGap').value);fixAll(st);}});mCloseSheet(true);toast('整體尺寸已套用');};
 }
 function mCellSettings(){
   const o=selObj();if(!o)return;const inV=view==='in',x=inV?o.s:o.p,L=inV?o.p.ins:o.col.parts;
   const opts=inV?[['empty','空格'],['shelf','層板'],['rod','吊衣桿'],['idrawer','內抽']]:[['empty','空櫃'],['door','門片'],['drawer','抽屜'],['open','層板'],['blank','封板']];
   const type=(x.t==='open'||x.t==='shelf')&&!x.n?'empty':x.t;
   mOpenSheet('格子設定',`<form id="mForm"><label class="m-field">這格要做什麼<select id="mType">${opts.map(([v,l])=>`<option value="${v}"${type===v?' selected':''}>${l}</option>`).join('')}</select></label><div class="m-form-grid">${!o.col.lock?mField('mCW','區寬 · mm',o.col.w,MIN,MAXW):''}${L.length>1?mField('mPH','格高 · mm',x.h,MIN,st.H):''}</div><div id="mTypeFields"></div><p class="m-sheet-note">區寬與格高調整時，由相鄰未鎖定區域補差額。只有一格時，高度請從「整體尺寸」修改。</p>${mFormButtons}</form>`,'cell');
-  const fill=()=>{const t=$('#mType').value;let h='';if(t==='door')h=`<div class="m-form-grid"><label class="m-field">門片<select id="mN"><option value="1"${x.n===1?' selected':''}>單開門</option><option value="2"${x.n===2?' selected':''}>對開門</option></select></label><label class="m-field">開門方向<select id="mHinge"><option value="L"${o.p.hinge!=='R'?' selected':''}>左鉸鏈</option><option value="R"${o.p.hinge==='R'?' selected':''}>右鉸鏈</option></select></label></div>`;else if(['open','shelf','drawer','idrawer'].includes(t))h=mField('mN',t==='open'||t==='shelf'?'層板片數':'抽屜數量',x.t===t?x.n:1,t==='open'||t==='shelf'?0:1,10);if(!inV&&(t==='door'||t==='drawer'))h+=`<label class="m-field">把手<select id="mPull"><option value="bar"${!o.p.pull?' selected':''}>一般把手</option><option value="groove"${o.p.pull==='groove'?' selected':''}>取手縫</option><option value="none"${o.p.pull==='none'?' selected':''}>無把手</option></select></label>`;$('#mTypeFields').innerHTML=h;};fill();$('#mType').addEventListener('change',fill);
+  const fill=()=>{const t=$('#mType').value;let h='';if(t==='door')h=`<div class="m-form-grid"><label class="m-field">門片<select id="mN"><option value="1"${x.n===1?' selected':''}>單開門</option><option value="2"${x.n===2?' selected':''}>對開門</option></select></label><label class="m-field">開門方向<select id="mHinge"><option value="L"${o.p.hinge!=='R'?' selected':''}>左鉸鏈</option><option value="R"${o.p.hinge==='R'?' selected':''}>右鉸鏈</option></select></label></div>`;else if(['open','shelf','drawer','idrawer'].includes(t))h=mField('mN',t==='open'||t==='shelf'?'層板片數':'抽屜數量',x.t===t?x.n:1,t==='open'||t==='shelf'?0:1,10);if(!inV&&(t==='door'||t==='drawer'))h+=`<label class="m-field">把手<select id="mPull"><option value="bar"${!o.p.pull?' selected':''}>一般把手</option><option value="groove"${o.p.pull==='groove'?' selected':''}>取手縫</option><option value="none"${o.p.pull==='none'?' selected':''}>無把手</option></select></label>`;if(!inV&&(t==='door'||t==='drawer'))h+=mField('mGroove','取手縫寬 · mm',o.p.gw??25,5,120);$('#mTypeFields').innerHTML=h;};fill();$('#mType').addEventListener('change',fill);
   mobileUI.submit=()=>{
-    const v={t:$('#mType').value,w:$('#mCW')?.value,h:$('#mPH')?.value,n:$('#mN')?.value,hinge:$('#mHinge')?.value,pull:$('#mPull')?.value};
-    mTransaction(()=>{if(v.w!=null)fieldChange('cw',v.w);if(v.h!=null)fieldChange('ph',v.h);const now=selObj(),c=inV?now.s:now.p;if(v.t==='empty')act('clear');else if(c.t!==v.t)act('type',v.t);if(v.n!=null){if(v.t==='door')act('n',v.n);else fieldChange('n',v.n)}if(v.hinge)act('hinge',v.hinge);if(v.pull)pullSet('pull',v.pull);});mCloseSheet(true);toast('格子設定已套用');
+    const v={t:$('#mType').value,w:$('#mCW')?.value,h:$('#mPH')?.value,n:$('#mN')?.value,hinge:$('#mHinge')?.value,pull:$('#mPull')?.value,gw:$('#mGroove')?.value};
+    mTransaction(()=>{if(v.w!=null)fieldChange('cw',v.w);if(v.h!=null)fieldChange('ph',v.h);const now=selObj(),c=inV?now.s:now.p;if(v.t==='empty')act('clear');else if(c.t!==v.t)act('type',v.t);if(v.n!=null){if(v.t==='door')act('n',v.n);else fieldChange('n',v.n)}if(v.hinge)act('hinge',v.hinge);if(v.pull)pullSet('pull',v.pull);if(v.pull==='groove')selObj().p.gw=Number(v.gw);});mCloseSheet(true);toast('格子設定已套用');
   };
 }
 function mSettings(){const s=mState();if(s.kind==='annotation'){mAnnSettings();return}if(s.kind==='freeLine'||s.kind==='freeCell'){mOpenSheet('自由繪圖設定','<div id="mNative" class="m-native-host"></div>'+mRow('applyNative','完成','settings'),'native');render();mNative('#editor');return}mCellSettings();}
@@ -4725,16 +4775,16 @@ function mBegin(kind){
   if(!cpd){mobileUI.op=null;mSync();return;}mobileUI.hint=false;render();
 }
 function mOperationData(){const o=mobileUI.op;if(!o)return null;if(o.kind==='annmove')return{title:'移動標註',note:'在圖上拖曳標註，位置對了按「確定」。',label:'',value:null};if(o.kind==='move'){const r=cpdTarget();if(!r)return null;const m=r.m,dd=r.tv-m.v;return{title:'移動分隔線',note:(m.ax==='x'?'左 ':'上 ')+fmt((m.a0||0)+dd)+' ／ '+(m.ax==='x'?'右 ':'下 ')+fmt((m.b0||0)-dd)+' mm',label:m.ax==='x'?'距左':'距上',value:m.a0==null?null:(m.a0+dd)};}const r=splitPlan(o.kind==='splitV'),p=r.pl;return p?{title:o.kind==='splitV'?'直分隔':'橫分隔',note:(p.v?'左 ':'上 ')+p.a+' ／ '+(p.v?'右 ':'下 ')+p.b+' mm · 可拖動預覽線',label:p.v?'距左':'距上',value:p.a}: {title:o.kind==='splitV'?'直分隔':'橫分隔',note:'把預覽線移到可分隔的區域內。',label:'位置',value:null};}
-function mOperationSync(){const d=mOperationData();if(!d)return;$('#mOperationTitle').innerHTML=esc(d.title)+'<span id="mOperationNote">'+esc(d.note)+'</span>';$('#mOffsetLabel').textContent=d.label;$('.m-op-label').hidden=d.value==null;if(d.value!=null&&document.activeElement!==$('#mOffset'))$('#mOffset').value=Math.round(d.value);}
+function mOperationSync(){const d=mOperationData();if(!d)return;$('#mOperationTitle').innerHTML=esc(d.title)+'<span id="mOperationNote">'+esc(d.note)+'</span>';$('#mOffsetLabel').textContent=d.label;$('.m-op-label').hidden=d.value==null;if(d.value!=null&&document.activeElement!==$('#mOffset'))$('#mOffset').value=fmt(d.value);}
 function mOperationOffset(raw){const o=mobileUI.op;if(!o)return;if(raw==null||!String(raw).trim())return;const n=Number(raw);if(!Number.isFinite(n))return;if(o.kind==='move'){const r=cpdTarget();if(!r||r.m.a0==null)return;const m=r.m,v=clamp(m.v-m.a0+n,m.lo,m.hi);if(m.ax==='x')cur.x=v;else cur.y=v;}else{const r=splitPlan(o.kind==='splitV'),p=r.pl;if(!p)return;const v=MobilePolicy.clampOffset(n,p.a+p.b,MIN);if(v==null)return;if(o.kind==='splitV')cur.x=p.c.x0+v;else cur.y=p.top+v;}cur.nos=true;mSync();}
-function mOperationPoint(q){const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(!o.origin)o.origin={...q};o.railPoint={x:Math.round(q.x),y:Math.round(q.y)};const a=JSON.parse(JSON.stringify(o.original));moveAnn(a,o.railPoint.x-o.origin.x,o.railPoint.y-o.origin.y);st.ann[o.index]=a;render();return;}if(o.kind==='move'){const m=mvInfo();if(!m)return;cur.x=Math.round(q.x);cur.y=Math.round(q.y);if(m.ax==='x')cur.x=clamp(cur.x,m.lo,m.hi);else cur.y=clamp(cur.y,m.lo,m.hi);}else{const b=o.bounds;if(b){cur.x=clamp(Math.round(q.x),b.x0+MIN,b.x1-MIN);cur.y=clamp(Math.round(q.y),b.y0+MIN,b.y1-MIN);}else{cur.x=Math.round(q.x);cur.y=Math.round(q.y);}}cur.nos=true;cur.tp=null;mSync();}
-function mConfirmOperation(){const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(snapS()!==o.before)pushRaw(o.before);o.committed=true;mFinish();toast('標註位置已更新');return;}cpdGo();if(cpd)return;mFinish();}
+function mOperationPoint(q){mobileUI.invalidOffset=false;const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(!o.origin)o.origin={...q};o.railPoint={x:Math.round(q.x),y:Math.round(q.y)};const a=JSON.parse(JSON.stringify(o.original));moveAnn(a,o.railPoint.x-o.origin.x,o.railPoint.y-o.origin.y);st.ann[o.index]=a;render();return;}if(o.kind==='move'){const m=mvInfo();if(!m)return;const snap=v=>m.t==='g'?Math.round(v*2)/2:Math.round(v);cur.x=snap(q.x);cur.y=snap(q.y);if(m.ax==='x')cur.x=clamp(cur.x,m.lo,m.hi);else cur.y=clamp(cur.y,m.lo,m.hi);}else{const b=o.bounds;if(b){cur.x=clamp(Math.round(q.x),b.x0+MIN,b.x1-MIN);cur.y=clamp(Math.round(q.y),b.y0+MIN,b.y1-MIN);}else{cur.x=Math.round(q.x);cur.y=Math.round(q.y);}}cur.nos=true;cur.tp=null;mSync();}
+function mConfirmOperation(){if(mobileUI.invalidOffset){toast('請先修正尺寸或使用微調鍵重新定位');return;}const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(snapS()!==o.before)pushRaw(o.before);o.committed=true;mFinish();toast('標註位置已更新');return;}cpdGo();if(cpd)return;mFinish();}
 function mPreview(){
   let g=svg.querySelector('#mobile-preview');if(!g){g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='mobile-preview';g.setAttribute('pointer-events','none');svg.appendChild(g)}
   if(mobileUI.op&&cpd&&mobileUI.op.kind!=='annmove'){const P=[],k=S/zoom.z;cpdDraw(P,curSnap(),k);g.innerHTML=toSVG(P,k,pal).art;}
   else if(mobileUI.preview){g.innerHTML=toSVG(annPrims([{a:mobileUI.preview,i:-1}],S),S,pal).art;}
   else g.innerHTML='';
-  mRulersSync();
+  mPrecisionDraw(g);mRulersSync();
 }
 function mToolOpen(){mOpenSheet('標註與量尺','<div class="m-menu-grid">'+[['line','直線','line'],['arrow','箭頭','arrow'],['rect','方框','rect'],['circle','圓形','circle'],['dim','量尺','size'],['text','文字','text'],['pen','畫筆','pen'],['hl','螢光筆','hl']].map(x=>mGridButton('tool:'+x[0],x[1],x[2])).join('')+'</div><div class="m-tool-colors">'+['#147c88','#c8372d','#1f66b3','#203038','#ee7d1c'].map(c=>`<button data-m="color:${c}" style="background:${c}" aria-label="顏色 ${c}" aria-pressed="${mobileUI.color===c}"></button>`).join('')+'</div><p class="m-sheet-note">標註不會改變櫃體配置。量尺使用圖面比例計算。</p>','tools');}
 function mStartTool(k){mCloseSheet(false);mFinish();mobileUI.tool=k;mobileUI.first=null;mobileUI.preview=null;mobileUI.hint=false;mode='mark';tool=null;render();}
@@ -4815,7 +4865,7 @@ function mOnDown(e){
   const p={x:e.clientX,y:e.clientY};mobileUI.pointers.set(e.pointerId,p);try{svg.setPointerCapture(e.pointerId)}catch(_){}
   if(mobileUI.pointers.size===2){const p=[...mobileUI.pointers.values()],mid={clientX:(p[0].x+p[1].x)/2,clientY:(p[0].y+p[1].y)/2};mobileUI.gesture={pinch:true,dist:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),z:zoom.z,anchor:pt(mid),moved:true};mobileUI.preview=null;mSync();return;}
   const q=pt(e);mobileUI.gesture={x:e.clientX,y:e.clientY,q,inv:inv(),cx:zoom.cx,cy:zoom.cy,moved:false,el:e.target,points:[[Math.round(q.x),Math.round(q.y)]]};
-  if(mobileUI.op&&mobileUI.op.kind==='annmove')mobileUI.op.grab={pointer:q,cursor:{...mobileUI.op.railPoint}};
+  if(mobileUI.op)mobileUI.op.grab={pointer:q,cursor:{...mCursorPoint()}};
 }
 function mOnMove(e){
   if(bgCal||isFree()&&mode==='draw'&&mobileUI.freeDrawing)return;
@@ -4824,7 +4874,7 @@ function mOnMove(e){
   if(g.pinch&&mobileUI.pointers.size===2){const p=[...mobileUI.pointers.values()],mx=(p[0].x+p[1].x)/2,my=(p[0].y+p[1].y)/2,z=g.z*Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)/Math.max(1,g.dist);zoomAt(z,g.anchor,mx,my);mPreview();return;}
   if(g.pinch)return;const moved=Math.hypot(e.clientX-g.x,e.clientY-g.y)>5;if(moved)g.moved=true;
   const q=pt(e);
-  if(mobileUI.op){if(g.moved){const a=mobileUI.op.grab;mOperationPoint(mobileUI.op.kind==='annmove'&&a?{x:a.cursor.x+q.x-a.pointer.x,y:a.cursor.y+q.y-a.pointer.y}:q);}return;}
+  if(mobileUI.op){if(g.moved){const a=mobileUI.op.grab;mOperationPoint(a?{x:a.cursor.x+q.x-a.pointer.x,y:a.cursor.y+q.y-a.pointer.y}:q);}return;}
   if(mobileUI.tool){if(!g.moved)return;g.points.push([Math.round(q.x),Math.round(q.y)]);mobileUI.preview=mMakeAnn(mobileUI.tool,mobileUI.first||g.q,q,g.points);mPreview();return;}
   if(g.moved){const p=pt(e,g.inv);zoom.m=true;zoom.cx=g.cx+g.q.x-p.x;zoom.cy=g.cy+g.q.y-p.y;applyView();mPreview();}
 }
@@ -4835,7 +4885,7 @@ function mOnUp(e){
   if(!g)return;if(g.pinch){if(!mobileUI.pointers.size)mobileUI.gesture=null;return;}
   mobileUI.gesture=null;if(e.type==='pointercancel'){mobileUI.preview=null;mSync();return;}
   const q=pt(e);
-  if(mobileUI.op){if(!g.moved&&mobileUI.op.kind!=='annmove')mOperationPoint(q);return;}
+  if(mobileUI.op){/* Relative dragging leaves the cursor fixed on a simple tap. */return;}
   if(mobileUI.tool&&g.moved){if(mobileUI.tool==='text'){mTextAt(q);return;}const a=mMakeAnn(mobileUI.tool,mobileUI.first||g.q,q,g.points);mAnn(a);return;}
   if(!g.moved){const el=document.elementFromPoint(e.clientX,e.clientY)||g.el;mTap(q,el);}
 }
@@ -4857,6 +4907,62 @@ $('#mToolDone').onclick=()=>{if(bgCal)mPhoto();else mFinish();};
 $('#mImport').addEventListener('change',async e=>{const f=e.target.files?.[0];e.target.value='';if(!f)return;try{const d=JSON.parse(await f.text()),raw=d.project||d,p=mkProject(raw);if(!p.sheets.length)throw new Error('empty');mCloseSheet(false);mFinish();pushP();photos.clear();setProject(p);if(Array.isArray(d.photos)){const ids=new Set(p.sheets.map(x=>x.sid));d.photos.forEach(([sid,x])=>{if(!ids.has(sid)||!x)return;const valid=s=>typeof s==='string'&&/^data:image\/(?:png|jpeg|webp);base64,/.test(s);photos.set(sid,{src:valid(x.src)?x.src:null,rect:valid(x.rect)?x.rect:null})});photoLoad();}render();saveNow();toast('已匯入 '+p.sheets.length+' 個分頁');}catch(_){toast('這個檔案不是可讀取的圖面備份');}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(mobileUI.panel)mCloseSheet(false);else mFinish();}});
 if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{if(!mobileUI.panel&&!mobileUI.op){portC=null;render();}});
+/* Relative touch positioning and real-boundary measurements. Origin: outer left-bottom. */
+const precision={step:5,side:'right',rulers:false,metric:{x:'netNear',y:'netFar'}};
+try{const p=JSON.parse(localStorage.getItem('sc-mobile-precision-v1')||'{}');if([1,5,10].includes(p.step))precision.step=p.step;if(p.side==='left')precision.side='left';precision.rulers=p.rulers===true;if(p.metric&&typeof p.metric==='object')Object.assign(precision.metric,p.metric);}catch(_){}
+function mPrecisionSave(){try{localStorage.setItem('sc-mobile-precision-v1',JSON.stringify(precision))}catch(_){} }
+const preciseRow=document.createElement('div');preciseRow.id='mPrecision';
+preciseRow.innerHTML='<div class="m-precision-options"><select id="mMeasure" aria-label="量測條件"></select><select id="mStep" aria-label="微調步距"><option value="1">1 mm</option><option value="5">5 mm</option><option value="10">10 mm</option></select><button id="mHand" aria-label="切換微調按鍵左右位置">換邊</button><button id="mRulerToggle" aria-label="顯示或隱藏輔助尺規">尺規</button></div><div id="mNudge" role="group" aria-label="精確微調"><button data-nudge="left" aria-label="向左微調">←</button><button data-nudge="up" aria-label="向上微調">↑</button><button data-nudge="down" aria-label="向下微調">↓</button><button data-nudge="right" aria-label="向右微調">→</button></div>';
+$('#mOperation').insertBefore(preciseRow,$('.m-operation-fields'));
+function mMeasureChoices(){
+  const r=cpdTarget();if(!r||mobileUI.op?.kind!=='move')return[];
+  const {m,tv}=r,T=st.T,axis=m.ax,choices=[],make=(id,label,sign,c,start,end,at)=>choices.push({id,label,sign,c,value:sign*tv+c,start,end,at,axis});
+  make('position',axis==='x'?'距櫃左側':'離櫃底',axis==='x'?1:-1,axis==='x'?0:st.H,axis==='x'?0:st.H,tv,axis==='x'?(m.segs[0][1]+m.segs[0][3])/2:(m.segs[0][0]+m.segs[0][2])/2);
+  if(m.a0!=null)make('local',axis==='x'?'左區寬（含板）':'上區高（含板）',1,m.a0-m.v,m.v-m.a0,tv,choices[0].at);
+  if(m.t==='g'){
+    const near=m.v-T/2-m.a0,far=m.v+T/2+m.b0;
+    make('netNear','上方淨高',1,-near-T/2,near,tv-T/2,choices[0].at);
+    make('netFar','下方淨高',-1,far-T/2,tv+T/2,far,choices[0].at);
+  }else if(m.k==='c'){
+    const i=hsel.i,a=st.cols[i],b=st.cols[i+1];
+    // Locked intervening columns change another compartment, so do not offer a
+    // misleading immediate-neighbor net width.
+    if(!a.lock&&!b.lock){make('netNear','左側淨寬',1,a.w-m.v-2*T,m.v-a.w+T,tv-T,choices[0].at);make('netFar','右側淨寬',-1,b.w+m.v-2*T,tv+T,m.v+b.w-T,choices[0].at);}
+  }else if(['p','r','s'].includes(m.k)){
+    let ci=hsel.c;
+    if(m.k==='r'){let xx=0;ci=st.cols.findIndex(c=>{const hit=(mobileUI.lastPoint?.x??0)>=xx&&(mobileUI.lastPoint?.x??0)<=xx+c.w;xx+=c.w;return hit});if(ci<0)ci=0;}
+    const col=st.cols[ci],pi=m.k==='s'?hsel.p:m.k==='p'?hsel.i:col.parts.findIndex((p,i)=>Math.abs(col.parts.slice(0,i+1).reduce((s,a)=>s+a.h,0)-m.v)<.5);
+    const list=m.k==='s'?col.parts[pi].ins:col.parts,i=m.k==='s'?hsel.i:pi;
+    if(i>=0&&i<list.length-1){const a=list[i],b=list[i+1],shared=m.k==='s',nearThick=shared?(i?T/2:T):T,farThick=shared?(i+1<list.length-1?T/2:T):T,half=shared?T/2:T;
+      const offset=st.cols.slice(0,ci).reduce((s,c)=>s+c.w,0),at=offset+col.w/2;
+      make('netNear','上方淨高 · 第'+(ci+1)+'區',1,a.h-m.v-nearThick-half,m.v-a.h+nearThick,tv-half,at);
+      make('netFar','下方淨高 · 第'+(ci+1)+'區',-1,b.h+m.v-farThick-half,tv+half,m.v+b.h-farThick,at);
+    }
+  }
+  return choices.filter(a=>Number.isFinite(a.value));
+}
+function mActiveMeasure(){const c=mMeasureChoices();if(!c.length)return null;const axis=c[0].axis;return c.find(a=>a.id===precision.metric[axis])||c[0];}
+const mLegacyOperationData=mOperationData,mLegacyOffset=mOperationOffset,mLegacySync=mOperationSync;
+mOperationData=function(){const d=mLegacyOperationData(),a=mActiveMeasure();if(!d||!a)return d;return{...d,label:a.label,value:a.value,note:'以板材實際邊界量測 · '+(a.axis==='x'?'向右為 X 正向':'向上為 Y 正向')+' · 任意位置拖動微調'};};
+mOperationOffset=function(raw){const a=mActiveMeasure();if(!a){mLegacyOffset(raw);return;}if(raw==null||!String(raw).trim()){mobileUI.invalidOffset=true;return;}const n=Number(raw);if(!Number.isFinite(n)||n<0){mobileUI.invalidOffset=true;toast('請輸入不小於 0 的尺寸');return;}const r=cpdTarget(),v=(n-a.c)/a.sign;if(v<r.m.lo-.01||v>r.m.hi+.01){mobileUI.invalidOffset=true;toast('此尺寸超出可移動範圍');mSync();return;}mOperationPoint(a.axis==='x'?{x:v,y:cur.y}:{x:cur.x,y:v});};
+mOperationSync=function(){mLegacySync();const op=mobileUI.op;if(!op)return;const a=mActiveMeasure(),choices=mMeasureChoices(),select=$('#mMeasure');select.hidden=!choices.length;const sig=choices.map(x=>x.id+x.label).join('|');if(select.dataset.sig!==sig){select.dataset.sig=sig;select.innerHTML=choices.map(x=>'<option value="'+x.id+'">'+x.label+'</option>').join('');}if(a)select.value=a.id;
+  $('#mStep').value=String(precision.step);$('#mNudge').classList.toggle('m-left-hand',precision.side==='left');$('#mRulerToggle').setAttribute('aria-pressed',precision.rulers);$('#mHand').textContent=precision.side==='left'?'移到右側':'移到左側';
+  const axis=op.kind==='annmove'?'both':op.kind==='splitV'?'x':op.kind==='splitH'?'y':cpdTarget()?.m.ax;
+  for(const b of $('#mNudge').querySelectorAll('button'))b.hidden=axis==='x'?['up','down'].includes(b.dataset.nudge):axis==='y'?['left','right'].includes(b.dataset.nudge):false;
+};
+$('#mMeasure').addEventListener('change',e=>{const a=mMeasureChoices().find(a=>a.id===e.target.value);if(a)precision.metric[a.axis]=a.id;mPrecisionSave();$('#mOffset').blur();mSync();});
+$('#mStep').addEventListener('change',e=>{precision.step=Number(e.target.value);mPrecisionSave();});
+$('#mHand').onclick=()=>{precision.side=precision.side==='left'?'right':'left';mPrecisionSave();mSync();};
+$('#mRulerToggle').onclick=()=>{precision.rulers=!precision.rulers;mPrecisionSave();mSync();};
+$('#mNudge').addEventListener('click',e=>{const k=e.target.closest('[data-nudge]')?.dataset.nudge,q=mCursorPoint();if(!k||!q)return;const d=precision.step;mOperationPoint({x:q.x+(k==='left'?-d:k==='right'?d:0),y:q.y+(k==='up'?-d:k==='down'?d:0)});});
+function mPrecisionDraw(g){
+  const q=mCursorPoint();if(!q||!mobileUI.op)return;const k=S/zoom.z,col=displaySettings.selectionColor,P=[],L=(x1,y1,x2,y2)=>P.push({t:'l',x1,y1,x2,y2,c:'an',col,lw:1.1*k}),txt=(x,y,s)=>P.push({t:'t',x,y,s,c:'ant',col,a:'middle',z:12*k});
+  L(q.x-8*k,q.y,q.x+8*k,q.y);L(q.x,q.y-8*k,q.x,q.y+8*k);P.push({t:'e',cx:q.x,cy:q.y,rx:4*k,ry:4*k,c:'an',col,lw:1.2*k});
+  L(0,st.H-18*k,0,st.H);L(0,st.H,18*k,st.H);txt(-8*k,st.H+15*k,'0');
+  const a=mActiveMeasure();if(a){const at=a.at;if(a.axis==='x'){L(a.start,at,a.end,at);L(a.start,at-6*k,a.start,at+6*k);L(a.end,at-6*k,a.end,at+6*k);txt((a.start+a.end)/2,at-10*k,fmt(a.value)+' mm');}else{L(at,a.start,at,a.end);L(at-6*k,a.start,at+6*k,a.start);L(at-6*k,a.end,at+6*k,a.end);txt(at+28*k,(a.start+a.end)/2,fmt(a.value)+' mm');}}
+  g.innerHTML+=toSVG(P,k,pal).art;
+}
+
 /* Edge rulers share the SVG's world-coordinate transform and current operation. */
 function mCursorPoint(){const op=mobileUI.op;return op?.kind==='annmove'?op.railPoint:op?{x:cur.x,y:cur.y}:null;}
 function mRulerMap(){const rect=svg.getBoundingClientRect();return{rect,map:MobilePolicy.viewportMap(rect.width,rect.height,vbNow||fullVB)};}
@@ -4887,7 +4993,7 @@ function mRulersInstall(){
   });
 }
 function mRulersSync(){
-  const root=mobileUI.rulerRoot;if(!root)return;const q=mCursorPoint(),on=!!q&&!mobileUI.panel&&!!vbNow;
+  const root=mobileUI.rulerRoot;if(!root)return;const q=mCursorPoint(),on=!!q&&!mobileUI.panel&&!!vbNow&&(typeof precision==='undefined'||precision.rulers);
   root.hidden=!on;mShell.classList.toggle('has-rulers',on);if(!on){mobileUI.railDrags.clear();return;}
   const {rect,map}=mRulerMap();if(!rect.width||!rect.height)return;
   root.style.left=rect.left+'px';root.style.top=rect.top+'px';root.style.width=rect.width+'px';root.style.height=rect.height+'px';

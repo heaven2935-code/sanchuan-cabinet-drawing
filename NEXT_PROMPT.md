@@ -46,3 +46,14 @@
 ## 2026-10-14 櫃內深度與操作檢查
 
 只修改主網址與 mobile-source，獨立 elevation/ 保留原樣（已是第51版）。本輪深度視圖由 displaySettings.interiorView=flat/depth 與 CabinetDepth 驅動，depthRuntime.editing 暫停示意以精確編輯。mMenuOpen 取消未確認預覽；自動草稿跳過 previewing。執行 python scripts/build_mobile_root.py；npm --prefix mobile-source install；npm --prefix mobile-source run verify。不要將示意投影當真實深度或拆料依據。先維持可用動作／鎖定／合併與數值驗證，再做實機優化。
+
+
+## 最新交接：2026-10-14 精準操作
+
+已加入mobile-precision.js與cabinet-faces.js，主網址手機版已處理樣式遮擋、相對拖曳、方向微調、量測條件、踢腳內退與面板縫。獨立elevation/必須保留原狀。
+
+檢查先讀TODO、KNOWN_ISSUES；測試先python mobile-source/scripts/build.py，再npm --prefix mobile-source ci及npm --prefix mobile-source run verify。precision偏好命名空間sc-mobile-precision-v1；圖面新增kickSetback（50）／faceGap（4），取手縫預設25。使用者希望逐步做，照片透視計畫仍按四階段。
+
+材質需求目前先記錄：日後可上傳木皮型錄／自拍圖片，對門片、抽屜頭、桶身分別套用，抽屜頭可跳色；應先完成單片／單抽屜選取與純色，再做紋理方向、實際比例及連紋。不要宣稱這輪已上線材質功能。
+
+若使用者指定Claude另一個應用，先檢查並提出重現步驟、影響、優先級與改善建議；不得把主網址手機版修改覆蓋到elevation/。

@@ -15,7 +15,7 @@ check('all 47 original styles remain available',()=>assert.equal(engine.STYLES.l
 check('dimensions stay consistent for every style and base width',()=>{
   for(const W of [800,1800,2400,4200])for(const style of engine.STYLES){
     const base={W,H:2400,T:18,kick:100,labels:true,id:'',name:'測試'},s=engine.styleState(style,base),a=original.styleState(original.STYLES.find(x=>x.id===style.id),base);
-    assert.deepEqual(plain(s),plain(a));assert.equal(sum(s.cols,'w'),s.W);
+    const legacy=plain(s);delete legacy.kickSetback;delete legacy.faceGap;assert.deepEqual(legacy,plain(a));assert.equal(s.kickSetback,50);assert.equal(s.faceGap,4);assert.equal(sum(s.cols,'w'),s.W);
     for(const c of s.cols){assert.equal(sum(c.parts,'h'),s.H-s.kick);assert(c.w>0);for(const p of c.parts){assert(p.h>0);if(p.ins)assert.equal(sum(p.ins,'h'),p.h)}}
   }
 });

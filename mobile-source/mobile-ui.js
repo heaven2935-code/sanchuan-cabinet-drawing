@@ -95,7 +95,7 @@ function mNative(id){const e=$(id);if(!e)return;mobileUI.native.push({el:e,paren
 function mFinish(){
   const returnView=mobileUI.returnView;mobileUI.returnView=null;mobileUI.fixedEdge=null;
   if(mobileUI.op&&mobileUI.op.kind==='annmove'&&!mobileUI.op.committed)st.ann[mobileUI.op.index]=mobileUI.op.original;
-  mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
+  mobileUI.invalidOffset=false;mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
   mk.p1=mk.end=mk.mv=null;tool=null;asel=-1;sel=null;hsel=null;hgrp=[];hsolo=false;fsel=null;msel=[];multi=false;mode='edit';ucat='edit';cur.tp=null;cur.dm=null;cur.on=false;cur.fine=false;padMode='cur';lkp=null;if(returnView&&view!==returnView)setView(returnView);else render();
 }
 function mTransaction(fn){
@@ -142,18 +142,18 @@ const mFormButtons='<div class="m-form-actions"><button type="button" data-m="ca
 function mFormValuesValid(){const form=$('#mForm');if(!form)return true;for(const e of form.querySelectorAll('input[type="number"]')){const n=Number(e.value),min=e.getAttribute('min'),max=e.getAttribute('max');if(!String(e.value).trim()||!Number.isFinite(n)||!Number.isInteger(n)||(min!==null&&n<Number(min))||(max!==null&&n>Number(max))){toast('請檢查數值，輸入允許範圍內的整數');e.focus();return false;}}return true;}
 function mOverall(){
   const fr=isFree();
-  mOpenSheet('整體尺寸 · mm',`<form id="mForm"><div class="m-form-grid">${mField('mW','總寬',st.W,st.cols?st.cols.length*MIN:100,MAXW)}${mField('mH','總高',st.H,150,MAXH)}${mField('mT','板厚',st.T||18,6,40)}${fr?'':mField('mK','踢腳板',st.kick||0,0,st.H-MIN)}</div><p class="m-sheet-note">${fr?'修改總寬與總高會按比例調整現有板線的位置與長度。':'修改整體尺寸會同步調整各區配置。'}圖面尺寸以公釐（mm）表示。</p>${mFormButtons}</form>`,'overall');
-  mobileUI.submit=()=>{const w=Number($('#mW').value),h=Number($('#mH').value),t=Number($('#mT').value),k=$('#mK')?.value;mTransaction(()=>{if(fr){const sx=w/st.W,sy=h/st.H;st.ln.forEach(l=>{l.x1=Math.round(l.x1*sx);l.x2=Math.round(l.x2*sx);l.z1=Math.round(l.z1*sy);l.z2=Math.round(l.z2*sy)});(st.cl||[]).forEach(c=>{c.x*=sx;c.z*=sy});st.W=w;st.H=h;st.T=t;freeFix(st);}else{applyDim({k:'W'},w);applyDim({k:'H'},h);applyDim({k:'K'},k);st.T=t;fixAll(st);}});mCloseSheet(true);toast('整體尺寸已套用');};
+  mOpenSheet('整體尺寸 · mm',`<form id="mForm"><div class="m-form-grid">${mField('mW','總寬',st.W,st.cols?st.cols.length*MIN:100,MAXW)}${mField('mH','總高',st.H,150,MAXH)}${mField('mT','板厚',st.T||18,6,40)}${fr?'':mField('mK','踢腳高度',st.kick||0,0,st.H-MIN)+mField('mKS','踢腳內退',st.kickSetback??50,0,300)+mField('mGap','門片／抽屜總縫寬',st.faceGap??4,0,20)}</div><p class="m-sheet-note">${fr?'修改總寬與總高會按比例調整現有板線的位置與長度。':'修改整體尺寸會同步調整各區配置。'}圖面尺寸以公釐（mm）表示。踢腳內退以桶身前緣為基準，0 為齊平；門縫為兩片面板間總縫寬。</p>${mFormButtons}</form>`,'overall');
+  mobileUI.submit=()=>{const w=Number($('#mW').value),h=Number($('#mH').value),t=Number($('#mT').value),k=$('#mK')?.value;mTransaction(()=>{if(fr){const sx=w/st.W,sy=h/st.H;st.ln.forEach(l=>{l.x1=Math.round(l.x1*sx);l.x2=Math.round(l.x2*sx);l.z1=Math.round(l.z1*sy);l.z2=Math.round(l.z2*sy)});(st.cl||[]).forEach(c=>{c.x*=sx;c.z*=sy});st.W=w;st.H=h;st.T=t;freeFix(st);}else{applyDim({k:'W'},w);applyDim({k:'H'},h);applyDim({k:'K'},k);st.T=t;st.kickSetback=Number($('#mKS').value);st.faceGap=Number($('#mGap').value);fixAll(st);}});mCloseSheet(true);toast('整體尺寸已套用');};
 }
 function mCellSettings(){
   const o=selObj();if(!o)return;const inV=view==='in',x=inV?o.s:o.p,L=inV?o.p.ins:o.col.parts;
   const opts=inV?[['empty','空格'],['shelf','層板'],['rod','吊衣桿'],['idrawer','內抽']]:[['empty','空櫃'],['door','門片'],['drawer','抽屜'],['open','層板'],['blank','封板']];
   const type=(x.t==='open'||x.t==='shelf')&&!x.n?'empty':x.t;
   mOpenSheet('格子設定',`<form id="mForm"><label class="m-field">這格要做什麼<select id="mType">${opts.map(([v,l])=>`<option value="${v}"${type===v?' selected':''}>${l}</option>`).join('')}</select></label><div class="m-form-grid">${!o.col.lock?mField('mCW','區寬 · mm',o.col.w,MIN,MAXW):''}${L.length>1?mField('mPH','格高 · mm',x.h,MIN,st.H):''}</div><div id="mTypeFields"></div><p class="m-sheet-note">區寬與格高調整時，由相鄰未鎖定區域補差額。只有一格時，高度請從「整體尺寸」修改。</p>${mFormButtons}</form>`,'cell');
-  const fill=()=>{const t=$('#mType').value;let h='';if(t==='door')h=`<div class="m-form-grid"><label class="m-field">門片<select id="mN"><option value="1"${x.n===1?' selected':''}>單開門</option><option value="2"${x.n===2?' selected':''}>對開門</option></select></label><label class="m-field">開門方向<select id="mHinge"><option value="L"${o.p.hinge!=='R'?' selected':''}>左鉸鏈</option><option value="R"${o.p.hinge==='R'?' selected':''}>右鉸鏈</option></select></label></div>`;else if(['open','shelf','drawer','idrawer'].includes(t))h=mField('mN',t==='open'||t==='shelf'?'層板片數':'抽屜數量',x.t===t?x.n:1,t==='open'||t==='shelf'?0:1,10);if(!inV&&(t==='door'||t==='drawer'))h+=`<label class="m-field">把手<select id="mPull"><option value="bar"${!o.p.pull?' selected':''}>一般把手</option><option value="groove"${o.p.pull==='groove'?' selected':''}>取手縫</option><option value="none"${o.p.pull==='none'?' selected':''}>無把手</option></select></label>`;$('#mTypeFields').innerHTML=h;};fill();$('#mType').addEventListener('change',fill);
+  const fill=()=>{const t=$('#mType').value;let h='';if(t==='door')h=`<div class="m-form-grid"><label class="m-field">門片<select id="mN"><option value="1"${x.n===1?' selected':''}>單開門</option><option value="2"${x.n===2?' selected':''}>對開門</option></select></label><label class="m-field">開門方向<select id="mHinge"><option value="L"${o.p.hinge!=='R'?' selected':''}>左鉸鏈</option><option value="R"${o.p.hinge==='R'?' selected':''}>右鉸鏈</option></select></label></div>`;else if(['open','shelf','drawer','idrawer'].includes(t))h=mField('mN',t==='open'||t==='shelf'?'層板片數':'抽屜數量',x.t===t?x.n:1,t==='open'||t==='shelf'?0:1,10);if(!inV&&(t==='door'||t==='drawer'))h+=`<label class="m-field">把手<select id="mPull"><option value="bar"${!o.p.pull?' selected':''}>一般把手</option><option value="groove"${o.p.pull==='groove'?' selected':''}>取手縫</option><option value="none"${o.p.pull==='none'?' selected':''}>無把手</option></select></label>`;if(!inV&&(t==='door'||t==='drawer'))h+=mField('mGroove','取手縫寬 · mm',o.p.gw??25,5,120);$('#mTypeFields').innerHTML=h;};fill();$('#mType').addEventListener('change',fill);
   mobileUI.submit=()=>{
-    const v={t:$('#mType').value,w:$('#mCW')?.value,h:$('#mPH')?.value,n:$('#mN')?.value,hinge:$('#mHinge')?.value,pull:$('#mPull')?.value};
-    mTransaction(()=>{if(v.w!=null)fieldChange('cw',v.w);if(v.h!=null)fieldChange('ph',v.h);const now=selObj(),c=inV?now.s:now.p;if(v.t==='empty')act('clear');else if(c.t!==v.t)act('type',v.t);if(v.n!=null){if(v.t==='door')act('n',v.n);else fieldChange('n',v.n)}if(v.hinge)act('hinge',v.hinge);if(v.pull)pullSet('pull',v.pull);});mCloseSheet(true);toast('格子設定已套用');
+    const v={t:$('#mType').value,w:$('#mCW')?.value,h:$('#mPH')?.value,n:$('#mN')?.value,hinge:$('#mHinge')?.value,pull:$('#mPull')?.value,gw:$('#mGroove')?.value};
+    mTransaction(()=>{if(v.w!=null)fieldChange('cw',v.w);if(v.h!=null)fieldChange('ph',v.h);const now=selObj(),c=inV?now.s:now.p;if(v.t==='empty')act('clear');else if(c.t!==v.t)act('type',v.t);if(v.n!=null){if(v.t==='door')act('n',v.n);else fieldChange('n',v.n)}if(v.hinge)act('hinge',v.hinge);if(v.pull)pullSet('pull',v.pull);if(v.pull==='groove')selObj().p.gw=Number(v.gw);});mCloseSheet(true);toast('格子設定已套用');
   };
 }
 function mSettings(){const s=mState();if(s.kind==='annotation'){mAnnSettings();return}if(s.kind==='freeLine'||s.kind==='freeCell'){mOpenSheet('自由繪圖設定','<div id="mNative" class="m-native-host"></div>'+mRow('applyNative','完成','settings'),'native');render();mNative('#editor');return}mCellSettings();}
@@ -168,16 +168,16 @@ function mBegin(kind){
   if(!cpd){mobileUI.op=null;mSync();return;}mobileUI.hint=false;render();
 }
 function mOperationData(){const o=mobileUI.op;if(!o)return null;if(o.kind==='annmove')return{title:'移動標註',note:'在圖上拖曳標註，位置對了按「確定」。',label:'',value:null};if(o.kind==='move'){const r=cpdTarget();if(!r)return null;const m=r.m,dd=r.tv-m.v;return{title:'移動分隔線',note:(m.ax==='x'?'左 ':'上 ')+fmt((m.a0||0)+dd)+' ／ '+(m.ax==='x'?'右 ':'下 ')+fmt((m.b0||0)-dd)+' mm',label:m.ax==='x'?'距左':'距上',value:m.a0==null?null:(m.a0+dd)};}const r=splitPlan(o.kind==='splitV'),p=r.pl;return p?{title:o.kind==='splitV'?'直分隔':'橫分隔',note:(p.v?'左 ':'上 ')+p.a+' ／ '+(p.v?'右 ':'下 ')+p.b+' mm · 可拖動預覽線',label:p.v?'距左':'距上',value:p.a}: {title:o.kind==='splitV'?'直分隔':'橫分隔',note:'把預覽線移到可分隔的區域內。',label:'位置',value:null};}
-function mOperationSync(){const d=mOperationData();if(!d)return;$('#mOperationTitle').innerHTML=esc(d.title)+'<span id="mOperationNote">'+esc(d.note)+'</span>';$('#mOffsetLabel').textContent=d.label;$('.m-op-label').hidden=d.value==null;if(d.value!=null&&document.activeElement!==$('#mOffset'))$('#mOffset').value=Math.round(d.value);}
+function mOperationSync(){const d=mOperationData();if(!d)return;$('#mOperationTitle').innerHTML=esc(d.title)+'<span id="mOperationNote">'+esc(d.note)+'</span>';$('#mOffsetLabel').textContent=d.label;$('.m-op-label').hidden=d.value==null;if(d.value!=null&&document.activeElement!==$('#mOffset'))$('#mOffset').value=fmt(d.value);}
 function mOperationOffset(raw){const o=mobileUI.op;if(!o)return;if(raw==null||!String(raw).trim())return;const n=Number(raw);if(!Number.isFinite(n))return;if(o.kind==='move'){const r=cpdTarget();if(!r||r.m.a0==null)return;const m=r.m,v=clamp(m.v-m.a0+n,m.lo,m.hi);if(m.ax==='x')cur.x=v;else cur.y=v;}else{const r=splitPlan(o.kind==='splitV'),p=r.pl;if(!p)return;const v=MobilePolicy.clampOffset(n,p.a+p.b,MIN);if(v==null)return;if(o.kind==='splitV')cur.x=p.c.x0+v;else cur.y=p.top+v;}cur.nos=true;mSync();}
-function mOperationPoint(q){const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(!o.origin)o.origin={...q};o.railPoint={x:Math.round(q.x),y:Math.round(q.y)};const a=JSON.parse(JSON.stringify(o.original));moveAnn(a,o.railPoint.x-o.origin.x,o.railPoint.y-o.origin.y);st.ann[o.index]=a;render();return;}if(o.kind==='move'){const m=mvInfo();if(!m)return;cur.x=Math.round(q.x);cur.y=Math.round(q.y);if(m.ax==='x')cur.x=clamp(cur.x,m.lo,m.hi);else cur.y=clamp(cur.y,m.lo,m.hi);}else{const b=o.bounds;if(b){cur.x=clamp(Math.round(q.x),b.x0+MIN,b.x1-MIN);cur.y=clamp(Math.round(q.y),b.y0+MIN,b.y1-MIN);}else{cur.x=Math.round(q.x);cur.y=Math.round(q.y);}}cur.nos=true;cur.tp=null;mSync();}
-function mConfirmOperation(){const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(snapS()!==o.before)pushRaw(o.before);o.committed=true;mFinish();toast('標註位置已更新');return;}cpdGo();if(cpd)return;mFinish();}
+function mOperationPoint(q){mobileUI.invalidOffset=false;const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(!o.origin)o.origin={...q};o.railPoint={x:Math.round(q.x),y:Math.round(q.y)};const a=JSON.parse(JSON.stringify(o.original));moveAnn(a,o.railPoint.x-o.origin.x,o.railPoint.y-o.origin.y);st.ann[o.index]=a;render();return;}if(o.kind==='move'){const m=mvInfo();if(!m)return;const snap=v=>m.t==='g'?Math.round(v*2)/2:Math.round(v);cur.x=snap(q.x);cur.y=snap(q.y);if(m.ax==='x')cur.x=clamp(cur.x,m.lo,m.hi);else cur.y=clamp(cur.y,m.lo,m.hi);}else{const b=o.bounds;if(b){cur.x=clamp(Math.round(q.x),b.x0+MIN,b.x1-MIN);cur.y=clamp(Math.round(q.y),b.y0+MIN,b.y1-MIN);}else{cur.x=Math.round(q.x);cur.y=Math.round(q.y);}}cur.nos=true;cur.tp=null;mSync();}
+function mConfirmOperation(){if(mobileUI.invalidOffset){toast('請先修正尺寸或使用微調鍵重新定位');return;}const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(snapS()!==o.before)pushRaw(o.before);o.committed=true;mFinish();toast('標註位置已更新');return;}cpdGo();if(cpd)return;mFinish();}
 function mPreview(){
   let g=svg.querySelector('#mobile-preview');if(!g){g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='mobile-preview';g.setAttribute('pointer-events','none');svg.appendChild(g)}
   if(mobileUI.op&&cpd&&mobileUI.op.kind!=='annmove'){const P=[],k=S/zoom.z;cpdDraw(P,curSnap(),k);g.innerHTML=toSVG(P,k,pal).art;}
   else if(mobileUI.preview){g.innerHTML=toSVG(annPrims([{a:mobileUI.preview,i:-1}],S),S,pal).art;}
   else g.innerHTML='';
-  mRulersSync();
+  mPrecisionDraw(g);mRulersSync();
 }
 function mToolOpen(){mOpenSheet('標註與量尺','<div class="m-menu-grid">'+[['line','直線','line'],['arrow','箭頭','arrow'],['rect','方框','rect'],['circle','圓形','circle'],['dim','量尺','size'],['text','文字','text'],['pen','畫筆','pen'],['hl','螢光筆','hl']].map(x=>mGridButton('tool:'+x[0],x[1],x[2])).join('')+'</div><div class="m-tool-colors">'+['#147c88','#c8372d','#1f66b3','#203038','#ee7d1c'].map(c=>`<button data-m="color:${c}" style="background:${c}" aria-label="顏色 ${c}" aria-pressed="${mobileUI.color===c}"></button>`).join('')+'</div><p class="m-sheet-note">標註不會改變櫃體配置。量尺使用圖面比例計算。</p>','tools');}
 function mStartTool(k){mCloseSheet(false);mFinish();mobileUI.tool=k;mobileUI.first=null;mobileUI.preview=null;mobileUI.hint=false;mode='mark';tool=null;render();}
@@ -258,7 +258,7 @@ function mOnDown(e){
   const p={x:e.clientX,y:e.clientY};mobileUI.pointers.set(e.pointerId,p);try{svg.setPointerCapture(e.pointerId)}catch(_){}
   if(mobileUI.pointers.size===2){const p=[...mobileUI.pointers.values()],mid={clientX:(p[0].x+p[1].x)/2,clientY:(p[0].y+p[1].y)/2};mobileUI.gesture={pinch:true,dist:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),z:zoom.z,anchor:pt(mid),moved:true};mobileUI.preview=null;mSync();return;}
   const q=pt(e);mobileUI.gesture={x:e.clientX,y:e.clientY,q,inv:inv(),cx:zoom.cx,cy:zoom.cy,moved:false,el:e.target,points:[[Math.round(q.x),Math.round(q.y)]]};
-  if(mobileUI.op&&mobileUI.op.kind==='annmove')mobileUI.op.grab={pointer:q,cursor:{...mobileUI.op.railPoint}};
+  if(mobileUI.op)mobileUI.op.grab={pointer:q,cursor:{...mCursorPoint()}};
 }
 function mOnMove(e){
   if(bgCal||isFree()&&mode==='draw'&&mobileUI.freeDrawing)return;
@@ -267,7 +267,7 @@ function mOnMove(e){
   if(g.pinch&&mobileUI.pointers.size===2){const p=[...mobileUI.pointers.values()],mx=(p[0].x+p[1].x)/2,my=(p[0].y+p[1].y)/2,z=g.z*Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)/Math.max(1,g.dist);zoomAt(z,g.anchor,mx,my);mPreview();return;}
   if(g.pinch)return;const moved=Math.hypot(e.clientX-g.x,e.clientY-g.y)>5;if(moved)g.moved=true;
   const q=pt(e);
-  if(mobileUI.op){if(g.moved){const a=mobileUI.op.grab;mOperationPoint(mobileUI.op.kind==='annmove'&&a?{x:a.cursor.x+q.x-a.pointer.x,y:a.cursor.y+q.y-a.pointer.y}:q);}return;}
+  if(mobileUI.op){if(g.moved){const a=mobileUI.op.grab;mOperationPoint(a?{x:a.cursor.x+q.x-a.pointer.x,y:a.cursor.y+q.y-a.pointer.y}:q);}return;}
   if(mobileUI.tool){if(!g.moved)return;g.points.push([Math.round(q.x),Math.round(q.y)]);mobileUI.preview=mMakeAnn(mobileUI.tool,mobileUI.first||g.q,q,g.points);mPreview();return;}
   if(g.moved){const p=pt(e,g.inv);zoom.m=true;zoom.cx=g.cx+g.q.x-p.x;zoom.cy=g.cy+g.q.y-p.y;applyView();mPreview();}
 }
@@ -278,7 +278,7 @@ function mOnUp(e){
   if(!g)return;if(g.pinch){if(!mobileUI.pointers.size)mobileUI.gesture=null;return;}
   mobileUI.gesture=null;if(e.type==='pointercancel'){mobileUI.preview=null;mSync();return;}
   const q=pt(e);
-  if(mobileUI.op){if(!g.moved&&mobileUI.op.kind!=='annmove')mOperationPoint(q);return;}
+  if(mobileUI.op){/* Relative dragging leaves the cursor fixed on a simple tap. */return;}
   if(mobileUI.tool&&g.moved){if(mobileUI.tool==='text'){mTextAt(q);return;}const a=mMakeAnn(mobileUI.tool,mobileUI.first||g.q,q,g.points);mAnn(a);return;}
   if(!g.moved){const el=document.elementFromPoint(e.clientX,e.clientY)||g.el;mTap(q,el);}
 }

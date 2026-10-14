@@ -56,3 +56,11 @@
 ## 2026-10-14 櫃內深度與操作檢查
 
 cabinet-depth.js：櫃內固定視角投影、開口裁切、板面陰影，以及自由線與標註的點選距離。depthRuntime 管理編輯暫停、基準外框及未確認預覽。mobile-ui.js：櫃內平面／深度切換、平面編輯後恢復、精確毫米、數值驗證與原生板線拖曳。ui-policy.js：合併、鎖定及可用動作判斷。tests/dom-harness.cjs/audit.cjs 執行完整程式與真實 DOM 事件，tests/depth.cjs 驗證投影；测试依賴只供開發。
+
+
+## 2026-10-14 精準微調與實尺寸顯示
+
+- `mobile-source/mobile-precision.js`：相對拖曳、1/5/10 mm 微調、左右手位置、量測條件、原點與量測邊界。局部淨尺寸依既有模型實際板面扣除；內部共用層板扣半板厚，獨立桶身各扣完整側板。尺規改為可選輔助，預設收起。
+- `mobile-source/cabinet-faces.js`：實際門／抽屜總縫寬、縮放簡化與踢腳凹入陰影提示。門縫與裝飾不改選取範圍。
+- `mobile-source/scripts/build.py`：持久化 kickSetback / faceGap、取手縫預設25、樣式面板移除隱藏桌面錨點、DXF 面板邊線圖層。
+- `mobile-source/tests/precision.cjs`：完整 DOM 流程核對淨尺寸、微調、相對拖曳、原點、設定、取消、復原與輸入錯誤。
