@@ -37,7 +37,7 @@ function mVoiceOpenSetup(useSetup=false){
   const a=useSetup&&voiceUI.setup?voiceUI.setup:{x:VoiceMeasure.fmt(seed.x),y:VoiceMeasure.fmt(st.H-seed.y),lineType:'line',color:mobileUI.color};
   voiceUI.setup=a;voiceUI.picking=false;
   const field=(id,label,value,max)=>`<label class="m-field">${label}<input id="${id}" type="number" inputmode="decimal" min="0" max="${max}" step="0.01" required value="${esc(String(value))}"></label>`;
-  mOpenSheet('連續丈量 · 文字口令驗算',`<form id="mVoiceSetupForm"><div class="m-form-grid">${field('mVoiceX','起點 X · 距左 mm',a.x,st.W)}${field('mVoiceY','起點 Y · 離底 mm',a.y,st.H)}</div><button type="button" id="mVoicePick" class="m-row-action">${mIcon('mark')}<span>在圖面點選起點</span></button><label class="m-field">線型<select id="mVoiceLine">${[['line','直線＋尺寸'],['dashed','虛線＋尺寸'],['arrow','箭頭＋尺寸'],['dim','量尺＋尺寸']].map(([v,t])=>`<option value="${v}"${a.lineType===v?' selected':''}>${t}</option>`).join('')}</select></label><label class="m-field">線條顏色<input id="mVoiceColor" type="color" value="${esc(a.color)}"></label><p class="m-sheet-note">本次單位固定 mm。原點在圖面左下角：X 向右、Y 向上。起點與線段必須在目前 ${st.W} × ${st.H} mm 範圍內，不自動擴圖或截短。</p><p class="m-sheet-note">這一階段使用文字驗算，尚未收音。輸入「往上1200」→「確認」，再繼續下一段；也可輸入完整「往上1200確認」。支援取消、復原、暫停、繼續與結束。</p><div class="m-form-actions"><button type="button" data-m="cancelForm">取消</button><button type="button" id="mVoiceBegin" class="m-confirm">開始文字丈量</button></div></form>`,'voiceSetup');
+  mOpenSheet('連續丈量 · 起點與線型',`<form id="mVoiceSetupForm"><div class="m-form-grid">${field('mVoiceX','起點 X · 距左 mm',a.x,st.W)}${field('mVoiceY','起點 Y · 離底 mm',a.y,st.H)}</div><button type="button" id="mVoicePick" class="m-row-action">${mIcon('mark')}<span>在圖面點選起點</span></button><label class="m-field">線型<select id="mVoiceLine">${[['line','直線＋尺寸'],['dashed','虛線＋尺寸'],['arrow','箭頭＋尺寸'],['dim','量尺＋尺寸']].map(([v,t])=>`<option value="${v}"${a.lineType===v?' selected':''}>${t}</option>`).join('')}</select></label><label class="m-field">線條顏色<input id="mVoiceColor" type="color" value="${esc(a.color)}"></label><p class="m-sheet-note">本次單位固定 mm。原點在圖面左下角：X 向右、Y 向上。起點與線段必須在目前 ${st.W} × ${st.H} mm 範圍內，不自動擴圖或截短。</p><p class="m-sheet-note">可直接使用文字口令；開始丈量後可設定語音服務並啟動收音。輸入「往上1200」→「確認」，再繼續下一段；也可輸入完整「往上1200確認」。支援取消、復原、暫停、繼續與結束。</p><div class="m-form-actions"><button type="button" data-m="cancelForm">取消</button><button type="button" id="mVoiceBegin" class="m-confirm">開始丈量</button></div></form>`,'voiceSetup');
   const read=()=>({x:$('#mVoiceX').value,y:$('#mVoiceY').value,lineType:$('#mVoiceLine').value,color:$('#mVoiceColor').value});
   $('#mVoicePick').onclick=()=>{voiceUI.setup=read();mCloseSheet(false);voiceUI.picking=true;voiceUI.message='點圖面設定起點；可拖圖或雙指縮放。';mSync();};
   $('#mVoiceBegin').onclick=()=>mVoiceBegin(read());
@@ -95,7 +95,7 @@ function mVoiceSync(){
   const live=mVoiceLive(),picking=voiceUI.picking,s=voiceUI.session;
   mShell.classList.toggle('has-voice',live||picking);voiceDock.hidden=!live&&!picking;
   if(!live&&!picking)return;
-  $('#mVoiceStatus').textContent=picking?'點選丈量起點':'文字丈量 · '+({ready:'待命',pending:'待確認',paused:'暫停'}[s.status]||'');
+  $('#mVoiceStatus').textContent=picking?'點選丈量起點':'連續丈量 · '+({ready:'待命',pending:'待確認',paused:'暫停'}[s.status]||'');
   $('#mVoicePoint').textContent=live?'已確認 '+s.segments.length+' 段 · 目前終點 X '+VoiceMeasure.fmt(s.point.x)+'／Y '+VoiceMeasure.fmt(s.bounds.height-s.point.y)+' mm':'';
   $('#mVoiceMessage').textContent=voiceUI.message;
   $('#mVoiceCommandForm').hidden=$('.m-voice-controls').hidden=picking;

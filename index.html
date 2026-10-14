@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>三川工方｜手機繪圖</title>
-<link rel="icon" type="image/svg+xml" href="./logo.svg?v=voice-core-20261014">
-<link rel="apple-touch-icon" href="./icon-180.png?v=voice-core-20261014">
-<link rel="manifest" href="./manifest.webmanifest?v=voice-core-20261014">
+<link rel="icon" type="image/svg+xml" href="./logo.svg?v=voice-audio-20261014">
+<link rel="apple-touch-icon" href="./icon-180.png?v=voice-audio-20261014">
+<link rel="manifest" href="./manifest.webmanifest?v=voice-audio-20261014">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1540,6 +1540,14 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
 #mShell #mVoiceDock button:disabled{opacity:.4;cursor:default}
 .m-voice-stage-note{margin:7px 0 0}.m-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(orientation:landscape) and (max-height:540px){#mVoiceDock{max-height:calc(100dvh - 60px - env(safe-area-inset-bottom,0px));max-width:550px;padding:6px 10px}#mVoiceMessage{margin:2px 0 5px}.m-voice-stage-note{margin:3px 0 0}}
+.m-voice-audio{border-top:1px solid var(--line);padding-top:6px;margin-top:6px}
+.m-voice-audio details{max-height:35vh;overflow:auto}
+.m-voice-audio summary{cursor:pointer;font-size:12px;padding:6px 0}
+.m-voice-audio input:not([type=checkbox]),.m-voice-audio select{font-size:16px;width:100%;box-sizing:border-box}
+.m-voice-audio-actions{display:flex;gap:6px;margin-top:6px}
+.m-voice-audio-actions button{flex:1;min-height:36px}
+.m-voice-consent{display:flex;gap:8px;align-items:center;font-size:12px}
+#mVoiceAudioStatus{font-size:12px;margin:6px 0 0}
 </style>
 <script>(function(root){
   'use strict';
@@ -4915,7 +4923,7 @@ function mDisplayOpen(){
     othCache.clear();mCloseSheet(true);toast('圖面顯示已更新');
   };
 }
-function mAddOpen(){const c=!isFree()?locCell(mCellCenter()):null,x=c&&(c.s||c.p),L=c&&(c.s?c.p.ins:c.col.parts),v=c&&view==='out'&&!c.col.lock&&c.col.w>=2*MIN&&st.cols.length<20,h=x&&x.h>=2*MIN&&L.length<(c.s?8:12);mOpenSheet('新增內容','<div class="m-menu-grid">'+(v?mGridButton('splitV','直分隔','vertical'):'')+(h?mGridButton('splitH','橫分隔','horizontal'):'')+mGridButton('voice','口令丈量','mic',true)+mGridButton('mark','標註／量尺','mark')+mGridButton('photo','照片底圖','photo')+(pj.sheets.length<20?mGridButton('addpage','新增分頁','new'):'')+(isFree()?mGridButton('freeTools','畫板與五金','pen'):mGridButton('toFree','自由繪圖','pen'))+'</div><p class="m-sheet-note">先點一格再分隔，可以直接指定要編輯的區域。口令丈量目前為文字驗算，尚未收音。</p>','add');}
+function mAddOpen(){const c=!isFree()?locCell(mCellCenter()):null,x=c&&(c.s||c.p),L=c&&(c.s?c.p.ins:c.col.parts),v=c&&view==='out'&&!c.col.lock&&c.col.w>=2*MIN&&st.cols.length<20,h=x&&x.h>=2*MIN&&L.length<(c.s?8:12);mOpenSheet('新增內容','<div class="m-menu-grid">'+(v?mGridButton('splitV','直分隔','vertical'):'')+(h?mGridButton('splitH','橫分隔','horizontal'):'')+mGridButton('voice','口令丈量','mic',true)+mGridButton('mark','標註／量尺','mark')+mGridButton('photo','照片底圖','photo')+(pj.sheets.length<20?mGridButton('addpage','新增分頁','new'):'')+(isFree()?mGridButton('freeTools','畫板與五金','pen'):mGridButton('toFree','自由繪圖','pen'))+'</div><p class="m-sheet-note">先點一格再分隔，可以直接指定要編輯的區域。口令丈量支援文字；語音試用需先設定辨識服務。</p>','add');}
 function mPages(){mOpenSheet('分頁',pj.sheets.map((x,i)=>mRow('page:'+i,shName(i),'files',i===pj.cur?'目前':'')).join('')+(pj.sheets.length<20?mRow('addpage','新增分頁','plus'):'')+mRow('pageRename','修改目前分頁名稱','text')+mRow('pageDuplicate','複製目前分頁','copy'),'pages');}
 function mMoreOpen(){
   const rows=[];
@@ -5264,7 +5272,7 @@ function mVoiceOpenSetup(useSetup=false){
   const a=useSetup&&voiceUI.setup?voiceUI.setup:{x:VoiceMeasure.fmt(seed.x),y:VoiceMeasure.fmt(st.H-seed.y),lineType:'line',color:mobileUI.color};
   voiceUI.setup=a;voiceUI.picking=false;
   const field=(id,label,value,max)=>`<label class="m-field">${label}<input id="${id}" type="number" inputmode="decimal" min="0" max="${max}" step="0.01" required value="${esc(String(value))}"></label>`;
-  mOpenSheet('連續丈量 · 文字口令驗算',`<form id="mVoiceSetupForm"><div class="m-form-grid">${field('mVoiceX','起點 X · 距左 mm',a.x,st.W)}${field('mVoiceY','起點 Y · 離底 mm',a.y,st.H)}</div><button type="button" id="mVoicePick" class="m-row-action">${mIcon('mark')}<span>在圖面點選起點</span></button><label class="m-field">線型<select id="mVoiceLine">${[['line','直線＋尺寸'],['dashed','虛線＋尺寸'],['arrow','箭頭＋尺寸'],['dim','量尺＋尺寸']].map(([v,t])=>`<option value="${v}"${a.lineType===v?' selected':''}>${t}</option>`).join('')}</select></label><label class="m-field">線條顏色<input id="mVoiceColor" type="color" value="${esc(a.color)}"></label><p class="m-sheet-note">本次單位固定 mm。原點在圖面左下角：X 向右、Y 向上。起點與線段必須在目前 ${st.W} × ${st.H} mm 範圍內，不自動擴圖或截短。</p><p class="m-sheet-note">這一階段使用文字驗算，尚未收音。輸入「往上1200」→「確認」，再繼續下一段；也可輸入完整「往上1200確認」。支援取消、復原、暫停、繼續與結束。</p><div class="m-form-actions"><button type="button" data-m="cancelForm">取消</button><button type="button" id="mVoiceBegin" class="m-confirm">開始文字丈量</button></div></form>`,'voiceSetup');
+  mOpenSheet('連續丈量 · 起點與線型',`<form id="mVoiceSetupForm"><div class="m-form-grid">${field('mVoiceX','起點 X · 距左 mm',a.x,st.W)}${field('mVoiceY','起點 Y · 離底 mm',a.y,st.H)}</div><button type="button" id="mVoicePick" class="m-row-action">${mIcon('mark')}<span>在圖面點選起點</span></button><label class="m-field">線型<select id="mVoiceLine">${[['line','直線＋尺寸'],['dashed','虛線＋尺寸'],['arrow','箭頭＋尺寸'],['dim','量尺＋尺寸']].map(([v,t])=>`<option value="${v}"${a.lineType===v?' selected':''}>${t}</option>`).join('')}</select></label><label class="m-field">線條顏色<input id="mVoiceColor" type="color" value="${esc(a.color)}"></label><p class="m-sheet-note">本次單位固定 mm。原點在圖面左下角：X 向右、Y 向上。起點與線段必須在目前 ${st.W} × ${st.H} mm 範圍內，不自動擴圖或截短。</p><p class="m-sheet-note">可直接使用文字口令；開始丈量後可設定語音服務並啟動收音。輸入「往上1200」→「確認」，再繼續下一段；也可輸入完整「往上1200確認」。支援取消、復原、暫停、繼續與結束。</p><div class="m-form-actions"><button type="button" data-m="cancelForm">取消</button><button type="button" id="mVoiceBegin" class="m-confirm">開始丈量</button></div></form>`,'voiceSetup');
   const read=()=>({x:$('#mVoiceX').value,y:$('#mVoiceY').value,lineType:$('#mVoiceLine').value,color:$('#mVoiceColor').value});
   $('#mVoicePick').onclick=()=>{voiceUI.setup=read();mCloseSheet(false);voiceUI.picking=true;voiceUI.message='點圖面設定起點；可拖圖或雙指縮放。';mSync();};
   $('#mVoiceBegin').onclick=()=>mVoiceBegin(read());
@@ -5322,7 +5330,7 @@ function mVoiceSync(){
   const live=mVoiceLive(),picking=voiceUI.picking,s=voiceUI.session;
   mShell.classList.toggle('has-voice',live||picking);voiceDock.hidden=!live&&!picking;
   if(!live&&!picking)return;
-  $('#mVoiceStatus').textContent=picking?'點選丈量起點':'文字丈量 · '+({ready:'待命',pending:'待確認',paused:'暫停'}[s.status]||'');
+  $('#mVoiceStatus').textContent=picking?'點選丈量起點':'連續丈量 · '+({ready:'待命',pending:'待確認',paused:'暫停'}[s.status]||'');
   $('#mVoicePoint').textContent=live?'已確認 '+s.segments.length+' 段 · 目前終點 X '+VoiceMeasure.fmt(s.point.x)+'／Y '+VoiceMeasure.fmt(s.bounds.height-s.point.y)+' mm':'';
   $('#mVoiceMessage').textContent=voiceUI.message;
   $('#mVoiceCommandForm').hidden=$('.m-voice-controls').hidden=picking;
@@ -5359,6 +5367,163 @@ $('#mVoicePause').onclick=()=>mVoiceReceive(voiceUI.session?.status==='paused'?'
 $('#mVoiceEnd').onclick=()=>{if(voiceUI.picking){voiceUI.picking=false;mSync();}else{voiceUI.session=VoiceMeasure.transition(voiceUI.session,'結束').state;voiceUI.interim=null;mobileUI.voiceActive=false;voiceUI.epoch++;render();toast('丈量已結束，已確認線段保留。');}};
 document.addEventListener('visibilitychange',()=>{if(document.hidden){mVoiceSuspend('頁面進入背景，丈量已暫停。返回後按繼續。');mSync();}});
 window.addEventListener('pagehide',()=>mVoiceSuspend('頁面已離開，丈量已暫停。'));
+
+/* Foreground utterance capture. No recognition credentials or drawing state here. */
+const VoiceAudio=(()=>{
+  'use strict';
+  class Segmenter{
+    constructor(rate,threshold=.02){this.rate=rate;this.threshold=threshold;this.reset();}
+    reset(){this.pre=[];this.frames=[];this.total=0;this.speech=0;this.quiet=0;}
+    feed(frame){
+      const a=new Float32Array(frame),ms=a.length/this.rate*1000;
+      const rms=Math.sqrt(a.reduce((s,n)=>s+n*n,0)/a.length),loud=rms>=this.threshold;
+      if(!this.frames.length){
+        this.pre.push(a);while(this.pre.length>1&&this.pre.reduce((n,f)=>n+f.length,0)>this.rate*.25)this.pre.shift();
+        if(!loud)return null;this.frames=this.pre;this.pre=[];this.total=this.frames.reduce((n,f)=>n+f.length,0)/this.rate*1000;
+      }else{this.frames.push(a);this.total+=ms;}
+      this.speech+=loud?ms:0;this.quiet=loud?0:this.quiet+ms;
+      if(this.total>8000){this.reset();return{error:'收音超過八秒，可能環境太吵。請降低靈敏度或移近麥克風後重試。'};}
+      if(this.quiet<900)return null;
+      const frames=this.frames,valid=this.speech>=180;this.reset();return valid?{frames}:null;
+    }
+  }
+  function wav(frames,rate){
+    // Preserve native sample rate; no lossy codec or naive downsampling of numbers.
+    const n=frames.reduce((s,f)=>s+f.length,0),b=new ArrayBuffer(44+n*2),v=new DataView(b);
+    const str=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};
+    str(0,'RIFF');v.setUint32(4,36+n*2,true);str(8,'WAVE');str(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,rate,true);v.setUint32(28,rate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);str(36,'data');v.setUint32(40,n*2,true);
+    let o=44;for(const f of frames)for(const x of f){const s=Math.max(-1,Math.min(1,x));v.setInt16(o,Math.round(s*(s<0?32768:32767)),true);o+=2;}
+    return new Blob([b],{type:'audio/wav'});
+  }
+  const processor=`class MeasureCapture extends AudioWorkletProcessor{constructor(){super();this.a=new Float32Array(2048);this.n=0;}process(inputs){const a=inputs[0]?.[0];if(a)for(const x of a){this.a[this.n++]=x;if(this.n===2048){this.port.postMessage(this.a,[this.a.buffer]);this.a=new Float32Array(2048);this.n=0;}}return true;}}registerProcessor('measure-capture',MeasureCapture);`;
+  class Capture{
+    constructor(options,env=globalThis){this.o=options;this.e=env;this.active=false;this.generation=0;}
+    state(s){this.o.status?.(s);}
+    async start(){
+      this.stop();const e=this.e,g=++this.generation;this.active=true;this.busy=true;this.state('正在啟動麥克風…');
+      try{
+        if(!e.isSecureContext||!e.navigator?.mediaDevices?.getUserMedia||!e.AudioWorkletNode||!e.speechSynthesis)throw Error('此瀏覽器不支援安全收音或回讀，請使用支援的 HTTPS 瀏覽器。');
+        const AC=e.AudioContext||e.webkitAudioContext;this.ctx=new AC();await this.ctx.resume();
+        if(!this.active||g!==this.generation)return;
+        const stream=await e.navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true,autoGainControl:false},video:false});
+        if(!this.active||g!==this.generation){stream.getTracks().forEach(t=>t.stop());return;}
+        this.stream=stream;const ctx=this.ctx;
+        for(const track of stream.getAudioTracks()){track.onended=()=>this.fail('麥克風已中斷，請重新啟動收音。');track.onmute=()=>this.fail('收音被系統暫停，請返回頁面後重新啟動。');}
+        ctx.onstatechange=()=>{if(this.active&&ctx.state!=='running')this.fail('音訊被系統中斷，已保留終點。請重新啟動收音。');};
+        const url=e.URL.createObjectURL(new e.Blob([processor],{type:'text/javascript'}));
+        try{await ctx.audioWorklet.addModule(url);}finally{e.URL.revokeObjectURL(url);}
+        if(!this.active||g!==this.generation)return;
+        this.segmenter=new Segmenter(ctx.sampleRate,this.o.threshold);
+        this.node=new e.AudioWorkletNode(ctx,'measure-capture');this.source=ctx.createMediaStreamSource(stream);this.mute=ctx.createGain();this.mute.gain.value=0;
+        this.source.connect(this.node);this.node.connect(this.mute);this.mute.connect(ctx.destination);
+        this.node.port.onmessage=event=>this.frame(event.data);
+        await this.say('語音丈量已啟動。請說方向及公釐數值。');
+        if(!this.active||g!==this.generation)return;
+        this.busy=false;this.state('聆聽中 · 請說方向與長度');
+      }catch(err){if(g===this.generation)this.fail(err.name==='NotAllowedError'?'未取得麥克風權限。請在瀏覽器設定允許後再試。':err.message);}
+    }
+    frame(data){
+      if(!this.active||this.busy||Date.now()<this.settle)return;
+      const r=this.segmenter.feed(data);if(r?.error){this.fail(r.error);return;}if(r?.frames)this.turn(r.frames);
+    }
+    async turn(frames){
+      if(!this.active||this.busy)return;this.busy=true;const g=this.generation,meta=this.o.context();this.state('辨識中 · 請稍候');
+      try{
+        this.abort=new this.e.AbortController();const controller=this.abort,timer=this.e.setTimeout(()=>controller.abort(),20000);
+        let result;try{
+          const response=await this.e.fetch(this.o.endpoint+'/transcribe',{method:'POST',headers:{'Content-Type':'audio/wav',Authorization:'Bearer '+this.o.token},body:wav(frames,this.ctx.sampleRate),signal:controller.signal,credentials:'omit',redirect:'error'});
+          if(!this.active||g!==this.generation)return;
+          if(!response.ok)throw Error(({401:'試用通行碼無效。',429:'已達本次服務額度，請稍後再試。',503:'語音服務尚未設定完成。'})[response.status]||'辨識服務連線失敗，請重試。');
+          result=await response.json();
+        }finally{this.e.clearTimeout(timer);}
+        if(!this.active||g!==this.generation)return;
+        if(typeof result.text!=='string'||result.text.length>200)throw Error('辨識結果無效，請重說。');
+        const reply=this.o.transcript(result.text,meta);
+        if(!this.active||g!==this.generation)return;
+        await this.say(reply?.message||'沒有聽清楚，請重說。');
+        if(!this.active||g!==this.generation)return;
+        reply?.readBack?.();this.segmenter.reset();this.busy=false;this.state('聆聽中 · 請等回讀完再說話');
+      }catch(err){if(this.active&&g===this.generation)this.fail(err.name==='AbortError'?'辨識連線逾時，已保留終點。請重新收音並重說。':err.message);}
+    }
+    say(text){
+      const e=this.e;this.state('回讀中 · 暫不接收口令');
+      return new Promise((resolve,reject)=>{
+        const u=new e.SpeechSynthesisUtterance(text);u.lang='zh-TW';u.rate=.92;
+        const voice=e.speechSynthesis.getVoices().find(v=>/^zh[-_]TW$/i.test(v.lang));if(voice)u.voice=voice;
+        let settled=false;const done=err=>{if(settled)return;settled=true;u.onend=u.onerror=null;e.clearTimeout(timer);this.cancelSpeech=null;err?reject(err):resolve();};
+        const timer=e.setTimeout(()=>{e.speechSynthesis.cancel();done(Error('回讀未完成，請檢查聲音輸出後重新啟動。'));},20000);
+        this.cancelSpeech=()=>done(Error('收音已停止'));u.onend=()=>{this.settle=Date.now()+450;done();};u.onerror=()=>done(Error('回讀失敗，未開放語音確認。請檢查音量或耳機。'));
+        e.speechSynthesis.speak(u);
+      });
+    }
+    fail(message){this.stop();this.state(message);this.o.error?.(message);}
+    stop(){
+      this.active=false;this.busy=false;this.generation++;this.abort?.abort();this.abort=null;
+      this.cancelSpeech?.();this.e.speechSynthesis?.cancel();
+      if(this.node){this.node.port.onmessage=null;this.node.disconnect();this.node=null;}
+      this.source?.disconnect();this.mute?.disconnect();
+      this.stream?.getTracks().forEach(t=>{t.onended=t.onmute=null;t.stop();});this.stream=null;
+      if(this.ctx){this.ctx.onstatechange=null;this.ctx.close().catch(()=>{});this.ctx=null;}
+      this.segmenter?.reset();
+    }
+  }
+  return{Segmenter,wav,Capture};
+})();
+if(typeof module!=='undefined')module.exports=VoiceAudio;
+
+/* Audio adapter: capture is separate from deterministic geometry and saved data. */
+const voiceAudioUI={capture:null,handling:false,armed:null,binding:null};
+const voiceAudioPanel=document.createElement('div');voiceAudioPanel.className='m-voice-audio';
+voiceAudioPanel.innerHTML=`<details id="mVoiceConnection"><summary>語音試用設定（尚需連接服務）</summary><label class="m-field">語音服務網址<input id="mVoiceEndpoint" type="url" inputmode="url" placeholder="https://你的語音服務" autocomplete="off"></label><label class="m-field">本人試用通行碼<input id="mVoiceToken" type="password" autocomplete="off" placeholder="不是 OpenAI API 金鑰"></label><label class="m-field">收音靈敏度<select id="mVoiceSensitivity"><option value="0.012">高（小聲）</option><option value="0.02" selected>一般</option><option value="0.04">低（環境較吵）</option></select></label><p class="m-sheet-note">開始後會將每句錄音送至你設定的服務及 OpenAI 辨識，產生 API 費用。本工具後端不保存錄音；供應商處理依其政策。通行碼僅保留本頁記憶體。請先連耳機並確認音量，回讀走系統目前的聲音輸出。</p><label class="m-voice-consent"><input id="mVoiceConsent" type="checkbox">同意本次收音與雲端辨識</label></details><div class="m-voice-audio-actions"><button id="mVoiceMic" type="button">啟動語音（試用）</button><button id="mVoiceMicStop" type="button" disabled>關閉麥克風</button></div><p id="mVoiceAudioStatus" role="status" aria-live="polite">未連接語音服務；文字口令可用。</p>`;
+voiceDock.appendChild(voiceAudioPanel);
+voiceDock.querySelector('.m-voice-stage-note').textContent='文字口令可用 · 語音需設定服務，準確率待真機驗收';
+voiceDock.setAttribute('aria-label','連續口令丈量');
+const audioFingerprint=()=>JSON.stringify(voiceUI.session?.pending||null);
+const audioContext=()=>({sessionId:voiceUI.session?.id,epoch:voiceUI.epoch,pending:audioFingerprint()});
+function audioStatus(message){$('#mVoiceAudioStatus').textContent=message;$('#mVoiceMic').disabled=!!voiceAudioUI.capture?.active;$('#mVoiceMicStop').disabled=!voiceAudioUI.capture?.active;}
+function audioStop(message){voiceAudioUI.capture?.stop();voiceAudioUI.capture=null;voiceAudioUI.armed=null;voiceAudioUI.binding=null;if(message)audioStatus(message);}
+function audioReply(message){
+  const context=audioContext();return{message,readBack(){
+    if(mVoiceSame()&&context.sessionId===voiceUI.session.id&&context.epoch===voiceUI.epoch&&context.pending===audioFingerprint()&&voiceUI.session.pending&&voiceUI.session.status==='pending')voiceAudioUI.armed=context;
+  }};
+}
+function audioTranscript(text,meta){
+  if(!mVoiceSame()||document.hidden||meta.sessionId!==voiceUI.session.id||meta.epoch!==voiceUI.epoch||meta.pending!==audioFingerprint())return{message:'圖面已變更，請重說。'};
+  const command=VoiceMeasure.parse(text),armed=voiceAudioUI.armed;
+  // A same-utterance 確認 must NEVER skip the readback of a new number.
+  if(command.type==='sequence')text=command.commands[0].text;
+  if(command.type==='confirm'&&(!armed||armed.sessionId!==meta.sessionId||armed.epoch!==meta.epoch||armed.pending!==meta.pending))return audioReply('請先聽完目前方向及尺寸，再說確認。'+(voiceUI.session.pending?'往'+VoiceMeasure.names[voiceUI.session.pending.direction]+VoiceMeasure.fmt(voiceUI.session.pending.length)+'公釐。':''));
+  voiceAudioUI.armed=null;voiceAudioUI.handling=true;
+  let result;try{result=mVoiceReceive(text,{...meta,eventId:'audio:'+ ++voiceUI.count});}finally{voiceAudioUI.handling=false;}
+  if(!mVoiceLive()){audioStop('丈量已結束，麥克風已關閉。');return{message:'丈量已結束。'};}
+  voiceAudioUI.binding=audioContext();
+  let message=result?.message||voiceUI.message||'請重說口令。';
+  if(command.type==='resume'&&voiceUI.session.pending){const p=voiceUI.session.pending;message+='往'+VoiceMeasure.names[p.direction]+VoiceMeasure.fmt(p.length)+'公釐，請說確認或取消。';}
+  return audioReply(message);
+}
+$('#mVoiceMic').onclick=async()=>{
+  if(!mVoiceSame()){toast('請先設定丈量起點。');return;}
+  const raw=$('#mVoiceEndpoint').value.trim().replace(/\/+$/,''),token=$('#mVoiceToken').value.trim();
+  let endpoint;try{const u=new URL(raw);if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash)throw Error();endpoint=u.href.replace(/\/+$/,'');}catch(_){audioStatus('請設定有效的 HTTPS 語音服務網址。');$('#mVoiceConnection').open=true;return;}
+  if(token.length<32||/^sk-/.test(token)){audioStatus('請輸入後端的本人試用通行碼，不能輸入 OpenAI API 金鑰。');$('#mVoiceConnection').open=true;return;}
+  if(!$('#mVoiceConsent').checked){audioStatus('請先閱讀並同意本次收音與雲端辨識。');$('#mVoiceConnection').open=true;return;}
+  audioStop();voiceAudioUI.handling=true;
+  try{mVoiceReceive('取消');mVoiceReceive('繼續');}finally{voiceAudioUI.handling=false;}
+  voiceAudioUI.binding=audioContext();
+  const capture=new VoiceAudio.Capture({endpoint,token,threshold:Number($('#mVoiceSensitivity').value),context:audioContext,transcript:audioTranscript,status:audioStatus,error:message=>{voiceAudioUI.armed=null;mVoiceSuspend(message);mSync();}});
+  voiceAudioUI.capture=capture;$('#mVoiceConnection').open=false;await capture.start();audioStatus($('#mVoiceAudioStatus').textContent);
+};
+$('#mVoiceMicStop').onclick=()=>{audioStop('麥克風已關閉。已確認的終點保留。');mVoiceSuspend('收音已關閉，丈量暫停。');mSync();};
+const audioOldReceive=mVoiceReceive;mVoiceReceive=function(text,meta={}){
+  if(voiceAudioUI.capture?.active&&!voiceAudioUI.handling)audioStop('已改用文字／按鍵操作，麥克風關閉。');
+  return audioOldReceive(text,meta);
+};
+const audioOldSync=mVoiceSync;mVoiceSync=function(){
+  audioOldSync();voiceAudioPanel.hidden=!mVoiceLive()||voiceUI.picking;
+  const b=voiceAudioUI.binding;
+  if(voiceAudioUI.capture?.active&&!voiceAudioUI.handling&&(!mVoiceSame()||document.hidden||b?.epoch!==voiceUI.epoch||b?.sessionId!==voiceUI.session?.id||b?.pending!==audioFingerprint()))audioStop('圖面或頁面已變更，收音停止。終點保留，請重新啟動。');
+};
+window.addEventListener('pagehide',()=>audioStop('頁面離開，收音已停止。'));
 
 // Stable public metadata for accessibility and future maintenance; no credentials.
 mRulersInstall();

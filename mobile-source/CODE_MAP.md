@@ -1,5 +1,13 @@
 # CODE_MAP
 
+## 現行新增：收音與辨識橋接（2026-10-14晚間）
+
+- mobile-source/voice-audio.js：AudioWorklet、音量停頓分句、原採樣率PCM WAV、一次一請求、系統zh-TW回讀、輸入隔離、資源關閉與過期回應防護。
+- mobile-source/mobile-voice-audio.js：語音試用設定／告知／通行碼、文字核心適配、同句確認降為預覽、回讀後綁定目前草稿與epoch、圖面切換停麥。未在圖面資料保存任何錄音、通行碼或會話。
+- mobile-source/voice-server/server.mjs：無第三方依賴的Node22後端，POST /transcribe；固定OpenAI gpt-transcribe，金鑰環境變數、通行碼驗證、單一Origin、8秒WAV上限、120次/小時/程序、禁自動重試、不記錄音訊與逐字稿。尚未部署。
+- mobile-source/voice-server/README.md、render.yaml：獨立服務配置與安全試用步驟。不修改EMS-LINE。
+- mobile-source/tests/voice-audio.cjs、voice-server.mjs：11+5組模擬測試；完整118組程式驗證，不表示實際API或iPhone聲音已驗收。
+
 ## 現行新增：連續丈量文字核心（2026-10-14）
 
 - `mobile-source/voice-measure.js`：不依賴DOM／麥克風的固定mm解析、中文／阿拉伯數字、兩位小數、連續段狀態與事件ID去重。採SVG座標，往上減Y；左下角座標換算在介面層。含糊簡寫、未知單位及越界拒絕，不猜數字。

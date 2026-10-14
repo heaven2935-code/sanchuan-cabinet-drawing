@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: sanchuan-voice-pilot
+    runtime: node
+    rootDir: mobile-source/voice-server
+    buildCommand: node --version
+    startCommand: node server.mjs
+    healthCheckPath: /health
+    numInstances: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: VOICE_OWNER_TOKEN
+        generateValue: true
+      - key: VOICE_ALLOWED_ORIGIN
+        value: https://heaven2935-code.github.io
+      - key: VOICE_HOURLY_LIMIT
+        value: 120
