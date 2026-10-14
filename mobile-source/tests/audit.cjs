@@ -48,7 +48,7 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
     q.tap({x:1400,y:300});assert.equal(q.state().view,'out');assert.equal(q.state().sel.c,2);await q.run('settings');submit();assert.equal(q.state().view,'in');assert(q.snapshot().includes('#ccd9e0'));
   });
   await check('annotations can be selected on their strokes without stealing taps inside empty rectangles',()=>{
-    load();q.ann({k:'rect',x1:100,y1:100,x2:1000,y2:1500,c:'#147c88',lw:16,v:'out'});q.tap({x:300,y:500});assert.equal(q.selection().kind,'cell');q.tap({x:100,y:600});assert.equal(q.selection().kind,'annotation');q.finish();q.zoom(4);q.tap({x:220,y:600});assert.equal(q.selection().kind,'cell');
+    load();q.ann({k:'rect',x1:100,y1:100,x2:1000,y2:1500,c:'#147c88',lw:16,v:'out'});q.tap({x:300,y:500});assert(['cell','face'].includes(q.selection().kind));q.tap({x:100,y:600});assert.equal(q.selection().kind,'annotation');q.finish();q.zoom(4);q.tap({x:220,y:600});assert(['cell','face'].includes(q.selection().kind));
     q.ann({k:'pen',pts:[[180,180],[900,180]],c:'#147c88',lw:8,v:'out'});q.tap({x:400,y:180});assert.equal(q.selection().kind,'annotation');
   });
   await check('annotation move cancellation restores original geometry and confirmation can be undone',async()=>{
@@ -71,7 +71,7 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
   await check('copy/paste, divider deletion, locking and multi-cell merge keep valid geometry and undo records',async()=>{
     load();q.tap({x:200,y:500});await q.run('copy');q.tap({x:1400,y:300});await q.run('paste');assert.equal(q.state().st.cols[2].parts[0].t,'door');assert.equal(q.state().st.W,2400);click('#mUndo');assert.equal(q.state().st.cols[2].parts[0].t,'open');
     load();q.tap({x:600,y:400});await q.run('delete');assert.equal(q.state().st.cols.length,3);assert.equal(q.state().st.W,2400);click('#mUndo');same(q.state().st.cols,base.cols);
-    load();q.tap({x:200,y:500});await q.run('lock');q.tap({x:200,y:500});assert.equal(q.selection().splitV,false);await q.run('settings');assert(!d.querySelector('#mCW'));click('#mSheetClose');q.tap({x:600,y:400});assert.equal(q.selection().movable,false);assert(!d.querySelector('#mActions [data-m="move"]'));
+    load();q.tap({x:200,y:500});await q.run('lock');q.tap({x:200,y:500});await q.run('faceGroup');assert.equal(q.selection().splitV,false);await q.run('settings');assert(!d.querySelector('#mCW'));click('#mSheetClose');q.tap({x:600,y:400});assert.equal(q.selection().movable,false);assert(!d.querySelector('#mActions [data-m="move"]'));
     load();q.tap({x:200,y:500});await q.run('multi');q.tap({x:800,y:500});assert.equal(q.selection().kind,'multi');assert(d.querySelector('#mActions [data-m="merge"]'));await q.run('merge');assert.equal(q.state().st.cols.length,3);assert.equal(q.state().st.W,2400);click('#mUndo');same(q.state().st.cols,base.cols);
     load();q.tap({x:200,y:500});await q.run('multi');q.tap({x:1400,y:300});assert(!d.querySelector('#mActions [data-m="merge"]'));
     load(base,'in');q.tap({x:200,y:500});await q.run('multi');q.tap({x:800,y:500});assert(!d.querySelector('#mActions [data-m="merge"]'));assert(!d.querySelector('#mActions [data-m="evenHeight"]'));

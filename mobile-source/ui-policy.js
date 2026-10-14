@@ -9,6 +9,7 @@
       ...(s.dimensions!==false?[item('dimensions','尺寸','size',!s.movable)]:[]),
       ...(s.removable?[item('delete','刪除','trash',false,true)]:[])
     ];
+    if(s.kind==='face')return[item('faceColor','配色','style',true),item('faceGroup','整組設定','settings')];
     if(s.kind==='cell')return[
       item('settings','設定','settings',true),
       ...(s.splitV?[item('splitV','直分隔','vertical')]:[]),

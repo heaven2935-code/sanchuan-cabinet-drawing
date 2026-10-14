@@ -39,7 +39,7 @@ const mEngineRender=render;
 render=function(){
   depthRuntime.view=view;depthRuntime.previewing=!!mobileUI.nativeDrag||!!(mobileUI.op?.kind==='annmove'&&!mobileUI.op.committed);
   depthRuntime.editing=!!mobileUI.op||!!mobileUI.tool||['cell','overall','native'].includes(mobileUI.panelKind);
-  depthRuntime.fixedEdge=mobileUI.fixedEdge||null;
+  depthRuntime.fixedEdge=mobileUI.fixedEdge||null;depthRuntime.face=mobileUI.face||null;depthRuntime.paintPreview=mobileUI.paintPreview||null;
   document.documentElement.dataset.canvasTheme=displaySettings.theme;
   darkSheet=displaySettings.theme==='dark';
   const themeMeta=document.querySelector('meta[name="theme-color"]');if(themeMeta)themeMeta.content=darkSheet?'#151f27':'#ffffff';
@@ -57,6 +57,7 @@ function mState(){
   if(multi){const c=picked(),cols=[...new Set(c.map(x=>x.c))];return{kind:'multi',title:'已選 '+c.length+' 格',merge:MobilePolicy.mergeAllowed(st,view,c),evenWidth:cols.length>1&&!cols.some(i=>st.cols[i].lock),evenHeight:c.length>1&&cols.length===1&&(view!=='in'||new Set(c.map(x=>x.p)).size===1),more:c.length>0};}
   if(asel>=0&&st.ann[asel])return{kind:'annotation',title:ANN[st.ann[asel].k]||'標註'};
   if(isFree()&&fsel)return{kind:fsel.k==='l'?'freeLine':'freeCell',title:fsel.k==='l'?flName(st.ln[fsel.i]):'自由繪圖格子'};
+  const face=mFaceKey();if(face)return{kind:'face',title:mFaceTitle(face)};
   if(hsel||(sel&&sel.g!=null)){
     const h=hsel,removable=!!(h&&/^[crps]$/.test(h.k))||!!(sel&&sel.g!=null),m=mvInfo(),movable=!!m&&m.lo<m.hi&&!(h?.k==='c'&&(freeL(h.i)<0||freeR(h.i+1)<0));
     return{kind:'line',title:mobileUI.target&&mobileUI.target.name|| (h?({w:'總寬',h:'總高',k:'踢腳板上緣',c:'直向分隔線',r:'橫向分隔線',p:'橫向分隔線',s:'櫃內分隔線'}[h.k]||'分隔線'):'層板'),movable,removable,dimensions:movable||!!(h&&['w','h','k'].includes(h.k))};
@@ -89,13 +90,13 @@ function mSync(){
   mPreview();
 }
 function mRestoreNative(){mobileUI.native.forEach(x=>{if(x.next&&x.next.parentNode===x.parent)x.parent.insertBefore(x.el,x.next);else x.parent.appendChild(x.el)});mobileUI.native=[];}
-function mCloseSheet(clear){const planar=['cell','overall','native'].includes(mobileUI.panelKind);mRestoreNative();mobileUI.panel=false;mobileUI.panelKind='';mobileUI.submit=null;$('#mSheet').hidden=$('#mScrim').hidden=true;$('#mSheetBody').innerHTML='';if(clear)mFinish();else if(planar)render();else mSync();}
+function mCloseSheet(clear){const hadPaint=!!mobileUI.paintPreview;mobileUI.paintPreview=null;const planar=['cell','overall','native'].includes(mobileUI.panelKind);mRestoreNative();mobileUI.panel=false;mobileUI.panelKind='';mobileUI.submit=null;$('#mSheet').hidden=$('#mScrim').hidden=true;$('#mSheetBody').innerHTML='';if(clear)mFinish();else if(planar||hadPaint)render();else mSync();}
 function mOpenSheet(title,html,kind){mCloseSheet(false);mobileUI.panel=true;mobileUI.panelKind=kind||'';$('#mSheetTitle').textContent=title;$('#mSheetBody').innerHTML=html;$('#mSheetBody').scrollTop=0;$('#mSheet').hidden=$('#mScrim').hidden=false;if(['cell','overall','native'].includes(kind))render();else mSync();}
 function mNative(id){const e=$(id);if(!e)return;mobileUI.native.push({el:e,parent:e.parentNode,next:e.nextSibling});$('#mNative').appendChild(e);e.hidden=false;}
 function mFinish(){
   const returnView=mobileUI.returnView;mobileUI.returnView=null;mobileUI.fixedEdge=null;
   if(mobileUI.op&&mobileUI.op.kind==='annmove'&&!mobileUI.op.committed)st.ann[mobileUI.op.index]=mobileUI.op.original;
-  mobileUI.invalidOffset=false;mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
+  mobileUI.face=null;mobileUI.paintPreview=null;mobileUI.invalidOffset=false;mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
   mk.p1=mk.end=mk.mv=null;tool=null;asel=-1;sel=null;hsel=null;hgrp=[];hsolo=false;fsel=null;msel=[];multi=false;mode='edit';ucat='edit';cur.tp=null;cur.dm=null;cur.on=false;cur.fine=false;padMode='cur';lkp=null;if(returnView&&view!==returnView)setView(returnView);else render();
 }
 function mTransaction(fn){
@@ -133,7 +134,7 @@ function mMoreOpen(){
     if(!$('#aCopy').disabled)rows.push(mRow('copy','複製這格','copy'));
     if(!$('#aPaste').disabled)rows.push(mRow('paste','貼上到這格','paste'));
     rows.push(mRow('multi','多選格子','multi'));
-    const o=selObj();if(o){rows.push(mRow('lock',o.col.lock?'解除區寬鎖定':'鎖定區寬','lock'));if(!$('#aClear').disabled)rows.push(mRow('clear','清空這格','trash'));if(!$('#aDel').disabled)rows.push(mRow('delete','刪除這格','trash'));}
+    const o=selObj();if(o){if(view==='out'&&['door','drawer'].includes(o.p.t))rows.push(mRow('groupColor','整組面板配色','style'));rows.push(mRow('lock',o.col.lock?'解除區寬鎖定':'鎖定區寬','lock'));if(!$('#aClear').disabled)rows.push(mRow('clear','清空這格','trash'));if(!$('#aDel').disabled)rows.push(mRow('delete','刪除這格','trash'));}
   }
   mOpenSheet('更多操作',rows.join(''),'more');
 }
@@ -189,6 +190,8 @@ function mPhoto(){mCloseSheet(false);mode='bg';ucat='edit';render();mOpenSheet('
 function mFreeTools(){mOpenSheet('自由繪圖工具','<div class="m-menu-grid">'+[['board','固定板'],['shelf','活動層板'],['rod','吊衣桿'],['hinge','鉸鏈'],['line','輔助線']].map(([k,l])=>mGridButton('free:'+k,l,k==='board'?'vertical':'line')).join('')+'</div><p class="m-section-label">封閉格子</p><div class="m-menu-grid">'+[['door','門片'],['drawer','抽屜'],['open','開放格'],['blank','封板']].map(([k,l])=>mGridButton('stamp:'+k,l,'rect')).join('')+'</div>','freeTools');}
 async function mBackup(){try{pjSync();photoStash();await dl.save({filename:fileBase()+'.json',data:JSON.stringify({format:'sanchuan-mobile-v1',project:{id:'',name:pj.name,cur:pj.cur,sheets:pj.sheets},photos:[...photos.entries()]},null,2)});toast('可編輯備份已交給裝置存檔');}catch(e){if(e?.code!=='declined')toast('備份沒有完成，請再試一次');}}
 async function mRun(id){
+  if(id==='faceColor'){mFaceColorOpen();return;}if(id==='faceGroup'){mobileUI.face=null;render();return;}
+  if(id==='groupColor'){const o=selObj();if(!o||view!=='out')return;mobileUI.face={c:sel.c,p:sel.p,i:0};mFaceColorOpen(true);return;}
   if(id==='display'||id==='grid'||id==='labels'){mDisplayOpen();return;}
   if(id.startsWith('tool:')){mStartTool(id.slice(5));return;}
   if(id.startsWith('color:')){mobileUI.color=id.slice(6);mToolOpen();return;}
@@ -226,7 +229,7 @@ function mTap(q,el){
   if(mobileUI.tool==='pen'||mobileUI.tool==='hl'){toast('在圖上拖動，就能畫出筆跡');return;}
   if(mobileUI.tool){if(mobileUI.tool==='text'){mTextAt(q);return;}if(!mobileUI.first){mobileUI.first=q;mobileUI.preview=mMakeAnn(mobileUI.tool,q,q);mSync();return;}mAnn(mMakeAnn(mobileUI.tool,mobileUI.first,q));return;}
   if(mobileUI.op){mOperationPoint(q);return;}
-  mobileUI.hint=false;
+  mobileUI.face=null;mobileUI.hint=false;
   const dim=el&&el.closest&&el.closest('[data-d]');if(dim&&!isFree()){const key={...dim.dataset};mFinish();const fresh=[...svg.querySelectorAll('[data-d]')].find(e=>e.dataset.d===key.d&&e.dataset.dc===key.dc&&e.dataset.dp===key.dp&&e.dataset.ds===key.ds);if(fresh)openDim(fresh);return;}
   const grip=el?.closest?.('[data-h]');if(grip&&!isFree()){
     const d=grip.dataset,k=d.h;let t=null;
@@ -244,7 +247,7 @@ function mTap(q,el){
   if(!t.t&&view==='in'){const c=locCell(q);if(c&&!c.s){if(multi){toast('多選請在櫃外選開放格與外抽');return;}mobileUI.returnView='in';setView('out');t=tgtAt(q,tol);}}
   t.k=null;
   if(multi){if(t.t==='c'){const k={c:t.key.c,p:t.key.p,s:t.key.s||0,k:null},i=msel.findIndex(x=>x.c===k.c&&x.p===k.p&&(x.s||0)===k.s);if(i>=0)msel.splice(i,1);else msel.push(k);render();}return;}
-  mobileUI.target=t;if(!t.t){mFinish();return;}pickTarget(t);
+  mobileUI.target=t;if(!t.t){mFinish();return;}mSelectFace(q,t);pickTarget(t);
 }
 function mOnDown(e){
   if(bgCal||isFree()&&mode==='draw'&&mobileUI.freeDrawing)return;

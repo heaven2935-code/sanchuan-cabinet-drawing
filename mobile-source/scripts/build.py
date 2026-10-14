@@ -4,7 +4,7 @@ import re
 
 root=Path(__file__).resolve().parents[1]
 src=(root/'legacy-source.html').read_text()
-display=(root/'display-style.js').read_text()+'\n'+(root/'cabinet-depth.js').read_text()+'\n'+(root/'cabinet-faces.js').read_text()
+display=(root/'display-style.js').read_text()+'\n'+(root/'cabinet-depth.js').read_text()+'\n'+(root/'cabinet-faces.js').read_text()+'\n'+(root/'face-color.js').read_text()
 src=src.replace("const BASEC=", display+"\nconst depthRuntime={editing:false,previewing:false,fixedEdge:null,view:'out'};\nlet displaySettings=DisplayStyle.normalize();\ntry{displaySettings=DisplayStyle.normalize(JSON.parse(localStorage.getItem('sc-mobile-display-v1')||'{}'))}catch(_){}\nconst BASEC=",1)
 src=src.replace("  const body=o.H-o.kick;","  o.kickSetback=clamp(num(d.kickSetback,50),0,300);o.faceGap=clamp(num(d.faceGap,4),0,20);\n  const body=o.H-o.kick;",1)
 src=src.replace("const g=cur.fine?1:","const g=cur.fine?.5:")
@@ -27,15 +27,23 @@ src=src.replace("    rt:`", """    'depth-back':`fill=\"${displaySettings.theme=
     'face-edge':`fill="none" stroke="${pal.ink}" stroke-width="${f(.65*S)}"`,
     'toe-shade':`fill="${pal.ink}" fill-opacity="${displaySettings.theme==='dark'?.15:.10}" stroke="none"`,
     rt:`""",1)
-src=src.replace("const LY={out:","const LY={'face-edge':'CABINET',out:")
+src=src.replace("      if(t==='door'&&Array.isArray(p.ins)","      if(Array.isArray(p.frontColors))q.frontColors=p.frontColors.slice(0,10);\n      if(t==='door'&&Array.isArray(p.ins)")
+src=src.replace("x.t=d.t;x.n=d.n;","x.t=d.t;x.n=d.n;if(Array.isArray(d.frontColors))x.frontColors=d.frontColors.slice();else delete x.frontColors;")
+src=src.replace("x.t=v;","delete x.frontColors;x.t=v;")
+src=src.replace("function clearCell(x,inV){","function clearCell(x,inV){delete x.frontColors;")
+src=src.replace("const LY={out:","const LY={'face-edge':'CABINET','face-handle':'CABINET',out:")
+src=src.replace("p.c==='dim'&&p.col?","p.c==='face-fill'?`fill=\"${p.col}\" stroke=\"none\"`:p.c==='dim'&&p.col?")
+src=src.replace("p.c==='an'||p.c==='anh'?an(p)","p.c==='an'||p.c==='anh'||p.c==='face-handle'?an(p)")
 src=src.replace("dm:[pal.sub,NUMF,'']", "dm:[pal.sub,NUMF,halo(p.z)]")
 src=src.replace("font-family=\"Outfit,'LXGW WenKai TC',sans-serif\"", "font-family=\"-apple-system,BlinkMacSystemFont,'Arial',sans-serif\"")
 wrapper='''
+const colorFixAll=fixAll;
+fixAll=function(st){colorFixAll(st);FaceColor.clean(st)};
 const displayGeom=geom;
 geom=function(st,o){
   const shape=Object.assign({},st,{labels:displaySettings.names,grid:0});
   const options=Object.assign({},o,{acc:displaySettings.selectionColor});
-  const g=CabinetFaces.apply(displayGeom(shape,options),shape,options,displaySettings),H=handleModel(shape,o.view==='in',o.sel?o.sel.c:null);
+  const g=FaceColor.apply(CabinetFaces.apply(displayGeom(shape,options),shape,options,displaySettings),shape,options,depthRuntime,displaySettings),H=handleModel(shape,o.view==='in',o.sel?o.sel.c:null);
   return CabinetDepth.apply(DisplayStyle.decorate(g,shape,options,displaySettings,H),shape,options,displaySettings,depthRuntime,gapsOf);
 };
 const displaySVG=toSVG;
@@ -50,12 +58,12 @@ exportSVG=function(st,pal,bg){
   return displayExport(st,xp,bg);
 };
 '''
-src=src.replace("if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={",wrapper+"if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={CabinetFaces,CabinetDepth,depthRuntime,DisplayStyle,displaySettings,",1)
+src=src.replace("if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={",wrapper+"if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={FaceColor,CabinetFaces,CabinetDepth,depthRuntime,DisplayStyle,displaySettings,",1)
 src=src.replace("bg:bgArg(),fsel:","bg:bgArg(),gridScale:S/zoom.z,fsel:")
 src=src.replace("const saveDraft=debounce(saveNow,400);", "const saveDraft=debounce(()=>{if(!depthRuntime.previewing)saveNow()},400);")
 css=(root/'mobile-ui.css').read_text()
 js=(root/'mobile-ui.js').read_text()
-js=js.replace('// Stable public metadata', (root/'mobile-precision.js').read_text()+'\n'+(root/'mobile-rulers.js').read_text()+'\n// Stable public metadata',1)
+js=js.replace('// Stable public metadata', (root/'mobile-face-color.js').read_text()+'\n'+(root/'mobile-precision.js').read_text()+'\n'+(root/'mobile-rulers.js').read_text()+'\n// Stable public metadata',1)
 policy=(root/'ui-policy.js').read_text()
 src=src.replace('<title>櫃體立面圖 新版</title>','<title>三川工方｜手機繪圖</title>')
 src=src.replace('name="apple-mobile-web-app-status-bar-style" content="black-translucent"','name="apple-mobile-web-app-status-bar-style" content="default"')
@@ -68,7 +76,7 @@ src=src[:pos]+'\n/* Mobile interaction layer */\n'+js+'\n'+src[pos:]
 src=src.replace("indexedDB.open('sc-cab',1)","indexedDB.open('sc-mobile-cab',1)")
 src=src.replace("'sc-cab-","'sc-mobile-")
 src=src.replace('下次開啟或換裝置都找得到','下次在同一台裝置開啟就找得到；換裝置請匯入 JSON 備份')
-src=src.replace('?v=1','?v=precision-20261014')
+src=src.replace('?v=1','?v=faces-20261014')
 dist=root/'dist'
 dist.mkdir(exist_ok=True)
 (dist/'index.html').write_text(src)

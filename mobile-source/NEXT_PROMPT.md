@@ -57,3 +57,17 @@
 材質需求目前先記錄：日後可上傳木皮型錄／自拍圖片，對門片、抽屜頭、桶身分別套用，抽屜頭可跳色；應先完成單片／單抽屜選取與純色，再做紋理方向、實際比例及連紋。不要宣稱這輪已上線材質功能。
 
 若使用者指定Claude另一個應用，先檢查並提出重現步驟、影響、優先級與改善建議；不得把主網址手機版修改覆蓋到elevation/。
+
+
+## 最新交接：單片純色完成，語音僅討論
+
+主網址手機版新增face-color.js與mobile-face-color.js。直接點櫃外門片或抽屜頭先選單片，按配色可選one／group、預覽或恢復預設；按整組設定回原來cell操作。材質仍是純色，沒有木紋圖片或單片高度。elevation/必須保留。
+
+資料：part.frontColors是#rrggbb或null陣列，門由左到右／抽屜由上到下。預览mobileUI.paintPreview不得写入part或草稿。SVG/PNG含保存顏色，DXF只保持線圖。暗色填色的把手使用face-handle對比色，不能用an，避免攔截選取層板的marker。
+
+測試：python mobile-source/scripts/build.py；npm --prefix mobile-source ci；npm --prefix mobile-source run verify（包含14組face-color）。
+
+使用者新增語音丈量構想，尚未要求本輪實作：設定起點與線型，戴耳機說方向＋長度，線與尺寸即時預览；建議回讀與確認再提交，可語音復原／取消，防重複辨識，固定mm。不偷偷開麥克風或把語音功能當作已完成。參考MDN SpeechRecognition與WebKit官方Web Speech說明。
+
+
+2026-10-14 語音丈量補充：使用者明確要求一次啟動後連續接畫下一段，不必逐段點選功能。每段起點接上一段已確認終點；確認也以語音完成，可說暫停／繼續／復原上一段／結束。瀏覽器中斷辨識時嘗試恢復，保留終點並顯示收音狀態，不承諾所有裝置都能無限持續。

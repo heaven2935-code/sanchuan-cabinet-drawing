@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>三川工方｜手機繪圖</title>
-<link rel="icon" type="image/svg+xml" href="./logo.svg?v=precision-20261014">
-<link rel="apple-touch-icon" href="./icon-180.png?v=precision-20261014">
-<link rel="manifest" href="./manifest.webmanifest?v=precision-20261014">
+<link rel="icon" type="image/svg+xml" href="./logo.svg?v=faces-20261014">
+<link rel="apple-touch-icon" href="./icon-180.png?v=faces-20261014">
+<link rel="manifest" href="./manifest.webmanifest?v=faces-20261014">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1518,6 +1518,13 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
 #mOffsetLabel{max-width:100px;white-space:normal;line-height:1.4}
 #mOffset{width:90px}
 @media(orientation:landscape) and (max-height:540px){#stylePop{top:calc(49px + env(safe-area-inset-top,0px))!important;max-height:calc(100dvh - 60px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important}#styles{grid-template-columns:repeat(3,minmax(0,1fr))!important}#mOperation{left:auto;right:12px;width:360px;max-width:calc(100% - 24px);padding:8px 12px}.m-operation-top{margin-bottom:4px}#mPrecision{margin:4px 0}.m-precision-options{gap:3px}}
+/* Finish editor: a compact palette; the drawing remains visible above the sheet. */
+.m-paint-target{font-size:13px;color:var(--sub);margin:0 0 14px}
+.m-paint-swatches{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:14px}
+#mShell .m-paint-swatches button{display:flex;flex-direction:column;gap:5px;min-height:64px;border-radius:9px;padding:4px;border:2px solid transparent}
+.m-paint-swatches button span{width:100%;height:30px;border-radius:6px;background:var(--swatch);border:1px solid #7b858744}
+.m-paint-swatches small{font-size:10px;color:var(--sub)}
+#mShell .m-paint-swatches button[aria-pressed=true]{border-color:#147c88;background:var(--tint)}
 </style>
 <script>(function(root){
   'use strict';
@@ -1530,6 +1537,7 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
       ...(s.dimensions!==false?[item('dimensions','尺寸','size',!s.movable)]:[]),
       ...(s.removable?[item('delete','刪除','trash',false,true)]:[])
     ];
+    if(s.kind==='face')return[item('faceColor','配色','style',true),item('faceGroup','整組設定','settings')];
     if(s.kind==='cell')return[
       item('settings','設定','settings',true),
       ...(s.splitV?[item('splitV','直分隔','vertical')]:[]),
@@ -1921,6 +1929,7 @@ function normalize(d,notes){
     return{w,parts:ps.map(p=>{p=p||{};const t=TYPES[p.t]?p.t:'door',h=Math.max(1,num(p.h,300));
       const lim=t==='door'?[1,2]:t==='open'?[0,10]:[1,10];
       const q={t,h,n:clamp(num(p.n,defN(t,w,h)),lim[0],lim[1]),hinge:p.hinge==='R'?'R':'L'};if((t==='door'||t==='drawer')&&(p.pull==='groove'||p.pull==='none')){q.pull=p.pull;if(p.pull==='groove'){q.gp=['s','t','b'].includes(p.gp)?p.gp:(t==='door'?'s':'t');q.gw=clamp(num(p.gw,25),5,120)}}
+      if(Array.isArray(p.frontColors))q.frontColors=p.frontColors.slice(0,10);
       if(t==='door'&&Array.isArray(p.ins)&&p.ins.length)q._ins=p.ins;if(t==='open')keepGs(q,p.gs);return q})}});
   src.forEach((c,i)=>{if(c&&c.lock&&o.cols[i])o.cols[i].lock=true});
   const sw=sum(o.cols,'w');
@@ -2080,6 +2089,36 @@ const CabinetFaces=(()=>{
   return{apply};
 })();
 if(typeof module!=='undefined')module.exports=CabinetFaces;
+
+/* Saved per-front finishes. Pure geometry and strict colors; no image assets yet. */
+const FaceColor=(()=>{
+  const valid=c=>typeof c==='string'&&/^#[0-9a-f]{6}$/i.test(c);
+  function colors(p){const n=p.t==='door'?Math.min(2,p.n):p.t==='drawer'?Math.min(10,p.n):0;return Array.from({length:n},(_,i)=>valid(p.frontColors?.[i])?p.frontColors[i].toLowerCase():null);}
+  function clean(st){if(st.kind==='free')return st;for(const c of st.cols)for(const p of c.parts){const a=colors(p);if(a.some(Boolean))p.frontColors=a;else delete p.frontColors;}return st;}
+  function panels(st){const out=[];if(st.kind==='free')return out;const gap=st.faceGap??4;let x=0;st.cols.forEach((c,ci)=>{let y=0;c.parts.forEach((p,pi)=>{
+    if(['door','drawer'].includes(p.t)){const cols=colors(p);for(let i=0;i<p.n;i++){
+      const door=p.t==='door',w=door?c.w/p.n:c.w,h=door?p.h:p.h/p.n,nx=x+(door?i*w:0),ny=y+(door?0:i*h);let left=nx+gap/2,top=ny+gap/2,right=nx+w-gap/2,bottom=ny+h-gap/2;
+      if(p.pull==='groove'){const G=door?Math.min(p.gw||25,w*.25,h*.25):Math.min(p.gw||25,h*.3),gp=p.gp||(door?'s':'t');if(gp==='t')top=Math.max(top,ny+G);else if(gp==='b')bottom=Math.min(bottom,ny+h-G);else{const hg=p.n===2?(i?'R':'L'):p.hinge;if(hg==='R')left=Math.max(left,nx+G);else right=Math.min(right,nx+w-G);}}
+      out.push({c:ci,p:pi,i,type:p.t,x:nx,y:ny,w,h,rect:{x:left,y:top,w:Math.max(0,right-left),h:Math.max(0,bottom-top)},color:cols[i]||null});
+    }}y+=p.h});x+=c.w});return out;}
+  function same(a,b){return a&&b&&a.c===b.c&&a.p===b.p&&a.i===b.i;}
+  function pick(st,q){return panels(st).find(f=>q.x>f.x&&q.x<f.x+f.w&&q.y>f.y&&q.y<f.y+f.h)||null;}
+  function set(st,key,color,scope){const p=st.cols[key.c]?.parts[key.p];if(!p||!['door','drawer'].includes(p.t)||!(key.i>=0&&key.i<p.n)||color!==null&&!valid(color))return false;const a=colors(p);if(scope==='group')a.fill(color&&color.toLowerCase());else a[key.i]=color&&color.toLowerCase();if(a.some(Boolean))p.frontColors=a;else delete p.frontColors;return true;}
+  const luminance=c=>{const v=[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return v[0]*.2126+v[1]*.7152+v[2]*.0722;};
+  const contrast=(a,b)=>{const x=luminance(a),y=luminance(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
+  function apply(g,st,o,runtime,settings){if(o.view==='in'||st.kind==='free')return g;const F=panels(st),key=o.interactive?runtime.face:null,preview=o.interactive?runtime.paintPreview:null,P=[],painted=[];
+    for(const f of F){let color=f.color;if(preview&&f.c===preview.key.c&&f.p===preview.key.p&&(preview.scope==='group'||f.i===preview.key.i))color=preview.color;
+      if(color&&f.rect.w>0&&f.rect.h>0){P.push({t:'r',...f.rect,c:'face-fill',col:color});painted.push({...f,color});}
+    }
+    const at=g.art.findIndex(a=>['out','in','thin','hd','face-edge'].includes(a.c));g.art.splice(at<0?g.art.length:at,0,...P);
+    // Handles retain the chosen ink where legible, with a contrast fallback on dark finishes.
+    g.art=g.art.map(a=>{if(a.t!=='l'||a.c!=='hd')return a;const x=(a.x1+a.x2)/2,y=(a.y1+a.y2)/2,f=painted.find(f=>x>=f.rect.x&&x<=f.rect.x+f.rect.w&&y>=f.rect.y&&y<=f.rect.y+f.rect.h),ink=settings.lineColor;if(!f||contrast(ink,f.color)>=3)return a;return{...a,c:'face-handle',col:contrast('#ffffff',f.color)>contrast('#203038',f.color)?'#ffffff':'#203038',lw:2.2*o.S};});
+    if(key){const f=F.find(f=>same(f,key));if(f){g.art=g.art.filter(a=>a.c!=='sel');g.art.push({t:'r',...f.rect,c:'sel'});}}
+    return g;
+  }
+  return{valid,colors,clean,panels,same,pick,set,apply};
+})();
+if(typeof module!=='undefined')module.exports=FaceColor;
 
 const depthRuntime={editing:false,previewing:false,fixedEdge:null,view:'out'};
 let displaySettings=DisplayStyle.normalize();
@@ -2357,7 +2396,7 @@ function toSVG(P,S,pal,U,W){
     lks:`fill="none" stroke="${pal.accent}" stroke-width="${f(.8*S)}"`,
     sel:`fill="${pal.accent}" fill-opacity=".14" stroke="${pal.accent}" stroke-width="${f(2*S)}"`};
   const an=p=>`fill="none" stroke="${p.col}" stroke-width="${f(p.lw||2.2*S)}" stroke-linecap="${p.dash?'butt':'round'}" stroke-linejoin="round"${p.c==='anh'?' stroke-opacity=".38"':''}${p.dash?` stroke-dasharray="${f(p.dash)} ${f(p.dash*.6)}"`:''}`;
-  const sty=p=>p.c==='wl'?`fill="${pal.tint}" fill-opacity=".35" stroke="${pal.mute}" stroke-width="${f(1.1*S)}"`:p.c==='wlf'?`fill="${pal.sheet}" stroke="none"`:p.c==='wlo'?`fill="none" stroke="${pal.sub}" stroke-width="${f(.9*S)}" stroke-dasharray="${f(6*S)} ${f(3*S)}"`:p.c==='wlx'?`fill="none" stroke="#c8372d" stroke-width="${f(1.5*S)}" stroke-dasharray="${f(6*S)} ${f(3*S)}"`:p.c==='zf'?'fill="none" stroke="none"':p.c==='es'?`fill="none" stroke="${p.col||pal.mute}" stroke-width="${f((p.lw||1)*S)}"${p.col?'':' stroke-opacity=".6"'}`:p.c==='dim'&&p.col?`fill="none" stroke="${p.col}" stroke-width="${f(1.6*S)}"`:p.c==='gl'&&p.col?`fill="none" stroke="${p.col}" stroke-width="${f((p.lw||1.3)*S)}" stroke-dasharray="${f(5*S)} ${f(4*S)}"`:p.c==='an'||p.c==='anh'?an(p):p.c==='anf'?`fill="${p.col}" stroke="${p.col}" stroke-width="${f(S)}" stroke-linejoin="round"`:st[p.c]||st.in;
+  const sty=p=>p.c==='wl'?`fill="${pal.tint}" fill-opacity=".35" stroke="${pal.mute}" stroke-width="${f(1.1*S)}"`:p.c==='wlf'?`fill="${pal.sheet}" stroke="none"`:p.c==='wlo'?`fill="none" stroke="${pal.sub}" stroke-width="${f(.9*S)}" stroke-dasharray="${f(6*S)} ${f(3*S)}"`:p.c==='wlx'?`fill="none" stroke="#c8372d" stroke-width="${f(1.5*S)}" stroke-dasharray="${f(6*S)} ${f(3*S)}"`:p.c==='zf'?'fill="none" stroke="none"':p.c==='es'?`fill="none" stroke="${p.col||pal.mute}" stroke-width="${f((p.lw||1)*S)}"${p.col?'':' stroke-opacity=".6"'}`:p.c==='face-fill'?`fill="${p.col}" stroke="none"`:p.c==='dim'&&p.col?`fill="none" stroke="${p.col}" stroke-width="${f(1.6*S)}"`:p.c==='gl'&&p.col?`fill="none" stroke="${p.col}" stroke-width="${f((p.lw||1.3)*S)}" stroke-dasharray="${f(5*S)} ${f(4*S)}"`:p.c==='an'||p.c==='anh'||p.c==='face-handle'?an(p):p.c==='anf'?`fill="${p.col}" stroke="${p.col}" stroke-width="${f(S)}" stroke-linejoin="round"`:st[p.c]||st.in;
   const NUMF=`font-family="-apple-system,BlinkMacSystemFont,'Arial',sans-serif"`,ZHF=`font-family="'LXGW WenKai TC','Noto Sans TC','PingFang TC',sans-serif"`;
   const halo=z=>`stroke="${pal.sheet}" stroke-width="${f(Math.max(3.2*S,z*.22))}" paint-order="stroke" stroke-linejoin="round"`;
   let s='';
@@ -2407,7 +2446,7 @@ function exportSVG(st,xp,bg){
   return{w,h,svg:`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="${v.map(n=>+n.toFixed(1)).join(' ')}"><rect x="${v[0]}" y="${v[1]}" width="${v[2]}" height="${v[3]}" fill="${xp.sheet}"/>${toSVG(sh.P,sh.S,xp).art}</svg>`}}
 function toDXF(st){
   const H=st.H,o=[],f=v=>(+v).toFixed(2),P=sheet(st,true).P;
-  const LY={'face-edge':'CABINET',out:'CABINET',in:'CABINET',fo:'CABINET',thin:'CABINET',hd:'CABINET',dash:'SWING',dim:'DIM',an:'MARK',anh:'MARK',anf:'MARK'};
+  const LY={'face-edge':'CABINET','face-handle':'CABINET',out:'CABINET',in:'CABINET',fo:'CABINET',thin:'CABINET',hd:'CABINET',dash:'SWING',dim:'DIM',an:'MARK',anh:'MARK',anf:'MARK'};
   const ln=(x1,y1,x2,y2,ly)=>o.push('0','LINE','8',ly,'10',f(x1),'20',f(H-y1),'11',f(x2),'21',f(H-y2));
   const path=(pts,ly,close)=>{for(let i=1;i<pts.length;i++)ln(pts[i-1][0],pts[i-1][1],pts[i][0],pts[i][1],ly);if(close&&pts.length>2)ln(pts[pts.length-1][0],pts[pts.length-1][1],pts[0][0],pts[0][1],ly)};
   for(const p of P){const ly=LY[p.c];
@@ -2492,11 +2531,13 @@ function thumbOf(t,pal){const S=Math.max(t.W,t.H)/54,m=2*S;
   return`<svg width="${Math.round((t.W+2*m)/S)}" height="${Math.round((t.H+2*m)/S)}" viewBox="${-m} ${-m} ${t.W+2*m} ${t.H+2*m}" aria-hidden="true">${toSVG(geom(t,{S,view:'out',bare:true}).art.filter(p=>p.c!=='dash').map(p=>p.c==='hd'||p.c==='out'?Object.assign({},p,{c:p.c==='hd'?'thin':'in'}):p),S,pal).art}</svg>`}
 function styleThumb(s,pal){return thumbOf(styleState(s,{id:'',name:'',T:18,labels:false,W:1800,H:2400,kick:100}),pal)}
 
+const colorFixAll=fixAll;
+fixAll=function(st){colorFixAll(st);FaceColor.clean(st)};
 const displayGeom=geom;
 geom=function(st,o){
   const shape=Object.assign({},st,{labels:displaySettings.names,grid:0});
   const options=Object.assign({},o,{acc:displaySettings.selectionColor});
-  const g=CabinetFaces.apply(displayGeom(shape,options),shape,options,displaySettings),H=handleModel(shape,o.view==='in',o.sel?o.sel.c:null);
+  const g=FaceColor.apply(CabinetFaces.apply(displayGeom(shape,options),shape,options,displaySettings),shape,options,depthRuntime,displaySettings),H=handleModel(shape,o.view==='in',o.sel?o.sel.c:null);
   return CabinetDepth.apply(DisplayStyle.decorate(g,shape,options,displaySettings,H),shape,options,displaySettings,depthRuntime,gapsOf);
 };
 const displaySVG=toSVG;
@@ -2510,7 +2551,7 @@ exportSVG=function(st,pal,bg){
   }
   return displayExport(st,xp,bg);
 };
-if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={CabinetFaces,CabinetDepth,depthRuntime,DisplayStyle,displaySettings,freeFaces,freeFix,toFree,geomFree,homog,hmap,wallExt,wallItems,scanParse,zones,zoneName,grpPlan,handleModel,rulerPrims,CATS,thumbOf,gapsOf,solidGaps,fixGs,clearIn,sample0,normalize,layout,geom,annPrims,annOf,toSVG,exportSVG,toDXF,zip1,crc32,fit,spread,isEven,fixAll,sheet,STYLES,styleState,styleThumb};return}
+if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={FaceColor,CabinetFaces,CabinetDepth,depthRuntime,DisplayStyle,displaySettings,freeFaces,freeFix,toFree,geomFree,homog,hmap,wallExt,wallItems,scanParse,zones,zoneName,grpPlan,handleModel,rulerPrims,CATS,thumbOf,gapsOf,solidGaps,fixGs,clearIn,sample0,normalize,layout,geom,annPrims,annOf,toSVG,exportSVG,toDXF,zip1,crc32,fit,spread,isEven,fixAll,sheet,STYLES,styleState,styleThumb};return}
 
 /* ---------- page ---------- */
 const svg=$('#dw');
@@ -2717,7 +2758,7 @@ function fillDir(dir){
   if(multi)msel=jobs.map(j=>j.t);else sel={c:jobs[0].t.c,p:jobs[0].t.p,s:jobs[0].t.s};
   render();toast(`已複製到${{u:'上',d:'下',l:'左',r:'右'}[dir]}邊 ${jobs.length} 格`)}
 function evenAllCols(){if(isFree())return;const fr=st.cols.filter(c=>!c.lock);if(fr.length<2){toast(st.cols.length<2?'只有一區，沒有可以均分的':'沒鎖定的區不到兩個，沒有可以均分的');return}push();spread(fr,'w',sum(fr,'w'));render();toast(fr.length<st.cols.length?'沒鎖定的區已均分':'所有區的寬度已均分')}
-function pasteInto(x,inV,src){const d=JSON.parse(JSON.stringify(src||clip.d));x.t=d.t;x.n=d.n;if(d.hinge)x.hinge=d.hinge;if(d.pull){x.pull=d.pull;x.gp=d.gp;x.gw=d.gw}else{delete x.pull;delete x.gp;delete x.gw}
+function pasteInto(x,inV,src){const d=JSON.parse(JSON.stringify(src||clip.d));x.t=d.t;x.n=d.n;if(Array.isArray(d.frontColors))x.frontColors=d.frontColors.slice();else delete x.frontColors;if(d.hinge)x.hinge=d.hinge;if(d.pull){x.pull=d.pull;x.gp=d.gp;x.gw=d.gw}else{delete x.pull;delete x.gp;delete x.gw}
   if(!inV){if(d.t==='door'&&d.ins&&d.ins.length){x.ins=d.ins;fit(x.ins,'h',x.h)}else delete x.ins}
   if(d.gs)x.gs=d.gs;else delete x.gs}
 const subGroup=l=>l.length&&l.every(m=>m.k!=null&&m.c===l[0].c&&m.p===l[0].p&&(m.s||0)===(l[0].s||0))?subCtx(l[0]):null;
@@ -2747,7 +2788,7 @@ function subRetype(v){const o=selObj();if(!o||sel.k==null)return;const inV=view=
   if(list.length+(k>0?1:0)+(k<n?1:0)>cap){toast('這一區的格數到上限了');return}
   push();if(k>0){const u={t:x.t,h:y0,n:k-1};if(u.n>0)u.gs=g.slice(0,k-1);ps.push(u)}ps.push(mk(v,y1-y0));if(k<n){const d={t:x.t,h:x.h-y1,n:n-k-1};if(d.n>0)d.gs=g.slice(k+1,n);ps.push(d)}
   list.splice(idx,1,...ps);go(idx+(k>0?1:0));toast('這一層已改成'+NM[v])}
-function clearCell(x,inV){if(inV){x.t='shelf';x.n=0}else{x.t='open';x.n=0;delete x.ins}delete x.gs}
+function clearCell(x,inV){delete x.frontColors;if(inV){x.t='shelf';x.n=0}else{x.t='open';x.n=0;delete x.ins}delete x.gs}
 function doSubClear(){
   const cells=picked();if(!cells.length){toast('先點要清空的格子');return}
   const inV=view==='in';let done=0,pushed=false;const P=()=>{if(!pushed){push();pushed=true}};
@@ -2856,7 +2897,7 @@ function act(a,v){
   switch(a){
     case'close':sel=null;break;
     case'copycell':clip={v:view,d:JSON.parse(JSON.stringify(x))};toast('已複製這一格。點另一格，再按「貼上到這一格」');break;
-    case'pastecell':{if(!clip||clip.v!==view){toast('先在同一種圖（櫃外或櫃內）複製一格');break}const d=JSON.parse(JSON.stringify(clip.d));push();x.t=d.t;x.n=d.n;if(d.hinge)x.hinge=d.hinge;if(d.pull){x.pull=d.pull;x.gp=d.gp;x.gw=d.gw}else{delete x.pull;delete x.gp;delete x.gw}
+    case'pastecell':{if(!clip||clip.v!==view){toast('先在同一種圖（櫃外或櫃內）複製一格');break}const d=JSON.parse(JSON.stringify(clip.d));push();x.t=d.t;x.n=d.n;if(Array.isArray(d.frontColors))x.frontColors=d.frontColors.slice();else delete x.frontColors;if(d.hinge)x.hinge=d.hinge;if(d.pull){x.pull=d.pull;x.gp=d.gp;x.gw=d.gw}else{delete x.pull;delete x.gp;delete x.gw}
       if(!inV){if(d.t==='door'&&d.ins&&d.ins.length){x.ins=d.ins;fit(x.ins,'h',x.h)}else delete x.ins}
       if(d.gs)x.gs=d.gs;else delete x.gs;toast('已貼上');break}
     case'copycol':{if(st.W+col.w>MAXW||st.cols.length>=20){toast('已經到寬度上限');break}push();const nw=JSON.parse(JSON.stringify(col));delete nw.lock;st.cols.splice(sel.c+1,0,nw);st.W+=col.w;toast(`已複製到右邊，總寬改為 ${st.W}`);break}
@@ -2866,7 +2907,7 @@ function act(a,v){
     case'empty':if(sel.k!=null&&subCtx({c:sel.c,p:sel.p,s:sel.s||0,k:sel.k})){subRetype('drawer');break}if(x.t===(inV?'shelf':'open')&&!x.n)break;push();clearCell(x,inV);toast(inV?'這一格已改成空格':'這一格已改成空櫃');break;
     case'gdel':{const c=shelfCtx(o);if(c&&sel.g!=null&&sel.g<c.x.n){push();const g=solidGaps(c.x,c.clear,st.T),i=sel.g;g.splice(i,2,g[i]+g[i+1]+st.T);c.x.n--;if(c.x.n)c.x.gs=g.slice(0,c.x.n);else delete c.x.gs;delete sel.g;toast('已刪除這片層板')}break}
     case'deven':dEven();break;
-    case'type':if(sel.k!=null&&subCtx({c:sel.c,p:sel.p,s:sel.s||0,k:sel.k})){subRetype(v);break}if(x.t!==v){if(inV){if(!INS[v])break;push();x.t=v;x.n=v==='shelf'?defShelf(x.h):1;focusN=v==='idrawer'}else{if(!TYPES[v])break;push();x.t=v;x.n=v==='drawer'?1:defN(v,col.w,x.h);focusN=v==='drawer'}}
+    case'type':if(sel.k!=null&&subCtx({c:sel.c,p:sel.p,s:sel.s||0,k:sel.k})){subRetype(v);break}if(x.t!==v){if(inV){if(!INS[v])break;push();delete x.frontColors;x.t=v;x.n=v==='shelf'?defShelf(x.h):1;focusN=v==='idrawer'}else{if(!TYPES[v])break;push();delete x.frontColors;x.t=v;x.n=v==='drawer'?1:defN(v,col.w,x.h);focusN=v==='drawer'}}
       else if(inV){if(v==='shelf'&&!x.n){push();x.n=Math.max(1,defShelf(x.h))}else{push();clearCell(x,true);toast('已取消，這一格是空的')}}
       else if(v==='open'&&!x.n){push();x.n=1}
       else if(v==='door'){push();const k=doorOff(list,idx);toast(k>1?'已拿掉門片，櫃內的 '+k+' 格直接露出來':'已拿掉門片，露出櫃內')}
@@ -3178,7 +3219,7 @@ const desc=(a,b)=>b.c-a.c||b.p-a.p||(b.s||0)-(a.s||0)||(b.k==null?-1:b.k)-(a.k==
 function applyType(v){
   const cells=picked(),inV=view==='in',TT=inV?INS:TYPES;if(!TT[v])return;if(!cells.length){toast('先點圖上要改的格子');return}
   let done=0,skip=0,shift=false,pushed=false;const P=()=>{if(!pushed){push();pushed=true}};
-  const setT=(x,w)=>{x.t=v;delete x.gs;if(!inV&&v!=='door')delete x.ins;x.n=inV?1:v==='drawer'?1:defN(v,w,x.h)};
+  const setT=(x,w)=>{delete x.frontColors;x.t=v;delete x.gs;if(!inV&&v!=='door')delete x.ins;x.n=inV?1:v==='drawer'?1:defN(v,w,x.h)};
   cells.slice().sort(desc).forEach(m=>{
     if(m.k==null){const x=cellOf(m);if(x.t===v){done++;return}P();setT(x,st.cols[m.c].w);done++;return}
     const sc=subCtx(m);if(!sc||sc.kind!=='drawer'){skip++;return}if(v==='drawer'){done++;return}
@@ -4646,7 +4687,7 @@ const mEngineRender=render;
 render=function(){
   depthRuntime.view=view;depthRuntime.previewing=!!mobileUI.nativeDrag||!!(mobileUI.op?.kind==='annmove'&&!mobileUI.op.committed);
   depthRuntime.editing=!!mobileUI.op||!!mobileUI.tool||['cell','overall','native'].includes(mobileUI.panelKind);
-  depthRuntime.fixedEdge=mobileUI.fixedEdge||null;
+  depthRuntime.fixedEdge=mobileUI.fixedEdge||null;depthRuntime.face=mobileUI.face||null;depthRuntime.paintPreview=mobileUI.paintPreview||null;
   document.documentElement.dataset.canvasTheme=displaySettings.theme;
   darkSheet=displaySettings.theme==='dark';
   const themeMeta=document.querySelector('meta[name="theme-color"]');if(themeMeta)themeMeta.content=darkSheet?'#151f27':'#ffffff';
@@ -4664,6 +4705,7 @@ function mState(){
   if(multi){const c=picked(),cols=[...new Set(c.map(x=>x.c))];return{kind:'multi',title:'已選 '+c.length+' 格',merge:MobilePolicy.mergeAllowed(st,view,c),evenWidth:cols.length>1&&!cols.some(i=>st.cols[i].lock),evenHeight:c.length>1&&cols.length===1&&(view!=='in'||new Set(c.map(x=>x.p)).size===1),more:c.length>0};}
   if(asel>=0&&st.ann[asel])return{kind:'annotation',title:ANN[st.ann[asel].k]||'標註'};
   if(isFree()&&fsel)return{kind:fsel.k==='l'?'freeLine':'freeCell',title:fsel.k==='l'?flName(st.ln[fsel.i]):'自由繪圖格子'};
+  const face=mFaceKey();if(face)return{kind:'face',title:mFaceTitle(face)};
   if(hsel||(sel&&sel.g!=null)){
     const h=hsel,removable=!!(h&&/^[crps]$/.test(h.k))||!!(sel&&sel.g!=null),m=mvInfo(),movable=!!m&&m.lo<m.hi&&!(h?.k==='c'&&(freeL(h.i)<0||freeR(h.i+1)<0));
     return{kind:'line',title:mobileUI.target&&mobileUI.target.name|| (h?({w:'總寬',h:'總高',k:'踢腳板上緣',c:'直向分隔線',r:'橫向分隔線',p:'橫向分隔線',s:'櫃內分隔線'}[h.k]||'分隔線'):'層板'),movable,removable,dimensions:movable||!!(h&&['w','h','k'].includes(h.k))};
@@ -4696,13 +4738,13 @@ function mSync(){
   mPreview();
 }
 function mRestoreNative(){mobileUI.native.forEach(x=>{if(x.next&&x.next.parentNode===x.parent)x.parent.insertBefore(x.el,x.next);else x.parent.appendChild(x.el)});mobileUI.native=[];}
-function mCloseSheet(clear){const planar=['cell','overall','native'].includes(mobileUI.panelKind);mRestoreNative();mobileUI.panel=false;mobileUI.panelKind='';mobileUI.submit=null;$('#mSheet').hidden=$('#mScrim').hidden=true;$('#mSheetBody').innerHTML='';if(clear)mFinish();else if(planar)render();else mSync();}
+function mCloseSheet(clear){const hadPaint=!!mobileUI.paintPreview;mobileUI.paintPreview=null;const planar=['cell','overall','native'].includes(mobileUI.panelKind);mRestoreNative();mobileUI.panel=false;mobileUI.panelKind='';mobileUI.submit=null;$('#mSheet').hidden=$('#mScrim').hidden=true;$('#mSheetBody').innerHTML='';if(clear)mFinish();else if(planar||hadPaint)render();else mSync();}
 function mOpenSheet(title,html,kind){mCloseSheet(false);mobileUI.panel=true;mobileUI.panelKind=kind||'';$('#mSheetTitle').textContent=title;$('#mSheetBody').innerHTML=html;$('#mSheetBody').scrollTop=0;$('#mSheet').hidden=$('#mScrim').hidden=false;if(['cell','overall','native'].includes(kind))render();else mSync();}
 function mNative(id){const e=$(id);if(!e)return;mobileUI.native.push({el:e,parent:e.parentNode,next:e.nextSibling});$('#mNative').appendChild(e);e.hidden=false;}
 function mFinish(){
   const returnView=mobileUI.returnView;mobileUI.returnView=null;mobileUI.fixedEdge=null;
   if(mobileUI.op&&mobileUI.op.kind==='annmove'&&!mobileUI.op.committed)st.ann[mobileUI.op.index]=mobileUI.op.original;
-  mobileUI.invalidOffset=false;mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
+  mobileUI.face=null;mobileUI.paintPreview=null;mobileUI.invalidOffset=false;mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
   mk.p1=mk.end=mk.mv=null;tool=null;asel=-1;sel=null;hsel=null;hgrp=[];hsolo=false;fsel=null;msel=[];multi=false;mode='edit';ucat='edit';cur.tp=null;cur.dm=null;cur.on=false;cur.fine=false;padMode='cur';lkp=null;if(returnView&&view!==returnView)setView(returnView);else render();
 }
 function mTransaction(fn){
@@ -4740,7 +4782,7 @@ function mMoreOpen(){
     if(!$('#aCopy').disabled)rows.push(mRow('copy','複製這格','copy'));
     if(!$('#aPaste').disabled)rows.push(mRow('paste','貼上到這格','paste'));
     rows.push(mRow('multi','多選格子','multi'));
-    const o=selObj();if(o){rows.push(mRow('lock',o.col.lock?'解除區寬鎖定':'鎖定區寬','lock'));if(!$('#aClear').disabled)rows.push(mRow('clear','清空這格','trash'));if(!$('#aDel').disabled)rows.push(mRow('delete','刪除這格','trash'));}
+    const o=selObj();if(o){if(view==='out'&&['door','drawer'].includes(o.p.t))rows.push(mRow('groupColor','整組面板配色','style'));rows.push(mRow('lock',o.col.lock?'解除區寬鎖定':'鎖定區寬','lock'));if(!$('#aClear').disabled)rows.push(mRow('clear','清空這格','trash'));if(!$('#aDel').disabled)rows.push(mRow('delete','刪除這格','trash'));}
   }
   mOpenSheet('更多操作',rows.join(''),'more');
 }
@@ -4796,6 +4838,8 @@ function mPhoto(){mCloseSheet(false);mode='bg';ucat='edit';render();mOpenSheet('
 function mFreeTools(){mOpenSheet('自由繪圖工具','<div class="m-menu-grid">'+[['board','固定板'],['shelf','活動層板'],['rod','吊衣桿'],['hinge','鉸鏈'],['line','輔助線']].map(([k,l])=>mGridButton('free:'+k,l,k==='board'?'vertical':'line')).join('')+'</div><p class="m-section-label">封閉格子</p><div class="m-menu-grid">'+[['door','門片'],['drawer','抽屜'],['open','開放格'],['blank','封板']].map(([k,l])=>mGridButton('stamp:'+k,l,'rect')).join('')+'</div>','freeTools');}
 async function mBackup(){try{pjSync();photoStash();await dl.save({filename:fileBase()+'.json',data:JSON.stringify({format:'sanchuan-mobile-v1',project:{id:'',name:pj.name,cur:pj.cur,sheets:pj.sheets},photos:[...photos.entries()]},null,2)});toast('可編輯備份已交給裝置存檔');}catch(e){if(e?.code!=='declined')toast('備份沒有完成，請再試一次');}}
 async function mRun(id){
+  if(id==='faceColor'){mFaceColorOpen();return;}if(id==='faceGroup'){mobileUI.face=null;render();return;}
+  if(id==='groupColor'){const o=selObj();if(!o||view!=='out')return;mobileUI.face={c:sel.c,p:sel.p,i:0};mFaceColorOpen(true);return;}
   if(id==='display'||id==='grid'||id==='labels'){mDisplayOpen();return;}
   if(id.startsWith('tool:')){mStartTool(id.slice(5));return;}
   if(id.startsWith('color:')){mobileUI.color=id.slice(6);mToolOpen();return;}
@@ -4833,7 +4877,7 @@ function mTap(q,el){
   if(mobileUI.tool==='pen'||mobileUI.tool==='hl'){toast('在圖上拖動，就能畫出筆跡');return;}
   if(mobileUI.tool){if(mobileUI.tool==='text'){mTextAt(q);return;}if(!mobileUI.first){mobileUI.first=q;mobileUI.preview=mMakeAnn(mobileUI.tool,q,q);mSync();return;}mAnn(mMakeAnn(mobileUI.tool,mobileUI.first,q));return;}
   if(mobileUI.op){mOperationPoint(q);return;}
-  mobileUI.hint=false;
+  mobileUI.face=null;mobileUI.hint=false;
   const dim=el&&el.closest&&el.closest('[data-d]');if(dim&&!isFree()){const key={...dim.dataset};mFinish();const fresh=[...svg.querySelectorAll('[data-d]')].find(e=>e.dataset.d===key.d&&e.dataset.dc===key.dc&&e.dataset.dp===key.dp&&e.dataset.ds===key.ds);if(fresh)openDim(fresh);return;}
   const grip=el?.closest?.('[data-h]');if(grip&&!isFree()){
     const d=grip.dataset,k=d.h;let t=null;
@@ -4851,7 +4895,7 @@ function mTap(q,el){
   if(!t.t&&view==='in'){const c=locCell(q);if(c&&!c.s){if(multi){toast('多選請在櫃外選開放格與外抽');return;}mobileUI.returnView='in';setView('out');t=tgtAt(q,tol);}}
   t.k=null;
   if(multi){if(t.t==='c'){const k={c:t.key.c,p:t.key.p,s:t.key.s||0,k:null},i=msel.findIndex(x=>x.c===k.c&&x.p===k.p&&(x.s||0)===k.s);if(i>=0)msel.splice(i,1);else msel.push(k);render();}return;}
-  mobileUI.target=t;if(!t.t){mFinish();return;}pickTarget(t);
+  mobileUI.target=t;if(!t.t){mFinish();return;}mSelectFace(q,t);pickTarget(t);
 }
 function mOnDown(e){
   if(bgCal||isFree()&&mode==='draw'&&mobileUI.freeDrawing)return;
@@ -4907,6 +4951,27 @@ $('#mToolDone').onclick=()=>{if(bgCal)mPhoto();else mFinish();};
 $('#mImport').addEventListener('change',async e=>{const f=e.target.files?.[0];e.target.value='';if(!f)return;try{const d=JSON.parse(await f.text()),raw=d.project||d,p=mkProject(raw);if(!p.sheets.length)throw new Error('empty');mCloseSheet(false);mFinish();pushP();photos.clear();setProject(p);if(Array.isArray(d.photos)){const ids=new Set(p.sheets.map(x=>x.sid));d.photos.forEach(([sid,x])=>{if(!ids.has(sid)||!x)return;const valid=s=>typeof s==='string'&&/^data:image\/(?:png|jpeg|webp);base64,/.test(s);photos.set(sid,{src:valid(x.src)?x.src:null,rect:valid(x.rect)?x.rect:null})});photoLoad();}render();saveNow();toast('已匯入 '+p.sheets.length+' 個分頁');}catch(_){toast('這個檔案不是可讀取的圖面備份');}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(mobileUI.panel)mCloseSheet(false);else mFinish();}});
 if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{if(!mobileUI.panel&&!mobileUI.op){portC=null;render();}});
+/* Context-only finish editor. Preview is separate from the saved cabinet model. */
+function mFaceKey(){const key=mobileUI.face;if(!key||isFree()||view!=='out')return null;return FaceColor.panels(st).find(f=>FaceColor.same(f,key))||null;}
+function mSelectFace(q,t){if(t.t!=='c'||view!=='out'||multi||isFree())return;const f=FaceColor.pick(st,q);if(f&&f.c===t.key.c&&f.p===t.key.p){mobileUI.face={c:f.c,p:f.p,i:f.i};t.k=null;}}
+function mFaceTitle(f){return'第 '+(f.c+1)+' 區 · '+(f.type==='door'?'第 '+(f.i+1)+' 片門':'由上第 '+(f.i+1)+' 個抽屜頭');}
+function mFaceColorOpen(group=false){
+  const f=mFaceKey();if(!f)return;
+  const key={c:f.c,p:f.p,i:f.i},part=st.cols[f.c].parts[f.p],swatches=[['#f2eee6','暖白'],['#d5c9b7','米灰'],['#b5a391','淺木色'],['#a8754d','暖木色'],['#704e37','深木色'],['#dedfe1','淺灰'],['#8c9297','灰色'],['#30383f','炭黑'],['#355b64','藍綠'],['#7b8872','灰綠'],['#cba477','沙色'],['#9f6663','灰紅']];
+  mOpenSheet('面板配色',`<form id="mForm"><p class="m-paint-target">${esc(mFaceTitle(f))}</p><label class="m-field">套用範圍<select id="mPaintScope"><option value="one"${!group?' selected':''}>${f.type==='door'?'這片門片':'這個抽屜頭'}</option><option value="group"${group?' selected':''}>這組全部（${part.n} ${f.type==='door'?'片':'個'}）</option></select></label><div class="m-paint-swatches" role="group" aria-label="常用面板顏色">${swatches.map(([c,n])=>`<button type="button" data-paint="${c}" title="${n}" aria-label="${n}" style="--swatch:${c}"><span></span><small>${n}</small></button>`).join('')}</div><label class="m-field m-color-field">自訂顏色<input id="mPaintColor" type="color" value="${f.color||(displaySettings.theme==='dark'?'#151f27':'#ffffff')}"></label><button type="button" id="mPaintReset" class="m-row-action">恢復預設面板顏色</button><p id="mPaintStatus" class="m-sheet-note">選色會預覽，按套用才保存。${part.n>1?'整組套色會取代這組原有的跳色。':''}</p>${mFormButtons}</form>`,'faceColor');
+  const preview=color=>{mobileUI.paintPreview={key,scope:$('#mPaintScope').value,color};render();$('#mPaintStatus').textContent=color?'預覽 '+color.toUpperCase()+'，按套用保存。':'預覽預設面板顏色，按套用保存。';for(const b of $('#mSheetBody').querySelectorAll('[data-paint]'))b.setAttribute('aria-pressed',b.dataset.paint===color);};
+  const colorInput=e=>preview(FaceColor.valid(e.target.value)?e.target.value:null);
+  $('#mPaintColor').addEventListener('input',colorInput);$('#mPaintColor').addEventListener('change',colorInput);
+  $('#mPaintScope').addEventListener('change',()=>preview(mobileUI.paintPreview?mobileUI.paintPreview.color:f.color));
+  $('#mPaintReset').onclick=()=>preview(null);
+  $('#mForm').addEventListener('click',e=>{const c=e.target.closest('[data-paint]')?.dataset.paint;if(c){$('#mPaintColor').value=c;preview(c);}},{once:false});
+  mobileUI.submit=()=>{const candidate=mobileUI.paintPreview;
+    // Opening a panel and applying without picking preserves its existing finish.
+    const color=candidate?candidate.color:f.color,scope=$('#mPaintScope').value;
+    mTransaction(()=>FaceColor.set(st,key,color,scope));mCloseSheet(true);toast(scope==='group'?'這組面板配色已套用':'面板配色已套用');
+  };
+}
+
 /* Relative touch positioning and real-boundary measurements. Origin: outer left-bottom. */
 const precision={step:5,side:'right',rulers:false,metric:{x:'netNear',y:'netFar'}};
 try{const p=JSON.parse(localStorage.getItem('sc-mobile-precision-v1')||'{}');if([1,5,10].includes(p.step))precision.step=p.step;if(p.side==='left')precision.side='left';precision.rulers=p.rulers===true;if(p.metric&&typeof p.metric==='object')Object.assign(precision.metric,p.metric);}catch(_){}

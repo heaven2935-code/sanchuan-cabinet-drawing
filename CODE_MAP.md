@@ -64,3 +64,12 @@ cabinet-depth.js：櫃內固定視角投影、開口裁切、板面陰影，以�
 - `mobile-source/cabinet-faces.js`：實際門／抽屜總縫寬、縮放簡化與踢腳凹入陰影提示。門縫與裝飾不改選取範圍。
 - `mobile-source/scripts/build.py`：持久化 kickSetback / faceGap、取手縫預設25、樣式面板移除隱藏桌面錨點、DXF 面板邊線圖層。
 - `mobile-source/tests/precision.cjs`：完整 DOM 流程核對淨尺寸、微調、相對拖曳、原點、設定、取消、復原與輸入錯誤。
+
+
+## 2026-10-14 單片面板配色
+
+- `mobile-source/face-color.js`：純函式面板幾何、單片命中、顏色驗證／正規化、單片／整組賦色與渲染；`frontColors` 儲存在外部門／抽屜組的 part 內，順序為門片由左至右、抽屜頭由上至下。
+- `mobile-source/mobile-face-color.js`：配色表單、常用色、自訂色、作用範圍、恢復預設；`mobileUI.paintPreview` 僅為預览，不寫入圖面。
+- `mobile-source/mobile-ui.js`：`mobileUI.face` 與 `depthRuntime.face` 控制單片高亮；`faceGroup` 返回整格操作。
+- `mobile-source/tests/face-color.cjs`：14 組前板選取／跳色／取消／復原／資料保存／匯出／把手對比測試，47 種樣式共258片面板幾何檢查。
+- `mobile-source/scripts/build.py`：保留 frontColors、複製貼上與類型切換規則；face-fill只影響SVG/PNG顏色，face-handle保留CAD線圖層，與選取線分離。
