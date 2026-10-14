@@ -1502,6 +1502,78 @@ html.npx.simp.jogOpen #jog::after{content:"";position:absolute;left:50%;top:50%;
 html.npx.simp.jogOpen #jogSide{display:flex;position:fixed;right:10px;bottom:calc(220px + env(safe-area-inset-bottom,0px));z-index:8;flex-direction:column;gap:8px;width:72px}
 html.npx.simp.jogOpen #jogSide button{box-shadow:0 6px 14px rgba(0,0,0,.35)}
 html.npx.simp.jogOpen #jogRd{top:-26px}
+.ed .jnrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:6px 0 4px}.ed .jnrow span{font-size:12.5px;color:var(--sub);font-weight:700}.ed .jnrow em{font-style:normal;font-size:11.5px;color:var(--mute);width:100%}
+#ctSeg,#nwCt{display:flex;gap:6px}#ctSeg button,#nwCt button{flex:1;font-size:13px}
+#nwCt button{height:34px;border:1px dashed var(--dash);border-radius:4px;background:transparent;color:var(--ink)}#nwCt button[aria-pressed="true"]{border:1.6px solid var(--cyan);color:var(--cyan)}
+#qedit.gonly #qTabs{display:none!important}
+
+#cutw{position:fixed;inset:0;z-index:40;background:var(--paper);display:flex;flex-direction:column;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));color:var(--ink)}
+html:not(.land).topi #cutw{padding-top:calc(8px + var(--topi))}
+#cutH{display:flex;align-items:center;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--line)}#cutH b{font-size:17px;letter-spacing:.08em}#cutH .sp{flex:1}
+#cutH button{height:34px;min-height:0;padding:0 12px;border:1px solid var(--dash);border-radius:4px;background:transparent;color:var(--ink);font-size:13.5px}#cutH .pri{border-color:var(--cyan);color:var(--cyan)}
+#cutIn{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:8px 0;font-size:13.5px}
+#cutIn label{display:flex;align-items:center;gap:6px;color:var(--sub)}#cutIn input#cutD{width:5.5em;height:32px;padding:0 6px;border:1px solid var(--cyan);border-radius:4px;background:transparent;color:var(--ink);font-family:var(--num);font-size:16px;text-align:right}
+#cutIn em{font-style:normal;color:var(--mute)}#cutIn select{height:32px;padding:0 6px;border:1px dashed var(--dash);border-radius:4px;background:transparent;color:var(--ink);font-size:14px}#cutIn .ck input{width:18px;height:18px;accent-color:var(--cyan)}
+#cutBody{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;font-size:13px;line-height:1.45}
+#cutBody h3{margin:14px 0 6px;font-size:14px;letter-spacing:.06em;color:var(--cyan)}#cutBody p{margin:4px 0}
+#cutBody ul{margin:4px 0;padding-left:18px}#cutBody .cutQ li{color:#e8b86a}#cutBody .cutC{list-style:none;padding-left:0}#cutBody .cutC .ng{color:#e58a7a}#cutBody .cutC .ok{color:var(--sub)}
+.cutT{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:4px}
+.cutT table{border-collapse:collapse;width:max-content;min-width:100%;font-size:12.5px}
+.cutT th,.cutT td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;font-family:var(--num),var(--zh)}
+.cutT th{color:var(--sub);font-weight:600;background:rgba(255,255,255,.03);position:sticky;top:0}
+.cutT td:last-child{white-space:normal;min-width:10em}
+html.npx #topbar #tbCut{order:2}
+
+/* ===== v60 landscape: drawing left, header + dial column right ===== */
+html.land{--rc:316px}
+html.land.npx main{display:block!important;height:100%;padding:4px calc(var(--rc) + max(6px,env(safe-area-inset-right,0px))) 4px max(4px,env(safe-area-inset-left,0px))!important}
+html.land.npx .stage{display:block!important;height:100%}
+html.land.npx #rail{display:none!important}
+html.land.npx .sheet{height:100%;width:100%}
+html.land.npx .side{position:fixed!important;top:0;right:0;width:var(--rc);height:auto!important;overflow:visible!important;padding:6px max(8px,env(safe-area-inset-right,0px)) 0 6px!important;z-index:8;display:block!important;background:transparent}
+html.land.npx .side>*:not(.name):not(#topbar):not(#deck){display:none!important}
+html.land.npx .name{display:flex!important;align-items:center;gap:6px;margin:0!important;height:38px}
+html.land.npx .name .nm{display:flex!important;flex-direction:row!important;flex:1 1 auto;min-width:0;align-items:center;gap:8px}
+html.land.npx .nm .brand{display:flex!important;align-items:center;flex:none;font-size:13.5px;letter-spacing:.06em;color:var(--ink)}
+html.land.npx .nm .brand .lg{width:24px;height:24px;margin-right:6px}
+html.land.npx .nm .brand i,html.land.npx .nm .brand em{display:none}
+html.land.npx .name #fName{flex:1 1 0;min-width:0;height:28px;font-size:13.5px;text-align:left;padding:1px 2px 3px}
+html.land.npx #viewSlot,html.land.npx .name #fileBtns{display:none}
+html.land.npx #deck{position:fixed!important;right:0;top:46px;bottom:0;width:var(--rc);box-sizing:border-box;margin:0!important;padding:0 max(8px,env(safe-area-inset-right,0px)) max(6px,env(safe-area-inset-bottom,0px)) 6px!important;display:flex!important;flex-direction:column;justify-content:flex-end;background:transparent!important;border:0!important;z-index:6}
+html.land.npx #deck>#qbar,html.land.npx #deck>#tri,html.land.npx #deck>#ctl,html.land.npx #deck>#shRow{display:none!important}
+html.land.npx #actm:not([hidden]){display:flex!important;flex-direction:column;flex:1 1 auto;height:auto!important;min-height:0;margin:0 0 2px!important;order:3}
+html.land.npx #nRul{flex:none;width:100%;margin:0!important;box-sizing:border-box}
+html.land.npx #nPad{flex:none;width:100%;margin:2px 0 0!important;box-sizing:border-box}
+html.land.npx:not(.simp) #jogSide{right:0;width:66px}
+html.land.npx:not(.simp) #nRing #nBack{left:0!important}
+html.land.npx #nRul.idle{display:none!important}
+html.land.npx #shChip .shnm{display:inline!important}html.land.npx #shChip b{display:none!important}
+html.land.npx #tbSimp{display:none!important}
+html.land.npx #landBtn{display:none}
+
+/* ===== v61 landscape: 畫圖 / 料單 ===== */
+#lmSeg,#lpan{display:none}
+html.land.npx.lmok #lmSeg{display:flex;order:-2;flex:none;gap:0;margin:0 0 auto;padding:3px;border-radius:10px;background:#22272b}
+html.land.npx.lmok #deck:has(#nRul:not(.idle)) #lmSeg{display:none}
+#lmSeg button{flex:1 1 0;min-height:0;height:30px;padding:0;border:0;border-radius:7px;background:transparent;color:#7d878f;font-size:13px;font-weight:600;letter-spacing:.12em;box-shadow:none}
+#lmSeg button[aria-pressed="true"]{background:rgba(95,182,194,.18);color:var(--cyan)}
+html.land.npx.lm #nPad,html.land.npx.lm #nRul,html.land.npx.lm #actm{display:none!important}
+html.land.npx.lm #lmSeg{margin-bottom:6px}
+html.land.npx.lm #lpan{display:block;order:0;flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:2px 2px 4px;color:var(--ink);font-size:13px}
+#lpan .lh{display:flex;align-items:baseline;gap:8px;margin:0 0 2px}
+#lpan .lh b{font-size:15px;letter-spacing:.04em}
+#lpan .lh span{margin-left:auto;font-family:var(--num);color:var(--sub);font-size:12.5px;white-space:nowrap}
+#lpan .ls{margin:0 0 6px;color:var(--sub);font-size:12px}
+#lpan h4{margin:10px 0 3px;font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:.08em}
+#lpan .lr{display:flex;align-items:baseline;gap:6px;padding:4px 0;border-bottom:1px solid #2c3338}
+#lpan .lr .n{flex:1 1 auto;min-width:0}
+#lpan .lr .n small{display:block;color:var(--mute);font-size:11px;line-height:1.3}
+#lpan .lr .v{flex:none;font-family:var(--num);font-size:13.5px;color:#e6ebee;white-space:nowrap}
+#lpan .lr .q{flex:none;width:2.4em;text-align:right;font-family:var(--num);color:var(--sub);font-size:12.5px}
+#lpan .lw{margin:8px 0 0;padding:6px 8px;border-radius:6px;background:rgba(224,170,80,.1);color:#e0b066;font-size:12px;line-height:1.45}
+#lpan .le{padding:14px 4px;color:var(--sub);line-height:1.6}
+#lpan .lb{display:flex;gap:6px;margin-top:10px}
+#lpan .lb button{flex:1 1 0;min-height:0;height:32px;padding:0;border:1px dashed var(--dash);border-radius:4px;background:transparent;color:var(--ink);font-size:12.5px}
 </style>
 </head>
 <body>
@@ -1518,7 +1590,7 @@ html.npx.simp.jogOpen #jogRd{top:-26px}
     </header>
 
     <div class="name"><label class="nm"><span class="brand" id="brand"><svg class="lg" viewBox="0 0 1059 1059" role="img" aria-label="三川工方"><defs><linearGradient id="lgA" gradientUnits="userSpaceOnUse" x1="262" y1="258" x2="792" y2="788"><stop offset="0" stop-color="#2D53B2"/><stop offset="1" stop-color="#68C1D8"/></linearGradient></defs><path d="M289 254L530 14L591 75L350 315ZM393 355L633 114L694 175L454 415ZM485 444L726 204L787 265L546 505ZM190 348L431 589L491 528L251 287ZM750 350L991 590L1051 529L811 289ZM99 437L339 677L400 617L160 376ZM655 442L896 682L957 621L716 381ZM8 528L248 769L309 708L69 468ZM564 532L805 772L865 711L625 471ZM283 802L523 562L584 623L344 863ZM374 893L614 652L675 713L435 953ZM468 985L708 744L769 805L529 1045Z" fill="url(#lgA)"/></svg><b>三川工方</b><i></i><em>櫃體立面圖</em></span><input id="fName" maxlength="60" placeholder="輸入檔名" aria-label="檔案名稱（案名）"></label><button id="mkExit" hidden aria-label="結束標註">標註中 ✕</button><button id="hmBtn" aria-label="選單" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><span id="viewSlot"><div class="seg" id="viewSeg" role="group" aria-label="看哪一張圖"><button id="vOut" aria-pressed="true">櫃外</button><button id="vIn" aria-pressed="false">櫃內</button></div></span><span id="fileBtns"><button id="fileBtn" aria-expanded="false" aria-controls="filePop">檔案</button><button id="moreBtn" aria-expanded="false" aria-controls="morePop">檢視</button></span><span id="nameSlot"></span></div>
-    <div id="topbar"><span id="tbSeg"></span><button id="tbSize" aria-pressed="false">尺寸</button><button id="tbMark" aria-pressed="false">標註</button><span id="tbFile"></span><button id="tbSimp">極簡模式</button></div>
+    <div id="topbar"><span id="tbSeg"></span><button id="tbSize" aria-pressed="false">尺寸</button><button id="tbMark" aria-pressed="false">標註</button><span id="tbFile"></span><button id="tbCut">拆料清單</button><button id="tbSimp">極簡模式</button></div>
     <div id="fileSlot"></div>
 
     <div id="urSlot"></div>
@@ -1625,9 +1697,9 @@ html.npx.simp.jogOpen #jogRd{top:-26px}
       <label class="chk" id="dimChk"><input type="checkbox" id="fLabels">在每一格上寫出名稱和尺寸</label>
       <div class="btns"><button id="szAdjBtn" aria-pressed="false">調線</button><button id="evenAllBtn">各區均分</button><button id="mirrorBtn">左右鏡射</button></div>
     </section>
-    <div id="editHome" hidden><div class="btns"><button id="ehDraw" aria-pressed="false">畫線</button></div><p class="note" id="ehNote">還沒選取要編輯的格子或線：把準星移過去，按「選取」。</p><div id="quickCols" hidden><span>直接分成</span><button data-qc="2">2 區</button><button data-qc="3">3 區</button><button data-qc="4">4 區</button><button data-qc="5">5 區</button><button data-qc="6">6 區</button></div><div id="cabOps"><p class="fh">整個櫃體</p><div class="btns"><button id="ehEven">各區均分</button><button id="ehMirror">左右鏡射</button></div></div></div>
+    <div id="editHome" hidden><div class="btns"><button id="ehDraw" aria-pressed="false">畫線</button></div><p class="note" id="ehNote">還沒選取要編輯的格子或線：把準星移過去，按「選取」。</p><div id="quickCols" hidden><span>直接分成</span><button data-qc="2">2 區</button><button data-qc="3">3 區</button><button data-qc="4">4 區</button><button data-qc="5">5 區</button><button data-qc="6">6 區</button></div><div id="cabOps"><p class="fh">整個櫃體</p><div class="btns"><button id="ehEven">各區均分</button><button id="ehMirror">左右鏡射</button></div><p class="fh">櫃體種類（決定側板和頂底板誰夾誰）</p><div class="seg" id="ctSeg" role="group"><button data-ct="tall">高櫃：側板夾頂底板</button><button data-ct="low">矮櫃：頂底板夾側板</button></div></div></div>
     <ol id="startTip" hidden><li><b>1</b><span>上面「尺寸」：輸入總寬、總高、踢腳板。</span></li><li><b>2</b><span>點一格按「選取」，旁邊出現「直分隔」「橫分隔」：先出現預覽線，位置對了按「確定」。也可以先用「直接分成幾區」。</span></li><li><b>3</b><span>準星移到格子上按「選取」，再選門片、抽屜、層板。</span></li></ol>
-    <div id="viewPanel" class="ed" hidden><p class="fh" style="margin-top:0">圖面</p><div class="fg g4"><button id="gridBtn" aria-pressed="false" aria-label="格線">格線</button><button id="darkBtn" aria-pressed="false">黑底</button><button id="pvBtn" aria-label="預覽成品圖">預覽</button><button id="landBtn" aria-pressed="false">橫屏</button><button id="topiBtn" aria-pressed="true">上方留空</button><button id="lblBtn" aria-pressed="false">格子寫尺寸</button><button id="swBtn" aria-pressed="false">開門線</button><button id="simBtn" aria-pressed="false">極簡模式</button><button id="datBtn" aria-pressed="false">基準：左</button></div><p class="fh">其他</p><div class="fg g3"><button id="xBg">底圖</button><button id="viewBtn" aria-label="設定">設定</button><button id="xHelp">使用說明</button></div><p class="note" style="font-size:13px;margin:10px 0 0">在「檢視」裡點圖面不會選到東西，可以放心拖動、縮放。要修改請按左邊的「編輯」。</p></div>
+    <div id="viewPanel" class="ed" hidden><p class="fh" style="margin-top:0">圖面</p><div class="fg g4"><button id="gridBtn" aria-pressed="false" aria-label="格線">格線</button><button id="darkBtn" aria-pressed="false">黑底</button><button id="pvBtn" aria-label="預覽成品圖">預覽</button><button id="landBtn" aria-pressed="false">橫屏</button><button id="topiBtn" aria-pressed="true">上方留空</button><button id="lblBtn" aria-pressed="false">格子寫尺寸</button><button id="swBtn" aria-pressed="false">開門線</button><button id="rulBtn" aria-pressed="true">刻度</button><button id="p3Btn" aria-pressed="false">立體</button><button id="eyeBtn">視高 170</button><button id="simBtn" aria-pressed="false">極簡模式</button><button id="datBtn" aria-pressed="false">基準：左</button></div><p class="fh">其他</p><div class="fg g3"><button id="xBg">底圖</button><button id="viewBtn" aria-label="設定">設定</button><button id="gestBtn">手勢設定</button><button id="xHelp">使用說明</button></div><p class="note" style="font-size:13px;margin:10px 0 0">在「檢視」裡點圖面不會選到東西，可以放心拖動、縮放。要修改請按左邊的「編輯」。</p></div>
     <p class="hint" id="edHint"></p>
     </div>
     <div id="deck"></div>
@@ -1665,7 +1737,8 @@ html.npx.simp.jogOpen #jogRd{top:-26px}
     <dt>尺寸</dt><dd>另外開一頁，把這一張的數字全部列出來：總高、總寬、板厚、踢腳板，每一區的寬，每一格的高、各層淨高、每個抽屜的高，都可以直接改，上面的圖會跟著變。按「完成」回到圖面。不開這一頁也能改：圖上的尺寸數字可以點；選到一條線，標線上的數字可以改。</dd>
     <dt>標註</dt><dd>不會改到櫃體。進入標註後，圖面左上角有顏色和線條粗細（－／＋），隨時可以換。按最下面的「標註」，再點左右的工具：把準星移到第一點按「選取」，再移到第二點按「確定」。畫好的可以再改：準星移到它上面按「選取」，再把準星移到它的一端按「選取」、移到新位置按「確定」；整個搬用「移動」。「更多」裡有箭頭、畫筆、螢光筆（這兩種直接用手指畫）、顏色、粗細、全部清除，選到的標註也在這裡刪除。按「看圖」或「櫃體」就離開標註。</dd>
     <dt>視角</dt><dd>「視角」開著時圓盤移動的是畫面，準星留在圖上原本的位置。</dd>
-    <dt>圖面</dt><dd>在圖上按住拖是移動畫面，兩指開合是縮放。</dd>
+    <dt>圖面</dt><dd>單指在圖上拖＝移動準星（跟著手指的方向走，手指不會蓋住準星）；單指點一下＝準星跳過去；兩指拖＝移動畫面；兩指開合＝縮放。</dd>
+    <dt>手勢</dt><dd>在圖紙上：<b>兩指點一下</b>＝復原；<b>三指點一下</b>＝重做；<b>點兩下</b>＝還原（回到整張圖）；<b>空白處長按</b>＝預設不用。每一個都可以在「檢視 › 手勢設定」改成別的功能，或設成不使用。設定記在這支手機上。</dd>
     <dt>檢視</dt><dd>格線、預覽、橫屏、底圖。預覽和匯出的圖固定是白底。</dd>
     <dt>檔案</dt><dd>存檔、開舊圖、新檔案（先選常用尺寸或自己輸入寬、高、踢腳板）、櫃體樣式、AI 繪圖、匯出。</dd>
     <dt>橫屏</dt><dd>按鍵排在左邊一排，功能一樣，但沒有圓盤和三組切換：「標註」在右上，分頁在圖面左上角，選到東西後的選項在右邊。</dd>
@@ -1716,8 +1789,12 @@ html.npx.simp.jogOpen #jogRd{top:-26px}
 <div id="szw" hidden><div id="szwH"><b>尺寸</b><div id="szwSeg" role="group" aria-label="看櫃外還是櫃內"><button data-v="out">櫃外</button><button data-v="in">櫃內</button></div><span class="sp"></span><button id="szwU">復原</button><button id="szwX" class="pri">完成</button></div><div id="szwMain"><div id="szwImg"></div><div id="szwBody"><div class="szt" style="margin-top:2px"><b>整體</b><span>mm</span></div><div id="szwDim"></div><div class="szt"><b id="szwT">各區</b><span>mm</span></div><div id="szList"></div><p class="note" id="szwNote"></p></div></div></div><div id="pvw" hidden><div id="pvwImg"></div><button id="pvwX">關閉預覽</button></div>
 <div id="nwBox" hidden><div id="nwCard" role="dialog" aria-label="新櫃體的尺寸"><b id="nwT">新檔案</b><p class="note" style="margin:4px 0 8px">先定外框，裡面是空的，再開始分格。</p>
 <div id="nwPre"></div>
+<p class="fh" style="margin:10px 0 4px">櫃體種類</p><div class="seg" id="nwCt" role="group"><button data-ct="tall" aria-pressed="true">高櫃（側板夾頂底）</button><button data-ct="low" aria-pressed="false">矮櫃（頂底夾側板）</button></div>
 <div class="nwf"><label>總寬<input id="nwW" inputmode="numeric" maxlength="5"></label><label>總高<input id="nwH" inputmode="numeric" maxlength="5"></label><label>踢腳板<input id="nwK" inputmode="numeric" maxlength="4"></label></div>
 <div class="nwb"><button id="nwNo">取消</button><button id="nwGo">開始</button></div></div></div>
+<div id="cutw" hidden><div id="cutH"><b>拆料清單</b><span class="sp"></span><button id="cutCsv">下載 CSV</button><button id="cutX" class="pri">完成</button></div>
+<div id="cutIn"><label>完成深度<input id="cutD" inputmode="numeric" maxlength="4" placeholder="例 600"><em>mm</em></label><label class="ck"><input type="checkbox" id="cutDd">含門片</label><label>踢腳<select id="cutKr"><option value="50">退 5 公分</option><option value="0">不退</option></select></label><label class="ck"><input type="checkbox" id="cutSkL">左外貼 3mm</label><label class="ck"><input type="checkbox" id="cutSkR">右外貼 3mm</label></div>
+<div id="cutBody"></div><p class="note" style="margin:6px 0 0">照《櫃體拆圖與拆料標準規則》計算目前這個分頁。標「待確認」的是規則規定不能猜的地方。</p></div>
 <div id="toast" role="status" aria-live="polite"></div>
 </div>
 
@@ -1782,6 +1859,17 @@ const use=n=>{try{return window.claude&&window.claude.use?window.claude.use(n).c
 function vpGet(k,d){try{const v=localStorage.getItem('sc-cab-'+k);return v==null?d:v==='1'}catch(e){return d}}
 function vpSet(k,v){try{localStorage.setItem('sc-cab-'+k,v?'1':'0')}catch(e){}}
 function swingOn(){return vpGet('swing',false)}
+/* depth defaults by cabinet kind; wardrobe depth counts the doors; kick board set back 50 unless told not to */
+const DDEF={sh:400,wd:600,tv:400,dr:450};
+function dDef(s){return s&&DDEF[s.cat]||null}
+function dIncl(s){return s&&(s.Dd!=null?!!s.Dd:s.cat==='wd')}
+function dFin(s){return s&&s.D>0?s.D:dDef(s)}
+function krOf(s){return s&&s.kr!=null?s.kr:50}
+function p3On(){return vpGet('p3',false)}
+function clipSeg(ax,ay,bx,by,x0,y0,x1,y1){let t0=0,t1=1;const dx=bx-ax,dy=by-ay,P=[-dx,dx,-dy,dy],Q=[ax-x0,x1-ax,ay-y0,y1-ay];
+  for(let i=0;i<4;i++){if(Math.abs(P[i])<1e-9){if(Q[i]<0)return null}else{const r=Q[i]/P[i];if(P[i]<0){if(r>t1)return null;if(r>t0)t0=r}else{if(r<t0)return null;if(r<t1)t1=r}}}
+  if(t1-t0<1e-6)return null;return[ax+t0*dx,ay+t0*dy,ax+t1*dx,ay+t1*dy]}
+function eyeH(){try{const v=parseInt(localStorage.getItem('sc-cab-eye'),10);return v>=500&&v<=2500?v:1700}catch(e){return 1700}}
 function sample0(){return{id:'',name:'',W:2400,H:2400,kick:100,T:18,labels:true,ann:[],cols:[
   {w:600,parts:[{t:'door',h:2300,n:1,hinge:'L',ins:[{t:'rod',h:1500,n:1},{t:'shelf',h:800,n:1}]}]},
   {w:600,parts:[{t:'door',h:2300,n:1,hinge:'R',ins:[{t:'shelf',h:1500,n:3},{t:'idrawer',h:800,n:3}]}]},
@@ -1791,7 +1879,12 @@ function defN(t,w,h){return t==='door'?(w>600?2:1):t==='drawer'?clamp(Math.round
 const defShelf=h=>clamp(Math.round(h/400)-1,0,10);
 const fmt=v=>String(Math.round(v*10)/10);
 const add=a=>a.reduce((t,v)=>t+v,0);
-const clearIn=(p,si,T)=>p.ins[si].h-(si?T/2:T)-(si<p.ins.length-1?T/2:T);
+const clearIn=(p,si,T,PI)=>p.ins[si].h-(si?T/2:(PI?PI.t:T))-(si<p.ins.length-1?T/2:(PI?PI.b:T));
+/* shop rules: side-by-side bays taller than 1800 meet with two boards (36), lower ones share one (18) unless set by hand (col.jn 'd' / 's');
+   stacked cells in a bay share one board; outer sides, top and bottom are one board each */
+function jDblS(s,i){const c=s.cols[i];if(!c||!s.cols[i+1])return true;if(c.jn==='d')return true;if(c.jn==='s')return false;return s.H-s.kick>1800}
+function pinS(s,ci,pi){const T=s.T||18,nc=s.cols.length,col=s.cols[ci],np=col?col.parts.length:1;return{t:pi===0?T:T/2,b:pi>=np-1?T:T/2,l:ci===0||jDblS(s,ci-1)?T:T/2,r:ci>=nc-1||jDblS(s,ci)?T:T/2}}
+function ctOf(s){return s.ct==='tall'||s.ct==='low'?s.ct:(s.H>=1800?'tall':'low')}
 function keepGs(r,raw){if(raw==null)return;const n=r.n,ok=Array.isArray(raw)&&n>0&&(raw.length===n||raw.length===n+1),v=ok?raw.map(z=>num(z,0)):[];
   if(ok&&v.every(z=>z>=1)){r.gs=v.slice(0,n);if(v.length===n+1)r._ga=add(v)}else if(Array.isArray(raw)&&raw.length)r._gb=1}
 function gapsOf(x,clear,T){const n=x.n,G=clear-n*T;
@@ -1810,7 +1903,7 @@ function fit(arr,key,total){const s=sum(arr,key)||1;let acc=0;arr.forEach((x,i)=
 function settle(arr,key,total){const s=sum(arr,key);if(s===total)return false;const l=arr[arr.length-1];if(l[key]+total-s>=MIN)l[key]+=total-s;else fit(arr,key,total);return true}
 function normIns(a,h){
   const l=(Array.isArray(a)&&a.length?a.slice(0,8):[{t:'shelf',h,n:defShelf(h)}]).map(s=>{s=s||{};const t=INS[s.t]?s.t:'shelf',sh=Math.max(1,num(s.h,300));
-    const r={t,h:sh,n:t==='rod'?1:clamp(num(s.n,t==='shelf'?defShelf(sh):clamp(Math.round(sh/200),1,10)),t==='shelf'?0:1,10)};if(t==='shelf')keepGs(r,s.gs);return r});
+    const r={t,h:sh,n:t==='rod'?1:clamp(num(s.n,t==='shelf'?defShelf(sh):clamp(Math.round(sh/200),1,10)),t==='shelf'?0:1,10)};if(t==='shelf'){keepGs(r,s.gs);if(s.fx)r.fx=true}return r});
   settle(l,'h',h);return l}
 const FLT={board:'板',shelf:'活動層板',rod:'吊衣桿',hinge:'鉸鏈',line:'輔助線'},FCT={door:'門片',drawer:'抽屜',open:'開放',blank:'封板'};
 const flName=l=>l.t==='board'?(l.x1===l.x2?'立板':'固定層板'):FLT[l.t];
@@ -1844,27 +1937,27 @@ function toFree(st){const H=st.H,k=st.kick,T=st.T||18,ln=[],cl=[],B=(x1,z1,x2,z2
   B(0,0,0,H);B(st.W,0,st.W,H);B(0,H,st.W,H);B(0,0,st.W,0);if(k>0)B(0,k,st.W,k);
   let x=0;st.cols.forEach((c,ci)=>{if(ci)B(x,k,x,H);let y=0;c.parts.forEach((p,pi)=>{if(pi)B(x,H-y,x+c.w,H-y);
       cl.push({x:x+c.w/2,z:H-y-p.h/2,t:p.t,n:p.n,hinge:p.hinge});
-      if(p.t==='open'&&p.n>0&&c.w>4*T&&p.h>4*T){const g=gapsOf(p,p.h-2*T,T);let sy=y+T;g.forEach((v,q)=>{if(q<p.n)B(x,H-(sy+v+T/2),x+c.w,H-(sy+v+T/2),'shelf');sy+=v+T})}
+      if(p.t==='open'&&p.n>0&&c.w>4*T&&p.h>4*T){const PI=pinS(st,ci,pi),g=gapsOf(p,p.h-PI.t-PI.b,T);let sy=y+PI.t;g.forEach((v,q)=>{if(q<p.n)B(x,H-(sy+v+T/2),x+c.w,H-(sy+v+T/2),'shelf');sy+=v+T})}
       y+=p.h});x+=c.w});
   const o=normalize({kind:'free',id:st.id,name:st.name,T,labels:st.labels,grid:st.grid,dat:st.dat,W:st.W,H,ln,cl,ann:st.ann,bg:st.bg,wall:st.wall});if(st.sid)o.sid=st.sid;return o}
-function fixAll(st){if(st.kind==='free'){freeFix(st);return}const T=st.T||18;st.cols.forEach(c=>c.parts.forEach(p=>{
+function fixAll(st){if(st.kind==='free'){freeFix(st);return}const T=st.T||18;st.cols.forEach((c,ci)=>c.parts.forEach((p,pi)=>{const PI=pinS(st,ci,pi);
   if(p.t==='door'){if(!Array.isArray(p.ins)||!p.ins.length)p.ins=normIns(null,p.h);else settle(p.ins,'h',p.h);
-    p.ins.forEach((s,si)=>{if(s.t==='shelf')fixGs(s,clearIn(p,si,T),T);else if(s.gs)delete s.gs})}
-  if(p.t==='open')fixGs(p,p.h-2*T,T);else if(p.gs)delete p.gs}))}
+    p.ins.forEach((s,si)=>{if(s.t==='shelf')fixGs(s,clearIn(p,si,T,PI),T);else if(s.gs)delete s.gs})}
+  if(p.t==='open')fixGs(p,p.h-PI.t-PI.b,T);else if(p.gs)delete p.gs}))}
 function normalize(d,notes){
   if(d&&d.kind==='free'&&!d._f){const W=clamp(num(d.W,2400),100,MAXW),H=clamp(num(d.H,2400),150,MAXH),o=normalize(Object.assign({},d,{_f:1,W,H,kick:0,cols:[{w:W,parts:[{t:'open',h:H,n:0}]}]}),[]);
     o.kind='free';o.ln=(Array.isArray(d.ln)?d.ln:[]).map(l=>Object.assign({},l));o.cl=(Array.isArray(d.cl)?d.cl:[]).map(c=>Object.assign({},c));return freeFix(o)}
   notes=notes||[];d=d||{};
   const o={id:String(d.id||''),name:String(d.name||'').slice(0,60),labels:vpGet('lbl',false),grid:+d.grid===50||+d.grid===100?+d.grid:0};if(d.sid)o.sid=String(d.sid).slice(0,24);if(d.dat==='R')o.dat='R';
-  o.W=clamp(num(d.W,2400),100,MAXW);o.H=clamp(num(d.H,2400),150,MAXH);o.kick=clamp(num(d.kick,0),0,o.H-MIN);o.T=clamp(num(d.T,18),6,40);
+  o.W=clamp(num(d.W,2400),100,MAXW);o.H=clamp(num(d.H,2400),150,MAXH);o.kick=clamp(num(d.kick,0),0,o.H-MIN);o.T=clamp(num(d.T,18),6,40);if(d.ct==='tall'||d.ct==='low')o.ct=d.ct;if(num(d.D,0)>=100)o.D=clamp(Math.round(num(d.D,0)),100,1500);if(d.sk&&typeof d.sk==='object')o.sk={l:d.sk.l!==false,r:d.sk.r!==false};if(typeof d.cat==='string'&&/^[a-z]{2}$/.test(d.cat))o.cat=d.cat;if(d.Dd===true||d.Dd===false)o.Dd=d.Dd;if(d.kr!=null&&d.kr!=='')o.kr=clamp(num(d.kr,50),0,300);
   const body=o.H-o.kick;
   const src=Array.isArray(d.cols)&&d.cols.length?d.cols.slice(0,20):[{w:o.W}];
   o.cols=src.map(c=>{c=c||{};const w=Math.max(1,num(c.w,600));
     const ps=Array.isArray(c.parts)&&c.parts.length?c.parts.slice(0,12):[{t:'door',h:body}];
-    return{w,parts:ps.map(p=>{p=p||{};const t=TYPES[p.t]?p.t:'door',h=Math.max(1,num(p.h,300));
+    return{w,jn:c.jn==='d'||c.jn==='s'?c.jn:undefined,parts:ps.map(p=>{p=p||{};const t=TYPES[p.t]?p.t:'door',h=Math.max(1,num(p.h,300));
       const lim=t==='door'?[1,2]:t==='open'?[0,10]:[1,10];
       const q={t,h,n:clamp(num(p.n,defN(t,w,h)),lim[0],lim[1]),hinge:p.hinge==='R'?'R':'L'};if((t==='door'||t==='drawer')&&(p.pull==='groove'||p.pull==='none')){q.pull=p.pull;if(p.pull==='groove'){q.gp=['s','t','b'].includes(p.gp)?p.gp:(t==='door'?'s':'t');q.gw=clamp(num(p.gw,30),5,120)}}
-      if(t==='door'&&Array.isArray(p.ins)&&p.ins.length)q._ins=p.ins;if(t==='open')keepGs(q,p.gs);return q})}});
+      if(t==='door'&&Array.isArray(p.ins)&&p.ins.length)q._ins=p.ins;if(t==='open'){keepGs(q,p.gs);if(p.fx)q.fx=true}return q})}});
   src.forEach((c,i)=>{if(c&&c.lock&&o.cols[i])o.cols[i].lock=true});
   const sw=sum(o.cols,'w');
   if(sw!==o.W){notes.push(`各區寬度加總是 ${sw}，和總寬 ${o.W} 差 ${o.W-sw}，差額先算在最右邊那一區，請核對。`);settle(o.cols,'w',o.W)}
@@ -1878,8 +1971,8 @@ function normalize(d,notes){
       if(gb)notes.push(`${where}的各層淨高數量和層板片數對不上，層板先照均分畫，請核對。`);
       if(ga!=null){const G=clear-x.n*o.T;if(Math.abs(ga-G)>.5)notes.push(`${where}的各層淨高加總是 ${fmt(ga)}，和扣掉板厚後可用的 ${fmt(G)} 差 ${fmt(G-ga)}，差額先算在最下面那一層，請核對。`)}};
     const wh=`第 ${i+1} 區第 ${j+1} 格`;
-    if(p.t==='open')chk(p,p.h-2*o.T,wh+'開放層板');
-    else if(p.t==='door')p.ins.forEach((s,k)=>{if(s.t==='shelf')chk(s,clearIn(p,k,o.T),wh+`門片裡面第 ${k+1} 格`)})}));
+    const PI=pinS(o,i,j);if(p.t==='open')chk(p,p.h-PI.t-PI.b,wh+'開放層板');
+    else if(p.t==='door')p.ins.forEach((s,k)=>{if(s.t==='shelf')chk(s,clearIn(p,k,o.T,PI),wh+`門片裡面第 ${k+1} 格`)})}));
   fixAll(o);
   o.ann=(Array.isArray(d.ann)?d.ann:[]).filter(a=>a&&ANN[a.k]).slice(0,200);
   if(d.wall&&typeof d.wall==='object'){const q=d.wall,w=num(q.w,0),h=num(q.h,0);if(w>=100&&h>=100)o.wall={w,h,ox:num(q.ox,0),on:q.on!==false,flip:!!q.flip,name:String(q.name||'').slice(0,40),
@@ -1934,9 +2027,10 @@ const ZCOL=['#c8372d','#1f66b3','#2f8a57','#ee7d1c','#8e44ad','#0f9d9d','#b8860b
 function zones(st,inV){const Z=[],T=st.T||18;let x=0;
   if(st.kind==='free'){freeFaces(st).forEach(f=>{const c=(st.cl||[]).find(c=>inFace(f,c.x,c.z));Z.push({x:f.x1,y:st.H-f.z2,w:f.x2-f.x1,h:f.z2-f.z1,t:c?c.t:'none',cnt:c?c.n:0,W:f.x2-f.x1,H:f.z2-f.z1})});Z.forEach((z,i)=>{z.n=i+1;z.col=ZCOL[i%ZCOL.length]});return Z}
   st.cols.forEach((col,ci)=>{let y=0;const w=col.w;col.parts.forEach((p,pi)=>{const h=p.h,roomy=w>4*T&&h>4*T;
-    if(inV&&p.t==='door'&&roomy&&p.ins&&p.ins.length){let sy=y;p.ins.forEach((q,si)=>{const top=si?sy+T/2:y+T,bot=si<p.ins.length-1?sy+q.h-T/2:y+h-T;
-        Z.push({ci,pi,si,x:x+T,y:top,w:w-2*T,h:bot-top,t:q.t,cnt:q.n,W:w-2*T,H:Math.round(bot-top),gaps:q.t==='shelf'&&q.n>0?gapsOf(q,bot-top,T):null});sy+=q.h})}
-    else if(inV&&p.t==='open'&&roomy)Z.push({ci,pi,x:x+T,y:y+T,w:w-2*T,h:h-2*T,t:'open',cnt:p.n,W:w-2*T,H:h-2*T,gaps:p.n>0?gapsOf(p,h-2*T,T):null});
+    const PI=pinS(st,ci,pi),iw=w-PI.l-PI.r;
+    if(inV&&p.t==='door'&&roomy&&p.ins&&p.ins.length){let sy=y;p.ins.forEach((q,si)=>{const top=si?sy+T/2:y+PI.t,bot=si<p.ins.length-1?sy+q.h-T/2:y+h-PI.b;
+        Z.push({ci,pi,si,x:x+PI.l,y:top,w:iw,h:bot-top,t:q.t,cnt:q.n,W:iw,H:Math.round(bot-top),gaps:q.t==='shelf'&&q.n>0?gapsOf(q,bot-top,T):null});sy+=q.h})}
+    else if(inV&&p.t==='open'&&roomy)Z.push({ci,pi,x:x+PI.l,y:y+PI.t,w:iw,h:h-PI.t-PI.b,t:'open',cnt:p.n,W:iw,H:h-PI.t-PI.b,gaps:p.n>0?gapsOf(p,h-PI.t-PI.b,T):null});
     else Z.push({ci,pi,x,y,w,h,t:p.t,cnt:p.n,W:w,H:h,outer:inV});
     y+=h});x+=w});
   Z.forEach((z,i)=>{z.n=i+1;z.col=ZCOL[i%ZCOL.length]});return Z}
@@ -2036,7 +2130,7 @@ function geom(st,o){
     if(wp>=50&&hp>=32){TX(lx,cy-fs*.2,name,'lb');TX(lx,cy+fs*.95,size,'lbn',null,fs*.9)}
     else if(wp>=44&&hp>=14)TX(lx,cy+fs*.33,size,'lbn',null,fs*.9)};
   const shelves=(sx,sw,top,bot,x,hm,sb)=>{const g=gapsOf(x,bot-top,T),n=x.n,cu=n>0&&!!x.gs,tops=[];let sy=top,m=Math.floor(n/2);
-    g.forEach((v,k)=>{tops.push(sy);if(k<n){const y1=sy+v;L(sx,y1,sx+sw,y1,'thin');L(sx,y1+T,sx+sw,y1+T,'thin');if(hm&&o.sel&&o.sel.g===k&&!(o.msel&&o.msel.length))A.push({t:'l',x1:sx,y1:y1+T/2,x2:sx+sw,y2:y1+T/2,c:'an',col:o.acc||'#b4583c',lw:T+2.4*S});
+    g.forEach((v,k)=>{tops.push(sy);if(k<n){const y1=sy+v;L(sx,y1,sx+sw,y1,'thin');L(sx,y1+T,sx+sw,y1+T,'thin');if(!x.fx&&sw>8*T){const r=Math.min(6,T*.32);A.push({t:'e',cx:sx+T*.9,cy:y1+T+r*1.5,rx:r,ry:r,c:'thin'},{t:'e',cx:sx+sw-T*.9,cy:y1+T+r*1.5,rx:r,ry:r,c:'thin'})}if(hm&&o.sel&&o.sel.g===k&&!(o.msel&&o.msel.length))A.push({t:'l',x1:sx,y1:y1+T/2,x2:sx+sw,y2:y1+T/2,c:'an',col:o.acc||'#b4583c',lw:T+2.4*S});
         if(hm){U.push(Object.assign({t:'hg',x:sx,y:y1+T/2,w:sw,i:k,hh:clamp(Math.min(v,g[k+1])/2+T/2,5*S,11*S)},hm));A.push({t:'grip',x:sx+sw*.5,y:y1+T/2})}}
       sy+=v+T});
     if(cu){g.forEach((v,k)=>{if(v>g[m]+.5)m=k});
@@ -2057,15 +2151,19 @@ function geom(st,o){
     if(gm.length>1){const P=grpPlan(st,gm);HW.clear();HP.clear();P.HW.forEach(v=>HW.add(v));P.HP.forEach(v=>HP.add(v));hiW=P.hiW;hiH=false;hcol=o.acc||'#b4583c'}}
   const hideW=!!hm&&hm.ax==='y',hideH=!!hm&&hm.ax==='x',szOf=(w,h)=>hideW?String(h):hideH?String(w):w+'×'+h;
   let x=0;const selRs=[],SL=o.msel&&o.msel.length?o.msel:(o.sel?[o.sel]:[]),on=(c,p,s)=>SL.some(m=>m.k==null&&m.g==null&&m.c===c&&m.p===p&&(s==null||(m.s||0)===s)),onA=(c,p,s)=>SL.some(m=>m.c===c&&m.p===p&&(s==null||(m.s||0)===s)),sk=o.sel&&o.sel.k!=null&&!(o.msel&&o.msel.length)?o.sel.k:null,onk=(c,p,s,k)=>SL.some(m=>m.k===k&&m.c===c&&m.p===p&&(s==null||(m.s||0)===s)),sub=!!o.sub&&it;
+  if(inV){const tall=ctOf(st)==='tall';let xx=0;st.cols.forEach((col,ci)=>{const P0=pinS(st,ci,0),w=col.w,yb=body;
+      if(tall){[[xx+P0.l,0,xx+P0.l,T],[xx+w-P0.r,0,xx+w-P0.r,T],[xx+P0.l,yb-T,xx+P0.l,yb],[xx+w-P0.r,yb-T,xx+w-P0.r,yb]].forEach(q=>L(q[0],q[1],q[2],q[3],'thin'))}
+      else{[[xx,T,xx+P0.l,T],[xx+w-P0.r,T,xx+w,T],[xx,yb-T,xx+P0.l,yb-T],[xx+w-P0.r,yb-T,xx+w,yb-T]].forEach(q=>L(q[0],q[1],q[2],q[3],'thin'))}
+      xx+=w})}
   st.cols.forEach((col,ci)=>{
     let y=0;const w=col.w;
     col.parts.forEach((p,pi)=>{
       const h=p.h,roomy=w>4*T&&h>4*T;
       if(inV&&p.t==='door'&&roomy){
-        F.push({t:'r',x,y,w,h,c:'f-open'});A.push({t:'r',x:x+T,y:y+T,w:w-2*T,h:h-2*T,c:'thin'});
-        const ins=p.ins||[],ix=x+T,iw=w-2*T;let sy=y;
+        const PI=pinS(st,ci,pi);F.push({t:'r',x,y,w,h,c:'f-open'});A.push({t:'r',x:x+PI.l,y:y+PI.t,w:w-PI.l-PI.r,h:h-PI.t-PI.b,c:'thin'});
+        const ins=p.ins||[],ix=x+PI.l,iw=w-PI.l-PI.r;let sy=y;
         ins.forEach((s,si)=>{
-          const top=si?sy+T/2:y+T,bot=si<ins.length-1?sy+s.h-T/2:y+h-T;
+          const top=si?sy+T/2:y+PI.t,bot=si<ins.length-1?sy+s.h-T/2:y+h-PI.b;
           if(si){L(ix,sy-T/2,ix+iw,sy-T/2,'thin');L(ix,sy+T/2,ix+iw,sy+T/2,'thin')}
           let cy=(top+bot)/2,ch=bot-top,name=INS[s.t],gl=null,sd=false;
           if(s.t==='shelf'){if(!s.n)name='空格';else if(ch>s.n*T+(s.n+1)*10){sd=sub;const r=shelves(ix,iw,top,bot,s,it&&o.sel&&onA(ci,pi,si)?{ci,pi,si}:null,sub?{x,w,y0:sy,y1:sy+s.h,ci,pi,si}:null);cy=r.cy;ch=r.ch;gl=r.gl}}
@@ -2073,7 +2171,7 @@ function geom(st,o){
           else{const g=6,inset=Math.min(25,iw*.08),dh=Math.max(1,(ch-g*(s.n+1))/s.n),gl=Math.min(140,iw*.3),tp=Math.min(50,dh*.3);
             for(let k=0;k<s.n;k++){const dy=top+g+k*(dh+g);A.push({t:'r',x:ix+inset,y:dy,w:iw-2*inset,h:dh,c:'fo'});L(ix+iw/2-gl/2,dy+tp,ix+iw/2+gl/2,dy+tp,'hd')}
             const k=Math.floor((s.n-1)/2);cy=top+g+k*(dh+g)+tp+(dh-tp)/2;ch=dh-tp}
-          label(x+w/2,cy,iw,ch,name,szOf(w-2*T,s.h),gl,HW.has(ci)||HP.has(ci+'/'+pi+'/'+si)?hcol:null);
+          label(ix+iw/2,cy,iw,ch,name,szOf(Math.round(iw),s.h),gl,HW.has(ci)||HP.has(ci+'/'+pi+'/'+si)?hcol:null);
           if(on(ci,pi,si))selRs.push({t:'r',x:ix,y:top,w:iw,h:bot-top,c:'sel'});
           if(it&&!sd)U.push({t:'hit',x,y:sy,w,h:s.h,ci,pi,si});
           sy+=s.h});
@@ -2093,8 +2191,8 @@ function geom(st,o){
           if(sub&&!inV&&p.n>1){sd=true;for(let j=0;j<p.n;j++){U.push({t:'hit',x,y:y+dh*j,w,h:dh,ci,pi,k:j});if(onk(ci,pi,null,j))selRs.push({t:'r',x,y:y+dh*j,w,h:dh,c:'sel'})}}
           else if(it&&!inV&&p.n>1&&sk!=null&&sk<p.n&&onA(ci,pi))selRs.push({t:'r',x,y:y+dh*sk,w,h:dh,c:'sel'});
         }else if(p.t==='open'&&roomy){
-          A.push({t:'r',x:x+T,y:y+T,w:w-2*T,h:h-2*T,c:'thin'});
-          sd=sub&&!inV&&p.n>0;const r=shelves(x+T,w-2*T,y+T,y+h-T,p,it&&!inV&&o.sel&&onA(ci,pi)?{ci,pi}:null,sd?{x,w,y0:y,y1:y+h,ci,pi}:null);cy=r.cy;ch=r.ch;gl=r.gl;lw=w-2*T}
+          {const PI=pinS(st,ci,pi);A.push({t:'r',x:x+PI.l,y:y+PI.t,w:w-PI.l-PI.r,h:h-PI.t-PI.b,c:'thin'});
+          sd=sub&&!inV&&p.n>0;var _r=shelves(x+PI.l,w-PI.l-PI.r,y+PI.t,y+h-PI.b,p,it&&!inV&&o.sel&&onA(ci,pi)?{ci,pi}:null,sd?{x,w,y0:y,y1:y+h,ci,pi}:null);cy=_r.cy;ch=_r.ch;gl=_r.gl;lw=w-PI.l-PI.r;lx=x+PI.l+lw/2}}
         label(lx,cy,lw,ch,p.t==='open'&&!p.n?'空櫃':TYPES[p.t],szOf(w,h),gl,HW.has(ci)||HP.has(ci+'/'+pi)?hcol:null);
         if(it&&!inV&&!sd)U.push({t:'hit',x,y,w,h,ci,pi});
       }
@@ -2134,8 +2232,19 @@ function geom(st,o){
       if(it.k==='win'){A.push({t:'l',x1:it.x,y1:it.y,x2:it.x+it.w,y2:it.y+it.h,c:it.hit?'wlx':'wlo'},{t:'l',x1:it.x+it.w,y1:it.y,x2:it.x,y2:it.y+it.h,c:it.hit?'wlx':'wlo'})}
       if(it.w/S>=46&&it.h/S>=26){B.push({t:'t',x:it.x+it.w/2,y:it.y+fs*1.2,s:WNAME[it.k]+' '+it.w+'×'+it.h,c:'lbg',a:'middle',z:fs*.85,hc:it.hit?'#c8372d':undefined})}});
     B.push({t:'t',x:-q.ox+fs*.4,y:st.H-q.h-fs*.45,s:'牆面 '+q.w+'×'+q.h+(q.name?'　'+q.name:''),c:'lbg',a:'start',z:fs*.85})}
+  const PV=[];if(o.p3!==false&&p3On()&&!o.bare){const Df=dFin(st)||560,dep=Math.max(80,Df-(dIncl(st)?T:0)-4),FD=1200,k=FD/(FD+dep),vx=st.W/2,vy=st.H-eyeH(),
+      Q=(x,y)=>[vx+(x-vx)*k,vy+(y-vy)*k],box=(x0,y0,w,h)=>{if(w<20||h<20)return;const x1=x0+w,y1=y0+h,c=[[x0,y0],[x1,y0],[x1,y1],[x0,y1]],b=c.map(q=>Q(q[0],q[1]));
+        /* only what shows through the opening: the back panel and the edges are cut at the opening */
+        const bx0=Math.max(x0,b[0][0]),by0=Math.max(y0,b[0][1]),bx1=Math.min(x1,b[2][0]),by1=Math.min(y1,b[2][1]);if(bx1-bx0>1&&by1-by0>1)PV.push({t:'r',x:bx0,y:by0,w:bx1-bx0,h:by1-by0,c:'pvb'});
+        c.forEach((q,i)=>{const e=clipSeg(q[0],q[1],b[i][0],b[i][1],x0,y0,x1,y1);if(e)PV.push({t:'l',x1:e[0],y1:e[1],x2:e[2],y2:e[3],c:'pv'})})},
+      spaces=(sx,sw,top,bot,x)=>{const g=gapsOf(x,bot-top,T);let sy=top;g.forEach(v=>{box(sx,sy,sw,v);sy+=v+T})};
+    let cx=0;st.cols.forEach((col,ci)=>{let y=0;col.parts.forEach((p,pi)=>{const PI=pinS(st,ci,pi),ix=cx+PI.l,iw=col.w-PI.l-PI.r,h=p.h;
+        if(p.t==='open')spaces(ix,iw,y+PI.t,y+h-PI.b,p);
+        else if(inV&&p.t==='door'){const ins=p.ins||[];let sy=y;ins.forEach((q,si)=>{const top=si?sy+T/2:y+PI.t,bot=si<ins.length-1?sy+q.h-T/2:y+h-PI.b;
+          if(q.t==='shelf'&&q.n>0&&bot-top>q.n*T+(q.n+1)*10)spaces(ix,iw,top,bot,q);else if(q.t!=='idrawer')box(ix,top,iw,bot-top);sy+=q.h})}
+        y+=h});cx+=col.w})}
   const IM=o.bg&&o.bg.src?[{t:'img',x:o.bg.x,y:o.bg.y,w:o.bg.w,h:o.bg.h,src:o.bg.src,o:o.bg.o}]:[];
-  return{art:IM.concat(WL,F,ZF,G,A,B,RU),ui:U}}
+  return{art:IM.concat(WL,F,PV,ZF,G,A,B,RU),ui:U}}
 
 function annPrims(list,S){const P=[];
   (list||[]).forEach(it=>{const a=it.a,ai=it.i,col=a.c||'#c8372d',lw=a.lw||2.2*S;
@@ -2163,6 +2272,8 @@ function toSVG(P,S,pal,U,W){
     dash:`fill="none" stroke="${pal.mute}" stroke-width="${f(.6*S)}" stroke-dasharray="${f(5*S)} ${f(4*S)}"`,
     hd:`fill="none" stroke="${pal.ink}" stroke-width="${f(2.2*S)}" stroke-linecap="round"`,
     dim:`fill="none" stroke="${pal.sub}" stroke-width="${f(.6*S)}"`,
+    pv:`fill="none" stroke="${pal.sub}" stroke-width="${f(.7*S)}"`,
+    pvb:`fill="${pal.tint}" fill-opacity=".55" stroke="${pal.sub}" stroke-width="${f(.7*S)}"`,
     gd:`fill="none" stroke="${pal.mute}" stroke-opacity=".26" stroke-width="${f(.4*S)}"`,
     gD:`fill="none" stroke="${pal.mute}" stroke-opacity=".6" stroke-width="${f(.5*S)}"`,
     rt:`fill="none" stroke="${pal.sub}" stroke-width="${f(.6*S)}"`,
@@ -2211,13 +2322,15 @@ function toSVG(P,S,pal,U,W){
 function sheet(st,cad,bg){
   fixAll(st);
   const both=hasDoor(st),side=cad||st.W<=st.H*1.25,aw=both&&side?1900:1200,mh=both&&!side?2200:1400;
-  const we=cad?{l:0,r:0,t:0}:wallExt(st),dm=S=>{const fs=11*S,g=!cad&&st.grid?1:0,vw=st.W+(10+1.8*g)*fs+we.l+we.r,vh=st.H+(10.9+1.2*g)*fs+we.t,dx=both&&side?vw:0,dy=both&&!side?vh:0;return{fs,dx,dy,vb:[-5*fs-we.l,-6.1*fs-we.t,vw+dx,vh+dy+3.6*fs]}};
+  const we=cad?{l:0,r:0,t:0}:wallExt(st),dm=S=>{const fs=11*S,g=!cad&&st.grid?1:0,vw=st.W+(10+1.8*g)*fs+we.l+we.r,vh=st.H+(10.9+1.2*g)*fs+we.t,dx=both&&side?vw:0,dy=both&&!side?vh:0;return{fs,dx,dy,vb:[-5*fs-we.l,-6.1*fs-we.t,vw+dx,vh+dy+(cad?3.6:6)*fs]}};
   let S=Math.max(st.W,st.H)/(cad?420:300);
   if(!cad)for(let i=0;i<6;i++){const d=dm(S);S=Math.max(d.vb[2]/aw,d.vb[3]/mh)}
   const d=dm(S),mk=v=>geom(st,{S,view:v,nogrid:cad,top:6.1,rule:true,cap:both?(v==='in'?'櫃內':'櫃外'):'',bg:cad?null:bg}).art.concat(annPrims(annOf(st,v),S));
   let P=mk('out');if(both)P=P.concat(shift(mk('in'),d.dx,d.dy));
-  if(!cad){const ty=d.vb[1]+d.vb[3]-d.fs*1.1,l=d.vb[0]+d.fs*.6,r=d.vb[0]+d.vb[2]-d.fs*.6;
-    P.push({t:'l',x1:l,y1:ty-d.fs*1.7,x2:r,y2:ty-d.fs*1.7,c:'dim'},{t:'t',x:l,y:ty,s:st.name||'櫃體立面圖',c:'ttl',a:'start',z:d.fs*1.15},{t:'t',x:r,y:ty,s:'三川工方　單位 mm　'+today(),c:'tt2',a:'end',z:d.fs*.9})}
+  if(!cad){const y2=d.vb[1]+d.vb[3]-d.fs*1.0,y1=y2-d.fs*1.55,l=d.vb[0]+d.fs*.6,r=d.vb[0]+d.vb[2]-d.fs*.6,pn=(typeof pj!=='undefined'&&pj&&pj.name)||'',sn=st.name&&st.name!==pn?st.name:'',
+      info=[pn?'案名：'+pn:'',sn?'櫃體：'+sn:'',ctOf(st)==='tall'?'高櫃':'矮櫃'].filter(Boolean).join('　');
+    P.push({t:'l',x1:l,y1:y1-d.fs*1.5,x2:r,y2:y1-d.fs*1.5,c:'dim'},{t:'t',x:l,y:y1,s:'三川工方｜櫃體立面圖',c:'ttl',a:'start',z:d.fs*1.15},{t:'t',x:l,y:y2,s:info,c:'tt2',a:'start',z:d.fs*.9},
+      {t:'t',x:r,y:y1,s:st.W+' × '+st.H+(st.D?' × '+st.D:'')+' mm',c:'ttl',a:'end',z:d.fs},{t:'t',x:r,y:y2,s:today()+'　單位 mm',c:'tt2',a:'end',z:d.fs*.9})}
   return{S,vb:d.vb,P}}
 function exportSVG(st,xp,bg){
   xp=xp||XPAL;if(bg)xp=Object.assign({},xp,{fa:.28});const sh=sheet(st,false,bg),v=sh.vb,w=Math.round(v[2]/sh.S),h=Math.round(v[3]/sh.S);
@@ -2304,7 +2417,7 @@ const STYLES=[
   {c:'mx',id:'mx1',name:'窗下座榻櫃',H:450,kick:50,make:(W,B)=>cols(W,800,()=>[Dw(B,2)])},
   {c:'mx',id:'mx2',name:'掃具儲藏櫃',tall:1,make:(W,B)=>cols(W,500,(w,i,n)=>[i===0||(n>2&&i===n-1)?Dr(B,w,i,sf(B,0)):Op(B,i===1?0:4)])}];
 function styleState(s,base){const W=s.W||base.W,H=s.tall?(base.H>=1800?base.H:2400):s.H,kick=s.tall?(base.kick>0&&base.kick<=200?base.kick:100):s.kick;
-  return normalize({id:base.id,name:base.name,T:base.T,labels:base.labels,grid:base.grid,bg:base.bg,wall:base.wall,dat:base.dat,W,H,kick,cols:s.make(W,H-kick),ann:[]})}
+  return normalize({id:base.id,name:base.name,T:base.T,labels:base.labels,grid:base.grid,bg:base.bg,wall:base.wall,dat:base.dat,W,H,kick,cat:s.c,sk:base.sk,kr:base.kr,cols:s.make(W,H-kick),ann:[]})}
 function thumbOf(t,pal){const S=Math.max(t.W,t.H)/54,m=2*S;
   return`<svg width="${Math.round((t.W+2*m)/S)}" height="${Math.round((t.H+2*m)/S)}" viewBox="${-m} ${-m} ${t.W+2*m} ${t.H+2*m}" aria-hidden="true">${toSVG(geom(t,{S,view:'out',bare:true}).art.filter(p=>p.c!=='dash').map(p=>p.c==='hd'||p.c==='out'?Object.assign({},p,{c:p.c==='hd'?'thin':'in'}):p),S,pal).art}</svg>`}
 function styleThumb(s,pal){return thumbOf(styleState(s,{id:'',name:'',T:18,labels:false,W:1800,H:2400,kick:100}),pal)}
@@ -2407,9 +2520,9 @@ function syncFields(){
   const o=selObj();if(o){const cw=document.querySelector('#editor [data-f="cw"]'),ph=document.querySelector('#editor [data-f="ph"]');
     if(cw&&document.activeElement!==cw)cw.value=o.col.w;if(ph&&document.activeElement!==ph)ph.value=(o.s||o.p).h;
     const gi=document.querySelectorAll('#editor [data-f="g"]');if(gi.length){const c=shelfCtx(o),g=c?gapsOf(c.x,c.clear,st.T):[];gi.forEach(e=>{const k=+e.dataset.i;if(document.activeElement!==e&&g[k]!=null)e.value=fmt(g[k])})}}}
-function shelfCtx(o){if(!o)return null;const T=st.T;
-  if(view==='in')return o.s&&o.s.t==='shelf'?{x:o.s,clear:clearIn(o.p,sel.s,T)}:null;
-  return o.p.t==='open'&&o.col.w>4*T&&o.p.h>4*T?{x:o.p,clear:o.p.h-2*T}:null}
+function shelfCtx(o){if(!o)return null;const T=st.T,PI=pinS(st,sel.c,sel.p);
+  if(view==='in')return o.s&&o.s.t==='shelf'?{x:o.s,clear:clearIn(o.p,sel.s,T,PI)}:null;
+  return o.p.t==='open'&&o.col.w>4*T&&o.p.h>4*T?{x:o.p,clear:o.p.h-PI.t-PI.b}:null}
 function selObj(){if(!sel)return null;const col=st.cols[sel.c],p=col&&col.parts[sel.p];if(!p)return null;
   if(view==='in'){const s=p.t==='door'&&p.ins&&p.ins[sel.s];return s?{col,p,s}:null}return{col,p}}
 
@@ -2453,7 +2566,7 @@ function renderEditor(){
     const mid=!me?'':hgrp.length?lab(ng+' 條同步'):(pv?D(pv.col)+sgm(ax==='x'?'離左邊的線':'離上面的線',gi('p',me.v-pv.v,ax==='x'?'到左邊那條線的距離':'到上面那條線的距離'),1):(ax==='y'?sgm('總高',gi('t',st.H,'總高')):''))+`<span class="gme"><em>這條線</em>${dia([me.col],true,26)}</span>`+(nx?sgm(ax==='x'?'離右邊的線':'離下面的線',gi('n',nx.v-me.v,ax==='x'?'到右邊那條線的距離':'到下面那條線的距離'),1)+D(nx.col):(ax==='x'?sgm('總寬',gi('t',st.W,'總寬')):''));
     const A=ax==='x'?-1:(h.k==='h'?1:-1),bl=[10,5,1].map(x=>`<button data-nud="${A*x}">${ax==='x'?'◀':'▲'} ${x}</button>`).join(''),br=[10,5,1].map(x=>`<button data-nud="${-A*x}">${ax==='x'?x+' ▶':'▼ '+x}</button>`).join('');
     const SP={h:'總高',w:'總寬',k:'踢腳'},NL=PL.filter(q=>!SP[q.k]),grow=PL.length>1?`<div class="grp"><span>選線</span>${PL.map((q,i)=>`<button data-grp="${i}" aria-pressed="${hIn(q)}">${dia([q.col],false,18)}${SP[q.k]||NL.indexOf(q)+1}</button>`).join('')}${GL.length>1?`<button data-grp="all">${GL.every(hIn)?'只留一條':'全部'}</button>`:''}</div>`:'';
-    hint.hidden=true;ed.innerHTML=`<div class="ed"><div class="edh"><b>${t}</b>${/^[crps]$/.test(h.k)?'<button class="quiet" data-act="hdel" style="color:var(--accent)">刪除這條線</button>':''}<button class="quiet" data-act="hclose">完成</button></div>${grow}<div class="np ${ax}"><div class="npb">${bl}</div><div class="npm">${mid}</div><div class="npb">${br}</div></div><p class="note" style="font-size:13px">${hgrp.length?'按下面的「移動」一起移。':'數字可以直接改；也可以按下面的「移動」，或直接拖線上的菱形。'}</p></div>`;return}
+    hint.hidden=true;ed.innerHTML=`<div class="ed"><div class="edh"><b>${t}</b>${/^[crps]$/.test(h.k)?'<button class="quiet" data-act="hdel" style="color:var(--accent)">刪除這條線</button>':''}<button class="quiet" data-act="hclose">完成</button></div>${grow}${h.k==='c'&&!hgrp.length&&st.cols[h.i]&&st.cols[h.i+1]?(()=>{const d=jDblS(st,h.i),au=!st.cols[h.i].jn;return`<div class="seg jnrow" role="group"><span>兩區之間</span><button data-jn="d" aria-pressed="${d}">雙板 36</button><button data-jn="s" aria-pressed="${!d}">單板 18</button><em>${au?'自動（櫃身'+(st.H-st.kick>1800?'高於':'不高於')+' 180 公分）':'手動設定'}</em></div>`})():''}<div class="np ${ax}"><div class="npb">${bl}</div><div class="npm">${mid}</div><div class="npb">${br}</div></div><p class="note" style="font-size:13px">${hgrp.length?'按下面的「移動」一起移。':'數字可以直接改；也可以按下面的「移動」，或直接拖線上的菱形。'}</p></div>`;return}
   const o=selObj();
   if(o&&sel.g!=null){const c=shelfCtx(o);if(c&&sel.g<c.x.n){const g=solidGaps(c.x,c.clear,st.T),i=sel.g;hint.hidden=true;{const ae=document.activeElement;if(!npForce&&ae&&ae.classList&&ae.classList.contains('npi')&&ed.contains(ae))return}
     ed.innerHTML=`<div class="ed"><div class="edh"><b>第 ${sel.c+1} 區　第 ${i+1} 片層板</b><button class="quiet" data-act="gdel" style="color:var(--accent)">刪除這片</button><button class="quiet" data-act="close">完成</button></div><div class="np y gp"><div class="npb">${[10,5,1].map(d=>`<button data-gn="${-d}">▲ ${d}</button>`).join('')}</div><div class="npm"><span class="gseg"><em>上面淨高</em><span class="gdl"><input class="npi" data-gg="0" inputmode="decimal" maxlength="6" value="${fmt(g[i])}" aria-label="上面淨高"></span></span><span class="gme"><em>這片層板</em>${dia([pal.accent||'#b4583c'],true,26)}</span><span class="gseg"><em>下面淨高</em><span class="gdl"><input class="npi" data-gg="1" inputmode="decimal" maxlength="6" value="${fmt(g[i+1])}" aria-label="下面淨高"></span></span></div><div class="npb">${[10,5,1].map(d=>`<button data-gn="${d}">▼ ${d}</button>`).join('')}</div></div><p class="note" style="font-size:13px">淨高可以直接改；也可以按下面的「移動」，或直接拖這片層板。</p></div>`;return}}
@@ -2470,7 +2583,7 @@ function renderEditor(){
   const dhUI=()=>{const c=dCtx();if(!c)return'';const hs=dHs(c.L,c.r),N=hs.length;if(N<2)return'';let o0=0;for(let i=c.r.a;i<c.I;i++)o0+=Math.max(1,c.L[i].n);
     return`<div class="gsh"><span>這一疊 ${N} 個抽屜的高度（由上到下）</span><button data-act="deven"${c.r.a===c.r.b?' disabled':''}>抽屜均分</button></div><div class="gsg">${hs.map((v,i)=>`<label class="field${(sel&&sel.k!=null&&c.x.n>1?i===o0+sel.k:i>=o0&&i<o0+Math.max(1,c.x.n))?' cur':''}">第 ${i+1} 個<input data-f="dh" data-i="${i}" inputmode="numeric" value="${fmt(v)}"></label>`).join('')}</div><p class="note">改其中一個，下面那個會補差額（最下面的由上面補）。改過以後每個抽屜各自是一格，也能用「調線」拖、用「均分高」分。</p>`};
   const PG=edPage(),inVw=view==='in',whole=sel.k==null;
-  const edt=()=>{const k=sel.k,x=inVw?o.s:p,W=inVw?col.w-2*st.T:col.w;let ttl,hl,hv,hf;
+  const edt=()=>{const k=sel.k,x=inVw?o.s:p,W=inVw?(()=>{const PI=pinS(st,sel.c,sel.p);return col.w-PI.l-PI.r})():col.w;let ttl,hl,hv,hf;
     if(k==null){ttl=`第 ${sel.c+1} 區　${inVw?'櫃內第 '+(sel.s+1):'第 '+(sel.p+1)} 格`;hl='格高';hv=x.h;hf=`<input data-f="ph" inputmode="numeric" value="${x.h}">`}
     else if(!inVw&&p.t==='drawer'){const c=dCtx();let o0=0;if(c)for(let i=c.r.a;i<c.I;i++)o0+=Math.max(1,c.L[i].n);ttl=`第 ${sel.c+1} 區　第 ${k+1} 個抽屜`;hl='高';hv=fmt(p.h/p.n);hf=`<input data-f="dh" data-i="${o0+k}" inputmode="numeric" value="${hv}">`}
     else{const g=sc?gapsOf(sc.x,sc.clear,st.T):[];ttl=`第 ${sel.c+1} 區　${inVw?'櫃內':''}第 ${k+1} 層`;hl='淨高';hv=g[k]!=null?fmt(g[k]):'';hf=`<input data-f="g" data-i="${k}" inputmode="numeric" value="${hv}">`}
@@ -2491,10 +2604,10 @@ function renderEditor(){
 function splitAt(list,idx,top){const x=list[idx],N=x.n,H0=x.h;top=clamp(top==null?r10(x.h/2):top,MIN,x.h-MIN);const nw=JSON.parse(JSON.stringify(x));nw.h=x.h-top;x.h=top;
   if(x.t==='drawer'||x.t==='idrawer'){x.n=clamp(Math.round(N*top/H0),1,10);nw.n=clamp(N-x.n,1,10)}
   [x,nw].forEach(q=>{if(q.t==='shelf')q.n=Math.min(q.n,defShelf(q.h)+1);if(q.ins)q.ins=null;delete q.gs});list.splice(idx+1,0,nw)}
-function subCtx(m){const p=st.cols[m.c]&&st.cols[m.c].parts[m.p];if(!p||m.k==null)return null;const T=st.T;
-  if(view==='in'){const q=p.t==='door'&&p.ins&&p.ins[m.s];return q&&q.t==='shelf'&&m.k<=q.n?{x:q,kind:'layer',clear:clearIn(p,m.s,T)}:null}
+function subCtx(m){const p=st.cols[m.c]&&st.cols[m.c].parts[m.p];if(!p||m.k==null)return null;const T=st.T,PI=pinS(st,m.c,m.p);
+  if(view==='in'){const q=p.t==='door'&&p.ins&&p.ins[m.s];return q&&q.t==='shelf'&&m.k<=q.n?{x:q,kind:'layer',clear:clearIn(p,m.s,T,PI)}:null}
   if(p.t==='drawer')return m.k<p.n?{x:p,kind:'drawer'}:null;
-  if(p.t==='open')return m.k<=p.n?{x:p,kind:'layer',clear:p.h-2*T}:null;
+  if(p.t==='open')return m.k<=p.n?{x:p,kind:'layer',clear:p.h-PI.t-PI.b}:null;
   return null}
 const selCells=()=>[...new Set(picked().map(m=>m.k==null?cellOf(m):subCtx(m).x))];
 const selOn=()=>mode==='edit'&&multi;
@@ -2542,7 +2655,7 @@ function subRetype(v){const o=selObj();if(!o||sel.k==null)return;const inV=view=
   if(sc.kind==='drawer'){const t2=v==='drawer'?'open':v;if(!TYPES[t2])return;const pc=pieces(x,k,k,1),mi=k>0?1:0;if(list.length+pc.length-1>cap){toast('這一區的格數到上限了');return}
     push();pc[mi]=mk(t2,pc[mi].h);list.splice(idx,1,...pc);go(idx+mi);toast(v==='drawer'?'這個抽屜已取消，變成空格':'這個抽屜已改成'+TYPES[t2]);return}
   if(!NM[v])return;if(v===(inV?'shelf':'open')){doSubSplit();if(sel)delete sel.k;return}
-  const n=x.n,g=solidGaps(x,sc.clear,T),b=[];let acc=inV?(idx?T/2:T):T;for(let j=0;j<n;j++){acc+=g[j];b.push(Math.round(acc+T/2));acc+=T}
+  const PI=pinS(st,sel.c,sel.p),n=x.n,g=solidGaps(x,sc.clear,T),b=[];let acc=inV?(idx?T/2:PI.t):PI.t;for(let j=0;j<n;j++){acc+=g[j];b.push(Math.round(acc+T/2));acc+=T}
   const y0=k?b[k-1]:0,y1=k<n?b[k]:x.h,ps=[];if(y1-y0<MIN||(k>0&&y0<MIN)||(k<n&&x.h-y1<MIN)){toast('這一層太矮，沒辦法單獨變成一格（至少要 '+MIN+'）');return}
   if(list.length+(k>0?1:0)+(k<n?1:0)>cap){toast('這一區的格數到上限了');return}
   push();if(k>0){const u={t:x.t,h:y0,n:k-1};if(u.n>0)u.gs=g.slice(0,k-1);ps.push(u)}ps.push(mk(v,y1-y0));if(k<n){const d={t:x.t,h:x.h-y1,n:n-k-1};if(d.n>0)d.gs=g.slice(k+1,n);ps.push(d)}
@@ -2885,7 +2998,7 @@ svg.addEventListener('pointerdown',e=>{
     if(cur.ex){if(hit&&hit.z==='t'){curTri(e,hit.d);return}if(hit||!h){lockPan(e,!!hit);return}}
     else if(false&&hit){curEv=e;const x0=e.clientX,y0=e.clientY;let mvd=false;
       listen(ev=>{if(Math.hypot(ev.clientX-x0,ev.clientY-y0)>8)mvd=true},ev=>{if(mvd||ev.type==='pointercancel'||tg)return;justDragged=true;setTimeout(()=>{justDragged=false},90);curEx(true)});return}}
-  if(!h&&!drag&&npOn()&&curLive()&&!multi){e.preventDefault();let p0={x:e.clientX,y:e.clientY};const q0=p0;let mvd=false;
+  if(!h&&!drag&&npOn()&&(curLive()||(multi&&cur.on))){e.preventDefault();let p0={x:e.clientX,y:e.clientY};const q0=p0;let mvd=false;
     listen(ev=>{if(tg||ptrs.size>1)return;const dpx=ev.clientX-p0.x,dpy=ev.clientY-p0.y;if(!mvd&&Math.hypot(ev.clientX-q0.x,ev.clientY-q0.y)<6)return;mvd=true;p0={x:ev.clientX,y:ev.clientY};const k=S/zoom.z*(LAND.matches?1:1.15);
       if(cur.fine){const q=curSnap();cur.x=q.x;cur.y=q.y;cur.fine=false}curMove(dpx*k,dpy*k,false)},()=>{if(mvd){justDragged=true;setTimeout(()=>{justDragged=false},90)}});return}
   if(!h&&mode==='edit'&&!drag&&e.target.closest&&e.target.closest('[data-p]'))armLasso(e);
@@ -2897,8 +3010,8 @@ svg.addEventListener('pointerdown',e=>{
   else if(drag.k==='p')drag.s0=st.cols[drag.c].parts[drag.i].h;else if(drag.k==='s')drag.s0=st.cols[drag.c].parts[drag.p].ins[drag.i].h;
   else if(drag.k==='c'){const L=freeL(drag.i);drag.s0=L>=0?st.cols[L].w:0}
   {const ai=freeL(st.cols.length-1);drag.ai=ai<0?st.cols.length-1:ai;drag.l0=st.cols[drag.ai].w;if(st.cols.some(c=>c.lock))drag.eqW=false}
-  if(drag.k==='g'){const pp=st.cols[drag.c].parts[drag.p],si=h.dataset.s!=null?+h.dataset.s:null;drag.x=si==null?pp:pp.ins[si];drag.g0=solidGaps(drag.x,si==null?pp.h-2*st.T:clearIn(pp,si,st.T),st.T);
-    {const T=st.T,col=st.cols[drag.c];let y0=0;for(let j=0;j<drag.p;j++)y0+=col.parts[j].h;let top=y0+T;if(si!=null){let sy=y0;for(let j=0;j<si;j++)sy+=pp.ins[j].h;top=si?sy+T/2:y0+T}let b=top;for(let j=0;j<drag.i;j++)b+=drag.g0[j]+T;drag.base=b+T/2;drag.nb=nbYs(drag.c)}}
+  if(drag.k==='g'){const pp=st.cols[drag.c].parts[drag.p],si=h.dataset.s!=null?+h.dataset.s:null;drag.x=si==null?pp:pp.ins[si];const PI=pinS(st,drag.c,drag.p);drag.g0=solidGaps(drag.x,si==null?pp.h-PI.t-PI.b:clearIn(pp,si,st.T,PI),st.T);
+    {const T=st.T,col=st.cols[drag.c];let y0=0;for(let j=0;j<drag.p;j++)y0+=col.parts[j].h;let top=y0+PI.t;if(si!=null){let sy=y0;for(let j=0;j<si;j++)sy+=pp.ins[j].h;top=si?sy+T/2:y0+PI.t}let b=top;for(let j=0;j<drag.i;j++)b+=drag.g0[j]+T;drag.base=b+T/2;drag.nb=nbYs(drag.c)}}
   if(drag.k!=='g'&&!multi){const key=drag.k==='r'?{k:'r',y:drag.y}:{k:drag.k,c:drag.c,p:drag.p,i:drag.i},all=hsel?[hsel].concat(hgrp):[],me=all.find(k=>hOn(k,key));drag.was=!!me&&!hgrp.length;
     if(me&&hgrp.length){hsel=me;hgrp=all.filter(k=>k!==me);drag.grp=true;drag.gd=0}else{hsel=key;hgrp=[]}
     hsolo=true;renderArtOnly()}
@@ -2944,8 +3057,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList&&
 /* shelves of cells in different zones brought to the same heights: the first picked cell that has shelves is the pattern */
 function alignInfo(){const inV=view==='in',T=st.T,seen=new Set(),L=[];
   picked().forEach(m=>{const s=inV?(m.s||0):0,key=m.c+'/'+m.p+'/'+s;if(seen.has(key))return;seen.add(key);const col=st.cols[m.c],p=col&&col.parts[m.p];if(!p)return;let top=0,x,clear,off;for(let i=0;i<m.p;i++)top+=col.parts[i].h;
-    if(inV){const q=p.t==='door'&&p.ins&&p.ins[s];if(!q||q.t!=='shelf')return;for(let i=0;i<s;i++)top+=p.ins[i].h;x=q;clear=clearIn(p,s,T);off=s?T/2:T}
-    else{if(p.t!=='open'||!(col.w>4*T&&p.h>4*T))return;x=p;clear=p.h-2*T;off=T}
+    const PI=pinS(st,m.c,m.p);
+    if(inV){const q=p.t==='door'&&p.ins&&p.ins[s];if(!q||q.t!=='shelf')return;for(let i=0;i<s;i++)top+=p.ins[i].h;x=q;clear=clearIn(p,s,T,PI);off=s?T/2:PI.t}
+    else{if(p.t!=='open'||!(col.w>4*T&&p.h>4*T))return;x=p;clear=p.h-PI.t-PI.b;off=PI.t}
     L.push({c:m.c,x,clear,y0:top+off})});return L}
 const alignOk=()=>{const L=alignInfo();return L.length>1&&new Set(L.map(a=>a.c)).size>1&&L.some(a=>a.x.n>0)};
 function doAlign(){const L=alignInfo(),T=st.T;if(L.length<2||new Set(L.map(a=>a.c)).size<2){toast('層板對齊要選兩個不同區的層板格');return}
@@ -3160,7 +3274,8 @@ function addText(){const s=$('#textIn').value.trim().slice(0,40);if(!pend)return
 function syncGrid(){const g=st.grid||0,b=$('#gridBtn');b.textContent=g?g/10+'cm':'格線';b.setAttribute('aria-pressed',!!g);const sh=$('#sheet');sh.classList.toggle('gridon',!!g);sh.classList.toggle('axx',axOn.x);sh.classList.toggle('axy',axOn.y);sh.classList.toggle('rulx',!!g||axOn.x);sh.classList.toggle('ruly',!!g||axOn.y)}
 $('#gridBtn').onclick=()=>{st.grid=!st.grid?100:st.grid===100?50:0;render();toast(st.grid?'格線 '+st.grid/10+'cm':'格線已關閉')};
 const viewPop=on=>{const pp=$('#viewPop');pp.hidden=!on;$('#viewBtn').setAttribute('aria-expanded',on);if(on){const r=lrect($('#viewBtn'));pp.style.left=clamp(r.left,8,Math.max(8,vpW()-pp.offsetWidth-8))+'px';pp.style.top=clamp(r.bottom+6,8,Math.max(8,vpH()-pp.offsetHeight-8))+'px'}};
-$('#viewBtn').onclick=()=>setOpen('b');
+$('#viewBtn').onclick=()=>{$('#qedit').classList.remove('gonly');setOpen('b');const t=document.querySelector('#qedit .qeh b');if(t)t.textContent='設定'};
+$('#gestBtn').onclick=()=>{$('#qedit').classList.add('gonly');setOpen('g');const t=document.querySelector('#qedit .qeh b');if(t)t.textContent='手勢設定'};
 function preview(on){const p=$('#pvw');if(on){closeDim(true);$('#pvwImg').innerHTML=exportSVG(xst(),darkSheet?DARKP:null,bgArg()).svg;const e=$('#pvwImg svg');if(e){e.setAttribute('width','100%');e.setAttribute('height','100%')}p.classList.toggle('dark',darkSheet)}else $('#pvwImg').innerHTML='';p.hidden=!on}
 $('#pvBtn').onclick=()=>preview(true);$('#pvw').onclick=()=>preview(false);
 $('#landBtn').onclick=()=>{$('#qback').hidden=$('#qedit').hidden=true;morePop(false);portC=null;forceLand=!forceLand;flyStop();zoom.m=false;shPop(false);viewPop(false);stylePop(false);savePop(false);closeDim(false);try{window.scrollTo(0,0)}catch(e){}render();setTimeout(render,80)};
@@ -3175,7 +3290,7 @@ function syncChrome(){
   $('#landBtn').hidden=LANDQ.matches&&!forceLand;$('#landBtn').setAttribute('aria-pressed',forceLand);
   put($('#viewSeg'),$('#tbSeg'),null);
   put($('#qbar'),land?$('#rail'):$('#deck'),land?$('#rail').firstChild:$('#deck').firstChild);
-  put($('#ctl'),land?$('#rail'):$('#deck'),null);put($('#tri'),land?$('#rail'):$('#deck'),$('#ctl'));put($('#actm'),$('#deck'),null);put($('#shRow'),$('#deck'),null);put($('#shChip'),land?$('#bandL'):$('#topbar'),land?$('#bandL').firstChild:null);de.classList.toggle('noctl',mode==='ai'||mode==='bg'||isFree());{const np=npOn();de.classList.toggle('npx',np);put($('#nRul'),$('#deck'),null);put($('#nPad'),$('#deck'),null);put($('#nGrp'),$('#deck'),null);put($('#tpad'),np?$('#nTp'):$('#curPads'),np?null:$('#joy'));put($('#tStep'),np?$('#nRul'):$('#tpad'),np?null:$('#tX'));put($('#selHead'),np?$('#actm'):$('#panel'),np?$('#amDone').nextSibling:$('#esubBar'))}
+  put($('#ctl'),land?$('#rail'):$('#deck'),null);put($('#tri'),land?$('#rail'):$('#deck'),$('#ctl'));put($('#actm'),$('#deck'),null);put($('#shRow'),$('#deck'),null);{const sb=land&&!npOn();put($('#shChip'),sb?$('#bandL'):$('#topbar'),sb?$('#bandL').firstChild:null)}de.classList.toggle('noctl',mode==='ai'||mode==='bg'||isFree());{const np=npOn();de.classList.toggle('npx',np);put($('#nRul'),$('#deck'),null);put($('#nPad'),$('#deck'),null);put($('#nGrp'),$('#deck'),null);put($('#tpad'),np?$('#nTp'):$('#curPads'),np?null:$('#joy'));put($('#tStep'),np?$('#nRul'):$('#tpad'),np?null:$('#tX'));put($('#selHead'),np?$('#actm'):$('#panel'),np?$('#amDone').nextSibling:$('#esubBar'))}
   put($('#fileBtns'),$('#tbFile'),null);de.classList.toggle('topi',topiOn());de.classList.toggle('simp',simOn());
   put($('#lwRow'),land?$('#railMark'):$('#markbar'),land?null:$('#markHint'));
   put($('#colors'),land?$('#railMark'):$('#crow'),land?null:$('#crow').firstChild);
@@ -3692,17 +3807,17 @@ function tgtAt(P,tol,R){R=R||P;const body=st.H-st.kick,cand=[],n=st.cols.length,
     if(inX&&c&&view==='in'){if(c.s){let sy=c.y0;c.p.ins.forEach((s,si)=>{if(si&&Math.abs(P.y-sy)<=lim(c.p.ins[si-1].h,s.h))cand.push({d:Math.abs(R.y-sy),ax:'y',v:sy,h:{k:'s',c:c.ci,p:c.pi,i:si-1},sel:{c:c.ci,p:c.pi,s:si-1},name:`第 ${c.ci+1} 區櫃內的分隔線`,seg:[[c.x0,sy,c.x0+c.col.w,sy]]});sy+=s.h})}}
     else if(inX&&c){let y=0;c.col.parts.forEach((p,pi)=>{if(pi&&Math.abs(P.y-y)<=lim(c.col.parts[pi-1].h,p.h)){const seg=[];let x0=0;st.cols.forEach(k=>{let t=0;for(let i=0;i<k.parts.length-1;i++){t+=k.parts[i].h;if(Math.abs(t-y)<.5){seg.push([x0,y,x0+k.w,y]);break}}x0+=k.w});
       cand.push({d:Math.abs(R.y-y),ax:'y',v:y,h:{k:'r',y:Math.round(y)},name:seg.length>1?`橫向分隔線（${seg.length} 區一起）`:'橫向分隔線',seg})}y+=p.h})}
-    if(inX&&c&&c.col.w>4*st.T&&c.p.h>4*st.T){const T=st.T,sx=c.x0+T,sw=c.col.w-2*T;let X=null,top=0,bot=0,gk=null;
-      if(view==='in'){const q=c.s;if(q&&q.t==='shelf'&&q.n){const ins=c.p.ins,si=c.si;top=si?c.sy+T/2:c.y0+T;bot=si<ins.length-1?c.sy+q.h-T/2:c.y0+c.p.h-T;if(bot-top>q.n*T+(q.n+1)*10){X=q;gk={c:c.ci,p:c.pi,s:si}}}}
-      else if(c.p.t==='open'&&c.p.n>0){X=c.p;top=c.y0+T;bot=c.y0+c.p.h-T;gk={c:c.ci,p:c.pi,s:0}}
+    if(inX&&c&&c.col.w>4*st.T&&c.p.h>4*st.T){const T=st.T,PI=pinS(st,c.ci,c.pi),sx=c.x0+PI.l,sw=c.col.w-PI.l-PI.r;let X=null,top=0,bot=0,gk=null;
+      if(view==='in'){const q=c.s;if(q&&q.t==='shelf'&&q.n){const ins=c.p.ins,si=c.si;top=si?c.sy+T/2:c.y0+PI.t;bot=si<ins.length-1?c.sy+q.h-T/2:c.y0+c.p.h-PI.b;if(bot-top>q.n*T+(q.n+1)*10){X=q;gk={c:c.ci,p:c.pi,s:si}}}}
+      else if(c.p.t==='open'&&c.p.n>0){X=c.p;top=c.y0+PI.t;bot=c.y0+c.p.h-PI.b;gk={c:c.ci,p:c.pi,s:0}}
       if(X){const g=gapsOf(X,bot-top,T);let sy=top;for(let j=0;j<X.n;j++){const y=sy+g[j]+T/2;if(Math.abs(P.y-y)<=lim(g[j],g[j+1]))cand.push({d:Math.abs(R.y-y),ax:'y',v:y,g:Object.assign({i:j},gk),name:`層板（由上數第 ${j+1} 片）`,seg:[[sx,y,sx+sw,y]]});sy+=g[j]+T}}}}
   if(cand.length&&!cellOnly()){cand.sort((a,b)=>a.d-b.d);return Object.assign({t:'l'},cand[0])}
   const cc=locCell({x:P.x,y:P.y}),key=cc&&lassoKey(cc);if(!key)return{t:null};const kr=subAt(cc,P);return{t:'c',c:cc,key,kr,k:kr?kr.k:null}}
 function layerAt(x,top,bot,sx,sw,py,y0,y1){const T=st.T,g=gapsOf(x,bot-top,T),n=x.n;let sy=top;for(let k=0;k<g.length;k++){const b=k<n?sy+g[k]+T/2:y1;if(py<b||k===g.length-1)return{k,x:sx,w:sw,y:sy,h:g[k]};sy+=g[k]+T}return null}
-function subAt(c,P){const T=st.T,w=c.col.w;if(w<=4*T||c.p.h<=4*T)return null;
-  if(view==='in'){const s=c.s;if(!s||s.t!=='shelf'||!s.n)return null;const ins=c.p.ins,si=c.si,top=si?c.sy+T/2:c.y0+T,bot=si<ins.length-1?c.sy+s.h-T/2:c.y0+c.p.h-T;if(bot-top<=s.n*T+(s.n+1)*10)return null;return layerAt(s,top,bot,c.x0+T,w-2*T,P.y,c.sy,c.sy+s.h)}
+function subAt(c,P){const T=st.T,w=c.col.w;if(w<=4*T||c.p.h<=4*T)return null;const PI=pinS(st,c.ci,c.pi);
+  if(view==='in'){const s=c.s;if(!s||s.t!=='shelf'||!s.n)return null;const ins=c.p.ins,si=c.si,top=si?c.sy+T/2:c.y0+PI.t,bot=si<ins.length-1?c.sy+s.h-T/2:c.y0+c.p.h-PI.b;if(bot-top<=s.n*T+(s.n+1)*10)return null;return layerAt(s,top,bot,c.x0+PI.l,w-PI.l-PI.r,P.y,c.sy,c.sy+s.h)}
   const p=c.p;if(p.t==='drawer'&&p.n>1){const dh=p.h/p.n,k=clamp(Math.floor((P.y-c.y0)/dh),0,p.n-1);return{k,x:c.x0,w,y:c.y0+dh*k,h:dh}}
-  if(p.t==='open'&&p.n>0)return layerAt(p,c.y0+T,c.y0+p.h-T,c.x0+T,w-2*T,P.y,c.y0,c.y0+p.h);return null}
+  if(p.t==='open'&&p.n>0)return layerAt(p,c.y0+PI.t,c.y0+p.h-PI.b,c.x0+PI.l,w-PI.l-PI.r,P.y,c.y0,c.y0+p.h);return null}
 function curTarget(){return cur.tp?tgtAt(cur.tp,10*S/zoom.z):tgtAt(curSnap(),.6,cur)}
 function pickTarget(t){selAt=edN;zOps=false;closeDim(true);cur.on=false;cur.gx=cur.gy=cur.gxv=cur.gyv=null;msel=[];hgrp=[];hsolo=false;
   if(t.t==='l'&&t.g){hsel=null;sel={c:t.g.c,p:t.g.p,s:t.g.s,g:t.g.i}}
@@ -3866,10 +3981,10 @@ $('#scFlip').onclick=()=>{if(!st.wall)return;push();st.wall.flip=!st.wall.flip;r
 $('#scDel').onclick=()=>{if(!st.wall)return;push();delete st.wall;render();toast('牆面已移除，可按「復原」放回來')};
 
 /* gestures */
-const GEST=[['t2','兩指點一下'],['t3','三指點一下'],['d2','圖上點兩下'],['lp','空白處長按']],GDEF={t2:'undo',t3:'redo',d2:'',lp:''};
+const GEST=[['t2','兩指點一下'],['t3','三指點一下'],['d2','圖上點兩下'],['lp','空白處長按']],GDEF={t2:'undo',t3:'redo',d2:'zreset',lp:''};
 let gmap=Object.assign({},GDEF),gt=null,gTap=null;
-try{const v=JSON.parse(localStorage.getItem('sc-cab-gest')||'null');if(v&&typeof v==='object')GEST.forEach(g=>{if(typeof v[g[0]]==='string')gmap[g[0]]=v[g[0]]})}catch(e){}
-const gSave=()=>{try{localStorage.setItem('sc-cab-gest',JSON.stringify(gmap))}catch(e){}};
+try{const v=JSON.parse(localStorage.getItem('sc-cab-gest')||'null');if(v&&typeof v==='object'){GEST.forEach(g=>{if(typeof v[g[0]]==='string')gmap[g[0]]=v[g[0]]});if(!v._v2&&!v.d2)gmap.d2='zreset'}}catch(e){}
+const gSave=()=>{try{localStorage.setItem('sc-cab-gest',JSON.stringify(Object.assign({_v2:1},gmap)))}catch(e){}};
 function gFire(g){const id=gmap[g],a=id&&qFind(id);if(!a)return;toast('手勢：'+a[1]);qRun(id)}
 svg.addEventListener('touchstart',e=>{const n=e.touches.length;if(n>=2){if(!gt)gt={t:performance.now(),n:0,mv:false,p:{}};gt.n=Math.max(gt.n,n);for(const t of e.touches)if(!gt.p[t.identifier])gt.p[t.identifier]=[t.clientX,t.clientY]}},{passive:true});
 svg.addEventListener('touchmove',e=>{if(gt)for(const t of e.touches){const p=gt.p[t.identifier];if(p&&Math.hypot(t.clientX-p[0],t.clientY-p[1])>12)gt.mv=true}},{passive:true});
@@ -4097,9 +4212,9 @@ function mvInfo(){if(mode!=='edit'||multi||isFree())return null;const body=st.H-
     else{let x0=0;for(let j=0;j<h.c;j++)x0+=st.cols[j].w;segs=[[x0,v,x0+st.cols[h.c].w,v]]}
     return{t:'h',k:h.k,ax,v,a0:pv?v-pv.v:null,b0:nx?nx.v-v:null,lo:pv?pv.v+MIN:-1e9,hi:nx?nx.v-MIN:1e9,segs}}
   const o=selObj();if(o&&sel.g!=null){const c=shelfCtx(o);if(!c||!(sel.g<c.x.n))return null;const ci=sel.c,col=st.cols[ci],p=col.parts[sel.p];let x0=0,y0=0,top;for(let j=0;j<ci;j++)x0+=st.cols[j].w;for(let j=0;j<sel.p;j++)y0+=col.parts[j].h;
-    if(view==='in'){const si=sel.s||0;let sy=y0;for(let j=0;j<si;j++)sy+=p.ins[j].h;top=si?sy+T/2:y0+T}else top=y0+T;
+    const PI=pinS(st,ci,sel.p);if(view==='in'){const si=sel.s||0;let sy=y0;for(let j=0;j<si;j++)sy+=p.ins[j].h;top=si?sy+T/2:y0+PI.t}else top=y0+PI.t;
     const g=solidGaps(c.x,c.clear,T),i=sel.g;let y=top;for(let j=0;j<i;j++)y+=g[j]+T;y+=g[i]+T/2;if(g[i]+g[i+1]<2*GMIN)return null;
-    return{t:'g',ax:'y',v:y,a0:g[i],b0:g[i+1],lo:y-(g[i]-GMIN),hi:y+(g[i+1]-GMIN),segs:[[x0+T,y,x0+col.w-T,y]],g,i,c}}
+    return{t:'g',ax:'y',v:y,a0:g[i],b0:g[i+1],lo:y-(g[i]-GMIN),hi:y+(g[i+1]-GMIN),segs:[[x0+PI.l,y,x0+col.w-PI.r,y]],g,i,c}}
   return null}
 function cpdTarget(){const m=mvInfo();if(!m||!cpd)return null;const q=curSnap(),raw=m.ax==='x'?q.x:q.y,now=m.ax==='x'?cur.x:cur.y;let tv=now===cpd.c0?m.v:raw;tv=m.lo<=m.hi?clamp(tv,m.lo,m.hi):m.v;if(m.t==='h')tv=Math.round(tv);return{m,tv}}
 function cpdDraw(P0,q,k){const P={push:(...a)=>P0.push(...a.map(o=>o.t==='l'&&o.c==='an'?Object.assign(o,{dash:7*k}):o))};const col=CHL,lw=2.4*k,z=12*k,body=st.H-st.kick,T=(x,y,s2)=>P.push({t:'t',x,y,s:s2,c:'ant',col,a:'middle',z});
@@ -4231,7 +4346,7 @@ $('#cZin').onclick=()=>{$('#zIn').click();if(cur.on){cdp=null;drawCur()}};$('#cZ
 $('#cZreset').onclick=()=>{if(padMode==='lock'){padMode='cur';lkp=null}$('#zReset').click();render()};
 
 /* ===== the picked thing's actions take the pad's place (upright only) ===== */
-function menuOn(){return!LAND.matches&&mode==='edit'&&!isFree()&&!multi&&!cpd&&!!(hsel||selObj())&&(!npOn()||!!edOpen)}
+function menuOn(){return mode==='edit'&&!isFree()&&!multi&&!cpd&&!!(hsel||selObj())&&(!npOn()||!!edOpen)}
 function menuSync(){const on=menuOn(),hd=$('#selHead'),am=$('#actm'),ed=$('#editor'),fr=$('#frow'),pn=$('#panel');
   if(on){const h=ed.querySelector('.ed>.edt,.ed>.edh');if(h){hd.innerHTML='';const g=ed.querySelector('.ed>.grp');hd.appendChild(h);if(g)hd.appendChild(g)}
     if(ed.parentNode!==am){am.appendChild(ed);am.appendChild(fr);am.scrollTop=0}}
@@ -4242,7 +4357,7 @@ $('#selHead').addEventListener('click',e=>{const gp=e.target.closest('[data-grp]
 
 /* ===== (23) upright control area ===== */
 var fineOn=false,npG='view',npAuto=false,npHad=false,edOpen=false,mkMore=false,npSig='',npRW=0;
-function npOn(){return!LAND.matches&&!isFree()&&(mode==='edit'||mode==='mark')}
+function npOn(){return!isFree()&&(mode==='edit'||mode==='mark')}
 function fineTog(){if(!cur.on){toast('先點一下圖面，叫出準星');return}fineOn=!fineOn;npSig='';render();toast(fineOn?'微調開啟：準星四周出現三角形，按一下走一步，按住連續走；旁邊的步距鍵換一步多遠。再點一下圓盤中心收起':'微調已收起')}
 function npIc(d){return'<svg viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>'}
 function npTi(t){const b=document.querySelector('#tools [data-tool="'+t+'"] svg');return b?b.outerHTML:''}
@@ -4337,6 +4452,11 @@ $('#topiBtn').onclick=()=>{const on=!topiOn();try{localStorage.setItem('sc-cab-t
 var SZLK0='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.8"/></svg>',SZLK1='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 
 /* ===== (26) 檢視 › 格子寫尺寸 (same switch the size page used to have) ===== */
+$('#rulBtn').onclick=()=>{const on=!rulOn();vpSet('rul',on);$('#rulBtn').setAttribute('aria-pressed',on);render();toast(on?'顯示左邊和下面的刻度':'刻度已關閉（再按一次打開）')};{const b=$('#rulBtn');if(b)b.setAttribute('aria-pressed',rulOn())}
+$('#p3Btn').onclick=()=>{const on=!p3On();vpSet('p3',on);$('#p3Btn').setAttribute('aria-pressed',on);render();toast(on?'立體：開放格和櫃內畫出深度（視高 '+eyeH()/10+' 公分）':'立體已關閉')};
+{const b=$('#p3Btn');if(b)b.setAttribute('aria-pressed',p3On())}
+const EYES=[1700,1500,1200,1000];function eyeSync(){const b=$('#eyeBtn');if(b)b.textContent='視高 '+eyeH()/10}eyeSync();
+$('#eyeBtn').onclick=()=>{const i=EYES.indexOf(eyeH()),v=EYES[(i+1)%EYES.length];try{localStorage.setItem('sc-cab-eye',v)}catch(e){}eyeSync();render();toast('立體的視高：'+v/10+' 公分（站著約 170、坐著約 120）')};
 $('#swBtn').onclick=()=>{const on=!swingOn();vpSet('swing',on);$('#swBtn').setAttribute('aria-pressed',on);render();toast(on?'門片畫出開門方向的斜線':'門片不畫開門斜線')};{const b=$('#swBtn');if(b)b.setAttribute('aria-pressed',swingOn())}
 $('#lblBtn').onclick=()=>{$('#fLabels').click();const on=$('#fLabels').checked;$('#lblBtn').setAttribute('aria-pressed',on);toast(on?'每一格上會寫名稱和尺寸':'每一格上不寫名稱和尺寸')};
 
@@ -4366,7 +4486,7 @@ function ovSync(){const o=ovMk();const on=!!st&&cur.on&&(mode==='edit'||mode==='
     const mk=v=>{const L=v?'x1="100" y1="14" x2="100" y2="186"':'x1="14" y1="100" x2="186" y2="100"',H=`stroke:${pal.sheet};fill:none;stroke-width:18`,C=`stroke:${col};fill:none`;
       return`<svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="64" style="${H}"/><line ${L} style="${H}"/><circle cx="100" cy="100" r="64" style="${C};stroke-width:7;stroke-dasharray:16 11"/><line ${L} style="${C};stroke-width:6"/></svg>`};
     o.querySelector('[data-om="x"]').innerHTML=mk(1);o.querySelector('[data-om="y"]').innerHTML=mk(0)}}
-  put('[data-om="x"]',X,r.height-bh/2,true);put('[data-om="y"]',Math.max(bw/2,37.5*cset.size/200+1.5),Y,true)}
+  put('[data-om="x"]',X,r.height-bh/2,rulOn());put('[data-om="y"]',Math.max(bw/2,37.5*cset.size/200+1.5),Y,rulOn())}
 {const _dc=drawCur;drawCur=function(){_dc();try{ovSync()}catch(e){}}}
 window.addEventListener('scroll',()=>{try{ovSync()}catch(e){}},{passive:true,capture:true});
 try{drawCur()}catch(e){}requestAnimationFrame(()=>{try{drawCur()}catch(e){}});
@@ -4400,6 +4520,95 @@ function pvSync(){const o=pvMk(),on=!!st&&npOn()&&!!vbNow&&!szw;if(!on){if(!o.hi
 window.addEventListener('resize',()=>{try{pvSync()}catch(e){}});window.addEventListener('scroll',()=>{try{pvSync()}catch(e){}},{passive:true,capture:true});
 try{pvSync()}catch(e){}
 
+/* ===== (58) 拆料清單：照《櫃體拆圖與拆料標準規則》從圖算板件、抽屜、門片、封邊、彙整 ===== */
+function cutCalc(s){
+  const T=18,BK=4,H=s.H,K=s.kick,Hb=H-K,D0=s.D>0?s.D:null,D=D0||dDef(s),Dd=!!D&&dIncl(s),De=D?D-(Dd?T:0):null,Dp=De?De-BK:null,kr=krOf(s),tall=ctOf(s)==='tall',sk=s.sk||{l:true,r:true},nc=s.cols.length;
+  const r1=v=>Math.round(v*10)/10,dm=v=>v==null?'—':(Math.abs(v-Math.round(v))<1e-6?String(Math.round(v)):String(r1(v)));
+  const carc=[],drw=[],door=[],hw=[],ask=[],asm=[],edge={18:0,21:0,36:0},boards=[];
+  const B=(box,name,w,h,t,mat,q,ed,note)=>{carc.push({box,name,w,h,t,mat,q,ed:ed||'',note:note||''});boards.push({mat,t,w,h,q,use:box+' '+name})};
+  const E=(cls,len,q)=>{if(len>0)edge[cls]+=len*(q||1)};
+  const jt=i=>i<0||i>=nc-1?'o':(jDblS(s,i)?'d':'s');
+  // bays → boxes (split at double joints)
+  const boxes=[],colBox=[];let cur=null;s.cols.forEach((c,ci)=>{if(!cur||jt(ci-1)==='d'){cur={cols:[]};boxes.push(cur)}cur.cols.push(ci);colBox[ci]=boxes.length-1});
+  const skL=sk.l?3:0,skR=sk.r?3:0;
+  boxes.forEach((bx,bi)=>{const id='桶'+(bi+1),first=bx.cols[0]===0,last=bx.cols[bx.cols.length-1]===nc-1;
+    const ow=bx.cols.reduce((a,ci)=>a+s.cols[ci].w,0)-(first?skL:0)-(last?skR:0);bx.ow=ow;
+    const sideH=tall?Hb:Hb-2*T,tbW=tall?ow-2*T:ow;
+    const sideEd=(isOuter,hasSk)=>isOuter?(hasSk?21:18):36;
+    // left side
+    {const cls=first?(skL?21:18):36;B(id,'左側板',Dp,sideH,T,'18mm 單面裝飾板',1,'前緣 '+cls,first?(skL?'外側加貼 3mm':''):'與左邊桶身合併（雙板）');if(cls!==36)E(cls,sideH)}
+    {const cls=last?(skR?21:18):36;B(id,'右側板',Dp,sideH,T,'18mm 單面裝飾板',1,'前緣 '+cls,last?(skR?'外側加貼 3mm':''):'與右邊桶身合併（雙板）');E(cls,sideH,cls===36?1:1)}
+    B(id,'上頂板',tbW,Dp,T,'18mm 單面裝飾板',1,'前緣 18');E(18,tbW);
+    B(id,'下底板',tbW,Dp,T,'18mm 單面裝飾板',1,'前緣 18');E(18,tbW);
+    for(let k=1;k<bx.cols.length;k++){B(id,'垂直隔板',Dp,Hb-2*T,T,'18mm 雙面裝飾板',1,'前緣 18','單片隔板（兩區共用）');E(18,Hb-2*T)}
+    B(id,'背板',ow,Hb,BK,'4mm 背板',1,'','包背直釘，尺寸＝桶身外寬×外高');
+    if(first&&skL)B(id,'左外貼板',Dp,sideH,3,'3mm 外貼板',1,'','遮釘孔；尺寸先比照側板，請確認');
+    if(last&&skR)B(id,'右外貼板',Dp,sideH,3,'3mm 外貼板',1,'','遮釘孔；尺寸先比照側板，請確認');
+    // cells
+    bx.cols.forEach(ci=>{const c=s.cols[ci],li=ci===0?T+skL:(jt(ci-1)==='d'?T:T/2),ri=ci===nc-1?T+skR:(jt(ci)==='d'?T:T/2),nw=c.w-li-ri,zn=`第${ci+1}區`;
+      if(c.parts.length>1){B(id,zn+' 固定層板',nw,Dp,T,'18mm 雙面裝飾板',c.parts.length-1,'前緣 18','格與格之間');E(18,nw,c.parts.length-1)}
+      const shelf=(x,where)=>{if(!(x.n>0))return;const fx=!!x.fx;if(fx){B(id,where+' 固定層板',nw,Dp,T,'18mm 雙面裝飾板',x.n,'前緣 18');E(18,nw,x.n)}
+          else{B(id,where+' 活動層板',nw-1,Dp==null?null:Dp-10,T,'18mm 雙面裝飾板',x.n,'前緣 18','寬扣 1、前退 10');E(18,nw-1,x.n);hw.push({k:'目玉',spec:'',q:null,use:id+' '+where+' 活動層板 '+x.n+' 片'})}};
+      let pyTop=0;c.parts.forEach((p,pi)=>{const where=zn+'第'+(pi+1)+'格',w=c.w,h=p.h;
+        if(p.t==='open')shelf(p,where);
+        else if(p.t==='door'){const n=p.n===2?2:1,lw=(w-8-(n-1)*4)/n,lh=h-8;
+          for(let j=0;j<n;j++){const hg=n===2?(j?'R':'L'):(p.hinge||'L'),side=hg==='L'?(ci===0?'o':jt(ci-1)):(ci===nc-1?'o':jt(ci)),kind=side==='s'?'3分鉸鏈（半蓋）':'6分鉸鏈（全蓋）';
+            door.push({id:where,w:lw,h:lh,t:T,q:1,dir:hg==='L'?'左開':'右開',hinge:kind,hq:null,ed:(lw+lh)*2});E(18,(lw+lh)*2);boards.push({mat:'18mm 門片板',t:T,w:lw,h:lh,q:1,use:where+' 門片'});hw.push({k:kind,spec:'35mm 西德',q:null,use:where})}
+          if(p.ins&&p.ins.length>1){B(id,where+' 櫃內固定層板',nw,Dp,T,'18mm 雙面裝飾板',p.ins.length-1,'前緣 18','門片裡段與段之間');E(18,nw,p.ins.length-1)}
+          (p.ins||[]).forEach((q,si)=>{const w2=where+'內第'+(si+1)+'段';if(q.t==='shelf')shelf(q,w2);else if(q.t==='rod'){hw.push({k:'吊衣桿',spec:'長 '+dm(nw)+'（縮短量待確認）',q:1,use:w2});hw.push({k:'吊桿座',spec:'',q:null,use:w2})}
+            else if(q.t==='idrawer'){hw.push({k:'抽屜滑軌',spec:De?'長 '+(De-50):'長＝完成深度−50',q:q.n,use:w2+' 內抽'});ask.push(w2+'：內抽 '+q.n+' 個的抽頭高度與做法沒有標示，抽屜桶尺寸先不算')}})}
+        else if(p.t==='drawer'){const n=p.n||1,fw=w-8,fh=(h-8-(n-1)*4)/n,bw=nw-25,sl=De?De-50:null,bh=fh-50;
+          for(let j=0;j<n;j++){const d=where+(n>1?'-'+(j+1):'');
+            drw.push({id:d,side:[sl,bh],q2:2,fb:[bw-2*T,bh],bot:[bw,sl],head:[fw,fh],slide:sl,ed:(fw+fh)*2});E(18,(fw+fh)*2);
+            boards.push({mat:'18mm 抽屜桶板',t:T,w:sl,h:bh,q:2,use:d+' 側板'},{mat:'18mm 抽屜桶板',t:T,w:bw-2*T,h:bh,q:2,use:d+' 前後板'},{mat:'4mm 抽屜底板',t:4,w:bw,h:sl,q:1,use:d+' 底板'},{mat:'18mm 門片板',t:T,w:fw,h:fh,q:1,use:d+' 抽頭'});
+            hw.push({k:'抽屜滑軌',spec:sl?'長 '+sl:'長＝完成深度−50',q:1,use:d})}}
+        else if(p.t==='blank')ask.push(where+'：封板的做法（板料、尺寸）沒有標示');
+        pyTop+=h})})});
+  if(K>0)ask.push('踢腳板 高 '+K+'、'+(kr?'退 '+kr:'不退（與桶身齊平）')+'：板料與長度沒有標示，請確認');
+  if(!D)ask.unshift('還沒輸入「完成深度」：板深、滑軌、抽屜側板、拉籃都要用它');
+  if(hw.some(h=>/鉸鏈/.test(h.k)))ask.push('鉸鏈每片幾個：規則沒有門高對應數量，請確認');
+  if(hw.some(h=>h.k==='目玉'))ask.push('每片活動層板用幾顆目玉：請確認');
+  if(hw.some(h=>h.k==='吊衣桿'))ask.push('吊衣桿縮短量與吊桿座數量：請確認');
+  asm.push('板厚 18、背板 4 包背直釘、抽屜底板 4 包底直釘',(D0?'完成深度 '+D0:D?'完成深度沒輸入，依櫃種預設 '+D:'完成深度未輸入')+(Dd?'（含門片 18，桶身外深 '+De+'）':'')+'；扣 4 為桶身板深',kr?'踢腳板退 '+kr:'踢腳板不退（與桶身齊平）','櫃體種類：'+(tall?'高櫃（側板夾頂底板）':'矮櫃（頂底板夾側板）'),
+    '左右相鄰：櫃身'+(Hb>1800?'高於':'不高於')+' 180 公分預設'+(Hb>1800?'雙板':'單板')+'（個別手動設定的照設定）','外貼 3mm：'+(sk.l?'左':'')+(sk.r?(sk.l?'、':'')+'右':'')+(sk.l||sk.r?'，算在總寬內':'不貼'),
+    '門片開口＝格子的外框尺寸；門縫四周與片間 4','抽屜：桶外寬＝淨寬−25、桶高＝抽頭高−50、滑軌＝完成深度−50');
+  // aggregate boards
+  const agg=[],key=b=>b.mat+'|'+b.t+'|'+dm(b.w)+'|'+dm(b.h);boards.forEach(b=>{const k=key(b),a=agg.find(x=>x.k===k);if(a){a.q+=b.q;a.use.push(b.use)}else agg.push({k,mat:b.mat,t:b.t,w:b.w,h:b.h,q:b.q,use:[b.use]})});
+  const hagg=[];hw.forEach(h=>{const k=h.k+'|'+h.spec,a=hagg.find(x=>x.k===k);if(a){if(a.q!=null&&h.q!=null)a.q+=h.q;else a.q=null;a.use.push(h.use)}else hagg.push({k,name:h.k,spec:h.spec,q:h.q,use:[h.use]})});
+  // checks
+  const sw=s.cols.reduce((a,c)=>a+c.w,0),chk=[['各區寬加總＝總寬',sw===s.W,sw+' / '+s.W],...s.cols.map((c,i)=>{const t=c.parts.reduce((a,p)=>a+p.h,0);return['第'+(i+1)+'區各格高加總＝櫃身高',t===Hb,t+' / '+Hb]}),
+    ['夾板方向',true,tall?'側板夾頂底（頂底寬扣 36）':'頂底夾側板（側板高扣 36）'],['桶身板深＝完成深度−4',!!D,D?(D+' → '+Dp):'沒有深度'],['背板依桶身外尺寸',true,''],['活動層板寬扣 1、深退 10',true,''],
+    ['抽屜桶外寬＝淨寬−25、前後板再扣 36、桶高＝抽頭−50',true,''],['門片四周與中縫扣 4',true,''],['封邊 18／21／36 分開統計',true,''],['台尺用 30.3 換算',true,'']];
+  return{D,D0,Dd,De,kr,Dp,Hb,tall,sk,carc,drw,door,agg,hagg,edge,ask,asm,chk,dm,boxes:boxes.length,colBox,boxCols:boxes.map(b=>b.cols),hw}}
+function cutHTML(c){const dm=c.dm,tf=v=>(v/10/30.3).toFixed(2),tb=(hd,rows)=>`<div class="cutT"><table><thead><tr>${hd.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  let h=`<h3>一、圖面辨識摘要</h3><p>${esc(st.name||pj.name||'未命名')}｜總寬 ${st.W}、總高 ${st.H}（踢腳 ${st.kick}，櫃身 ${c.Hb}）、完成深度 ${c.D?c.D+(c.Dd?'（含門片）':'')+(c.D0?'':'（預設）'):'未輸入'}｜${st.cols.length} 區、${c.boxes} 個桶身｜${c.tall?'高櫃':'矮櫃'}</p>`;
+  h+=`<h3>二、計算假設與待確認事項</h3><ul class="cutA">${c.asm.map(x=>`<li>${x}</li>`).join('')}</ul>`+(c.ask.length?`<ul class="cutQ">${c.ask.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>沒有待確認事項。</p>');
+  h+=`<h3>三、桶身板材與層板</h3>`+tb(['桶','板件','寬','長／高','厚','材料','數量','封邊','備註'],c.carc.map(r=>[r.box,r.name,dm(r.w),dm(r.h),r.t,r.mat,r.q,r.ed,r.note]));
+  h+=`<h3>四、抽屜</h3>`+(c.drw.length?tb(['編號','側板 長×高 ×2','前後板 寬×高 ×2','底板 4mm','抽頭','滑軌','抽頭封邊'],c.drw.map(r=>[r.id,dm(r.side[0])+'×'+dm(r.side[1]),dm(r.fb[0])+'×'+dm(r.fb[1]),dm(r.bot[0])+'×'+dm(r.bot[1]),dm(r.head[0])+'×'+dm(r.head[1]),r.slide?dm(r.slide):'—',dm(r.ed)])):'<p>沒有抽屜。</p>');
+  h+=`<h3>五、門片</h3>`+(c.door.length?tb(['位置','寬','高','厚','開向','鉸鏈','鉸鏈數','單片封邊'],c.door.map(r=>[r.id,dm(r.w),dm(r.h),r.t,r.dir,r.hinge,'待確認',dm(r.ed)])):'<p>沒有門片。</p>');
+  h+=`<h3>六、板材彙整</h3>`+tb(['材料','厚','尺寸','數量','使用位置'],c.agg.map(a=>[a.mat,a.t,dm(a.w)+'×'+dm(a.h),a.q,a.use.join('、')]));
+  h+=`<h3>七、五金彙整</h3>`+(c.hagg.length?tb(['品項','規格','數量','使用位置'],c.hagg.map(a=>[a.name,a.spec,a.q==null?'待確認':a.q,a.use.join('、')])):'<p>沒有五金。</p>');
+  h+=`<h3>八、封邊</h3>`+tb(['完成厚度','總長（cm）','台尺'],[18,21,36].map(k=>[k+' mm',(c.edge[k]/10).toFixed(1),tf(c.edge[k])]));
+  h+=`<h3>九、2440×1220 片數</h3><p>需要實際排版計算（不能用面積除），下一階段做。</p>`;
+  h+=`<h3>十、自我檢查</h3><ul class="cutC">${c.chk.map(x=>`<li class="${x[1]?'ok':'ng'}">${x[1]?'✓':'✗'} ${x[0]}${x[2]?'：'+x[2]:''}</li>`).join('')}</ul>`;return h}
+function cutCSV(c){const dm=c.dm,q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"',L=[];const row=a=>L.push(a.map(q).join(','));
+  row(['拆料清單',st.name||pj.name||'未命名',today()]);row([]);row(['待確認']);c.ask.forEach(x=>row([x]));row([]);
+  row(['桶','板件','寬','長／高','厚','材料','數量','封邊','備註']);c.carc.forEach(r=>row([r.box,r.name,dm(r.w),dm(r.h),r.t,r.mat,r.q,r.ed,r.note]));row([]);
+  row(['抽屜','側板×2','前後板×2','底板','抽頭','滑軌','抽頭封邊']);c.drw.forEach(r=>row([r.id,dm(r.side[0])+'x'+dm(r.side[1]),dm(r.fb[0])+'x'+dm(r.fb[1]),dm(r.bot[0])+'x'+dm(r.bot[1]),dm(r.head[0])+'x'+dm(r.head[1]),r.slide?dm(r.slide):'',dm(r.ed)]));row([]);
+  row(['門片','寬','高','厚','開向','鉸鏈','鉸鏈數','單片封邊']);c.door.forEach(r=>row([r.id,dm(r.w),dm(r.h),r.t,r.dir,r.hinge,'待確認',dm(r.ed)]));row([]);
+  row(['材料','厚','尺寸','數量','使用位置']);c.agg.forEach(a=>row([a.mat,a.t,dm(a.w)+'x'+dm(a.h),a.q,a.use.join('、')]));row([]);
+  row(['五金','規格','數量','使用位置']);c.hagg.forEach(a=>row([a.name,a.spec,a.q==null?'待確認':a.q,a.use.join('、')]));row([]);
+  row(['封邊','總長cm','台尺']);[18,21,36].forEach(k=>row([k+'mm',(c.edge[k]/10).toFixed(1),(c.edge[k]/10/30.3).toFixed(2)]));
+  return'﻿'+L.join('\r\n')}
+function cutRender(){if(!st||isFree())return;const c=cutCalc(st);$('#cutD').value=st.D||'';$('#cutD').placeholder=dDef(st)?'預設 '+dDef(st):'例 600';$('#cutDd').checked=dIncl(st);{const k=$('#cutKr'),v=String(krOf(st));if(![...k.options].some(o=>o.value===v)){const o=document.createElement('option');o.value=v;o.textContent='退 '+v+' mm';k.appendChild(o)}k.value=v}$('#cutSkL').checked=!st.sk||st.sk.l!==false;$('#cutSkR').checked=!st.sk||st.sk.r!==false;$('#cutBody').innerHTML=cutHTML(c)}
+function cutOpen(){if(isFree()){toast('自由繪圖沒有拆料清單');return}closeDim(true);$('#cutw').hidden=false;cutRender();$('#cutBody').scrollTop=0}
+$('#cutX').onclick=()=>{$('#cutw').hidden=true};
+$('#cutD').addEventListener('change',e=>{const v=num(e.target.value,0);if(v&&(v<100||v>1500)){toast('完成深度請輸入 100～1500');cutRender();return}push();if(v)st.D=Math.round(v);else delete st.D;saveDraft();cutRender()});
+$('#cutDd').addEventListener('change',e=>{push();st.Dd=e.target.checked;saveDraft();cutRender();render()});$('#cutKr').addEventListener('change',e=>{push();st.kr=num(e.target.value,50);saveDraft();cutRender();render()});
+['#cutSkL','#cutSkR'].forEach(k=>$(k).addEventListener('change',()=>{push();st.sk={l:$('#cutSkL').checked,r:$('#cutSkR').checked};saveDraft();cutRender()}));
+$('#cutCsv').onclick=async()=>{if(!dl){toast('這個畫面目前不能存檔');return}try{await dl.save({filename:fileBase()+'_拆料.csv',data:cutCSV(cutCalc(st))});toast('拆料清單（CSV）已交給裝置存檔，可用 Excel 開啟')}catch(e){toast('存檔沒有成功')}};
+$('#tbCut').onclick=()=>cutOpen();
+
 /* ===== (54) jog dial: turn the ring to step the crosshair; the centre is 選取 / 移動 / 確定 ===== */
 var jogAx='x',jogA=0,jogSum=0,jogT=0,jogHad=null;
 function jogMk(){const pad=$('#nPad');if(!pad||$('#jog'))return;const d=document.createElement('div');d.id='jog';
@@ -4425,7 +4634,7 @@ try{jogMk()}catch(e){}
 
 /* ===== (47) ☰ menu, 標註中 chip ===== */
 function hmOpen(on){const de=document.documentElement;de.classList.toggle('hmOpen',!!on);$('#hmBtn').setAttribute('aria-expanded',!!on);
-  if(on){const r=lrect($('#hmBtn')),tb=$('#topbar'),w=Math.min(220,vpW()-16);tb.style.width=w+'px';tb.style.left=clamp(r.right-w,8,vpW()-w-8)+'px';tb.style.top=(r.bottom+6)+'px';$('#tbSimp').textContent=simOn()?'換回圓盤':'極簡模式'}}
+  if(on){const r=lrect($('#hmBtn')),tb=$('#topbar'),w=Math.min(220,vpW()-16);tb.style.width=w+'px';tb.style.left=clamp(r.right-w,8,vpW()-w-8)+'px';tb.style.top=(r.bottom+6)+'px';tb.style.maxHeight=Math.max(160,vpH()-r.bottom-14)+'px';tb.style.overflowY='auto';$('#tbSimp').textContent=simOn()?'換回圓盤':'極簡模式'}}
 $('#hmBtn').onclick=e=>{e.stopPropagation();hmOpen(!document.documentElement.classList.contains('hmOpen'))};
 $('#topbar').addEventListener('click',e=>{if(!document.documentElement.classList.contains('npx'))return;if(e.target.closest('button'))setTimeout(()=>hmOpen(false),0)});
 document.addEventListener('pointerdown',e=>{if(document.documentElement.classList.contains('hmOpen')&&!(e.target.closest&&e.target.closest('#topbar,#hmBtn')))hmOpen(false)},true);
@@ -4435,8 +4644,9 @@ $('#mkExit').onclick=()=>{setCat('edit')};
   document.documentElement.classList.toggle('nsel',mode==='mark'||multi||!!cpd||(mode==='edit'&&!!(hsel||selObj())))}}
 
 /* ===== (29) rulers with the crosshair; 簡易面板 switch ===== */
-function rulA(){return!!st&&cur.on&&(mode==='edit'||mode==='mark')}
-function simOn(){try{return localStorage.getItem('sc-cab-simp')==='1'}catch(e){return false}}
+function rulOn(){return vpGet('rul',true)}
+function rulA(){return!!st&&cur.on&&(mode==='edit'||mode==='mark')&&rulOn()}
+function simOn(){if(LAND.matches)return false;try{return localStorage.getItem('sc-cab-simp')==='1'}catch(e){return false}}
 $('#simBtn').onclick=()=>{const on=!simOn();try{localStorage.setItem('sc-cab-simp',on?'1':'0')}catch(e){}if(on&&padMode==='view')padMode='cur';portC=null;npSig='';$('#simBtn').setAttribute('aria-pressed',on);render();toast(on?'極簡模式：整個畫面都是圖紙。單指在圖上拖＝移動準星，點一下＝準星跳過去，兩指＝移動、縮放畫面':'換回圓盤')};
 {const b=$('#simBtn');if(b)b.setAttribute('aria-pressed',simOn())}
 
@@ -4453,6 +4663,7 @@ function cellX(){if(isFree()||!sel||sel.k!=null)return'';const o=selObj();if(!o)
     s+=`<p class="cxh">把手</p><div class="seg" role="group">${[['bar','把手'],['groove','取手縫'],['none','無把手']].map(a=>`<button data-pull="${a[0]}" aria-pressed="${pu===a[0]}">${a[1]}</button>`).join('')}</div>`;
     if(pu==='groove'){const gp=x.gp||(x.t==='door'?'s':'t'),L=x.t==='door'?[['s','開門側'],['t','上方'],['b','下方']]:[['t','上方'],['b','下方']];
       s+=`<div class="seg cxg" role="group">${L.map(a=>`<button data-gp="${a[0]}" aria-pressed="${gp===a[0]}">${a[1]}</button>`).join('')}<label class="cxw">縫寬<input data-gw inputmode="numeric" maxlength="3" value="${x.gw||30}" aria-label="取手縫寬度"></label></div>`}}
+  {const sx=inV?(x.t==='shelf'&&x.n>0?x:null):(x.t==='open'&&x.n>0?x:null);if(sx)s+=`<p class="cxh">層板</p><div class="seg" role="group"><button data-fx="0" aria-pressed="${!sx.fx}">活動層板</button><button data-fx="1" aria-pressed="${!!sx.fx}">固定層板</button></div>`}
   const d=inV?'y':eqDir;
   s+=`<p class="cxh">等分</p>${inV?'':`<div class="seg" role="group"><button data-eqd="y" aria-pressed="${d==='y'}">上下</button><button data-eqd="x" aria-pressed="${d==='x'}">左右（整區）</button></div>`}<div class="cxn">${[2,3,4,5].map(n=>`<button data-eqn="${n}">${n} 份</button>`).join('')}<input data-eqi inputmode="numeric" maxlength="2" placeholder="其他" aria-label="分成幾份"></div>`;
   return s}
@@ -4470,6 +4681,8 @@ function pullSet(k,v){const o=selObj();if(!o||!sel||sel.k!=null||view==='in')ret
   else if(k==='gp'){if(x.gp===v)return;push();x.gp=v}
   else if(k==='gw'){const w=clamp(Math.round(num(v,30)),5,120);if(w===x.gw)return;push();x.gw=w}
   render()}
+$('#editor').addEventListener('click',e=>{const f=e.target.closest('[data-fx]');if(f){e.stopPropagation();const o=selObj();if(!o)return;const x=view==='in'?o.s:o.p,v=f.dataset.fx==='1';if(!!x.fx===v)return;push();if(v)x.fx=true;else delete x.fx;render();toast(v?'改成固定層板（圖上不畫目玉）':'改成活動層板（圖上畫出目玉）');return}
+  const j=e.target.closest('[data-jn]');if(j){e.stopPropagation();if(!hsel||hsel.k!=='c')return;const c=st.cols[hsel.i];if(!c)return;const want=j.dataset.jn,auto=st.H-st.kick>1800?'d':'s';push();if(want===auto)delete c.jn;else c.jn=want;render();toast(want==='d'?'這條線改成雙板（兩片 18，共 36）':'這條線改成單板（一片 18）');return}});
 $('#editor').addEventListener('click',e=>{const t=e.target.closest('[data-pull],[data-gp],[data-eqd],[data-eqn]');if(!t)return;e.stopPropagation();
   if(t.dataset.pull)pullSet('pull',t.dataset.pull);else if(t.dataset.gp)pullSet('gp',t.dataset.gp);else if(t.dataset.eqd){eqDir=t.dataset.eqd;render()}else eqSplit(view==='in'?'y':eqDir,t.dataset.eqn)});
 $('#editor').addEventListener('change',e=>{const t=e.target;if(t.matches('[data-gw]'))pullSet('gw',t.value);else if(t.matches('[data-eqi]')&&t.value.trim())eqSplit(view==='in'?'y':eqDir,t.value)});
@@ -4505,15 +4718,15 @@ function bandHit(x,y){if(!rulA()||!svg)return false;const r=svg.getBoundingClien
   o.addEventListener('touchstart',e=>{if(e.target.closest('[data-ot],[data-oa],[data-om]'))e.preventDefault()},{passive:false});}
 {const _os=ovSync;ovSync=function(){_os();const o=ovEl;if(!o||o.hidden)return;const r=svg.getBoundingClientRect(),bh=13.2,bw=19.8,X=o.querySelector('[data-ot="x"]'),Y=o.querySelector('[data-ot="y"]');
   X.style.cssText=`left:${bw}px;top:${(r.height-bh-8).toFixed(1)}px;width:${(r.width-bw).toFixed(1)}px;height:${(bh+16).toFixed(1)}px`;
-  Y.style.cssText=`left:-8px;top:0;width:${(bw+16).toFixed(1)}px;height:${(r.height-bh).toFixed(1)}px`}}
+  Y.style.cssText=`left:-8px;top:0;width:${(bw+16).toFixed(1)}px;height:${(r.height-bh).toFixed(1)}px`;X.hidden=Y.hidden=!rulOn()}}
 /* a tap or release that lands on the rulers never moves the crosshair to the finger */
 ['pointerdown','click'].forEach(t=>svg.addEventListener(t,e=>{if(bandHit(e.clientX,e.clientY)||performance.now()-ovQuiet<400){e.stopImmediatePropagation();if(t==='click')e.preventDefault()}},true));
 /* ===== (32) datum side, distances to floor and side panel, splits from the middle, shelves meet the next bay ===== */
 function datOn(){return!!st&&!isFree()&&(mode==='edit'||mode==='mark')&&!cpd&&!(typeof rulGeo==='function'&&npOn()&&mode==='edit'&&rulGeo().g)}
 function colYs(ci){const c=st.cols[ci];if(!c)return[];const T=st.T,w=c.w,ys=[];let y=0;
-  c.parts.forEach((p,pi)=>{if(pi)ys.push(y);const roomy=w>4*T&&p.h>4*T;
-    if(p.t==='open'&&roomy&&p.n>0){const g=gapsOf(p,p.h-2*T,T);let sy=y+T;for(let j=0;j<p.n;j++){ys.push(sy+g[j]+T/2);sy+=g[j]+T}}
-    else if(view==='in'&&p.t==='door'&&roomy&&p.ins){let sy=y;p.ins.forEach((s,si)=>{if(si)ys.push(sy);const top=si?sy+T/2:y+T,bot=si<p.ins.length-1?sy+s.h-T/2:y+p.h-T;
+  c.parts.forEach((p,pi)=>{if(pi)ys.push(y);const roomy=w>4*T&&p.h>4*T,PI=pinS(st,ci,pi);
+    if(p.t==='open'&&roomy&&p.n>0){const g=gapsOf(p,p.h-PI.t-PI.b,T);let sy=y+PI.t;for(let j=0;j<p.n;j++){ys.push(sy+g[j]+T/2);sy+=g[j]+T}}
+    else if(view==='in'&&p.t==='door'&&roomy&&p.ins){let sy=y;p.ins.forEach((s,si)=>{if(si)ys.push(sy);const top=si?sy+T/2:y+PI.t,bot=si<p.ins.length-1?sy+s.h-T/2:y+p.h-PI.b;
       if(s.t==='shelf'&&s.n&&bot-top>s.n*T+(s.n+1)*10){const g=gapsOf(s,bot-top,T);let yy=top;for(let j=0;j<s.n;j++){ys.push(yy+g[j]+T/2);yy+=g[j]+T}}sy+=s.h})}
     y+=p.h});return ys}
 function nbYs(ci){return colYs(ci-1).concat(colYs(ci+1))}
@@ -4527,17 +4740,21 @@ function datSync(){const b=$('#datBtn');if(!b||!st)return;const r=st.dat==='R';b
 $('#datBtn').onclick=()=>{if(isFree()){toast('自由繪圖沒有基準邊');return}push();if(st.dat==='R')delete st.dat;else st.dat='R';portC=null;render();toast(st.dat==='R'?'基準在右邊：下方刻度由右往左量':'基準在左邊：下方刻度由左往右量')};
 {const _rs=renderEditor;renderEditor=function(){_rs();datSync()}}
 /* ===== (35) new file / new cabinet: size first ===== */
-const NWP=[['高櫃',2400,2400,100],['衣櫃',1800,2400,100],['書櫃',900,2000,80],['鞋櫃',900,1100,100],['電視櫃',1800,450,80],['吊櫃',1200,700,0]];let nwFor='file';
+const NWP=[['高櫃',2400,2400,100,'tall'],['衣櫃',1800,2400,100,'tall'],['書櫃',900,2000,80,'tall'],['鞋櫃',900,1100,100,'low'],['電視櫃',1800,450,80,'low'],['吊櫃',1200,700,0,'low']];let nwFor='file';
 function nwFill(W,H,K){$('#nwW').value=W;$('#nwH').value=H;$('#nwK').value=K;document.querySelectorAll('#nwPre button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.w===W&&+b.dataset.h===H&&+b.dataset.k===K))}
 function nwOpen(f){nwFor=f;closeDim(true);$('#nwT').textContent=f==='file'?'新檔案':'新增櫃體（分頁）';
-  $('#nwPre').innerHTML=NWP.map(x=>`<button data-w="${x[1]}" data-h="${x[2]}" data-k="${x[3]}"><b>${x[0]}</b><span>${x[1]/10} × ${x[2]/10}</span></button>`).join('');
-  if(f==='sheet')nwFill(st.W,st.H,st.kick);else nwFill(2400,2400,100);$('#nwBox').hidden=false}
-$('#nwPre').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b)nwFill(+b.dataset.w,+b.dataset.h,+b.dataset.k)});
+  $('#nwPre').innerHTML=NWP.map(x=>`<button data-w="${x[1]}" data-h="${x[2]}" data-k="${x[3]}" data-ct="${x[4]}"><b>${x[0]}</b><span>${x[1]/10} × ${x[2]/10}</span></button>`).join('');
+  if(f==='sheet'){nwFill(st.W,st.H,st.kick);nwCtSet(ctOf(st))}else{nwFill(2400,2400,100);nwCtSet('tall')}$('#nwBox').hidden=false}
+$('#nwPre').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b){nwFill(+b.dataset.w,+b.dataset.h,+b.dataset.k);nwCtSet(b.dataset.ct)}});
+var nwCt='tall';function nwCtSet(v){nwCt=v==='low'?'low':'tall';document.querySelectorAll('#nwCt [data-ct]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ct===nwCt))}
+$('#nwCt').addEventListener('click',e=>{const b=e.target.closest('[data-ct]');if(b)nwCtSet(b.dataset.ct)});
+$('#ctSeg').addEventListener('click',e=>{const b=e.target.closest('[data-ct]');if(!b||!st)return;const v=b.dataset.ct;if(ctOf(st)===v&&st.ct)return;push();st.ct=v;render();toast(v==='tall'?'高櫃：側板夾頂底板':'矮櫃：頂底板夾側板')});
+{const _r2=render;render=function(){_r2();try{const v=st&&ctOf(st);document.querySelectorAll('#ctSeg [data-ct]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ct===v))}catch(e){}}}
 ['#nwW','#nwH','#nwK'].forEach(k=>$(k).addEventListener('input',()=>document.querySelectorAll('#nwPre button').forEach(b=>b.setAttribute('aria-pressed',false))));
 $('#nwNo').onclick=()=>{$('#nwBox').hidden=true};$('#nwBox').addEventListener('click',e=>{if(e.target===$('#nwBox'))$('#nwBox').hidden=true});
 $('#nwGo').onclick=()=>{const W=num($('#nwW').value,0),H=num($('#nwH').value,0),K=num($('#nwK').value,0);
   if(!(W>=MIN&&W<=MAXW)){toast('總寬請輸入 '+MIN+'～'+MAXW+'（公釐）');return}if(!(H>=150&&H<=MAXH)){toast('總高請輸入 150～'+MAXH+'（公釐）');return}if(!(K>=0&&K<=H-MIN)){toast('踢腳板請輸入 0～'+(H-MIN));return}
-  $('#nwBox').hidden=true;if(nwFor==='file')newFile(W,H,K);else newSheet(W,H,K)};
+  $('#nwBox').hidden=true;if(nwFor==='file')newFile(W,H,K);else newSheet(W,H,K);st.ct=nwCt;render()};
 $('#nwBox').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();$('#nwGo').click()}});
 try{drawCur()}catch(e){}
 store.rules().then(t=>{if(t)$('#rules').value=t}).catch(()=>{});
@@ -4548,6 +4765,43 @@ use('sample').then(async s=>{sampleFn=s;
     $('#aiImgNote').textContent='最多 '+imgMax+' 張。可以放現場櫃體照片、手稿，或已經在照片上標好尺寸的圖。'}
   else imgOff()});
 use('downloads').then(d=>{dl=d;if(!d){$('#expBtns').hidden=true;$('#expNote').textContent='這個畫面目前不能存檔，請在 Claude 裡開啟這個頁面再試。'}});
+
+/* ===== (61) landscape 料單: tap a cell, its boards and its box's boards show on the right ===== */
+var lmOn=false,lmSig='';
+function lmOk(){return LAND.matches&&npOn()&&mode==='edit'}
+function lmMk(){if($('#lmSeg'))return;const d=$('#deck'),g=document.createElement('div');g.id='lmSeg';g.setAttribute('role','group');g.setAttribute('aria-label','右側顯示');
+  g.innerHTML='<button data-lm="0" aria-pressed="true">畫圖</button><button data-lm="1" aria-pressed="false">料單</button>';d.insertBefore(g,d.firstChild);
+  const p=document.createElement('div');p.id='lpan';d.appendChild(p);
+  g.onclick=e=>{const b=e.target.closest('[data-lm]');if(!b)return;lmOn=b.dataset.lm==='1';lmSig='';try{localStorage.setItem('sc-cab-lm',lmOn?'1':'0')}catch(_){}lmSync();
+    if(lmOn&&multi){$('#tSel').blur()}};
+  p.addEventListener('click',e=>{const b=e.target.closest('[data-la]');if(!b)return;if(b.dataset.la==='cut')cutOpen();else if(b.dataset.la==='draw'){lmOn=false;lmSig='';lmSync()}})}
+try{lmOn=localStorage.getItem('sc-cab-lm')==='1'}catch(_){}
+function lmSync(){lmMk();const de=document.documentElement,ok=lmOk(),on=ok&&lmOn;de.classList.toggle('lmok',ok);de.classList.toggle('lm',on);
+  $('#lmSeg').querySelectorAll('[data-lm]').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.lm==='1')===on));
+  if(!on){lmSig='';return}const h=lmHTML(),p=$('#lpan');if(h!==lmSig){lmSig=h;p.innerHTML=h;p.scrollTop=0}}
+function lmHTML(){if(isFree())return'<p class="le">自由繪圖沒有料單。</p>';
+  const c=cutCalc(st),dm=c.dm,sz=(w,h)=>dm(w)+' × '+dm(h),row=(n,v,q,sub)=>`<div class="lr"><div class="n">${esc(n)}${sub?'<small>'+esc(sub)+'</small>':''}</div><div class="v">${v}</div><div class="q">×${q==null?'?':q}</div></div>`;
+  const o=mode==='edit'&&!multi?selObj():null,warn=c.D?'':'<p class="lw">還沒輸入完成深度，板深、滑軌、抽屜側板先空著。到「完整拆料清單」最上面填。</p>',btn='<div class="lb"><button data-la="cut">完整拆料清單</button><button data-la="draw">回到畫圖</button></div>';
+  if(!o||sel==null||sel.c==null)return`<p class="le">點圖上任一格，這裡列出那一格的門片、抽屜、層板，以及它所在桶身的側板、頂底板、背板。<br>共 ${st.cols.length} 區、${c.boxes} 個桶身${c.D?'，深 '+c.D:''}。</p>`+warn+btn;
+  const ci=sel.c,pi=sel.p,p=st.cols[ci].parts[pi],zn='第'+(ci+1)+'區',where=zn+'第'+(pi+1)+'格',bi=c.colBox[ci],bid='桶'+(bi+1),bc=c.boxCols[bi];
+  const tl=p.t==='door'?(p.n===2?'門片（對開）':'門片（單開）'):p.t==='drawer'?'抽屜 '+(p.n||1)+' 個':p.t==='open'?(p.n>0?'開放層板 '+p.n+' 片':'開放格'):p.t==='blank'?'封板':'格子';
+  let h=`<div class="lh"><b>${zn} 第${pi+1}格</b><span>${st.cols[ci].w} × ${p.h}</span></div><p class="ls">${esc(tl)}｜屬於${bid}（${bc.length>1?'第'+(bc[0]+1)+'–'+(bc[bc.length-1]+1)+'區':'第'+(bc[0]+1)+'區'}）</p>`;
+  let cell='';
+  c.door.filter(d=>d.id===where).forEach(d=>{cell+=row('門片 '+d.dir,sz(d.w,d.h),d.q,d.hinge+'，封邊四周 18')});
+  {const ds=c.drw.filter(d=>d.id===where||d.id.indexOf(where+'-')===0);if(ds.length){const d=ds[0],m=ds.length;
+    cell+=row('抽頭',sz(d.head[0],d.head[1]),m,'封邊四周 18')+row('抽屜側板',sz(d.side[0],d.side[1]),2*m,'18mm 抽屜桶板')+row('抽屜前後板',sz(d.fb[0],d.fb[1]),2*m,'18mm 抽屜桶板')+row('抽屜底板',sz(d.bot[0],d.bot[1]),m,'4mm，包底直釘')+row('抽屜滑軌',d.slide?'長 '+d.slide:'長 —',m,'每個抽屜 1 組')}}
+  c.carc.filter(b=>b.name.indexOf(where)===0).forEach(b=>{const n=b.name.slice(where.length).trim();cell+=row(n,sz(b.w,b.h),b.q,b.note||b.ed)});
+  const hw={};c.hw.filter(x=>x.use.indexOf(where)===0&&!/抽屜滑軌/.test(x.k)).forEach(x=>{const k=x.k+(x.spec?' '+x.spec:'');hw[k]=hw[k]==null?x.q:(hw[k]!=null&&x.q!=null?hw[k]+x.q:null)});
+  Object.keys(hw).forEach(k=>{cell+=row(k,'',hw[k])});
+  h+='<h4>這一格</h4>'+(cell||'<p class="le" style="padding:6px 0">這一格沒有門片、抽屜或層板的料。</p>');
+  let box='';c.carc.filter(b=>b.box===bid&&(b.name.indexOf('第')!==0||b.name.indexOf(zn+' ')===0)).forEach(b=>{box+=row(b.name,sz(b.w,b.h),b.q,b.note||b.ed)});
+  h+=`<h4>所在桶身・${bid}</h4>`+box;
+  return h+warn+btn}
+{const _n3=npSync;npSync=function(){_n3();try{lmSync()}catch(e){}}}
+{let d0=null;const dw=$('#dw');dw.addEventListener('pointerdown',e=>{d0=lmOk()&&lmOn&&e.isPrimary?{x:e.clientX,y:e.clientY}:null},true);
+  dw.addEventListener('pointerup',e=>{if(!d0)return;const far=Math.hypot(e.clientX-d0.x,e.clientY-d0.y)>8;d0=null;if(far)return;const P=pt(e);
+    setTimeout(()=>{if(!(lmOk()&&lmOn)||multi)return;const cc=locCell(P);if(!cc)return;const key=lassoKey(cc);if(key)pickTarget({t:'c',c:cc,key,k:null})},0)},true)}
+try{lmSync()}catch(e){}
 })();
 </script>
 </body>
