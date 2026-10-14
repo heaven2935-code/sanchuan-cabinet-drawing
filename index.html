@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>三川工方｜手機繪圖</title>
-<link rel="icon" type="image/svg+xml" href="./logo.svg?v=faces-20261014">
-<link rel="apple-touch-icon" href="./icon-180.png?v=faces-20261014">
-<link rel="manifest" href="./manifest.webmanifest?v=faces-20261014">
+<link rel="icon" type="image/svg+xml" href="./logo.svg?v=voice-core-20261014">
+<link rel="apple-touch-icon" href="./icon-180.png?v=voice-core-20261014">
+<link rel="manifest" href="./manifest.webmanifest?v=voice-core-20261014">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1525,6 +1525,21 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
 .m-paint-swatches button span{width:100%;height:30px;border-radius:6px;background:var(--swatch);border:1px solid #7b858744}
 .m-paint-swatches small{font-size:10px;color:var(--sub)}
 #mShell .m-paint-swatches button[aria-pressed=true]{border-color:#147c88;background:var(--tint)}
+
+/* Continuous command session. Only confirmed annotations enter saved/exported art. */
+.has-voice .m-dock,.has-voice #mHint,.has-voice #mContext,.has-voice #mToolStrip{display:none!important}
+#mVoiceDock{position:absolute;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:580px;max-height:calc(60dvh - env(safe-area-inset-bottom,0px));margin:auto;padding:10px 12px;background:var(--sheet);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 24px #173f4d20;pointer-events:auto;overflow-y:auto;overscroll-behavior:contain}
+.m-voice-heading{display:flex;align-items:center;gap:10px}.m-voice-heading strong{font-size:13px;flex:1}
+#mVoiceEnd{color:var(--sub);padding:0 8px!important}
+#mVoicePoint,.m-voice-stage-note{font-size:11px;line-height:1.5;color:var(--sub)}
+#mVoiceMessage{font-size:12px;line-height:1.6;min-height:19px;margin:5px 0 8px}
+#mVoiceCommandForm{display:flex;gap:8px}.m-voice-input{flex:1;min-width:0}
+#mVoiceCommand{width:100%;min-height:44px;padding:9px 10px;color:var(--ink);background:var(--tint);border:1px solid var(--line);border-radius:10px;font-size:16px!important}
+.m-voice-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}
+#mShell .m-voice-controls button{background:var(--tint);border:1px solid var(--line);border-radius:10px;font-size:13px}
+#mShell #mVoiceDock button:disabled{opacity:.4;cursor:default}
+.m-voice-stage-note{margin:7px 0 0}.m-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(orientation:landscape) and (max-height:540px){#mVoiceDock{max-height:calc(100dvh - 60px - env(safe-area-inset-bottom,0px));max-width:550px;padding:6px 10px}#mVoiceMessage{margin:2px 0 5px}.m-voice-stage-note{margin:3px 0 0}}
 </style>
 <script>(function(root){
   'use strict';
@@ -2120,6 +2135,130 @@ const FaceColor=(()=>{
 })();
 if(typeof module!=='undefined')module.exports=FaceColor;
 
+/* Deterministic mm commands and a continuous measurement session. No audio or DOM. */
+const VoiceMeasure=(()=>{
+  'use strict';
+  const DIGITS='零一二三四五六七八九',FORMAL={'〇':'零','○':'零','兩':'二','两':'二','壹':'一','貳':'二','贰':'二','參':'三','叁':'三','肆':'四','伍':'五','陸':'六','陆':'六','柒':'七','捌':'八','玖':'九','拾':'十','佰':'百','仟':'千','万':'萬','点':'點'};
+  const round=n=>Math.round(n*100)/100,fmt=n=>String(round(n));
+  const fail=(code,message)=>({ok:false,code,message});
+  function chinese(n){
+    if(n===0)return'零';
+    if(n>=10000){const rem=n%10000;return chinese(Math.floor(n/10000))+'萬'+(rem?(rem<1000?'零':'')+chinese(rem):'');}
+    let out='',zero=false;
+    for(const [unit,word] of [[1000,'千'],[100,'百'],[10,'十'],[1,'']]){
+      const d=Math.floor(n/unit);n%=unit;
+      if(d){if(zero)out+='零';out+=DIGITS[d]+word;zero=false;}else if(out&&n)zero=true;
+    }
+    return out.replace(/^一十/,'十');
+  }
+  function integer(s){
+    if(/^\d+$/.test(s))return Number(s);
+    if(/^[零一二三四五六七八九]+$/.test(s))return Number([...s].map(c=>DIGITS.indexOf(c)).join(''));
+    if(!/^[零一二三四五六七八九十百千萬]+$/.test(s))return NaN;
+    let total=0,section=0,digit=0;
+    for(const c of s){const d=DIGITS.indexOf(c);if(d>=0){digit=d;continue;}
+      const u={十:10,百:100,千:1000,萬:10000}[c];
+      if(u===10000){total+=(section+digit)*u;section=0;}else section+=(digit||1)*u;digit=0;
+    }
+    const n=total+section+digit;
+    // Reject shorthand such as 一千二 / 一百五 instead of guessing the missing place.
+    return n<100000&&chinese(n)===s.replace(/^一十/,'十')?n:NaN;
+  }
+  function number(raw){
+    let s=String(raw).normalize('NFKC').replace(/\s/g,'').replace(/[〇○兩两壹貳贰參叁肆伍陸陆柒捌玖拾佰仟万点]/g,c=>FORMAL[c]);
+    if(/^\d{1,3}(?:,\d{3})+(?:\.\d{1,2})?$/.test(s))s=s.replace(/,/g,'');
+    const a=s.split(/[.點]/);if(a.length>2||!a[0])return NaN;
+    const n=integer(a[0]);if(!Number.isFinite(n))return NaN;
+    if(a.length===1)return n;
+    const dec=a[1].replace(/[零一二三四五六七八九]/g,c=>String(DIGITS.indexOf(c)));
+    return /^\d{1,2}$/.test(dec)?round(n+Number('0.'+dec)):NaN;
+  }
+  function parse(raw){
+    const text=String(raw??'').normalize('NFKC').trim().replace(/\s/g,'').replace(/[。.!！?？,，;；]+$/g,'');
+    if(!text||text.length>100)return fail('syntax','請說方向與長度，例如「往上1200」。');
+    const controls=[['confirm',/^(確認|确认|確定|确定|確認加入|加入)$/],['cancel',/^(取消|取消這段|取消这段)$/],['undo',/^(復原|复原|復原上一段|复原上一段|復原上段|撤銷|撤销)$/],['pause',/^(暫停|暂停|暫停丈量|暂停丈量)$/],['resume',/^(繼續|继续|繼續丈量|继续丈量)$/],['end',/^(結束|结束|結束丈量|结束丈量)$/]];
+    for(const [type,re] of controls)if(re.test(text))return{ok:true,type,text};
+    const combined=text.match(/^(.+?)[,，;；。]*(確認|确认|確定|确定)$/);
+    if(combined){const first=parse(combined[1]);if(first.ok&&first.type==='segment')return{ok:true,type:'sequence',commands:[first,{ok:true,type:'confirm'}],text};}
+    const m=text.match(/^(?:往|向)?(上|下|左|右)(?:方)?(?:走|移動|移动)?(.+)$/);
+    if(!m)return fail('syntax','口令不明確。請說「往上1200」或「確認／取消／復原／暫停／繼續／結束」。');
+    let value=m[2].replace(/(?:mm|毫米|公釐|公厘)$/i,'');
+    if(/[a-zA-Z尺米吋寸厘釐]/.test(value))return fail('unit','本次固定 mm，請改說公釐數值，不換算其他單位。');
+    const length=number(value);
+    if(!Number.isFinite(length))return fail('number','數字不明確。請說完整數值，例如「一千二百」或「1200」；小數最多兩位。');
+    if(length<=0)return fail('positive','長度必須大於 0 mm。');
+    if(length>12000)return fail('length','長度超過 12000 mm，請核對數值及目前圖面範圍。');
+    return{ok:true,type:'segment',direction:{上:'up',下:'down',左:'left',右:'right'}[m[1]],length,text};
+  }
+  const names={up:'上',down:'下',left:'左',right:'右'};
+  function create(options){
+    const p=options.start,b=options.bounds;
+    if(!p||!b||![p.x,p.y,b.width,b.height].every(Number.isFinite)||b.width<=0||b.height<=0||p.x<0||p.y<0||p.x>b.width||p.y>b.height)throw new Error('丈量起點必須在目前圖面內');
+    return{id:String(options.id),status:'ready',start:{x:round(p.x),y:round(p.y)},point:{x:round(p.x),y:round(p.y)},bounds:{...b},style:{lineType:['line','dashed','arrow','dim'].includes(options.lineType)?options.lineType:'line',color:/^#[0-9a-f]{6}$/i.test(options.color||'')?options.color:'#147c88',width:options.width||2,view:options.view||'out'},pending:null,segments:[],next:1,seen:[]};
+  }
+  function draft(state,command){
+    if(!command.ok||command.type!=='segment')return command.ok?fail('syntax','請說方向與長度。'):command;
+    if(!names[command.direction]||!Number.isFinite(command.length)||command.length<=0||command.length>12000)return fail('syntax','方向或數值無效，沒有建立線段。');
+    if(state.status==='paused'||state.status==='ended')return fail('paused','丈量已暫停，請先說「繼續」。');
+    const from={...state.point},to={...from},n=command.length;
+    if(command.direction==='up')to.y=round(to.y-n);if(command.direction==='down')to.y=round(to.y+n);
+    if(command.direction==='left')to.x=round(to.x-n);if(command.direction==='right')to.x=round(to.x+n);
+    if(to.x<0||to.y<0||to.x>state.bounds.width||to.y>state.bounds.height)return fail('bounds','這段超出目前圖面。請修改長度，或結束後調整圖面與起點；不會截短線段。');
+    return{ok:true,segment:{id:state.id+':'+state.next,from,to,direction:command.direction,length:n,...state.style}};
+  }
+  function preview(state,text){const p=parse(text);return draft(state,p.type==='sequence'?p.commands[0]:p);}
+  function transition(current,input,eventId){
+    if(eventId&&current.seen.includes(eventId))return{state:current,effect:null,duplicate:true};
+    let state={...current,seen:eventId?[...current.seen,eventId].slice(-256):current.seen};
+    const command=typeof input==='string'?parse(input):input;
+    const result=(effect=null,message='',error=null)=>({state,effect,message,error});
+    if(state.status==='ended')return result(null,'本次丈量已結束。','ended');
+    if(!command.ok){state={...state,pending:null,status:state.status==='paused'?'paused':'ready'};return result(null,command.message,command.code);}
+    if(command.type==='sequence'){
+      // Explicit direction + 確認 is one atomic utterance; interim text cannot call this.
+      let r=transition(state,command.commands[0]);if(r.error)return r;return transition(r.state,command.commands[1]);
+    }
+    if(command.type==='segment'){
+      const d=draft(state,command);if(!d.ok){if(state.status!=='paused')state={...state,pending:null,status:'ready'};return result(null,d.message,d.code);}
+      state={...state,pending:d.segment,status:'pending'};return result(null,'往'+names[d.segment.direction]+fmt(d.segment.length)+'公釐，請說確認或取消。');
+    }
+    if(command.type==='pause'){state={...state,status:'paused'};return result(null,'丈量已暫停，仍接收控制口令。');}
+    if(command.type==='resume'){state={...state,status:state.pending?'pending':'ready'};return result(null,'已繼續丈量。');}
+    if(command.type==='cancel'){state={...state,pending:null,status:state.status==='paused'?'paused':'ready'};return result(null,'已取消待確認線段。');}
+    if(command.type==='end'){state={...state,pending:null,status:'ended'};return result(null,'丈量已結束，已確認的線段保留。');}
+    if(command.type==='undo'){
+      if(!state.segments.length)return result(null,'本次沒有可復原的線段。','empty');
+      const last=state.segments.at(-1),segments=state.segments.slice(0,-1);
+      state={...state,segments,pending:null,point:segments.length?{...segments.at(-1).to}:{...state.start},status:state.status==='paused'?'paused':'ready'};
+      return result({type:'undo',segment:last},'已復原上一段。');
+    }
+    if(command.type==='confirm'){
+      if(state.status==='paused')return result(null,'丈量已暫停，請先說繼續。','paused');
+      if(!state.pending)return result(null,'目前沒有待確認線段。','empty');
+      const segment=state.pending;
+      state={...state,segments:[...state.segments,segment],point:{...segment.to},pending:null,next:state.next+1,status:'ready'};
+      return result({type:'add',segment},'已加入往'+names[segment.direction]+fmt(segment.length)+'公釐，請說下一段。');
+    }
+    return result(null,'口令不明確。','syntax');
+  }
+  function annotation(segment,scale){
+    return{k:segment.lineType==='dim'?'dim':segment.lineType==='arrow'?'arrow':'line',c:segment.color,lw:segment.width*scale,v:segment.view,x1:segment.from.x,y1:segment.from.y,x2:segment.to.x,y2:segment.to.y,measure:{id:segment.id,lineType:segment.lineType}};
+  }
+  // Recompute from the geometry so annotation edits cannot leave stale dimension text.
+  function primitives(annotation,scale,original){
+    const a=annotation,m=a.measure;if(!m||typeof m.id!=='string'||!m.id||!['line','arrow','dim'].includes(a.k))return original;
+    const dx=a.x2-a.x1,dy=a.y2-a.y1,length=Math.hypot(dx,dy);
+    if(!Number.isFinite(length)||!length)return original;
+    const out=original.map(p=>({...p,measurement:true})),z=Math.max(12*scale,(a.lw||2*scale)*5.5),nx=-dy/length,ny=dx/length,up=ny>0?-1:1;
+    if(m.lineType==='dashed')out.filter(p=>p.t==='l').forEach(p=>{p.dash=6*scale;});
+    const label={t:'t',x:(a.x1+a.x2)/2+nx*up*z*.75,y:(a.y1+a.y2)/2+ny*up*z*.75+z*.35,s:fmt(length)+' mm',c:'ant',col:a.c||'#147c88',a:'middle',z,measurement:true};
+    if(a.k==='dim'){const index=out.findIndex(p=>p.t==='t');if(index>=0)out[index]=label;}else out.push(label);
+    return out;
+  }
+  return{parse,number,create,draft,preview,transition,annotation,primitives,fmt,names};
+})();
+if(typeof module!=='undefined')module.exports=VoiceMeasure;
+
 const depthRuntime={editing:false,previewing:false,fixedEdge:null,view:'out'};
 let displaySettings=DisplayStyle.normalize();
 try{displaySettings=DisplayStyle.normalize(JSON.parse(localStorage.getItem('sc-mobile-display-v1')||'{}'))}catch(_){}
@@ -2401,6 +2540,7 @@ function toSVG(P,S,pal,U,W){
   const halo=z=>`stroke="${pal.sheet}" stroke-width="${f(Math.max(3.2*S,z*.22))}" paint-order="stroke" stroke-linejoin="round"`;
   let s='';
   for(const p of P){
+    const f=v=>+(+v).toFixed(p.measurement?2:1);
     if(p.t==='l')s+=`<line x1="${f(p.x1)}" y1="${f(p.y1)}" x2="${f(p.x2)}" y2="${f(p.y2)}" ${sty(p)}/>`;
     else if(p.t==='img')s+=`<image x="${f(p.x)}" y="${f(p.y)}" width="${f(p.w)}" height="${f(p.h)}" href="${p.src}" opacity="${p.o}" preserveAspectRatio="none"/>`;
     else if(p.t==='r'){const fill=p.c.slice(0,2)==='f-'?`fill="${p.c==='f-open'?pal.tint:pal.sheet}"${pal.fa!=null?` fill-opacity="${pal.fa}"`:''}`:sty(p);
@@ -2533,6 +2673,8 @@ function styleThumb(s,pal){return thumbOf(styleState(s,{id:'',name:'',T:18,label
 
 const colorFixAll=fixAll;
 fixAll=function(st){colorFixAll(st);FaceColor.clean(st)};
+const voiceAnnotationPrimitives=annPrims;
+annPrims=function(list,S){return(list||[]).flatMap(it=>VoiceMeasure.primitives(it.a,S,voiceAnnotationPrimitives([it],S)))};
 const displayGeom=geom;
 geom=function(st,o){
   const shape=Object.assign({},st,{labels:displaySettings.names,grid:0});
@@ -2551,7 +2693,7 @@ exportSVG=function(st,pal,bg){
   }
   return displayExport(st,xp,bg);
 };
-if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={FaceColor,CabinetFaces,CabinetDepth,depthRuntime,DisplayStyle,displaySettings,freeFaces,freeFix,toFree,geomFree,homog,hmap,wallExt,wallItems,scanParse,zones,zoneName,grpPlan,handleModel,rulerPrims,CATS,thumbOf,gapsOf,solidGaps,fixGs,clearIn,sample0,normalize,layout,geom,annPrims,annOf,toSVG,exportSVG,toDXF,zip1,crc32,fit,spread,isEven,fixAll,sheet,STYLES,styleState,styleThumb};return}
+if(typeof module!=='undefined'&&typeof document==='undefined'){module.exports={VoiceMeasure,FaceColor,CabinetFaces,CabinetDepth,depthRuntime,DisplayStyle,displaySettings,freeFaces,freeFix,toFree,geomFree,homog,hmap,wallExt,wallItems,scanParse,zones,zoneName,grpPlan,handleModel,rulerPrims,CATS,thumbOf,gapsOf,solidGaps,fixGs,clearIn,sample0,normalize,layout,geom,annPrims,annOf,toSVG,exportSVG,toDXF,zip1,crc32,fit,spread,isEven,fixAll,sheet,STYLES,styleState,styleThumb};return}
 
 /* ---------- page ---------- */
 const svg=$('#dw');
@@ -4686,7 +4828,7 @@ forceLand=false;axOn.x=axOn.y=false;esub='line';padMode='cur';lkp=null;
 const mEngineRender=render;
 render=function(){
   depthRuntime.view=view;depthRuntime.previewing=!!mobileUI.nativeDrag||!!(mobileUI.op?.kind==='annmove'&&!mobileUI.op.committed);
-  depthRuntime.editing=!!mobileUI.op||!!mobileUI.tool||['cell','overall','native'].includes(mobileUI.panelKind);
+  depthRuntime.editing=!!mobileUI.op||!!mobileUI.tool||!!mobileUI.voiceActive||['cell','overall','native'].includes(mobileUI.panelKind);
   depthRuntime.fixedEdge=mobileUI.fixedEdge||null;depthRuntime.face=mobileUI.face||null;depthRuntime.paintPreview=mobileUI.paintPreview||null;
   document.documentElement.dataset.canvasTheme=displaySettings.theme;
   darkSheet=displaySettings.theme==='dark';
@@ -4700,7 +4842,7 @@ render=function(){
 };
 
 function mState(){
-  if(mobileUI.op||mobileUI.tool||mobileUI.panel)return{busy:true};
+  if(mobileUI.op||mobileUI.tool||mobileUI.panel||mobileUI.voiceActive)return{busy:true};
   if(mobileUI.fixedEdge)return{kind:'line',title:mobileUI.fixedEdge==='left'?'左側外框 · 固定基準':'底部外框 · 固定基準',movable:false,removable:false};
   if(multi){const c=picked(),cols=[...new Set(c.map(x=>x.c))];return{kind:'multi',title:'已選 '+c.length+' 格',merge:MobilePolicy.mergeAllowed(st,view,c),evenWidth:cols.length>1&&!cols.some(i=>st.cols[i].lock),evenHeight:c.length>1&&cols.length===1&&(view!=='in'||new Set(c.map(x=>x.p)).size===1),more:c.length>0};}
   if(asel>=0&&st.ann[asel])return{kind:'annotation',title:ANN[st.ann[asel].k]||'標註'};
@@ -4773,7 +4915,7 @@ function mDisplayOpen(){
     othCache.clear();mCloseSheet(true);toast('圖面顯示已更新');
   };
 }
-function mAddOpen(){const c=!isFree()?locCell(mCellCenter()):null,x=c&&(c.s||c.p),L=c&&(c.s?c.p.ins:c.col.parts),v=c&&view==='out'&&!c.col.lock&&c.col.w>=2*MIN&&st.cols.length<20,h=x&&x.h>=2*MIN&&L.length<(c.s?8:12);mOpenSheet('新增內容','<div class="m-menu-grid">'+(v?mGridButton('splitV','直分隔','vertical'):'')+(h?mGridButton('splitH','橫分隔','horizontal'):'')+mGridButton('mark','標註／量尺','mark',true)+mGridButton('photo','照片底圖','photo')+(pj.sheets.length<20?mGridButton('addpage','新增分頁','new'):'')+(isFree()?mGridButton('freeTools','畫板與五金','pen'):mGridButton('toFree','自由繪圖','pen'))+'</div><p class="m-sheet-note">先點一格再分隔，可以直接指定要編輯的區域。</p>','add');}
+function mAddOpen(){const c=!isFree()?locCell(mCellCenter()):null,x=c&&(c.s||c.p),L=c&&(c.s?c.p.ins:c.col.parts),v=c&&view==='out'&&!c.col.lock&&c.col.w>=2*MIN&&st.cols.length<20,h=x&&x.h>=2*MIN&&L.length<(c.s?8:12);mOpenSheet('新增內容','<div class="m-menu-grid">'+(v?mGridButton('splitV','直分隔','vertical'):'')+(h?mGridButton('splitH','橫分隔','horizontal'):'')+mGridButton('voice','口令丈量','mic',true)+mGridButton('mark','標註／量尺','mark')+mGridButton('photo','照片底圖','photo')+(pj.sheets.length<20?mGridButton('addpage','新增分頁','new'):'')+(isFree()?mGridButton('freeTools','畫板與五金','pen'):mGridButton('toFree','自由繪圖','pen'))+'</div><p class="m-sheet-note">先點一格再分隔，可以直接指定要編輯的區域。口令丈量目前為文字驗算，尚未收音。</p>','add');}
 function mPages(){mOpenSheet('分頁',pj.sheets.map((x,i)=>mRow('page:'+i,shName(i),'files',i===pj.cur?'目前':'')).join('')+(pj.sheets.length<20?mRow('addpage','新增分頁','plus'):'')+mRow('pageRename','修改目前分頁名稱','text')+mRow('pageDuplicate','複製目前分頁','copy'),'pages');}
 function mMoreOpen(){
   const rows=[];
@@ -5082,6 +5224,141 @@ function mRulersSync(){
   const vx=Math.round(q.x),vy=Math.round(st.H-q.y);mx.querySelector('b').textContent=vx;my.querySelector('b').textContent=vy;
   [[mx,vx,0,st.W],[my,vy,0,st.H]].forEach(([el,v,min,max])=>{el.setAttribute('aria-valuenow',v);el.setAttribute('aria-valuemin',Math.min(min,v));el.setAttribute('aria-valuemax',Math.max(max,v));el.setAttribute('aria-valuetext',v+' 公釐');});
 }
+
+/* Stage A: text-verifiable commands. Audio providers must be evaluated/approved separately. */
+const voiceUI={session:null,project:null,sid:'',setup:null,picking:false,interim:null,message:'',count:0,epoch:0,internal:false};
+M_ICONS.mic='M9 4a3 3 0 0 1 6 0v7a3 3 0 0 1-6 0V4zM5 10v1a7 7 0 0 0 14 0v-1M12 18v4M8 22h8';
+const voiceDock=document.createElement('section');voiceDock.id='mVoiceDock';voiceDock.hidden=true;
+voiceDock.setAttribute('aria-label','連續口令丈量，文字驗算');
+voiceDock.innerHTML=`<div class="m-voice-heading"><strong id="mVoiceStatus" role="status" aria-live="polite"></strong><button id="mVoiceEnd" type="button">結束</button></div><div id="mVoicePoint"></div><p id="mVoiceMessage" role="status" aria-live="polite"></p><form id="mVoiceCommandForm"><label class="m-voice-input"><span class="m-sr-only">輸入口令，固定公釐 mm</span><input id="mVoiceCommand" type="text" autocomplete="off" maxlength="100" placeholder="往上1200 → 確認"></label><button type="submit" class="m-confirm">送出</button></form><div class="m-voice-controls"><button data-voice="確認" type="button">確認</button><button data-voice="取消" type="button">取消</button><button data-voice="復原上一段" type="button">復原</button><button id="mVoicePause" type="button">暫停</button></div><p class="m-voice-stage-note">文字驗算階段 · 尚未接上收音與耳機回讀</p>`;
+mShell.appendChild(voiceDock);
+
+const mVoiceLive=()=>!!voiceUI.session&&voiceUI.session.status!=='ended';
+const mVoiceSame=()=>mVoiceLive()&&pj===voiceUI.project&&st.sid===voiceUI.sid&&aview()===voiceUI.session.style.view;
+function mVoiceSuspend(message){
+  if(!mVoiceLive())return;
+  voiceUI.session={...voiceUI.session,status:'paused',pending:null};voiceUI.interim=null;voiceUI.epoch++;
+  voiceUI.message=message||'丈量已暫停，返回原分頁後按繼續。';
+}
+function mVoiceReconcile(){
+  if(!mVoiceLive())return;
+  if(!mVoiceSame()){
+    if(voiceUI.session.status!=='paused'||voiceUI.session.pending)mVoiceSuspend('圖面或視圖已切換。請返回原圖面再繼續；切換檔案需重新設定起點。');
+    mobileUI.voiceActive=false;return;
+  }
+  const s=voiceUI.session,actual=st.ann.filter(a=>typeof a.measure?.id==='string'&&a.measure.id.startsWith(s.id+':')&&['line','arrow','dim'].includes(a.k)&&[a.x1,a.y1,a.x2,a.y2].every(Number.isFinite)).map(a=>({id:a.measure.id,from:{x:a.x1,y:a.y1},to:{x:a.x2,y:a.y2},length:Math.hypot(a.x2-a.x1,a.y2-a.y1),direction:a.x2>a.x1?'right':a.x2<a.x1?'left':a.y2>a.y1?'down':'up',...s.style}));
+  const changed=JSON.stringify(actual.map(a=>[a.id,a.from,a.to]))!==JSON.stringify(s.segments.map(a=>[a.id,a.from,a.to]));
+  const boundsChanged=s.bounds.width!==st.W||s.bounds.height!==st.H;
+  if(changed||boundsChanged){
+    const point=actual.length?{...actual.at(-1).to}:{...s.start};
+    voiceUI.session={...s,segments:actual,point,pending:null,bounds:{width:st.W,height:st.H},status:boundsChanged?'paused':s.status==='paused'?'paused':'ready'};
+    voiceUI.interim=null;voiceUI.epoch++;
+    voiceUI.message=boundsChanged?'圖面尺寸已變更，請核對終點後繼續。':'已同步圖面復原／重做後的終點。';
+  }
+  mobileUI.voiceActive=true;
+}
+function mVoiceOpenSetup(useSetup=false){
+  if(mVoiceLive()){toast('請先結束目前丈量，再重新設定起點與線型。');return;}
+  voiceUI.internal=true;mFinish();voiceUI.internal=false;
+  const last=mobileUI.lastPoint,seed=last&&last.x>=0&&last.y>=0&&last.x<=st.W&&last.y<=st.H?last:{x:st.W/2,y:st.H/2};
+  const a=useSetup&&voiceUI.setup?voiceUI.setup:{x:VoiceMeasure.fmt(seed.x),y:VoiceMeasure.fmt(st.H-seed.y),lineType:'line',color:mobileUI.color};
+  voiceUI.setup=a;voiceUI.picking=false;
+  const field=(id,label,value,max)=>`<label class="m-field">${label}<input id="${id}" type="number" inputmode="decimal" min="0" max="${max}" step="0.01" required value="${esc(String(value))}"></label>`;
+  mOpenSheet('連續丈量 · 文字口令驗算',`<form id="mVoiceSetupForm"><div class="m-form-grid">${field('mVoiceX','起點 X · 距左 mm',a.x,st.W)}${field('mVoiceY','起點 Y · 離底 mm',a.y,st.H)}</div><button type="button" id="mVoicePick" class="m-row-action">${mIcon('mark')}<span>在圖面點選起點</span></button><label class="m-field">線型<select id="mVoiceLine">${[['line','直線＋尺寸'],['dashed','虛線＋尺寸'],['arrow','箭頭＋尺寸'],['dim','量尺＋尺寸']].map(([v,t])=>`<option value="${v}"${a.lineType===v?' selected':''}>${t}</option>`).join('')}</select></label><label class="m-field">線條顏色<input id="mVoiceColor" type="color" value="${esc(a.color)}"></label><p class="m-sheet-note">本次單位固定 mm。原點在圖面左下角：X 向右、Y 向上。起點與線段必須在目前 ${st.W} × ${st.H} mm 範圍內，不自動擴圖或截短。</p><p class="m-sheet-note">這一階段使用文字驗算，尚未收音。輸入「往上1200」→「確認」，再繼續下一段；也可輸入完整「往上1200確認」。支援取消、復原、暫停、繼續與結束。</p><div class="m-form-actions"><button type="button" data-m="cancelForm">取消</button><button type="button" id="mVoiceBegin" class="m-confirm">開始文字丈量</button></div></form>`,'voiceSetup');
+  const read=()=>({x:$('#mVoiceX').value,y:$('#mVoiceY').value,lineType:$('#mVoiceLine').value,color:$('#mVoiceColor').value});
+  $('#mVoicePick').onclick=()=>{voiceUI.setup=read();mCloseSheet(false);voiceUI.picking=true;voiceUI.message='點圖面設定起點；可拖圖或雙指縮放。';mSync();};
+  $('#mVoiceBegin').onclick=()=>mVoiceBegin(read());
+  mobileUI.submit=()=>mVoiceBegin(read());
+}
+function mVoiceBegin(options){
+  if(mVoiceLive()){toast('請先結束目前丈量。');return false;}
+  const valid=s=>/^\d+(?:\.\d{1,2})?$/.test(String(s).trim());
+  if(!valid(options.x)||!valid(options.y)){toast('起點請輸入非負 mm 數值，小數最多兩位。');return false;}
+  const x=Number(options.x),y=Number(options.y);
+  let session;try{session=VoiceMeasure.create({id:newSid(),start:{x,y:Math.round((st.H-y)*100)/100},bounds:{width:st.W,height:st.H},lineType:options.lineType,color:options.color,width:mobileUI.width,view:aview()});}catch(e){toast(e.message);return false;}
+  mCloseSheet(false);voiceUI.internal=true;mFinish();voiceUI.internal=false;pjSync();
+  Object.assign(voiceUI,{session,project:pj,sid:st.sid,picking:false,interim:null,message:'輸入方向＋長度，預覽核對後輸入確認。',count:0,epoch:voiceUI.epoch+1});
+  mobileUI.hint=false;mobileUI.voiceActive=true;mode='mark';tool=null;render();return true;
+}
+function mVoiceCanUndo(){
+  const s=voiceUI.session,last=s?.segments.at(-1);if(!last||!hist.length)return false;
+  try{
+    const h=JSON.parse(hist.at(-1));if(h.k!=='s'||h.sid!==st.sid)return false;
+    const now=JSON.parse(JSON.stringify(st)),i=now.ann.findIndex(a=>a.measure?.id===last.id);if(i<0)return false;
+    now.ann.splice(i,1);now.grid=h.s.grid;now.labels=h.s.labels;
+    return JSON.stringify(now)===JSON.stringify(h.s);
+  }catch(_){return false;}
+}
+function mVoiceReceive(text,meta={}){
+  if(!mVoiceLive())return{error:'inactive'};
+  if(meta.sessionId&&meta.sessionId!==voiceUI.session.id||meta.epoch!=null&&meta.epoch!==voiceUI.epoch)return{duplicate:true};
+  mVoiceReconcile();
+  if(!mVoiceSame()||document.hidden){mVoiceSuspend('目前不是丈量中的圖面，請返回原分頁後按繼續。');mSync();return{error:'context'};}
+  const command=VoiceMeasure.parse(text),s=voiceUI.session;
+  if(meta.final===false){const d=VoiceMeasure.preview(s,text);voiceUI.interim=d.ok?d.segment:null;mVoiceDraw();return d;}
+  const eventId=meta.eventId||'text:'+ ++voiceUI.count;
+  if(s.seen.includes(eventId))return{duplicate:true};
+  if(command.ok&&command.type==='undo'&&s.segments.length&&!mVoiceCanUndo()){
+    voiceUI.message='上一段之後還有其他編輯，或已超過40筆復原範圍。請先復原後續編輯，不會刪除其他內容。';voiceUI.interim=null;mSync();return{error:'history'};
+  }
+  const adds=command.type==='confirm'&&s.pending||command.type==='sequence';
+  if(adds&&st.ann.length>=200){
+    voiceUI.session={...s,pending:null,status:'ready'};voiceUI.interim=null;voiceUI.message='此分頁已達200筆標註上限，沒有加入線段。請結束丈量後另開分頁。';mSync();return{error:'capacity'};
+  }
+  if(command.type==='resume'){
+    const p=s.point;if(p.x<0||p.y<0||p.x>st.W||p.y>st.H){voiceUI.message='目前終點不在圖面範圍內，請結束後重新設定起點。';mSync();return{error:'bounds'};}
+  }
+  const result=VoiceMeasure.transition(s,command,eventId);if(result.duplicate)return result;
+  voiceUI.session=result.state;voiceUI.interim=null;voiceUI.message=result.message;
+  if(result.effect?.type==='add'){
+    push();st.ann.push(VoiceMeasure.annotation(result.effect.segment,S));saveNow();
+  }else if(result.effect?.type==='undo'){
+    voiceUI.internal=true;$('#undo').click();voiceUI.internal=false;saveNow();
+  }
+  if(result.state.status==='ended'){mobileUI.voiceActive=false;voiceUI.epoch++;}
+  render();return result;
+}
+function mVoiceSync(){
+  const live=mVoiceLive(),picking=voiceUI.picking,s=voiceUI.session;
+  mShell.classList.toggle('has-voice',live||picking);voiceDock.hidden=!live&&!picking;
+  if(!live&&!picking)return;
+  $('#mVoiceStatus').textContent=picking?'點選丈量起點':'文字丈量 · '+({ready:'待命',pending:'待確認',paused:'暫停'}[s.status]||'');
+  $('#mVoicePoint').textContent=live?'已確認 '+s.segments.length+' 段 · 目前終點 X '+VoiceMeasure.fmt(s.point.x)+'／Y '+VoiceMeasure.fmt(s.bounds.height-s.point.y)+' mm':'';
+  $('#mVoiceMessage').textContent=voiceUI.message;
+  $('#mVoiceCommandForm').hidden=$('.m-voice-controls').hidden=picking;
+  $('#mVoiceEnd').textContent=picking?'取消':'結束';
+  $('#mVoicePause').textContent=s?.status==='paused'?'繼續':'暫停';
+  for(const e of voiceDock.querySelectorAll('[data-voice]'))e.disabled=!mVoiceSame()||e.dataset.voice==='確認'&&(!s?.pending||s.status==='paused')||e.dataset.voice==='復原上一段'&&!s?.segments.length;
+  $('#mVoicePause').disabled=live&&!mVoiceSame();
+  if(picking||s?.status==='ended')mobileUI.voiceActive=false;
+}
+function mVoiceDraw(){
+  let g=svg.querySelector('#voice-preview');if(!g){g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='voice-preview';g.setAttribute('pointer-events','none');svg.appendChild(g);}
+  g.innerHTML='';if(!mVoiceSame())return;
+  const s=voiceUI.session,k=S/zoom.z,d=voiceUI.interim||s.pending,P=[];
+  if(d)P.push(...annPrims([{a:VoiceMeasure.annotation(d,k),i:-1}],k));
+  const p=s.point,c=displaySettings.selectionColor;
+  P.push({t:'l',x1:p.x-8*k,y1:p.y,x2:p.x+8*k,y2:p.y,c:'an',col:c,lw:k},{t:'l',x1:p.x,y1:p.y-8*k,x2:p.x,y2:p.y+8*k,c:'an',col:c,lw:k});
+  g.innerHTML=toSVG(P,k,pal).art;
+}
+const voiceOldSync=mSync;mSync=function(){mVoiceReconcile();voiceOldSync();mVoiceSync();};
+const voiceOldPreview=mPreview;mPreview=function(){voiceOldPreview();mVoiceDraw();};
+const voiceOldOpen=mOpenSheet;mOpenSheet=function(title,html,kind){if(mVoiceLive()&&kind!=='voiceSetup')mVoiceSuspend('已開啟其他功能。返回圖面後按繼續丈量。');return voiceOldOpen(title,html,kind);};
+const voiceOldFinish=mFinish;mFinish=function(){if(!voiceUI.internal)mVoiceSuspend('丈量已暫停，請核對終點後按繼續。');return voiceOldFinish();};
+const voiceOldRun=mRun;mRun=async function(id){if(id==='voice'){mVoiceOpenSetup();return;}return voiceOldRun(id);};
+const voiceOldTap=mTap;mTap=function(q,el){
+  if(voiceUI.picking){if(q.x<0||q.y<0||q.x>st.W||q.y>st.H){toast('請點選目前圖面範圍內的起點。');return;}
+    voiceUI.setup.x=VoiceMeasure.fmt(q.x);voiceUI.setup.y=VoiceMeasure.fmt(st.H-q.y);mVoiceOpenSetup(true);return;}
+  if(mVoiceSame())return;return voiceOldTap(q,el);
+};
+const voiceOldFit=$('#mFit').onclick;$('#mFit').onclick=()=>{if(mVoiceSame()){zoom.m=false;render();}else voiceOldFit();};
+$('#mVoiceCommandForm').addEventListener('submit',e=>{e.preventDefault();e.stopPropagation();const input=$('#mVoiceCommand'),text=input.value;if(!text.trim())return;input.value='';mVoiceReceive(text);});
+$('#mVoiceCommand').addEventListener('input',e=>mVoiceReceive(e.target.value,{final:false}));
+voiceDock.addEventListener('click',e=>{const b=e.target.closest('[data-voice]');if(b&&!b.disabled)mVoiceReceive(b.dataset.voice);});
+$('#mVoicePause').onclick=()=>mVoiceReceive(voiceUI.session?.status==='paused'?'繼續':'暫停');
+$('#mVoiceEnd').onclick=()=>{if(voiceUI.picking){voiceUI.picking=false;mSync();}else{voiceUI.session=VoiceMeasure.transition(voiceUI.session,'結束').state;voiceUI.interim=null;mobileUI.voiceActive=false;voiceUI.epoch++;render();toast('丈量已結束，已確認線段保留。');}};
+document.addEventListener('visibilitychange',()=>{if(document.hidden){mVoiceSuspend('頁面進入背景，丈量已暫停。返回後按繼續。');mSync();}});
+window.addEventListener('pagehide',()=>mVoiceSuspend('頁面已離開，丈量已暫停。'));
 
 // Stable public metadata for accessibility and future maintenance; no credentials.
 mRulersInstall();

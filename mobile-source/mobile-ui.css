@@ -193,3 +193,18 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
 .m-paint-swatches button span{width:100%;height:30px;border-radius:6px;background:var(--swatch);border:1px solid #7b858744}
 .m-paint-swatches small{font-size:10px;color:var(--sub)}
 #mShell .m-paint-swatches button[aria-pressed=true]{border-color:#147c88;background:var(--tint)}
+
+/* Continuous command session. Only confirmed annotations enter saved/exported art. */
+.has-voice .m-dock,.has-voice #mHint,.has-voice #mContext,.has-voice #mToolStrip{display:none!important}
+#mVoiceDock{position:absolute;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:580px;max-height:calc(60dvh - env(safe-area-inset-bottom,0px));margin:auto;padding:10px 12px;background:var(--sheet);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 24px #173f4d20;pointer-events:auto;overflow-y:auto;overscroll-behavior:contain}
+.m-voice-heading{display:flex;align-items:center;gap:10px}.m-voice-heading strong{font-size:13px;flex:1}
+#mVoiceEnd{color:var(--sub);padding:0 8px!important}
+#mVoicePoint,.m-voice-stage-note{font-size:11px;line-height:1.5;color:var(--sub)}
+#mVoiceMessage{font-size:12px;line-height:1.6;min-height:19px;margin:5px 0 8px}
+#mVoiceCommandForm{display:flex;gap:8px}.m-voice-input{flex:1;min-width:0}
+#mVoiceCommand{width:100%;min-height:44px;padding:9px 10px;color:var(--ink);background:var(--tint);border:1px solid var(--line);border-radius:10px;font-size:16px!important}
+.m-voice-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}
+#mShell .m-voice-controls button{background:var(--tint);border:1px solid var(--line);border-radius:10px;font-size:13px}
+#mShell #mVoiceDock button:disabled{opacity:.4;cursor:default}
+.m-voice-stage-note{margin:7px 0 0}.m-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(orientation:landscape) and (max-height:540px){#mVoiceDock{max-height:calc(100dvh - 60px - env(safe-area-inset-bottom,0px));max-width:550px;padding:6px 10px}#mVoiceMessage{margin:2px 0 5px}.m-voice-stage-note{margin:3px 0 0}}

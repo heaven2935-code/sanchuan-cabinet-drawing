@@ -1,4 +1,15 @@
 # CODE_MAP
+
+## 現行新增：連續丈量文字核心（2026-10-14）
+
+- `mobile-source/voice-measure.js`：不依賴DOM／麥克風的固定mm解析、中文／阿拉伯數字、兩位小數、連續段狀態與事件ID去重。採SVG座標，往上減Y；左下角座標換算在介面層。含糊簡寫、未知單位及越界拒絕，不猜數字。
+- `mobile-source/mobile-voice.js`：新增口令丈量設定、圖面點起點、文字預覽與提交；一次工作階段接續終點。`voiceUI`保留未確認草稿；只有確認後的線與尺寸加入同一筆`st.ann`及既有`push()`快照。分頁／視圖／檔案／背景切換安全暫停，原圖復原／重做重新核對終點。
+- `st.ann[].measure`：`{id,lineType}`標記丈量線；座標與顏色仍採原標註格式。尺寸文字每次依實際端點計算；普通標註不改。最多200筆沿用原限制，提交前檢查避免normalize截斷。
+- `mobile-source/scripts/build.py`：把純核心加入原引擎，包裝annPrims供畫面／SVG／PNG／DXF共用；再注入手機介面。根目錄index.html仍是scripts/build_mobile_root.py建置輸出；elevation/無改動。
+- `mobile-source/tests/voice-measure.cjs`／`voice-ui.cjs`：純解析與狀態10組，完整DOM文字丈量15組；測試從dom-harness的測試專用接口注入中間／最終／重複／過期回呼，不表示已接上麥克風。
+- `mobile-source/VOICE_ACCURACY.md`：官方來源、首測候選、精確方向／數值驗收與新增雲端服務的授權邊界。尚未選定正式供應商，不使用瀏覽器辨識當已驗證正式方案。
+
+下方V1.x為歷史對照，不可據此覆蓋現行手機來源。
 - index.html: 繪圖 UI、CSS、SVG 畫布核心、觸控事件、本機儲存與輸出。
 - manifest.webmanifest: 主畫面安裝資訊（standalone、landscape）。
 - icon-180.png / icon-512.png: Web App 桌面圖示。

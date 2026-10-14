@@ -38,7 +38,7 @@ forceLand=false;axOn.x=axOn.y=false;esub='line';padMode='cur';lkp=null;
 const mEngineRender=render;
 render=function(){
   depthRuntime.view=view;depthRuntime.previewing=!!mobileUI.nativeDrag||!!(mobileUI.op?.kind==='annmove'&&!mobileUI.op.committed);
-  depthRuntime.editing=!!mobileUI.op||!!mobileUI.tool||['cell','overall','native'].includes(mobileUI.panelKind);
+  depthRuntime.editing=!!mobileUI.op||!!mobileUI.tool||!!mobileUI.voiceActive||['cell','overall','native'].includes(mobileUI.panelKind);
   depthRuntime.fixedEdge=mobileUI.fixedEdge||null;depthRuntime.face=mobileUI.face||null;depthRuntime.paintPreview=mobileUI.paintPreview||null;
   document.documentElement.dataset.canvasTheme=displaySettings.theme;
   darkSheet=displaySettings.theme==='dark';
@@ -52,7 +52,7 @@ render=function(){
 };
 
 function mState(){
-  if(mobileUI.op||mobileUI.tool||mobileUI.panel)return{busy:true};
+  if(mobileUI.op||mobileUI.tool||mobileUI.panel||mobileUI.voiceActive)return{busy:true};
   if(mobileUI.fixedEdge)return{kind:'line',title:mobileUI.fixedEdge==='left'?'左側外框 · 固定基準':'底部外框 · 固定基準',movable:false,removable:false};
   if(multi){const c=picked(),cols=[...new Set(c.map(x=>x.c))];return{kind:'multi',title:'已選 '+c.length+' 格',merge:MobilePolicy.mergeAllowed(st,view,c),evenWidth:cols.length>1&&!cols.some(i=>st.cols[i].lock),evenHeight:c.length>1&&cols.length===1&&(view!=='in'||new Set(c.map(x=>x.p)).size===1),more:c.length>0};}
   if(asel>=0&&st.ann[asel])return{kind:'annotation',title:ANN[st.ann[asel].k]||'標註'};
@@ -125,7 +125,7 @@ function mDisplayOpen(){
     othCache.clear();mCloseSheet(true);toast('圖面顯示已更新');
   };
 }
-function mAddOpen(){const c=!isFree()?locCell(mCellCenter()):null,x=c&&(c.s||c.p),L=c&&(c.s?c.p.ins:c.col.parts),v=c&&view==='out'&&!c.col.lock&&c.col.w>=2*MIN&&st.cols.length<20,h=x&&x.h>=2*MIN&&L.length<(c.s?8:12);mOpenSheet('新增內容','<div class="m-menu-grid">'+(v?mGridButton('splitV','直分隔','vertical'):'')+(h?mGridButton('splitH','橫分隔','horizontal'):'')+mGridButton('mark','標註／量尺','mark',true)+mGridButton('photo','照片底圖','photo')+(pj.sheets.length<20?mGridButton('addpage','新增分頁','new'):'')+(isFree()?mGridButton('freeTools','畫板與五金','pen'):mGridButton('toFree','自由繪圖','pen'))+'</div><p class="m-sheet-note">先點一格再分隔，可以直接指定要編輯的區域。</p>','add');}
+function mAddOpen(){const c=!isFree()?locCell(mCellCenter()):null,x=c&&(c.s||c.p),L=c&&(c.s?c.p.ins:c.col.parts),v=c&&view==='out'&&!c.col.lock&&c.col.w>=2*MIN&&st.cols.length<20,h=x&&x.h>=2*MIN&&L.length<(c.s?8:12);mOpenSheet('新增內容','<div class="m-menu-grid">'+(v?mGridButton('splitV','直分隔','vertical'):'')+(h?mGridButton('splitH','橫分隔','horizontal'):'')+mGridButton('voice','口令丈量','mic',true)+mGridButton('mark','標註／量尺','mark')+mGridButton('photo','照片底圖','photo')+(pj.sheets.length<20?mGridButton('addpage','新增分頁','new'):'')+(isFree()?mGridButton('freeTools','畫板與五金','pen'):mGridButton('toFree','自由繪圖','pen'))+'</div><p class="m-sheet-note">先點一格再分隔，可以直接指定要編輯的區域。口令丈量目前為文字驗算，尚未收音。</p>','add');}
 function mPages(){mOpenSheet('分頁',pj.sheets.map((x,i)=>mRow('page:'+i,shName(i),'files',i===pj.cur?'目前':'')).join('')+(pj.sheets.length<20?mRow('addpage','新增分頁','plus'):'')+mRow('pageRename','修改目前分頁名稱','text')+mRow('pageDuplicate','複製目前分頁','copy'),'pages');}
 function mMoreOpen(){
   const rows=[];
