@@ -73,3 +73,8 @@ cabinet-depth.js：櫃內固定視角投影、開口裁切、板面陰影，以�
 - `mobile-source/mobile-ui.js`：`mobileUI.face` 與 `depthRuntime.face` 控制單片高亮；`faceGroup` 返回整格操作。
 - `mobile-source/tests/face-color.cjs`：14 組前板選取／跳色／取消／復原／資料保存／匯出／把手對比測試，47 種樣式共258片面板幾何檢查。
 - `mobile-source/scripts/build.py`：保留 frontColors、複製貼上與類型切換規則；face-fill只影響SVG/PNG顏色，face-handle保留CAD線圖層，與選取線分離。
+
+
+## 現行交接入口（2026-10-14）
+
+NEXT_PROMPT.md已重整為下一階段「現場語音丈量繪圖」的現行交接；TODO.md頂部列當前優先順序。建議純解析／線段狀態與手機收音介面分離，但voice-measure.js／mobile-voice.js仍是建議檔名，尚未建立。原有程式與獨立elevation/均不在本次文件更新範圍內。

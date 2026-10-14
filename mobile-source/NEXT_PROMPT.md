@@ -1,73 +1,97 @@
-# NEXT_PROMPT
+# 下一階段交接：現場語音丈量繪圖
+更新：2026-10-14（Asia/Taipei）
+本文件為主網址手機版的現行交接；舊 V1.x 介面說明屬歷史，不可據此還原舊程式。
 
-請維護 heaven2935-code/sanchuan-cabinet-drawing（GitHub Pages）。最新 V1.3.0 新增四邊安全區、直式設定浮動面板和儲存格模式（合併／拆分／欄列標題／拖曳線條）。保持 02-G01 藍色 Logo，不要更動 EMS-LINE。
+## 1. 定位與本次優先順序
+三川工方是手機「現場即時繪圖與確認工具」：量完就能畫、現場改尺寸、當場向業主／師傅說明。圖面盡量大，按鍵只在需要時出現，避免把工廠製造系統的複雜操作搬進手機。
+使用者已指定：下一階段優先做「語音丈量繪圖」，暫緩木皮貼圖、照片透視合成、造型拉伸、拆料與 CNC。這些保留待辦，不刪除。
 
-先確認 iPhone 直式／橫式是否仍被狀態列和動態島擋住。保留 sanchuan_cabinet_cad_v1 儲存鍵、首次編輯前備份和 version 2 的 gridCells；合併不可移除其他列線條。尺寸調整同座標線會一起移動，內部分界總尺寸固定，末欄／末列可改總尺寸。
+## 2. 正確專案與不可混改的版本
+- 儲存庫：https://github.com/heaven2935-code/sanchuan-cabinet-drawing ，分支 main。
+- 我們維護的手機版：https://heaven2935-code.github.io/sanchuan-cabinet-drawing/
+- Claude 的獨立版本：https://heaven2935-code.github.io/sanchuan-cabinet-drawing/elevation/
+- 未另獲明確授權，不得修改、覆蓋或回退 elevation/，也不得從另一個對話推定這裡已獲授權。
+- 交接核對時 main 為 68e0c5be39ffd8af67483d18f4c687bdc30a86a0（Claude 更新 elevation 第55版）。手機功能最近發布並驗證的提交為 2f0bdc8a8318e80a8d4f7dc6d1d82b63327687b6（單片配色）。
+- 開始工作及發布前都要重讀最新 main；以最新樹為基底，只提交本次檔案，避免覆蓋 Claude 的更新。不得 force push。
+- 正式來源為 mobile-source/；root index.html 為建置輸出。不要拿舊 Sites 原型或歷史 V1.x 程式覆蓋。
+- 不改 EMS-LINE 或其他儲存庫。
 
-幾何、DOM 事件處理器、安裝資產測試已通過；瀏覽器畫面測試受到環境 socket 權限限制，未完成，不可宣稱已通過真機／排版測試。繼續維護 CODE_MAP、CHANGELOG、TODO、KNOWN_ISSUES 和此文件。
+## 3. 目前實際已完成
+- 接近全螢幕的手機圖紙、點選後情境動作、單指平移與雙指縮放。
+- 47種櫃型、櫃外／櫃內、結構分隔、層板等既有操作。
+- 移動時任意位置相對拖曳；1／5／10 mm方向微調，左右手位置可切換。
+- 距櫃左側／離櫃底與適用的上下淨高／左右淨寬切換，原點在櫃體外框左下角，X向右、Y向上；畫面SVG座標Y向下，轉換不可混淆。
+- 尺規可選擇展開，非操作必需品。
+- 板厚設定、踢腳內退（預設50 mm，以桶身前緣為基準，0齊平）、面板總縫寬（預設4 mm）、取手縫（預設25 mm）。
+- 櫃體線色、格線樣式／格距／顏色、選取色與尺寸色；淺色／深色版。斜線、名稱及一般尺寸預設隱藏。
+- 櫃內平面／深度示意切換。這不是帶實際櫃深的完整3D。
+- 櫃外單片門片與單個抽屜頭選取、純色／整組套色／跳色、恢復預設；配色預覽不寫入模型，取消無變更，套用可復原。
+- 裝置內草稿及IndexedDB儲存、JSON備份／還原、SVG／PNG／DXF匯出。SVG／PNG含已保存純色，DXF為線圖。
+- 引擎已有照片匯入及四角校正基礎；「櫃體貼入原現場照片」的完整透視合成仍未完成。
 
-最新 V1.4.0 新增直式下方相對游標觸控板和準心動作選單。所有新增分隔、畫線、尺寸、文字標記都是 cursorDraft 預覽，完成才寫入 doc，取消不能殘留圖元。圖內線段局部編輯，邊緣尺寸全欄／列調整；文字與尺寸改為內嵌輸入。先驗證 iPhone 觸控板、選單、鍵盤和直接繪圖共存。不要宣稱 DOM 測試等同 iPhone／排版測試。
+## 4. 尚未完成，不能當成現成功能
+- 語音收音、辨識、連續口令繪圖與語音回讀。
+- 木皮圖片上傳、紋理比例／方向／連紋。
+- 同一桶身共用中立板18與獨立雙側板36的接法切換。
+- 單個抽屜頭獨立調高、實際櫃深與完整外觀立體。
+- 照片透視貼合、透視網格深度控制、照片上描邊新增假樑／拉伸；先前對照圖只是生成的操作概念，不是應用截圖。
+- 雲端跨裝置同步及完整拆料／五金孔位／CNC。
+- iPhone真機完整排版、鍵盤、原生選色器與耳機操作驗收。
 
-- V1.4：直線／尺寸標註可點選起點與終點控制點各自拖曳；游標選單提供調起點／調終點及內嵌 X/Y，另一端固定。取消回退，完成可復原。
+## 5. 語音第一版：必要體驗
+1. 在圖面設定起點與線型，明確顯示本次單位（第一版建議固定mm）。
+2. 按一次「開始語音丈量」後保持同一次丈量工作階段，不必畫完一段再點一次功能。
+3. 支援「往上1200」「往左1800」「往下1200」等方向＋長度，線與尺寸即時預覽。
+4. 每一段起點接在上一段已確認的終點，不因辨識服務重啟而跳回起點。
+5. 第一版建議回讀方向與尺寸，再讓使用者用語音說「確認」加入；不強制逐段點螢幕。自動落筆模式待真機驗證後再討論。
+6. 支援語音「取消」「復原上一段」「暫停」「繼續」「結束」，也保留必要的螢幕按鍵。
+7. 清楚顯示待命／辨識中／待確認／暫停／中斷狀態。成功加入與復原要有可辨識回饋。
+8. 縮放、平移不可改變尺寸或下一段起點；進入其他分頁或切換檔案時安全暫停，避免畫錯圖。
+9. 語音線段先作丈量線／標註資料，不自動當成桶身立板或更動原櫃體結構。
 
-- V1.4.1：游標控制改為畫布下方浮動收合按鍵；半透明圓框內按住圓心相對移動，展開選取／取消／動作／完成。取消準心旁選單與座標、底部觸控板佔位。鍵盤／視窗 resize 保留比例與位置，適屏與方向切換才重算。iPhone 真機排版待驗證。
-- 返回鍵固定畫布工具列左側，退出編輯／預覽並保留視角；動作選單不自動置中。
+## 6. 精度、安全與失敗處理
+- 將語音轉文字與尺寸運算分開。尺寸採確定的數值解析，不讓模型猜測長度、方向或單位。
+- 辨識中間結果只供預覽；同一句結果更新／重連／重複回呼不得重複新增線段。
+- 回讀時避免自身聲音被再次辨識成指令；先驗證停止收音再恢復的策略與耳機路由。
+- 不明確指令、缺方向、缺數字、非正數、單位不明或超過圖面範圍時，不自動猜測或截短；提示修改／確認。
+- 正式新增線與其尺寸標註應是同一筆可復原操作；取消不殘留線、尺寸或錯誤終點。復原後下一段要從回復後的終點繼續。
+- 起點靠近邊界、線段超出畫布、負座標與圖面擴展需明確定義，不能只讓畫面看似畫了、資料卻被截斷。
+- 使用者主動開始且允許麥克風後才收音；不要在背景偷偷開麥或自動上傳錄音。
+- 先實測手機瀏覽器提供的辨識能力與台灣中文；不承諾背景常駐、鎖屏、離線或所有耳機皆正常。
+- 收音被系統中斷時可嘗試恢復，但保留丈量工作階段與終點；恢復失敗明確提示，拒絕麥克風權限後不反覆要求。
+- 若必須新增付費語音服務、後端、API金鑰或新的第三方資料傳輸，先說明並確認，不把金鑰放在GitHub前端。
 
-- V1.4.2 最新介面：使用者所稱返回為復原（Undo）；移除 backEdit／backFromEdit。commonActions 浮動底列放復原／重做／選取／平移／刪除／動作，游標控制器中央偏下；取消預覽使用控制器取消鍵。常用動作測試通過，真機排版待驗證。
+## 7. 實作順序與驗收
+A. 先完成純文字口令解析及連續線段狀態：可用鍵入指令測試，不依賴收音也能驗算。
+B. 接上前景語音辨識、預覽、語音／按鍵確認，以及開始／暫停／繼續／結束。
+C. 加入回讀與復原、防重複；用使用者的iPhone及耳機測試，再調整連續體驗。
 
-- V1.5.0 最新操作：左側常駐工具列已移除；cells 代表統一選取（點格子／點線／框選），commonActions 為底部常用列，cursorMenu 為新增清單，cellActions 為選取後下方工具列。新增在 dockOpen=false 時使用 showMode 直接觸碰，在 true 時使用 startCursorTool 預覽。contextPartition／contextMove／contextStart／contextEnd／contextTextInput 編輯選取對象。splitCount 內嵌等分數量取代 prompt。設定為浮動面板，縮放比例與位移不自動復歸。功能測試通過，真機觸控排版待驗證；未新增拆料、鎖定或版本管理。
+必要驗收案例：
+- 從選定起點連續三段：上1200 → 左1800 → 下1200；長度各自正確，未要求閉合時不自動補線。
+- 同一句重複回呼、辨識文字修改、服務中斷恢復，不重複落筆。
+- 確認、取消、復原後再接畫，線、尺寸與目前終點一致。
+- 暫停／繼續／結束、拒絕麥克風、網路或辨識服務不可用，都不破壞既有圖面。
+- 切換分頁、儲存／重載、JSON還原及匯出，維持原有功能。
+- 中文數字、阿拉伯數字、誤聽與工地噪音需要測試，不把辨識準確率當成已保證。
 
-- V1.5.1：按鍵視覺恢復原深色工具列風格，commonActions 圖示上下排列、暖色選取框；cursorSelectLabel 更新文字避免重畫圖示。維持 V1.5 功能與下方配置；真機視覺待驗。
+## 8. 程式位置與建置
+- mobile-source/legacy-source.html：原引擎；優先透過現有建置／擴充模組接入，不隨意大改。
+- mobile-source/mobile-ui.js：手機殼、選取、標註、操作、儲存／匯入入口。
+- mobile-source/mobile-precision.js：微調、量測條件與基準。
+- mobile-source/mobile-rulers.js：可選尺規。
+- mobile-source/display-style.js：顯示偏好。
+- mobile-source/cabinet-depth.js、cabinet-faces.js：深度示意與前板縫。
+- mobile-source/face-color.js、mobile-face-color.js：單片純色。
+- mobile-source/ui-policy.js：只提供可做的動作。
+- 建議新增 voice-measure.js（純口令／線段狀態）與 mobile-voice.js（介面／收音），實作前核對實際耦合，不強制照檔名切分。
+- 維持 sc-mobile-cab IndexedDB、sc-mobile-*資料鍵、sc-mobile-display-v1、sc-mobile-precision-v1；不得另建空命名空間讓舊圖失蹤。面板顏色在 part.frontColors。
+- 根目錄執行：
+  python scripts/build_mobile_root.py
+  npm --prefix mobile-source ci
+  npm --prefix mobile-source run verify
+- 最近完整驗證77組：19 core、13 display、5 depth、16 DOM audit、10 precision、14 face-color。47櫃型／三種寬度有1547次格子與625次結構線選取；另檢查258片門／抽屜頭幾何。這不是iPhone真機驗收。
+- 持續維護 CODE_MAP.md、CHANGELOG.md、TODO.md、KNOWN_ISSUES.md、NEXT_PROMPT.md；根目錄與mobile-source鏡像文件同步。
+- 每輪先讀最新程式與這些文件，保留使用者／Claude未提交或同時進行的變更。
 
-- V1.6.0 最新方向：使用者取消儲存格操作。預設 select，cells 舊模式入口映射 select；gridOverlay 改為直接尺寸標示，不再有字母／數字欄列頭、框選與格子高亮。數值點選經 dimensionEdit；總尺寸按比例調整，局部尺寸依 localPosition 移動相鄰線且外框固定。原 gridCells 只作相容幾何資料，保留舊圖面；合併／等分 UI 隱藏。測試：grid_interactions 驗證總寬高及兩側局部尺寸、無效值拒絕、取消與復原；cursor_interactions 驗證線條／端點／繪圖。iPhone 真機視覺待驗證。
-
-- V1.7.0 最新板件編輯：parts.js 的 CabinetParts 提供類型／編號／metadata 正規化／結構座標 transform 與 round-to-0.01 scale。index.html 的 partEditor 為 stage 浮動面板，contextPart／partList／addBoard 三入口；doc.boardTags 標記結構線位置，shape.part 標記自由線／矩形。boardLines 在點選及清除失效標記時包含四條外框。applyPart 為單次可復原修改，抽屜 children 六件只採使用者輸入加工尺寸，不自動推算。boardLabels 保留於 SVG，名字以 esc 輸出；複製結構線會建立自由圖元；外框刪除只清名稱。測試 parts_interactions.cjs 覆蓋實際處理器、命名／尺寸／移動／抽屜／複製刪除／取消／復原／儲存重載／保留視角。真機鍵盤及浮動面板仍待驗證。
-
-- V1.8.0 最新使用者方向：恢復最初長方形游標觸控板於下方，預設 dockOpen=true，觸控板上方 commonActions 僅「復原／選取／平移」。下方只放結構線／開口的編輯動作；繪圖／尺寸標記／板件／自由圖形編輯及完成取消都在上方。選取整列／整欄用 selected.local=false，數值、cursor move 和 native drag 必須全座標連動，請維持測試。頂部改單列 Flex 避免舊 Grid 隱含列被 48px 高度裁切。不要恢復浮動圓形控制器或六鍵底列。真機排版待驗；DOM 測試不能代替真機。
-
-- V1.9.0 最新：使用者要求恢復第一版的完整設計品質。ui.css 已取代 index 全部累積的 style rules，請以此統一樣式維護，勿再次加入連續覆寫。深灰工具、米白卡片、暖色選取框、24×24 stroke 1.5 SVG；下方三鍵仍復原／選取／平移，結構情境動作四欄+位置數值列，其餘在頂部。品牌＋檔名兩列直式、橫式單列。雲端 browser 開頁逾時，真實截圖及 iPhone 排版尚未確認；不要用 DOM 回歸宣稱視覺通過。
-
-
-## 2026-10-13 主網址改版（保留 elevation）
-
-使用者最新指定：保留 /elevation/ 原樣，只將主網址 /sanchuan-cabinet-drawing/ 舊程式換成手機新版。新版來源 mobile-source/；建置 scripts/build_mobile_root.py；資料命名 sc-mobile-*。不得將新版發布至 elevation/。
-
-
-## 2026-10-14 圖面顯示設定
-
-只維護 GitHub 主網址新版，elevation/ 保留原樣。顯示偏好 display-style.js / sc-mobile-display-v1；執行 python scripts/build.py、node tests/verify.cjs、node tests/display.cjs。根目錄建置 scripts/build_mobile_root.py。勿改回每條線不同色或非中點標記。
-
-
-## 2026-10-14 線條選色與深色版
-
-正式程式在主網址，elevation/ 不改。顯示偏好 sc-mobile-display-v1 包含 theme 及 lineColor；維護 mobile-source/display-style.js、mobile-ui.js、mobile-ui.css。執行 scripts/build.py、tests/verify.cjs、tests/display.cjs。自訂線色保留，主題預設色可隨版本調整。
-
-
-## 2026-10-14 櫃內深度與操作檢查
-
-只修改主網址與 mobile-source，獨立 elevation/ 保留原樣（已是第51版）。本輪深度視圖由 displaySettings.interiorView=flat/depth 與 CabinetDepth 驅動，depthRuntime.editing 暫停示意以精確編輯。mMenuOpen 取消未確認預覽；自動草稿跳過 previewing。執行 python scripts/build_mobile_root.py；npm --prefix mobile-source install；npm --prefix mobile-source run verify。不要將示意投影當真實深度或拆料依據。先維持可用動作／鎖定／合併與數值驗證，再做實機優化。
-
-
-## 最新交接：2026-10-14 精準操作
-
-已加入mobile-precision.js與cabinet-faces.js，主網址手機版已處理樣式遮擋、相對拖曳、方向微調、量測條件、踢腳內退與面板縫。獨立elevation/必須保留原狀。
-
-檢查先讀TODO、KNOWN_ISSUES；測試先python mobile-source/scripts/build.py，再npm --prefix mobile-source ci及npm --prefix mobile-source run verify。precision偏好命名空間sc-mobile-precision-v1；圖面新增kickSetback（50）／faceGap（4），取手縫預設25。使用者希望逐步做，照片透視計畫仍按四階段。
-
-材質需求目前先記錄：日後可上傳木皮型錄／自拍圖片，對門片、抽屜頭、桶身分別套用，抽屜頭可跳色；應先完成單片／單抽屜選取與純色，再做紋理方向、實際比例及連紋。不要宣稱這輪已上線材質功能。
-
-若使用者指定Claude另一個應用，先檢查並提出重現步驟、影響、優先級與改善建議；不得把主網址手機版修改覆蓋到elevation/。
-
-
-## 最新交接：單片純色完成，語音僅討論
-
-主網址手機版新增face-color.js與mobile-face-color.js。直接點櫃外門片或抽屜頭先選單片，按配色可選one／group、預覽或恢復預設；按整組設定回原來cell操作。材質仍是純色，沒有木紋圖片或單片高度。elevation/必須保留。
-
-資料：part.frontColors是#rrggbb或null陣列，門由左到右／抽屜由上到下。預览mobileUI.paintPreview不得写入part或草稿。SVG/PNG含保存顏色，DXF只保持線圖。暗色填色的把手使用face-handle對比色，不能用an，避免攔截選取層板的marker。
-
-測試：python mobile-source/scripts/build.py；npm --prefix mobile-source ci；npm --prefix mobile-source run verify（包含14組face-color）。
-
-使用者新增語音丈量構想，尚未要求本輪實作：設定起點與線型，戴耳機說方向＋長度，線與尺寸即時預览；建議回讀與確認再提交，可語音復原／取消，防重複辨識，固定mm。不偷偷開麥克風或把語音功能當作已完成。參考MDN SpeechRecognition與WebKit官方Web Speech說明。
-
-
-2026-10-14 語音丈量補充：使用者明確要求一次啟動後連續接畫下一段，不必逐段點選功能。每段起點接上一段已確認終點；確認也以語音完成，可說暫停／繼續／復原上一段／結束。瀏覽器中斷辨識時嘗試恢復，保留終點並顯示收音狀態，不承諾所有裝置都能無限持續。
+## 9. 新對話第一個任務
+先讀本文件和現有程式，核對最新main，接著從「純文字口令解析＋連續線段狀態」開始實作語音丈量第一版。不要重做整套介面，不先展開木皮或CNC，也不要再次把已討論的連續接畫當成未定需求。
