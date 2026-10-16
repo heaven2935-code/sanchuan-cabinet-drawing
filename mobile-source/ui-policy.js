@@ -11,10 +11,15 @@
     ];
     if(s.kind==='face')return[item('faceColor','配色','style',true),item('faceGroup','整組設定','settings')];
     if(s.kind==='cell')return[
-      item('settings','設定','settings',true),
-      ...(s.splitV?[item('splitV','直分隔','vertical')]:[]),
-      ...(s.splitH?[item('splitH','橫分隔','horizontal')]:[]),
-      ...(s.more?[item('more','更多','more')]:[])
+      item('settings','尺寸與配置','settings',true),
+      ...(s.splitV?[item('splitV','新增桶身','vertical')]:[]),
+      ...(s.splitH?[item('splitH',s.interior?'新增固定層板':'新增上下分區','horizontal')]:[]),
+      item('regionShelves','活動層板','horizontal'),
+      item('regionBoards','板件清單','line'),
+      item('multi','多選／合併／均分','multi'),
+      item('regionFaces','門片／抽頭配色','style'),
+      item('regionClear','清空配置','trash'),
+      item('more','複製與其他','more')
     ];
     if(s.kind==='multi')return[
       ...(s.merge?[item('merge','合併','merge',true)]:[]),

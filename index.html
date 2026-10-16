@@ -1548,6 +1548,11 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
 .m-voice-audio-actions button{flex:1;min-height:36px}
 .m-voice-consent{display:flex;gap:8px;align-items:center;font-size:12px}
 #mVoiceAudioStatus{font-size:12px;margin:6px 0 0}
+
+/* A selected cabinet region exposes its actions without precision line picking. */
+.m-region-context #mActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-height:34dvh;overflow-y:auto;overscroll-behavior:contain}
+.m-region-context #mActions button{white-space:normal;min-height:58px;line-height:1.35;font-size:12px}
+@media(orientation:landscape) and (max-height:540px){.m-region-context #mActions{grid-template-columns:repeat(5,minmax(0,1fr));max-height:32dvh}.m-region-context #mActions button{min-height:44px}}
 </style>
 <script>(function(root){
   'use strict';
@@ -1562,10 +1567,15 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
     ];
     if(s.kind==='face')return[item('faceColor','配色','style',true),item('faceGroup','整組設定','settings')];
     if(s.kind==='cell')return[
-      item('settings','設定','settings',true),
-      ...(s.splitV?[item('splitV','直分隔','vertical')]:[]),
-      ...(s.splitH?[item('splitH','橫分隔','horizontal')]:[]),
-      ...(s.more?[item('more','更多','more')]:[])
+      item('settings','尺寸與配置','settings',true),
+      ...(s.splitV?[item('splitV','新增桶身','vertical')]:[]),
+      ...(s.splitH?[item('splitH',s.interior?'新增固定層板':'新增上下分區','horizontal')]:[]),
+      item('regionShelves','活動層板','horizontal'),
+      item('regionBoards','板件清單','line'),
+      item('multi','多選／合併／均分','multi'),
+      item('regionFaces','門片／抽頭配色','style'),
+      item('regionClear','清空配置','trash'),
+      item('more','複製與其他','more')
     ];
     if(s.kind==='multi')return[
       ...(s.merge?[item('merge','合併','merge',true)]:[]),
@@ -1999,10 +2009,10 @@ function rulerPrims(st,S,b,gr,sx,sy){
   return P}
 /* Device display preferences, independent of cabinet geometry and saved dimensions. */
 const DisplayStyle=(()=>{
-  const defaults=Object.freeze({interiorView:'flat',theme:'light',lineColor:'#203038',doorSwing:false,dimensions:false,names:false,gridStyle:'lines',gridSize:100,gridColor:'#8a9aa3',selectionColor:'#e5822d',dimensionColor:'#465c68',rulerSide:'right'});
+  const defaults=Object.freeze({shelfColor:'#168aad',interiorView:'flat',theme:'light',lineColor:'#203038',doorSwing:false,dimensions:false,names:false,gridStyle:'lines',gridSize:100,gridColor:'#8a9aa3',selectionColor:'#e5822d',dimensionColor:'#465c68',rulerSide:'right'});
   const color=(v,fallback)=>/^#[0-9a-f]{6}$/i.test(v||'')?v.toLowerCase():fallback;
   const themeColors=theme=>theme==='dark'?{lineColor:'#dce6ec',gridColor:'#718592',dimensionColor:'#b8cbd6'}:{lineColor:defaults.lineColor,gridColor:defaults.gridColor,dimensionColor:defaults.dimensionColor};
-  function normalize(raw={}){raw=raw&&typeof raw==='object'?raw:{};const n=Number(raw.gridSize),theme=raw.theme==='dark'?'dark':'light',base=themeColors(theme);return{interiorView:raw.interiorView==='depth'?'depth':'flat',theme,lineColor:color(raw.lineColor,base.lineColor),doorSwing:raw.doorSwing===true,dimensions:raw.dimensions===true,names:raw.names===true,gridStyle:['lines','dots','none'].includes(raw.gridStyle)?raw.gridStyle:defaults.gridStyle,gridSize:Number.isFinite(n)?Math.max(10,Math.min(1000,Math.round(n))):defaults.gridSize,gridColor:color(raw.gridColor,base.gridColor),selectionColor:color(raw.selectionColor,defaults.selectionColor),dimensionColor:color(raw.dimensionColor,base.dimensionColor),rulerSide:raw.rulerSide==='left'?'left':'right'};}
+  function normalize(raw={}){raw=raw&&typeof raw==='object'?raw:{};const n=Number(raw.gridSize),theme=raw.theme==='dark'?'dark':'light',base=themeColors(theme);return{shelfColor:color(raw.shelfColor,defaults.shelfColor),interiorView:raw.interiorView==='depth'?'depth':'flat',theme,lineColor:color(raw.lineColor,base.lineColor),doorSwing:raw.doorSwing===true,dimensions:raw.dimensions===true,names:raw.names===true,gridStyle:['lines','dots','none'].includes(raw.gridStyle)?raw.gridStyle:defaults.gridStyle,gridSize:Number.isFinite(n)?Math.max(10,Math.min(1000,Math.round(n))):defaults.gridSize,gridColor:color(raw.gridColor,base.gridColor),selectionColor:color(raw.selectionColor,defaults.selectionColor),dimensionColor:color(raw.dimensionColor,base.dimensionColor),rulerSide:raw.rulerSide==='left'?'left':'right'};}
   function themeChange(p,theme,values){const old=themeColors(p.theme),next=themeColors(theme),out={...values,theme};for(const key of ['lineColor','gridColor','dimensionColor'])if(values[key]===old[key])out[key]=next[key];return normalize(out);}
   function palette(p,pal){return{...pal,ink:p.lineColor,...(p.theme==='dark'?{sheet:'#151f27',tint:'#202e38',mute:'#8b9fab',sub:'#b8cbd6'}:{})};}
   function segment(st,h){
@@ -2031,6 +2041,7 @@ const DisplayStyle=(()=>{
   }
   function decorate(g,st,o,p,H=[]){
     let art=g.art.filter(q=>!q.doorSwing||p.doorSwing).filter(q=>!(q.c==='dm'||q.c==='dim')||p.dimensions||!!(q.hc||q.col));
+    art=art.map(q=>q.adjustable&&o.interactive?{...q,c:'an',col:p.shelfColor,lw:.9*o.S}:q);
     art=art.map(q=>q.c==='dm'?{...q,z:q.hc?q.z:q.z*1.25,hc:q.hc?p.selectionColor:p.dimensionColor}:q.c==='dim'?{...q,col:q.col?p.selectionColor:p.dimensionColor}:q.c==='grip'?{...q,col:p.selectionColor}:q);
     const ui=p.dimensions?g.ui:g.ui.filter(q=>q.t!=='hd');
     const selected=H.filter(h=>!h.fixed&&o.hsel&&h.k===o.hsel.k&&(h.k==='r'?Math.abs(h.v-o.hsel.y)<.5:h.k==='c'?h.i===o.hsel.i:h.k==='p'||h.k==='s'?h.c===o.hsel.c&&h.i===o.hsel.i&&(h.k==='p'||h.p===o.hsel.p):true));
@@ -2397,7 +2408,7 @@ function geom(st,o){
     if(wp>=50&&hp>=32){TX(lx,cy-fs*.2,name,'lb');TX(lx,cy+fs*.95,size,'lbn',null,fs*.9)}
     else if(wp>=44&&hp>=14)TX(lx,cy+fs*.33,size,'lbn',null,fs*.9)};
   const shelves=(sx,sw,top,bot,x,hm,sb)=>{const g=gapsOf(x,bot-top,T),n=x.n,cu=n>0&&!!x.gs,tops=[];let sy=top,m=Math.floor(n/2);
-    g.forEach((v,k)=>{tops.push(sy);if(k<n){const y1=sy+v;L(sx,y1,sx+sw,y1,'thin');L(sx,y1+T,sx+sw,y1+T,'thin');if(hm&&o.sel&&o.sel.g===k&&!(o.msel&&o.msel.length))A.push({t:'l',x1:sx,y1:y1+T/2,x2:sx+sw,y2:y1+T/2,c:'an',col:o.acc||'#b4583c',lw:T+2.4*S});
+    g.forEach((v,k)=>{tops.push(sy);if(k<n){const y1=sy+v;L(sx,y1,sx+sw,y1,'thin');A[A.length-1].adjustable=true;L(sx,y1+T,sx+sw,y1+T,'thin');A[A.length-1].adjustable=true;if(hm&&o.sel&&o.sel.g===k&&!(o.msel&&o.msel.length))A.push({t:'l',x1:sx,y1:y1+T/2,x2:sx+sw,y2:y1+T/2,c:'an',col:o.acc||'#b4583c',lw:T+2.4*S});
         if(hm){U.push(Object.assign({t:'hg',x:sx,y:y1+T/2,w:sw,i:k,hh:clamp(Math.min(v,g[k+1])/2+T/2,5*S,11*S)},hm));A.push({t:'grip',x:sx+sw*.5,y:y1+T/2})}}
       sy+=v+T});
     if(cu){g.forEach((v,k)=>{if(v>g[m]+.5)m=k});
@@ -4819,7 +4830,7 @@ const mobileUI={panel:false,panelKind:'',native:[],op:null,tool:null,first:null,
 const mShell=document.createElement('div');mShell.id='mShell';
 mShell.innerHTML=`
   <header class="m-header"><span class="m-brand" aria-hidden="true"><img src="./logo.svg" alt=""></span><button id="mTitle" aria-label="編輯檔名"><strong></strong><span id="mSubtitle"></span></button><button id="mView" aria-label="切換櫃外與櫃內"></button><button id="mDepth" aria-label="切換櫃內平面與深度預覽" title="固定視角的深度示意，不代表實際櫃深"></button><button id="mMenu" aria-label="圖面與檔案">${mIcon('menu')}</button></header>
-  <div id="mHint">點線或格子來編輯 · 單指拖圖 · 雙指縮放</div>
+  <div id="mHint">點區域即可編輯 · 單指拖圖 · 雙指縮放</div>
   <div class="m-dock"><div class="m-tools"><button id="mUndo" aria-label="復原">${mIcon('undo')}</button><button id="mRedo" aria-label="重做">${mIcon('redo')}</button></div><button id="mFit" aria-label="圖面置中">${mIcon('fit')}</button><button id="mAdd" aria-label="新增內容">${mIcon('plus')}</button></div>
   <section id="mContext" class="m-context" aria-label="選取項目的操作" hidden><div class="m-selection-heading"><span id="mSelectedTitle"></span><button id="mDismiss" aria-label="取消選取">${mIcon('close')}</button></div><div id="mActions"></div></section>
   <section id="mOperation" aria-label="編輯預覽" hidden><div class="m-operation-top"><div id="mOperationTitle"></div><button id="mOperationCancel" class="m-cancel">取消</button></div><div class="m-operation-fields"><label class="m-op-label"><span id="mOffsetLabel">位置</span><input id="mOffset" type="number" inputmode="numeric" step="1" aria-label="分隔位置，單位公釐"><span>mm</span></label><button id="mOperationConfirm" class="m-confirm">確定</button></div></section>
@@ -4861,7 +4872,7 @@ function mState(){
     return{kind:'line',title:mobileUI.target&&mobileUI.target.name|| (h?({w:'總寬',h:'總高',k:'踢腳板上緣',c:'直向分隔線',r:'橫向分隔線',p:'橫向分隔線',s:'櫃內分隔線'}[h.k]||'分隔線'):'層板'),movable,removable,dimensions:movable||!!(h&&['w','h','k'].includes(h.k))};
   }
   const o=selObj();
-  if(o){const x=view==='in'?o.s:o.p,L=view==='in'?o.p.ins:o.col.parts;return{kind:'cell',title:(['drawer','idrawer'].includes(x.t)?(view==='in'?'內抽組':'抽屜組')+'（'+x.n+' 個）':x.t==='door'&&x.n===2?'對開門片':(view==='in'?INS[x.t]:TYPES[x.t]))+' · '+Math.round(o.col.w)+' × '+Math.round(x.h)+' mm',splitV:view==='out'&&!o.col.lock&&o.col.w>=2*MIN&&st.cols.length<20,splitH:x.h>=2*MIN&&L.length<(view==='in'?8:12),more:true};}
+  if(o){const x=view==='in'?o.s:o.p,L=view==='in'?o.p.ins:o.col.parts;return{kind:'cell',interior:view==='in',title:(['drawer','idrawer'].includes(x.t)?(view==='in'?'內抽組':'抽屜組')+'（'+x.n+' 個）':x.t==='door'&&x.n===2?'對開門片':(view==='in'?INS[x.t]:TYPES[x.t]))+' · '+Math.round(o.col.w)+' × '+Math.round(x.h)+' mm',splitV:view==='out'&&!o.col.lock&&o.col.w>=2*MIN&&st.cols.length<20,splitH:x.h>=2*MIN&&L.length<(view==='in'?8:12),more:true};}
   return{};
 }
 function mSync(){
@@ -4892,6 +4903,7 @@ function mCloseSheet(clear){const hadPaint=!!mobileUI.paintPreview;mobileUI.pain
 function mOpenSheet(title,html,kind){mCloseSheet(false);mobileUI.panel=true;mobileUI.panelKind=kind||'';$('#mSheetTitle').textContent=title;$('#mSheetBody').innerHTML=html;$('#mSheetBody').scrollTop=0;$('#mSheet').hidden=$('#mScrim').hidden=false;if(['cell','overall','native'].includes(kind))render();else mSync();}
 function mNative(id){const e=$(id);if(!e)return;mobileUI.native.push({el:e,parent:e.parentNode,next:e.nextSibling});$('#mNative').appendChild(e);e.hidden=false;}
 function mFinish(){
+  mobileUI.regionLinePick=false;
   const returnView=mobileUI.returnView;mobileUI.returnView=null;mobileUI.fixedEdge=null;
   if(mobileUI.op&&mobileUI.op.kind==='annmove'&&!mobileUI.op.committed)st.ann[mobileUI.op.index]=mobileUI.op.original;
   mobileUI.face=null;mobileUI.paintPreview=null;mobileUI.invalidOffset=false;mobileUI.op=null;mobileUI.tool=null;mobileUI.first=null;mobileUI.preview=null;mobileUI.target=null;mobileUI.freeDrawing=false;cpd=null;bgCal=null;
@@ -4915,15 +4927,15 @@ function mDisplayOpen(){
   const p=displaySettings,select=(id,label,options,value)=>`<label class="m-field">${label}<select id="${id}">${options.map(([v,t])=>`<option value="${v}"${value===v?' selected':''}>${t}</option>`).join('')}</select></label>`;
   const toggle=(id,label,value)=>`<label class="m-display-toggle"><span>${label}</span><input id="${id}" type="checkbox"${value?' checked':''}></label>`;
   const swatch=(id,label,value)=>`<label class="m-field m-color-field">${label}<input id="${id}" type="color" value="${value}"></label>`;
-  mOpenSheet('圖面顯示與尺軌',`<form id="mForm">${select('mTheme','介面版本',[['light','淺色'],['dark','深色']],p.theme)}<p class="m-section-label">顯示內容</p>${toggle('mShowSwing','門片開啟斜線',p.doorSwing)}${toggle('mShowDims','尺寸標示',p.dimensions)}${toggle('mShowNames','格內名稱與尺寸',p.names)}<p class="m-sheet-note">尺寸關閉時，選取線條仍會顯示相關尺寸，方便調整。</p><p class="m-section-label">格線</p><div class="m-form-grid">${select('mGridStyle','樣式',[['lines','細格線'],['dots','點陣'],['none','無格線']],p.gridStyle)}${mField('mGridSize','格距 · mm',p.gridSize,10,1000)}</div>${swatch('mGridColor','格線顏色',p.gridColor)}<p class="m-sheet-note">細格線每 5 格加深一條。縮小時會簡化過密格線，設定格距仍用於對齊。</p><p class="m-section-label">櫃體線條</p>${swatch('mLineColor','櫃體線條顏色',p.lineColor)}<p class="m-section-label">標示顏色</p><div class="m-form-grid">${swatch('mSelectionColor','選取線與菱形',p.selectionColor)}${swatch('mDimensionColor','一般尺寸',p.dimensionColor)}</div>${select('mRulerSide','直向尺的位置',[['right','右側'],['left','左側']],p.rulerSide)}${mFormButtons}</form>`,'display');
+  mOpenSheet('圖面顯示與尺軌',`<form id="mForm">${select('mTheme','介面版本',[['light','淺色'],['dark','深色']],p.theme)}<p class="m-section-label">顯示內容</p>${toggle('mShowSwing','門片開啟斜線',p.doorSwing)}${toggle('mShowDims','尺寸標示',p.dimensions)}${toggle('mShowNames','格內名稱與尺寸',p.names)}<p class="m-sheet-note">尺寸關閉時，選取線條仍會顯示相關尺寸，方便調整。</p><p class="m-section-label">格線</p><div class="m-form-grid">${select('mGridStyle','樣式',[['lines','細格線'],['dots','點陣'],['none','無格線']],p.gridStyle)}${mField('mGridSize','格距 · mm',p.gridSize,10,1000)}</div>${swatch('mGridColor','格線顏色',p.gridColor)}<p class="m-sheet-note">細格線每 5 格加深一條。縮小時會簡化過密格線，設定格距仍用於對齊。</p><p class="m-section-label">櫃體線條</p>${swatch('mLineColor','櫃體線條顏色',p.lineColor)}${swatch('mShelfColor','活動層板識別色（僅編輯時）',p.shelfColor)}<p class="m-section-label">標示顏色</p><div class="m-form-grid">${swatch('mSelectionColor','選取線與菱形',p.selectionColor)}${swatch('mDimensionColor','一般尺寸',p.dimensionColor)}</div>${select('mRulerSide','直向尺的位置',[['right','右側'],['left','左側']],p.rulerSide)}${mFormButtons}</form>`,'display');
   mobileUI.submit=()=>{
     const size=Number($('#mGridSize').value);if(!Number.isFinite(size)||size<10||size>1000){toast('格距請輸入 10–1000 mm');return;}
-    Object.assign(displaySettings,DisplayStyle.themeChange(p,$('#mTheme').value,{interiorView:p.interiorView,lineColor:$('#mLineColor').value,doorSwing:$('#mShowSwing').checked,dimensions:$('#mShowDims').checked,names:$('#mShowNames').checked,gridStyle:$('#mGridStyle').value,gridSize:size,gridColor:$('#mGridColor').value,selectionColor:$('#mSelectionColor').value,dimensionColor:$('#mDimensionColor').value,rulerSide:$('#mRulerSide').value}));
+    Object.assign(displaySettings,DisplayStyle.themeChange(p,$('#mTheme').value,{shelfColor:$('#mShelfColor')?.value||p.shelfColor,interiorView:p.interiorView,lineColor:$('#mLineColor').value,doorSwing:$('#mShowSwing').checked,dimensions:$('#mShowDims').checked,names:$('#mShowNames').checked,gridStyle:$('#mGridStyle').value,gridSize:size,gridColor:$('#mGridColor').value,selectionColor:$('#mSelectionColor').value,dimensionColor:$('#mDimensionColor').value,rulerSide:$('#mRulerSide').value}));
     try{localStorage.setItem('sc-mobile-display-v1',JSON.stringify(displaySettings))}catch(_){}
     othCache.clear();mCloseSheet(true);toast('圖面顯示已更新');
   };
 }
-function mAddOpen(){const c=!isFree()?locCell(mCellCenter()):null,x=c&&(c.s||c.p),L=c&&(c.s?c.p.ins:c.col.parts),v=c&&view==='out'&&!c.col.lock&&c.col.w>=2*MIN&&st.cols.length<20,h=x&&x.h>=2*MIN&&L.length<(c.s?8:12);mOpenSheet('新增內容','<div class="m-menu-grid">'+(v?mGridButton('splitV','直分隔','vertical'):'')+(h?mGridButton('splitH','橫分隔','horizontal'):'')+mGridButton('voice','口令丈量','mic',true)+mGridButton('mark','標註／量尺','mark')+mGridButton('photo','照片底圖','photo')+(pj.sheets.length<20?mGridButton('addpage','新增分頁','new'):'')+(isFree()?mGridButton('freeTools','畫板與五金','pen'):mGridButton('toFree','自由繪圖','pen'))+'</div><p class="m-sheet-note">先點一格再分隔，可以直接指定要編輯的區域。口令丈量支援文字；語音試用需先設定辨識服務。</p>','add');}
+function mAddOpen(){const c=!isFree()?locCell(mCellCenter()):null,x=c&&(c.s||c.p),L=c&&(c.s?c.p.ins:c.col.parts),v=c&&view==='out'&&!c.col.lock&&c.col.w>=2*MIN&&st.cols.length<20,h=x&&x.h>=2*MIN&&L.length<(c.s?8:12);mOpenSheet('新增內容','<div class="m-menu-grid">'+(v?mGridButton('splitV','新增桶身','vertical'):'')+(h?mGridButton('splitH',view==='in'?'新增固定層板':'新增上下分區','horizontal'):'')+mGridButton('mark','標註／量尺','mark')+mGridButton('photo','照片底圖','photo')+(pj.sheets.length<20?mGridButton('addpage','新增分頁','new'):'')+(isFree()?mGridButton('freeTools','畫板與五金','pen'):mGridButton('toFree','自由繪圖','pen'))+'</div><p class="m-sheet-note">先點一格再分隔，可以直接指定要編輯的區域。丈量工具與櫃體編輯分開。</p>','add');}
 function mPages(){mOpenSheet('分頁',pj.sheets.map((x,i)=>mRow('page:'+i,shName(i),'files',i===pj.cur?'目前':'')).join('')+(pj.sheets.length<20?mRow('addpage','新增分頁','plus'):'')+mRow('pageRename','修改目前分頁名稱','text')+mRow('pageDuplicate','複製目前分頁','copy'),'pages');}
 function mMoreOpen(){
   const rows=[];
@@ -4932,7 +4944,7 @@ function mMoreOpen(){
     if(!$('#aCopy').disabled)rows.push(mRow('copy','複製這格','copy'));
     if(!$('#aPaste').disabled)rows.push(mRow('paste','貼上到這格','paste'));
     rows.push(mRow('multi','多選格子','multi'));
-    const o=selObj();if(o){if(view==='out'&&['door','drawer'].includes(o.p.t))rows.push(mRow('groupColor','整組面板配色','style'));rows.push(mRow('lock',o.col.lock?'解除區寬鎖定':'鎖定區寬','lock'));if(!$('#aClear').disabled)rows.push(mRow('clear','清空這格','trash'));if(!$('#aDel').disabled)rows.push(mRow('delete','刪除這格','trash'));}
+    const o=selObj();if(o){if(view==='out'&&['door','drawer'].includes(o.p.t))rows.push(mRow('groupColor','整組面板配色','style'));rows.push(mRow('lock',o.col.lock?'解除區寬鎖定':'鎖定區寬','lock'));if(!$('#aClear').disabled)rows.push(mRow('clear','清空這格','trash'));if(!$('#aDel').disabled)rows.push(mRow('delete','移除區域分隔','trash'));}
   }
   mOpenSheet('更多操作',rows.join(''),'more');
 }
@@ -4946,7 +4958,7 @@ function mOverall(){
 }
 function mCellSettings(){
   const o=selObj();if(!o)return;const inV=view==='in',x=inV?o.s:o.p,L=inV?o.p.ins:o.col.parts;
-  const opts=inV?[['empty','空格'],['shelf','層板'],['rod','吊衣桿'],['idrawer','內抽']]:[['empty','空櫃'],['door','門片'],['drawer','抽屜'],['open','層板'],['blank','封板']];
+  const opts=inV?[['empty','空格'],['shelf','活動層板'],['rod','吊衣桿'],['idrawer','內抽']]:[['empty','空櫃'],['door','門片'],['drawer','抽屜'],['open','活動層板'],['blank','封板']];
   const type=(x.t==='open'||x.t==='shelf')&&!x.n?'empty':x.t;
   mOpenSheet('格子設定',`<form id="mForm"><label class="m-field">這格要做什麼<select id="mType">${opts.map(([v,l])=>`<option value="${v}"${type===v?' selected':''}>${l}</option>`).join('')}</select></label><div class="m-form-grid">${!o.col.lock?mField('mCW','區寬 · mm',o.col.w,MIN,MAXW):''}${L.length>1?mField('mPH','格高 · mm',x.h,MIN,st.H):''}</div><div id="mTypeFields"></div><p class="m-sheet-note">區寬與格高調整時，由相鄰未鎖定區域補差額。只有一格時，高度請從「整體尺寸」修改。</p>${mFormButtons}</form>`,'cell');
   const fill=()=>{const t=$('#mType').value;let h='';if(t==='door')h=`<div class="m-form-grid"><label class="m-field">門片<select id="mN"><option value="1"${x.n===1?' selected':''}>單開門</option><option value="2"${x.n===2?' selected':''}>對開門</option></select></label><label class="m-field">開門方向<select id="mHinge"><option value="L"${o.p.hinge!=='R'?' selected':''}>左鉸鏈</option><option value="R"${o.p.hinge==='R'?' selected':''}>右鉸鏈</option></select></label></div>`;else if(['open','shelf','drawer','idrawer'].includes(t))h=mField('mN',t==='open'||t==='shelf'?'層板片數':'抽屜數量',x.t===t?x.n:1,t==='open'||t==='shelf'?0:1,10);if(!inV&&(t==='door'||t==='drawer'))h+=`<label class="m-field">把手<select id="mPull"><option value="bar"${!o.p.pull?' selected':''}>一般把手</option><option value="groove"${o.p.pull==='groove'?' selected':''}>取手縫</option><option value="none"${o.p.pull==='none'?' selected':''}>無把手</option></select></label>`;if(!inV&&(t==='door'||t==='drawer'))h+=mField('mGroove','取手縫寬 · mm',o.p.gw??25,5,120);$('#mTypeFields').innerHTML=h;};fill();$('#mType').addEventListener('change',fill);
@@ -4966,7 +4978,7 @@ function mBegin(kind){
   cpdKey(kind==='splitV'?'vsplit':kind==='splitH'?'hsplit':'move');
   if(!cpd){mobileUI.op=null;mSync();return;}mobileUI.hint=false;render();
 }
-function mOperationData(){const o=mobileUI.op;if(!o)return null;if(o.kind==='annmove')return{title:'移動標註',note:'在圖上拖曳標註，位置對了按「確定」。',label:'',value:null};if(o.kind==='move'){const r=cpdTarget();if(!r)return null;const m=r.m,dd=r.tv-m.v;return{title:'移動分隔線',note:(m.ax==='x'?'左 ':'上 ')+fmt((m.a0||0)+dd)+' ／ '+(m.ax==='x'?'右 ':'下 ')+fmt((m.b0||0)-dd)+' mm',label:m.ax==='x'?'距左':'距上',value:m.a0==null?null:(m.a0+dd)};}const r=splitPlan(o.kind==='splitV'),p=r.pl;return p?{title:o.kind==='splitV'?'直分隔':'橫分隔',note:(p.v?'左 ':'上 ')+p.a+' ／ '+(p.v?'右 ':'下 ')+p.b+' mm · 可拖動預覽線',label:p.v?'距左':'距上',value:p.a}: {title:o.kind==='splitV'?'直分隔':'橫分隔',note:'把預覽線移到可分隔的區域內。',label:'位置',value:null};}
+function mOperationData(){const o=mobileUI.op;if(!o)return null;if(o.kind==='annmove')return{title:'移動標註',note:'在圖上拖曳標註，位置對了按「確定」。',label:'',value:null};if(o.kind==='move'){const r=cpdTarget();if(!r)return null;const m=r.m,dd=r.tv-m.v;return{title:'移動分隔線',note:(m.ax==='x'?'左 ':'上 ')+fmt((m.a0||0)+dd)+' ／ '+(m.ax==='x'?'右 ':'下 ')+fmt((m.b0||0)-dd)+' mm',label:m.ax==='x'?'距左':'距上',value:m.a0==null?null:(m.a0+dd)};}const r=splitPlan(o.kind==='splitV'),p=r.pl;return p?{title:o.kind==='splitV'?'新增桶身':view==='in'?'新增固定層板':'新增上下分區',note:(p.v?'左 ':'上 ')+p.a+' ／ '+(p.v?'右 ':'下 ')+p.b+' mm · 可拖動預覽線',label:p.v?'距左':'距上',value:p.a}: {title:o.kind==='splitV'?'新增桶身':view==='in'?'新增固定層板':'新增上下分區',note:'把預覽線移到可分隔的區域內。',label:'位置',value:null};}
 function mOperationSync(){const d=mOperationData();if(!d)return;$('#mOperationTitle').innerHTML=esc(d.title)+'<span id="mOperationNote">'+esc(d.note)+'</span>';$('#mOffsetLabel').textContent=d.label;$('.m-op-label').hidden=d.value==null;if(d.value!=null&&document.activeElement!==$('#mOffset'))$('#mOffset').value=fmt(d.value);}
 function mOperationOffset(raw){const o=mobileUI.op;if(!o)return;if(raw==null||!String(raw).trim())return;const n=Number(raw);if(!Number.isFinite(n))return;if(o.kind==='move'){const r=cpdTarget();if(!r||r.m.a0==null)return;const m=r.m,v=clamp(m.v-m.a0+n,m.lo,m.hi);if(m.ax==='x')cur.x=v;else cur.y=v;}else{const r=splitPlan(o.kind==='splitV'),p=r.pl;if(!p)return;const v=MobilePolicy.clampOffset(n,p.a+p.b,MIN);if(v==null)return;if(o.kind==='splitV')cur.x=p.c.x0+v;else cur.y=p.top+v;}cur.nos=true;mSync();}
 function mOperationPoint(q){mobileUI.invalidOffset=false;const o=mobileUI.op;if(!o)return;if(o.kind==='annmove'){if(!o.origin)o.origin={...q};o.railPoint={x:Math.round(q.x),y:Math.round(q.y)};const a=JSON.parse(JSON.stringify(o.original));moveAnn(a,o.railPoint.x-o.origin.x,o.railPoint.y-o.origin.y);st.ann[o.index]=a;render();return;}if(o.kind==='move'){const m=mvInfo();if(!m)return;const snap=v=>m.t==='g'?Math.round(v*2)/2:Math.round(v);cur.x=snap(q.x);cur.y=snap(q.y);if(m.ax==='x')cur.x=clamp(cur.x,m.lo,m.hi);else cur.y=clamp(cur.y,m.lo,m.hi);}else{const b=o.bounds;if(b){cur.x=clamp(Math.round(q.x),b.x0+MIN,b.x1-MIN);cur.y=clamp(Math.round(q.y),b.y0+MIN,b.y1-MIN);}else{cur.x=Math.round(q.x);cur.y=Math.round(q.y);}}cur.nos=true;cur.tp=null;mSync();}
@@ -5524,6 +5536,62 @@ const audioOldSync=mVoiceSync;mVoiceSync=function(){
   if(voiceAudioUI.capture?.active&&!voiceAudioUI.handling&&(!mVoiceSame()||document.hidden||b?.epoch!==voiceUI.epoch||b?.sessionId!==voiceUI.session?.id||b?.pending!==audioFingerprint()))audioStop('圖面或頁面已變更，收音停止。終點保留，請重新啟動。');
 };
 window.addEventListener('pagehide',()=>audioStop('頁面離開，收音已停止。'));
+
+/* Region-first cabinet controls. Structural edits still use the engine's history. */
+const mRegionTapBase=mTap;
+mTap=function(q,el){
+  if(isFree()||mobileUI.tool||mobileUI.op||mobileUI.voiceActive||voiceUI.picking||mobileUI.regionLinePick||el?.closest?.('[data-d]'))return mRegionTapBase(q,el);
+  let c=locCell(q);
+  if(!c)return mRegionTapBase(q,el);
+  // Annotations remain independently selectable; the cabinet underneath is unchanged.
+  if(CabinetDepth.annotationPick(st.ann,q,9/inv().s,aview(),annBox)>=0)return mRegionTapBase(q,el);
+  if(view==='in'&&!c.s){if(multi){toast('此區請切換櫃外編輯');return;}mobileUI.returnView='in';setView('out');c=locCell(q);}
+  const key={c:c.ci,p:c.pi,s:c.si||0};
+  mobileUI.lastPoint={...q};mobileUI.face=null;mobileUI.fixedEdge=null;mobileUI.hint=false;asel=-1;mode='edit';ucat='edit';
+  if(multi){const i=msel.findIndex(a=>a.c===key.c&&a.p===key.p&&(a.s||0)===key.s);if(i<0)msel.push(key);else msel.splice(i,1);render();return;}
+  const t={t:'c',c,key,k:null};mobileUI.target=t;pickTarget(t);
+};
+const mRegionSyncBase=mSync;
+mSync=function(){mRegionSyncBase();$('#mContext').classList.toggle('m-region-context',!mobileUI.panel&&!mobileUI.op&&!multi&&!!selObj()&&!hsel&&sel?.g==null&&!mobileUI.face);};
+function mRegionBoards(){
+  const o=selObj();if(!o)return;const c=sel.c,p=sel.p,s=sel.s||0,T=st.T,rows=[];
+  const board=(key,label,note)=>rows.push(mRow('regionBoard:'+key,label,'horizontal',note));
+  if(c>0)board('left','左側雙側板',T+' + '+T+' = '+(2*T)+' mm');
+  if(c<st.cols.length-1)board('right','右側雙側板',T+' + '+T+' = '+(2*T)+' mm');
+  const L=view==='in'?o.p.ins:o.col.parts,i=view==='in'?s:p;
+  if(i>0)board('top','上方固定分隔',view==='in'?T+' mm':'上下桶身頂底板');
+  if(i<L.length-1)board('bottom','下方固定分隔',view==='in'?T+' mm':'上下桶身頂底板');
+  const sc=shelfCtx(o);if(sc)for(let j=0;j<sc.x.n;j++)board('shelf:'+j,'活動層板 '+(j+1),T+' mm · 可移動／刪除');
+  mOpenSheet('這個區域的板件',rows.join('')+mRow('regionPickLine','切換精準選線','line')+'<p class="m-sheet-note">左右外側板各 '+T+' mm；相鄰桶身各有一片側板，合計 '+(2*T)+' mm，圖上保留中間接縫。櫃內固定分隔為單片 '+T+' mm。點清單即可調整板件，無須點中細線。</p>','regionBoards');
+}
+function mRegionBoard(key){
+  const o=selObj();if(!o)return;const c=sel.c,p=sel.p,s=sel.s||0;let t;
+  if(key.startsWith('shelf:'))t={t:'l',g:{c,p,s,i:Number(key.split(':')[1])},name:'活動層板'};
+  else if(key==='left'||key==='right')t={t:'l',h:{k:'c',i:key==='left'?c-1:c},name:'雙側板 · '+(2*st.T)+' mm'};
+  else{const i=(view==='in'?s:p)-(key==='top'?1:0);t={t:'l',h:view==='in'?{k:'s',c,p,i}:{k:'p',c,i},sel:{c,p:view==='in'?p:i,s:view==='in'?i:0},name:view==='in'?'固定層板':'桶身頂底分隔'};}
+  mCloseSheet(false);mobileUI.target=t;pickTarget(t);
+}
+function mRegionShelves(){
+  const o=selObj();if(!o)return;const x=view==='in'?o.s:o.p,kind=view==='in'?'shelf':'open',same=x.t===kind;
+  mOpenSheet('活動層板',`<form id="mForm">${mField('mShelfCount','活動層板片數',same?x.n:1,0,10)}<p class="m-sheet-note">${same?'修改片數會重新分配層板間距。':'套用會取代此區原有的門片、抽屜或配件；門後層板請切換「櫃內」再設定。'}活動層板以識別色顯示，預覽與匯出使用正常線色。</p>${mFormButtons}</form>`,'regionShelves');
+  mobileUI.submit=()=>{const n=Number($('#mShelfCount').value);mTransaction(()=>{if(x.t!==kind)act('type',kind);fieldChange('n',n);});mCloseSheet(true);};
+}
+function mRegionFaces(){
+  const o=selObj();if(!o)return;const faces=view==='out'?FaceColor.panels(st).filter(f=>f.c===sel.c&&f.p===sel.p):[];
+  mOpenSheet('門片與抽屜頭配色',faces.length?faces.map(f=>mRow('regionFace:'+f.i,mFaceTitle(f),'style',f.color||'預設色')).join(''):'<p class="m-sheet-note">此區沒有外部門片或抽屜頭。請先在「尺寸與配置」新增門片或抽屜，或切換到櫃外。</p>','regionFaces');
+}
+const mRegionRunBase=mRun;
+mRun=async function(id){
+  if(id==='regionPickLine'){mCloseSheet(false);mobileUI.regionLinePick=true;toast('點選要調整的板線；取消選取後回到區域編輯');return;}
+  if(id==='regionBoards'){mRegionBoards();return;}
+  if(id.startsWith('regionBoard:')){mRegionBoard(id.slice(12));return;}
+  if(id==='regionShelves'){mRegionShelves();return;}
+  if(id==='regionFaces'){mRegionFaces();return;}
+  if(id.startsWith('regionFace:')){const i=Number(id.split(':')[1]);if(!sel)return;mobileUI.face={c:sel.c,p:sel.p,i};mCloseSheet(false);render();return;}
+  if(id==='regionClear'){mOpenSheet('清空這個區域',mRow('regionClearConfirm','清空配置，保留桶身分隔','trash')+'<p class="m-sheet-note">移除這個區域的門片、抽屜或內部配件。若要移除結構分隔，請使用「板件清單」或多選相鄰區域後「合併」。可用復原還原。</p>','regionClear');return;}
+  if(id==='regionClearConfirm'){mCloseSheet(false);act('clear');mFinish();return;}
+  return mRegionRunBase(id);
+};
 
 // Stable public metadata for accessibility and future maintenance; no credentials.
 mRulersInstall();

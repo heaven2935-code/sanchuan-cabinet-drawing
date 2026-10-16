@@ -216,3 +216,8 @@ html[data-canvas-theme=dark] #mDepth{background:#202e38!important;color:#9ddce5;
 .m-voice-audio-actions button{flex:1;min-height:36px}
 .m-voice-consent{display:flex;gap:8px;align-items:center;font-size:12px}
 #mVoiceAudioStatus{font-size:12px;margin:6px 0 0}
+
+/* A selected cabinet region exposes its actions without precision line picking. */
+.m-region-context #mActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-height:34dvh;overflow-y:auto;overscroll-behavior:contain}
+.m-region-context #mActions button{white-space:normal;min-height:58px;line-height:1.35;font-size:12px}
+@media(orientation:landscape) and (max-height:540px){.m-region-context #mActions{grid-template-columns:repeat(5,minmax(0,1fr));max-height:32dvh}.m-region-context #mActions button{min-height:44px}}

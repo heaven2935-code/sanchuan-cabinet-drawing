@@ -37,7 +37,7 @@ check('conversion to free drawing preserves closed cabinet regions',()=>{
   const s=engine.normalize(engine.sample0()),f=engine.toFree(s),faces=engine.freeFaces(f);assert.equal(f.kind,'free');assert.equal(f.W,s.W);assert.equal(f.H,s.H);assert(faces.length>0);faces.forEach(x=>{assert(x.x2>x.x1);assert(x.z2>x.z1)});
 });
 check('fixed outer lines never offer delete or move',()=>assert.deepEqual(policy.actions({kind:'line',movable:false,removable:false}).map(x=>x.id),['dimensions']));
-check('small or locked cells hide unavailable divider actions',()=>assert.deepEqual(policy.actions({kind:'cell',splitV:false,splitH:false,more:true}).map(x=>x.id),['settings','more']));
+check('small or locked cells hide unavailable divider actions',()=>assert.deepEqual(policy.actions({kind:'cell',splitV:false,splitH:false,more:true}).map(x=>x.id),['settings','regionShelves','regionBoards','multi','regionFaces','regionClear','more']));
 check('operation mode retracts contextual action buttons',()=>assert.deepEqual(policy.actions({kind:'cell',busy:true,splitV:true,splitH:true}),[]));
 check('annotation menu only contains applicable actions',()=>assert.deepEqual(policy.actions({kind:'annotation'}).map(x=>x.id),['move','settings','delete']));
 check('single-cell multi-selection hides merge and distribution',()=>assert.deepEqual(policy.actions({kind:'multi',merge:false,evenWidth:false,evenHeight:false,more:true}).map(x=>x.id),['more']));

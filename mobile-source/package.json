@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "verify": "node tests/verify.cjs && node tests/display.cjs && node tests/depth.cjs && node tests/audit.cjs && node tests/precision.cjs && node tests/face-color.cjs && node tests/voice-measure.cjs && node tests/voice-ui.cjs && node tests/voice-audio.cjs && node tests/voice-server.mjs"
+    "verify": "node tests/verify.cjs && node tests/display.cjs && node tests/depth.cjs && node tests/audit.cjs && node tests/precision.cjs && node tests/face-color.cjs && node tests/regions.cjs && node tests/voice-measure.cjs && node tests/voice-ui.cjs && node tests/voice-audio.cjs && node tests/voice-server.mjs"
   },
   "devDependencies": {
     "fake-indexeddb": "6.2.5",

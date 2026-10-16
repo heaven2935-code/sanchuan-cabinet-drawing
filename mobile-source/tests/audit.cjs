@@ -21,8 +21,8 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
   });
   if(!process.env.AUDIT_SKIP_SWEEP)await check('structural dividers and interior shelf lines can be selected in every style',()=>{
     const matches=(a,h)=>a.hsel&&a.hsel.k===h.k&&(h.k==='r'?Math.abs(a.hsel.y-h.y)<.5:h.k==='c'?a.hsel.i===h.i:h.k==='s'?a.hsel.c===h.c&&a.hsel.p===h.p&&a.hsel.i===h.i:true);
-    report.linePicks=0;for(const style of q.styles){const s=q.styleState(style,{W:2400,H:2400,T:18,kick:100});load(s);const H=q.handles().filter(h=>!h.fixed);for(const h of H){const seg=q.segment(h);let found=false;for(const f of [.271,.371,.613]){q.tap({x:seg.x1+(seg.x2-seg.x1)*f,y:seg.y1+(seg.y2-seg.y1)*f});if(matches(q.state(),h)){found=true;break;}q.finish();}assert(found,style.id+' '+h.k);report.linePicks++;q.finish();}
-      load(s,'in');for(const r of q.regions()){if(r.type!=='shelf'&&r.type!=='open')continue;const state=q.state().st,c=state.cols[r.ci],p=c.parts[r.pi],x=r.si==null?p:p.ins[r.si];if(!x.n||r.layer==null||r.layer>=x.n)continue;const pt={x:r.x+r.w*.31,y:r.y+r.h+state.T/2};q.tap(pt);assert(q.state().sel?.g!=null,style.id+' shelf');report.linePicks++;q.finish();}
+    report.linePicks=0;for(const style of q.styles){const s=q.styleState(style,{W:2400,H:2400,T:18,kick:100});load(s);const H=q.handles().filter(h=>!h.fixed);for(const h of H){const seg=q.segment(h);let found=false;for(const f of [.271,.371,.613]){q.lineTap({x:seg.x1+(seg.x2-seg.x1)*f,y:seg.y1+(seg.y2-seg.y1)*f});if(matches(q.state(),h)){found=true;break;}q.finish();}assert(found,style.id+' '+h.k);report.linePicks++;q.finish();}
+      load(s,'in');for(const r of q.regions()){if(r.type!=='shelf'&&r.type!=='open')continue;const state=q.state().st,c=state.cols[r.ci],p=c.parts[r.pi],x=r.si==null?p:p.ins[r.si];if(!x.n||r.layer==null||r.layer>=x.n)continue;const pt={x:r.x+r.w*.31,y:r.y+r.h+state.T/2};q.lineTap(pt);assert(q.state().sel?.g!=null,style.id+' shelf');report.linePicks++;q.finish();}
     }
   });
   await check('all four cabinet frames can be selected and fixed baselines expose only dimensions',()=>{
@@ -30,11 +30,11 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
     load({...plain(base),kick:400});q.tap({x:300,y:2200});assert.equal(q.state().hsel.k,'k');
   });
   await check('centered horizontal grip keeps its own selection at a crossing with a vertical divider',()=>{
-    const s=q.normalize({W:1200,H:2400,kick:100,T:18,cols:[{w:600,parts:[{t:'open',h:1150,n:0},{t:'drawer',h:1150,n:2}]},{w:600,parts:[{t:'open',h:1150,n:0},{t:'drawer',h:1150,n:2}]}]});load(s);q.tap({x:180,y:1150});assert.equal(q.state().hsel.k,'r');const el=d.querySelector('#ui [data-h="r"]');assert(el);q.tap({x:600,y:1150},el);assert.equal(q.state().hsel.k,'r');
+    const s=q.normalize({W:1200,H:2400,kick:100,T:18,cols:[{w:600,parts:[{t:'open',h:1150,n:0},{t:'drawer',h:1150,n:2}]},{w:600,parts:[{t:'open',h:1150,n:0},{t:'drawer',h:1150,n:2}]}]});load(s);q.lineTap({x:180,y:1150});assert.equal(q.state().hsel.k,'r');const el=d.querySelector('#ui [data-h="r"]');assert(el);q.lineTap({x:600,y:1150},el);assert.equal(q.state().hsel.k,'r');
   });
   await check('precise moves and splits keep typed millimeters, clamp limits, cancel cleanly and undo/redo',async()=>{
-    load();const before=q.state().st;q.tap({x:600,y:400});await q.run('move');q.offset(537);q.confirm();assert.equal(q.state().st.cols[0].w,537);assert.equal(q.state().st.W,2400);assert.equal(q.state().hist,1);click('#mUndo');same(q.state().st.cols,before.cols);click('#mRedo');assert.equal(q.state().st.cols[0].w,537);
-    q.tap({x:537,y:400});await q.run('move');q.offset(590);q.finish();assert.equal(q.state().st.cols[0].w,537);
+    load();const before=q.state().st;q.lineTap({x:600,y:400});await q.run('move');q.offset(537);q.confirm();assert.equal(q.state().st.cols[0].w,537);assert.equal(q.state().st.W,2400);assert.equal(q.state().hist,1);click('#mUndo');same(q.state().st.cols,before.cols);click('#mRedo');assert.equal(q.state().st.cols[0].w,537);
+    q.lineTap({x:537,y:400});await q.run('move');q.offset(590);q.finish();assert.equal(q.state().st.cols[0].w,537);
     load();q.tap({x:200,y:500});await q.run('splitV');q.offset(337);q.confirm();assert.equal(q.state().st.cols[0].w,337);assert.equal(q.state().st.cols[1].w,263);click('#mUndo');same(q.state().st.cols,base.cols);
     q.tap({x:200,y:500});await q.run('splitH');q.offset(873);q.confirm();assert.equal(q.state().st.cols[0].parts[0].h,873);assert.equal(q.state().st.H,2400);
   });
@@ -70,8 +70,8 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
   });
   await check('copy/paste, divider deletion, locking and multi-cell merge keep valid geometry and undo records',async()=>{
     load();q.tap({x:200,y:500});await q.run('copy');q.tap({x:1400,y:300});await q.run('paste');assert.equal(q.state().st.cols[2].parts[0].t,'door');assert.equal(q.state().st.W,2400);click('#mUndo');assert.equal(q.state().st.cols[2].parts[0].t,'open');
-    load();q.tap({x:600,y:400});await q.run('delete');assert.equal(q.state().st.cols.length,3);assert.equal(q.state().st.W,2400);click('#mUndo');same(q.state().st.cols,base.cols);
-    load();q.tap({x:200,y:500});await q.run('lock');q.tap({x:200,y:500});await q.run('faceGroup');assert.equal(q.selection().splitV,false);await q.run('settings');assert(!d.querySelector('#mCW'));click('#mSheetClose');q.tap({x:600,y:400});assert.equal(q.selection().movable,false);assert(!d.querySelector('#mActions [data-m="move"]'));
+    load();q.lineTap({x:600,y:400});await q.run('delete');assert.equal(q.state().st.cols.length,3);assert.equal(q.state().st.W,2400);click('#mUndo');same(q.state().st.cols,base.cols);
+    load();q.tap({x:200,y:500});await q.run('lock');q.tap({x:200,y:500});await q.run('faceGroup');assert.equal(q.selection().splitV,false);await q.run('settings');assert(!d.querySelector('#mCW'));click('#mSheetClose');q.lineTap({x:600,y:400});assert.equal(q.selection().movable,false);assert(!d.querySelector('#mActions [data-m="move"]'));
     load();q.tap({x:200,y:500});await q.run('multi');q.tap({x:800,y:500});assert.equal(q.selection().kind,'multi');assert(d.querySelector('#mActions [data-m="merge"]'));await q.run('merge');assert.equal(q.state().st.cols.length,3);assert.equal(q.state().st.W,2400);click('#mUndo');same(q.state().st.cols,base.cols);
     load();q.tap({x:200,y:500});await q.run('multi');q.tap({x:1400,y:300});assert(!d.querySelector('#mActions [data-m="merge"]'));
     load(base,'in');q.tap({x:200,y:500});await q.run('multi');q.tap({x:800,y:500});assert(!d.querySelector('#mActions [data-m="merge"]'));assert(!d.querySelector('#mActions [data-m="evenHeight"]'));

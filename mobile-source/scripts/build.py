@@ -38,6 +38,8 @@ src=src.replace("dm:[pal.sub,NUMF,'']", "dm:[pal.sub,NUMF,halo(p.z)]")
 src=src.replace("font-family=\"Outfit,'LXGW WenKai TC',sans-serif\"", "font-family=\"-apple-system,BlinkMacSystemFont,'Arial',sans-serif\"")
 # Only new measurement primitives need hundredth-mm coordinates. Keep ordinary artwork unchanged.
 src=src.replace("  for(const p of P){\n    if(p.t==='l')s+=", "  for(const p of P){\n    const f=v=>+(+v).toFixed(p.measurement?2:1);\n    if(p.t==='l')s+=",1)
+# Tag actual adjustable shelf outlines; exports retain ordinary cabinet ink.
+src=src.replace("L(sx,y1,sx+sw,y1,'thin');L(sx,y1+T,sx+sw,y1+T,'thin');", "L(sx,y1,sx+sw,y1,'thin');A[A.length-1].adjustable=true;L(sx,y1+T,sx+sw,y1+T,'thin');A[A.length-1].adjustable=true;")
 wrapper='''
 const colorFixAll=fixAll;
 fixAll=function(st){colorFixAll(st);FaceColor.clean(st)};
@@ -67,7 +69,7 @@ src=src.replace("bg:bgArg(),fsel:","bg:bgArg(),gridScale:S/zoom.z,fsel:")
 src=src.replace("const saveDraft=debounce(saveNow,400);", "const saveDraft=debounce(()=>{if(!depthRuntime.previewing)saveNow()},400);")
 css=(root/'mobile-ui.css').read_text()
 js=(root/'mobile-ui.js').read_text()
-js=js.replace('// Stable public metadata', (root/'mobile-face-color.js').read_text()+'\n'+(root/'mobile-precision.js').read_text()+'\n'+(root/'mobile-rulers.js').read_text()+'\n'+(root/'mobile-voice.js').read_text()+'\n'+(root/'voice-audio.js').read_text()+'\n'+(root/'mobile-voice-audio.js').read_text()+'\n// Stable public metadata',1)
+js=js.replace('// Stable public metadata', (root/'mobile-face-color.js').read_text()+'\n'+(root/'mobile-precision.js').read_text()+'\n'+(root/'mobile-rulers.js').read_text()+'\n'+(root/'mobile-voice.js').read_text()+'\n'+(root/'voice-audio.js').read_text()+'\n'+(root/'mobile-voice-audio.js').read_text()+'\n'+(root/'mobile-regions.js').read_text()+'\n// Stable public metadata',1)
 policy=(root/'ui-policy.js').read_text()
 src=src.replace('<title>櫃體立面圖 新版</title>','<title>三川工方｜手機繪圖</title>')
 src=src.replace('name="apple-mobile-web-app-status-bar-style" content="black-translucent"','name="apple-mobile-web-app-status-bar-style" content="default"')

@@ -1,5 +1,13 @@
 # CODE_MAP
 
+## 區域優先改版（2026-10-16）
+
+- mobile-source/mobile-regions.js：區域優先 tap、板件清單、活動層板片數、個別面板清單、清空確認、選用精準選線。最末注入，沿用既有幾何／undo／儲存。
+- mobile-source/ui-policy.js、mobile-ui.css：區域操作三欄面板（橫向五欄），保留畫布與多選合併／均分。
+- mobile-source/display-style.js：shelfColor 偏好；只有 interactive 幾何的 adjustable 線條使用識別色。
+- mobile-source/scripts/build.py：標記原活動層板上下輪廓（不改座標）；注入 mobile-regions.js。
+- mobile-source/tests/regions.cjs：八組區域操作、板件、撤銷、配色與匯出隔離測試。
+
 ## 現行新增：收音與辨識橋接（2026-10-14晚間）
 
 - mobile-source/voice-audio.js：AudioWorklet、音量停頓分句、原採樣率PCM WAV、一次一請求、系統zh-TW回讀、輸入隔離、資源關閉與過期回應防護。
