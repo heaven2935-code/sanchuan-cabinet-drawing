@@ -1783,36 +1783,32 @@ html.drwMk #pvM{display:none!important}
 #annCp .crb{gap:5px}
 #annCp .crb>button{height:28px;min-height:28px;font-size:12.5px;padding:0 10px}
 
-/* (82) 微調圓盤：外圈加寬 */
-#jog .in2{display:none}
-html:not(.land) #jog .in{display:none}
-html:not(.land) #jog .in2{display:block;fill:#1b1f22;stroke:#30373d;stroke-width:1}
-html.npx.simp.jogOpen #jog::after{width:10px;height:10px;margin:-5px 0 0 -5px}
-/* (82) 標註狀態列 */
-#mbar{position:fixed;z-index:12;display:flex;align-items:center;gap:4px;height:40px;padding:3px;border-radius:20px;background:#2a3035;border:1px solid #3a4249;box-shadow:0 6px 18px rgba(0,0,0,.4);white-space:nowrap;max-width:calc(100vw - 16px)}
-#mbar[hidden],#mbPop[hidden]{display:none!important}
-#mbar>button,#mbW button{margin:0;min-height:0;border:0;box-shadow:none;background:transparent;color:#e3e7ea;font-size:13px;font-weight:700}
-#mbT{display:flex;align-items:center;gap:5px;height:34px;padding:0 10px 0 9px;border-radius:17px;background:#3a4249!important}
-#mbT svg,#mbPop svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
-#mbT em{font-style:normal;font-size:9px;color:#9aa4ab}
-#mbT[aria-expanded="true"]{color:var(--cyan)}
-#mbC{width:34px;height:34px;padding:5px;border-radius:17px}
-#mbC i{display:block;width:24px;height:24px;border-radius:6px;box-shadow:0 0 0 2px #2a3035,0 0 0 3px #5b656d}
-#mbC[aria-expanded="true"] i{box-shadow:0 0 0 2px #2a3035,0 0 0 3.5px var(--cyan)}
-#mbW{display:flex;align-items:center;height:34px;padding:0 2px;border-left:1px solid #3a4249;border-right:1px solid #3a4249}
-#mbW button{width:28px;height:30px;padding:0;font-size:17px}
-#mbW button:disabled{opacity:.3}
-#mbW b{min-width:1.3em;text-align:center;font-family:var(--num);font-size:14px;color:#e3e7ea}
-#mbA{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;height:34px;line-height:34px;padding:0 12px;border-radius:17px;font-size:12.5px;font-weight:700;color:#9aa4ab}
-#mbA.hot{background:#e9edef;color:#1f2428}
-#mbPop{position:fixed;z-index:13;padding:6px;border-radius:14px;background:#2a3035;border:1px solid #3a4249;box-shadow:0 8px 22px rgba(0,0,0,.45)}
-#mbPop .mg{display:grid;grid-template-columns:repeat(5,50px);gap:4px}
-#mbPop .mg button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:50px;height:48px;min-height:0;margin:0;padding:0;border:0;border-radius:10px;background:transparent;color:#c7cfd4;font-size:10.5px;font-weight:700;box-shadow:none}
-#mbPop .mg button[aria-pressed="true"]{background:#3f474e;color:var(--cyan)}
-#mbPop .mc{display:flex;gap:6px}
-#mbPop .mc button{width:34px;height:34px;min-height:0;margin:0;padding:0;border:0;border-radius:8px;background:var(--c);box-shadow:none}
-#mbPop .mc button[aria-pressed="true"]{box-shadow:0 0 0 2px #2a3035,0 0 0 4px #fff}
-@media (max-width:370px){#mbT span{display:none}#mbA{padding:0 9px}}
+/* (82) 微調圓盤：整個面都能轉 */
+#jog .in{fill:#1b1f22;stroke:#30373d}
+/* (82) 狀態列 */
+#sbar{position:fixed;z-index:13;top:var(--sbT,60px);left:var(--sbL,50%);transform:translateX(-50%);display:flex;align-items:center;gap:2px;height:40px;padding:3px;border-radius:20px;background:#15191c;border:1px solid #2f363c;box-shadow:0 8px 20px rgba(0,0,0,.4);max-width:calc(100vw - 56px);white-space:nowrap}
+#sbar.lft{transform:none}
+#sbar[hidden],#sbPop[hidden]{display:none!important}
+#sbar>i{width:1px;height:20px;background:#363e44;margin:0 2px;flex:none}
+#sbar button{flex:none;display:flex;align-items:center;gap:4px;height:32px;min-height:0;min-width:32px;margin:0;padding:0 8px;border:0;border-radius:16px;background:transparent;color:#c7cfd4;font-size:12.5px;font-weight:700;box-shadow:none}
+#sbar button svg,#sbPop button svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#sbar button[aria-expanded="true"]{background:#2a3137;color:var(--cyan)}
+#sbar .tl{background:#252b30;color:var(--cyan)}
+#sbar .cl{padding:0 6px}
+#sbar .cl b{width:20px;height:20px;border-radius:6px;background:var(--c);box-shadow:0 0 0 2px #15191c,0 0 0 3px #4b555c}
+#sbar .lw em{width:16px;height:var(--w,2px);border-radius:3px;background:currentColor}
+#sbar .lw span{font-family:var(--num);font-size:13px}
+#sbar .ac{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;height:32px;line-height:32px;margin-left:3px;padding:0 12px;border-radius:16px;background:#e9ecec;color:#1b1f22;font-size:12.5px;font-weight:700}
+#sbPop{position:fixed;z-index:14;display:flex;flex-wrap:wrap;gap:5px;padding:6px;border-radius:14px;background:#15191c;border:1px solid #2f363c;box-shadow:0 10px 24px rgba(0,0,0,.45);max-width:calc(100vw - 16px)}
+#sbPop.p-tool{display:grid;grid-template-columns:repeat(5,52px)}
+#sbPop button{min-height:0;margin:0;border:0;box-shadow:none}
+#sbPop.p-tool button{height:50px;padding:0;border-radius:10px;background:transparent;color:#c7cfd4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600}
+#sbPop.p-tool button[aria-pressed="true"]{background:#2a3137;color:var(--cyan)}
+#sbPop .sw{width:34px;height:34px;padding:0;border-radius:8px;background:var(--c)}
+#sbPop .sw[aria-pressed="true"]{box-shadow:0 0 0 2px #15191c,0 0 0 4px #e9ecec}
+#sbPop.p-lw{align-items:center;gap:8px}
+#sbPop.p-lw button{width:40px;height:34px;border-radius:8px;background:#252b30;color:#e9ecec;font-size:18px}
+#sbPop.p-lw b{min-width:1.6em;text-align:center;font-family:var(--num);font-size:16px;color:#e9ecec}
 </style>
 </head>
 <body>
@@ -4798,7 +4794,7 @@ function pvMk(){if(pvEl)return pvEl;const o=document.createElement('div');o.id='
     '<span class="pvd"></span><button data-pl="-1" aria-label="線細一點">−</button><b id="pvLw">2</b><button data-pl="1" aria-label="線粗一點">＋</button></div>';
   document.body.appendChild(o);pvEl=o;
   o.addEventListener('click',e=>{e.stopPropagation();
-    if(e.target.closest('#pvFine')){if(simOn()){const on=!document.documentElement.classList.contains('jogOpen');if(on&&!cur.on){toast('先點一下圖面，叫出準星');return}document.documentElement.classList.toggle('jogOpen',on);pvSync();try{flPlace()}catch(_){}return}fineTog();return}
+    if(e.target.closest('#pvFine')){if(simOn()){const on=!document.documentElement.classList.contains('jogOpen');if(on&&!cur.on){toast('先點一下圖面，叫出準星');return}document.documentElement.classList.toggle('jogOpen',on);pvSync();return}fineTog();return}
     if(e.target.closest('#pvIO')){const t=$('#cIO');if(t.disabled){toast('自由繪圖沒有櫃內');return}t.click();pvSync();return}
     const z=e.target.closest('[data-pz]'),c=e.target.closest('[data-pc]'),l=e.target.closest('[data-pl]');
     if(z){const t=$({in:'#cZin',out:'#cZout',reset:'#cZreset'}[z.dataset.pz]);if(t.disabled){if(z.dataset.pz==='reset')toast('現在就是整張圖');return}t.click();pvSync();return}
@@ -4911,13 +4907,13 @@ $('#tbCut').onclick=()=>cutOpen();
 /* ===== (54) jog dial: turn the ring to step the crosshair; the centre is 選取 / 移動 / 確定 ===== */
 var jogAx='x',jogA=0,jogSum=0,jogT=0,jogHad=null;
 function jogMk(){const pad=$('#nPad');if(!pad||$('#jog'))return;const d=document.createElement('div');d.id='jog';
-  let t='';for(let i=0;i<72;i++){const a=i*5,mj=i%6===0,r1=mj?40:50,r2=70;const s=Math.sin(a*Math.PI/180),c=Math.cos(a*Math.PI/180);t+=`<line x1="${(75+r1*s).toFixed(2)}" y1="${(75-r1*c).toFixed(2)}" x2="${(75+r2*s).toFixed(2)}" y2="${(75-r2*c).toFixed(2)}" class="${mj?'mj':''}"/>`}
-  d.innerHTML=`<svg viewBox="0 0 150 150" aria-hidden="true"><circle cx="75" cy="75" r="73" class="rim"/><circle cx="75" cy="75" r="57" class="in"/><circle cx="75" cy="75" r="30" class="in2"/><g id="jogR">${t}<circle cx="75" cy="12" r="2.6" class="dot"/></g><path d="M75 1.5l4.5 6.5h-9z" class="idx"/><g class="axx"><path d="M7 75l7-5v10zM143 75l-7-5v10z"/></g><g class="axy"><path d="M75 143l-5-7h10zM75 7l-5 7h10z"/></g></svg><span id="jogRd"></span>`;
+  let t='';for(let i=0;i<72;i++){const a=i*5,mj=i%6===0,r1=mj?38:46,r2=70;const s=Math.sin(a*Math.PI/180),c=Math.cos(a*Math.PI/180);t+=`<line x1="${(75+r1*s).toFixed(2)}" y1="${(75-r1*c).toFixed(2)}" x2="${(75+r2*s).toFixed(2)}" y2="${(75-r2*c).toFixed(2)}" class="${mj?'mj':''}"/>`}
+  d.innerHTML=`<svg viewBox="0 0 150 150" aria-hidden="true"><circle cx="75" cy="75" r="73" class="rim"/><circle cx="75" cy="75" r="30" class="in"/><g id="jogR">${t}<circle cx="75" cy="12" r="2.6" class="dot"/></g><path d="M75 1.5l4.5 6.5h-9z" class="idx"/><g class="axx"><path d="M7 75l7-5v10zM143 75l-7-5v10z"/></g><g class="axy"><path d="M75 143l-5-7h10zM75 7l-5 7h10z"/></g></svg><span id="jogRd"></span>`;
   pad.appendChild(d);
   const side=document.createElement('div');side.id='jogSide';side.innerHTML='<button id="jogAx" aria-label="轉盤移動的方向"><b data-a="x">左右</b><b data-a="y">上下</b></button><button id="jogStep" aria-label="轉盤每一格的距離"></button>';pad.appendChild(side);
   $('#jogAx').onclick=e=>{e.stopPropagation();jogAx=jogAx==='x'?'y':'x';jogSync()};
   $('#jogStep').onclick=e=>{e.stopPropagation();$('#tStep').click();jogSync()};
-  d.addEventListener('pointerdown',e=>{const R=d.getBoundingClientRect(),cx=R.left+R.width/2,cy=R.top+R.height/2,rr=Math.hypot(e.clientX-cx,e.clientY-cy)/(R.width/150);if(rr<(LAND.matches?50:22))return;
+  d.addEventListener('pointerdown',e=>{const R=d.getBoundingClientRect(),cx=R.left+R.width/2,cy=R.top+R.height/2,rr=Math.hypot(e.clientX-cx,e.clientY-cy)/(R.width/150);if(rr<14)return;
     e.preventDefault();e.stopPropagation();const tx=e.clientX-cx,ty=e.clientY-cy;
     let a0=Math.atan2(ty,tx)*180/Math.PI,acc=0,turn=0,go=false;jogSum=0;
     listen(ev=>{const a=Math.atan2(ev.clientY-cy,ev.clientX-cx)*180/Math.PI;let da=a-a0;if(da>180)da-=360;if(da<-180)da+=360;a0=a;turn+=Math.abs(da);
@@ -5145,8 +5141,9 @@ const nkEl=k=>$('#nPad .nk[data-nk="'+k+'"]');
 function flItems(){const vw=window.innerWidth,vh=window.innerHeight,t=flTop(),ph=Math.max(140,Math.min(360,vh-t-96));
   if(!LAND.matches){/* upright 極簡: keys start where the layout already puts them; size comes from that spot too */
     const P=[['H','標題列',$('.name')]];['l0','l1','l2','r0','r1','r2'].forEach(k=>P.push(['k:'+k,NKN[k],nkEl(k)]));
-    if(document.documentElement.classList.contains('jogOpen')&&$('#jog'))P.push(['jog','微調圓盤',$('#jog')]);
     P.push(['bk','取消／返回',$('#nBack')],['sel','選取',$('#nSel')],['z0','微調',$('#pvFine')],['z1','還原',document.querySelector('#pvB [data-pz="reset"]')],['z2','櫃外／櫃內',$('#pvIO')]);
+    P.push(['sb','狀態列',$('#sbar')]);
+    if(simOn())P.push(['jog','微調圓盤',$('#jog')],['stp','移動距離',$('#jogSide')]);
     return P.filter(r=>r[2]).map(r=>{const f=FL[r[0]]||{};return{k:r[0],n:r[1],el:r[2],nat:true,w:f.w||0,h:f.h||0}})}
   const L=[
   ['H','標題列',$('.side'),300,44,vw-306,t],
@@ -5176,7 +5173,9 @@ function flMk(){if($('#jogBtn'))return;const b=document.createElement('button');
 function jogCSync(){const j=$('#jog');if(!j)return;let c=$('#jogC');if(!c){c=document.createElement('button');c.id='jogC';c.setAttribute('aria-label','選取');j.appendChild(c);
     c.addEventListener('pointerdown',e=>e.stopPropagation());c.onclick=e=>{e.stopPropagation();$('#nSel').click()}}
   const n=$('#nSel');c.textContent=n.textContent;c.dataset.s=n.dataset.s||'';c.dataset.m=n.dataset.m||''}
-function flPlace(){flMk();const fk=LAND.matches?'L':'P';if(!flOn()||(flWas&&flWas!==fk)){if(flWas){flWas=false;flClear()}if(!flOn())return}flWas=fk;flSwap();try{jogCSync()}catch(_){}
+let flJT=false;
+function flPlace(){flMk();
+  {const h=document.documentElement;if(!LAND.matches&&flArr&&!h.classList.contains('jogOpen')&&npOn()){h.classList.add('jogOpen');flJT=true}else if(!flArr&&flJT){h.classList.remove('jogOpen');flJT=false}}const fk=LAND.matches?'L':'P';if(!flOn()||(flWas&&flWas!==fk)){if(flWas){flWas=false;flClear()}if(!flOn())return}flWas=fk;flSwap();try{jogCSync()}catch(_){}
   if(!LAND.matches){flItems().forEach(it=>{const f=FL[it.k]||{};if(isFinite(f.fx)&&isFinite(f.fy)&&f.w){setF(it.el,flGet(it),it)}else{FLP.forEach(k=>it.el.style.removeProperty(k));if(f.o&&f.o<1){flEls.add(it.el);it.el.style.setProperty('opacity',String(f.o),'important')}}});flOut();return}
   const jo=jogOpen()||flArr;$('#jog').classList.toggle('off',!jo);$('#jogSide').classList.toggle('off',!jo);
   flItems().forEach(it=>{const g=flGet(it);if(it.k==='P'){[$('#actm'),$('#lpan')].forEach(el=>{if(!el)return;flEls.add(el);const S=el.style,P=(k,v)=>S.setProperty(k,v,'important');P('position','fixed');P('left',g.x+'px');P('top',g.y+'px');P('right','auto');P('bottom','auto');P('margin','0');P('width','300px');P('height',g.h+'px')});return}
@@ -5425,6 +5424,67 @@ annCp.addEventListener('click',e=>{e.stopPropagation();const ix=annIdx();
 {const _r=render1;render1=function(){_r.apply(this,arguments);try{annCpSync()}catch(e){}}}
 window.addEventListener('resize',()=>{try{if(!annCp.hidden)annPlace()}catch(e){}});
 
+/* ===== (82) 狀態列：看得到、也能切換目前的工具、顏色、粗細和動作 ===== */
+(function(){const I=p=>`<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+  const TI={none:I('<path d="M6 3l12 9-6 1.500L9 20z"/>'),line:I('<path d="M5 19L19 5"/>'),arrow:I('<path d="M5 19L19 5M11 5h8v8"/>'),rect:I('<rect x="4" y="6" width="16" height="12"/>'),circle:I('<circle cx="12" cy="12" r="8"/>'),
+    pen:I('<path d="M3 17c3-9 6 4 9-3s4-3 9-7"/>'),hl:I('<path d="M14 3l7 7-9 9H8l-3 3H3l4-5v-4z"/>'),text:I('<path d="M5 5h14M12 5v15"/>'),dim:I('<path d="M3 12h18M3 8v8M21 8v8"/>'),
+    cab:I('<rect x="4" y="3" width="16" height="18"/><path d="M12 3v18M4 12h8"/>'),mark:I('<path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/>')};
+  const TN={none:'選取',line:'直線',arrow:'箭頭',rect:'方框',circle:'圓形',pen:'畫筆',hl:'螢光筆',text:'文字',dim:'量尺'};
+  const TOOLS=['none','pen','hl','line','arrow','rect','circle','dim','text'];
+  const b=document.createElement('div');b.id='sbar';b.setAttribute('role','toolbar');b.setAttribute('aria-label','狀態列');b.hidden=true;document.body.appendChild(b);
+  const pop=document.createElement('div');pop.id='sbPop';pop.hidden=true;document.body.appendChild(pop);
+  let open=null;
+  const curCol=()=>{const x=document.querySelector('#colors [aria-pressed="true"]');return x?x.dataset.col:color};
+  const lw=()=>$('#lwIn')?$('#lwIn').value:'2';
+  function act(){const isM=mode==='mark'||mode==='bg';
+    if(!isM){if(multi)return'多選 '+(msel?msel.length:0)+' 格';if(typeof cpd!=='undefined'&&cpd)return cpd.k==='mv'?'移動中':'預覽中';if(hsel)return'已選 線';if(selObj())return'已選 '+(view==='in'?'櫃內':'')+'格子';return'點格子或線來編輯'}
+    if(mode==='bg')return'底圖';
+    if(typeof amMulti!=='undefined'&&amMulti)return'多選 '+amsel.length+' 個';
+    if(mk.mv)return'移動中';
+    if(asel>=0&&st.ann[asel])return'已選 '+((typeof ANN_N!=='undefined'&&ANN_N[st.ann[asel].k])||'標註');
+    if(tool==='pen'||tool==='hl')return'手指直接畫';if(tool==='text')return'點一下放文字';if(tool&&TN[tool])return'拖曳畫'+TN[tool];
+    return'點標註選取'}
+  function setTool(t){if(mode!=='mark'){if(mode==='bg')setMode('edit');setCat('mark')}
+    if(t==='none'){if(tool){const x=document.querySelector(`#tools [data-tool="${tool}"]`);if(x)x.click()}}
+    else if(tool!==t){const x=document.querySelector(`#tools [data-tool="${t}"]`);if(x)x.click()}
+    try{amMulti=false;amsel=[]}catch(_){}render()}
+  function paint(){
+    if(!st||!npOn()||szw){b.hidden=true;pop.hidden=true;open=null;return}
+    const mk=mode==='mark'||mode==='bg',t=tool&&TN[tool]?tool:'none',key=[mode,t,curCol(),lw(),act(),open,view].join('|');
+    if(b.dataset.s!==key){b.dataset.s=key;
+      let h=mk?`<button data-sb="cab" aria-label="回到櫃體">${TI.cab}</button><i></i><button data-sb="tool" class="tl" aria-expanded="${open==='tool'}">${TI[t]}<span>${TN[t]}</span></button>`+
+          `<button data-sb="col" class="cl" aria-expanded="${open==='col'}" aria-label="顏色"><b style="--c:${curCol()}"></b></button>`+
+          `<button data-sb="lw" class="lw" aria-expanded="${open==='lw'}" aria-label="粗細"><em style="--w:${Math.min(6,1+(+lw())/2)}px"></em><span>${lw()}</span></button>`
+        :`<button data-sb="mark" aria-label="切到標註">${TI.mark}<span>標註</span></button>`;
+      h+=`<span class="ac">${act()}</span>`;b.innerHTML=h}
+    b.hidden=false;place();
+    if(!open||!mk){pop.hidden=true;open=mk?open:null;return}
+    let p='';
+    if(open==='tool')p=TOOLS.map(k=>`<button data-st="${k}" aria-pressed="${k===t}" aria-label="${TN[k]}">${TI[k]}<span>${TN[k]}</span></button>`).join('');
+    else if(open==='col')p=[...document.querySelectorAll('#colors [data-col]')].map(x=>`<button class="sw" data-sc="${x.dataset.col}" style="--c:${x.dataset.col}" aria-pressed="${x.dataset.col===curCol()}" aria-label="${x.getAttribute('aria-label')||'顏色'}"></button>`).join('');
+    else if(open==='lw')p=`<button data-sl="-1" aria-label="細一點">−</button><b>${lw()}</b><button data-sl="1" aria-label="粗一點">＋</button>`;
+    if(pop.dataset.s!==open+p){pop.dataset.s=open+p;pop.innerHTML=p;pop.className='p-'+open}
+    pop.hidden=false;
+    const r=b.getBoundingClientRect(),w=pop.offsetWidth;pop.style.top=Math.round(r.bottom+6)+'px';pop.style.left=Math.round(clamp(r.left+r.width/2-w/2,8,window.innerWidth-w-8))+'px'}
+  function place(){const L=LAND.matches;let t=60,l=null;
+    if(!L){const n=document.querySelector('.name');if(n){const r=n.getBoundingClientRect();if(r.height&&r.bottom<window.innerHeight*.4)t=Math.round(r.bottom+6)}}
+    else{t=6;const z=document.querySelector('#pvB'),r=z&&z.offsetParent?z.getBoundingClientRect():null;l=r&&r.width?Math.round(r.right+10):170}
+    b.style.setProperty('--sbT',t+'px');b.style.setProperty('--sbL',l==null?'50%':l+'px');b.classList.toggle('lft',l!=null)}
+  b.addEventListener('pointerdown',e=>e.stopPropagation());pop.addEventListener('pointerdown',e=>e.stopPropagation());
+  b.addEventListener('click',e=>{e.stopPropagation();const x=e.target.closest('[data-sb]');if(!x)return;const v=x.dataset.sb;
+    if(v==='mark'){setCat('mark');open=null}else if(v==='cab'){open=null;if(mode==='bg')setMode('edit');setCat('edit')}
+    else open=open===v?null:v;b.dataset.s='';paint()});
+  pop.addEventListener('click',e=>{e.stopPropagation();
+    const t=e.target.closest('[data-st]');if(t){open=null;setTool(t.dataset.st);paint();return}
+    const c=e.target.closest('[data-sc]');if(c){const x=document.querySelector(`#colors [data-col="${c.dataset.sc}"]`);if(x)x.click();open=null;render();paint();return}
+    const l=e.target.closest('[data-sl]');if(l){lwStep(+l.dataset.sl);render();paint();return}});
+  document.addEventListener('pointerdown',e=>{if(open&&!b.contains(e.target)&&!pop.contains(e.target)){open=null;b.dataset.s='';paint()}},true);
+  window.sbPaint=paint;
+  const _r=render1;render1=function(){_r.apply(this,arguments);try{paint()}catch(e){}};
+  {const _d=drawCur;drawCur=function(){_d.apply(this,arguments);try{paint()}catch(e){}}}
+  window.addEventListener('resize',()=>{try{b.dataset.s='';paint()}catch(e){}});
+  try{paint()}catch(e){}})();
+
 /* ===== (80) 抽屜選單：簡單、可以自己編輯、不放畫面上已經有的按鍵 ===== */
 (function(){const I=p=>`<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`,IC={
   mark:I('<path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/>'),
@@ -5467,11 +5527,11 @@ window.addEventListener('resize',()=>{try{if(!annCp.hidden)annPlace()}catch(e){}
     {k:'f-photo',m:'mark',ic:'photo',n:'底圖',f:'photo',on:()=>mode==='bg'},
     {k:'mredo',m:'mark',ic:'redo',n:'重做',run:()=>clk('#redo'),dis:()=>$('#redo').disabled}];
   const CK=Object.fromEntries(CAT.map(x=>[x.k,x]));
-  const DEF={cab:['mark','p3','cut'],mark:['f-photo','mredo']};
-  const OLD={cab:['size','cut','grid','p3'],mark:['t-move','f-pen','f-line','f-shape','t-text','t-dim','f-col','f-photo','clear']},OLD2={mark:['f-pen','f-line','f-shape','t-text','t-dim','f-col','f-photo']};
+  const DEF={cab:['p3','cut'],mark:['f-photo','mredo']};
+  const OLD={cab:['size','cut','grid','p3'],mark:['t-move','f-pen','f-line','f-shape','t-text','t-dim','f-col','f-photo','clear']};
   let L={cab:DEF.cab.slice(),mark:DEF.mark.slice()};
   try{const v=JSON.parse(localStorage.getItem('sc-cab-drw-items')||'null');if(v&&typeof v==='object')['cab','mark'].forEach(m=>{if(!Array.isArray(v[m]))return;
-    if(v[m].join()===OLD[m].join()||(OLD2[m]&&v[m].join()===OLD2[m].join()))return;/* 舊版預設：換成新的預設 */
+    if(v[m].join()===OLD[m].join()||v[m].join()===['mark','p3','cut'].join()||v[m].join()===['f-pen','f-line','f-shape','t-text','t-dim','f-col','f-photo'].join())return;/* 舊版預設：換成新的預設 */
     L[m]=v[m].map(k=>m==='mark'&&k==='redo'?'mredo':k).filter(k=>CK[k]&&CK[k].m===m)})}catch(e){}
   const keep=()=>{try{localStorage.setItem('sc-cab-drw-items',JSON.stringify(L))}catch(e){}};
   let pin=false;try{pin=localStorage.getItem('sc-cab-drw-pin')==='1'}catch(e){}
@@ -5480,10 +5540,10 @@ window.addEventListener('resize',()=>{try{if(!annCp.hidden)annPlace()}catch(e){}
   const body=d.querySelector('#drwBody'),fl=d.querySelector('#drwFly');
   const cm=()=>mode==='mark'||mode==='bg'?'mark':'cab';
   function arm(){clearTimeout(timer);if(!pin&&open&&!editing)timer=setTimeout(()=>{if(!pin&&!editing){open=false;fly=null;paint()}},6000)}
-  function place(){const h=document.querySelector('.name');let t=64;if(h){const r=h.getBoundingClientRect();if(r.height&&r.bottom<window.innerHeight*.4)t=Math.round(r.bottom+8)}if(LAND.matches)t=Math.max(t,48);d.style.setProperty('--drwT',t+'px')}
+  function place(){const h=document.querySelector('.name');let t=64;if(h){const r=h.getBoundingClientRect();if(r.height&&r.bottom<window.innerHeight*.4)t=Math.round(r.bottom+8)}if(LAND.matches)t=Math.max(t,48);{const sb=document.querySelector('#sbar');if(sb&&!sb.hidden&&!LAND.matches){const r=sb.getBoundingClientRect();if(r.height&&r.left<70)t=Math.max(t,Math.round(r.bottom+8))}}d.style.setProperty('--drwT',t+'px')}
   const B=(k,ic,lab,pr,cl,dis)=>`<button data-dk="${k}" aria-pressed="${!!pr}"${cl?` class="${cl}"`:''}${dis?' disabled':''}>${IC[ic]}${lab}</button>`;
   function paint(){place();
-    const m=cm();if(m!==lastMode){if(m==='cab'){open=false;fly=null;editing=false}lastMode=m}
+    const m=cm();if(m!==lastMode){if(m==='mark'&&lastMode==='cab'){open=true;fly=null;editing=false;arm()}lastMode=m}
     d.classList.toggle('open',open);document.documentElement.classList.toggle('drwMk',mode==='mark');
     if(!open){fl.classList.remove('on');return}
     let h='';
@@ -5522,53 +5582,6 @@ window.addEventListener('resize',()=>{try{if(!annCp.hidden)annPlace()}catch(e){}
   const _r=render1;render1=function(){_r.apply(this,arguments);try{paint()}catch(e){}};
   window.addEventListener('resize',()=>{try{place()}catch(e){}});
   paint();arm()})();
-
-/* ===== (82) 標註狀態列：目前的工具、顏色、粗細和動作，點了可以切換 ===== */
-(function(){const I=p=>`<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
-  const TL=[[null,'選取',I('<path d="M5 3l14 8-6 2-3 6z"/>')],['pen','畫筆',I('<path d="M3 17c3-9 6 4 9-3s4-3 9-7"/>')],['hl','螢光筆',I('<path d="M14 3l7 7-9 9H8l-3 3H3l4-5v-4z"/>')],
-    ['line','直線',I('<path d="M4 20L20 4"/>')],['arrow','箭頭',I('<path d="M4 20L20 4M12 4h8v8"/>')],['rect','方框',I('<rect x="4" y="6" width="16" height="12"/>')],
-    ['circle','圓形',I('<circle cx="12" cy="12" r="8"/>')],['dim','量尺',I('<path d="M3 12h18M3 8v8M21 8v8"/>')],['text','文字',I('<path d="M5 5h14M12 5v15"/>')]];
-  const TN=Object.fromEntries(TL.map(t=>[t[0]||'',t])),DO={pen:'手指直接畫',hl:'手指直接畫',line:'拖曳畫直線',arrow:'拖曳畫箭頭',rect:'拖曳畫方框',circle:'拖曳畫圓形',dim:'拖曳畫量尺',text:'點一下放文字'};
-  const b=document.createElement('div');b.id='mbar';b.hidden=true;b.innerHTML='<button id="mbT" aria-label="切換工具"></button><button id="mbC" aria-label="切換顏色"><i></i></button><span id="mbW"><button data-w="-1" aria-label="細一點">−</button><b></b><button data-w="1" aria-label="粗一點">＋</button></span><span id="mbA"></span>';
-  const pop=document.createElement('div');pop.id='mbPop';pop.hidden=true;document.body.appendChild(b);document.body.appendChild(pop);
-  let open=null;const cols=()=>[...document.querySelectorAll('#colors [data-col]')].map(x=>x.dataset.col);
-  const selA=()=>{try{return annIdx().map(i=>st.ann[i])}catch(e){return[]}};
-  const curCol=()=>{const a=selA();return a.length?a[0].c:color};
-  function act(){const a=selA();
-    if(amMulti)return a.length?`多選 ${a.length} 個`:'多選：點標註';
-    if(mk.mv)return'移動中';if(mk.end)return'改端點';if(mk.p1)return'按「選取」定終點';
-    if(asel>=0&&st.ann[asel])return'已選 '+((TN[st.ann[asel].k]||[])[1]||'標註');
-    return tool?DO[tool]||'':'點標註選取'}
-  function place(){const L=LAND.matches,nm=document.querySelector('.name');
-    if(L){const r=svg.getBoundingClientRect();b.style.left=Math.round(Math.max(r.left+150,8))+'px';b.style.transform='none';b.style.top='8px'}
-    else{let t=60;if(nm){const r=nm.getBoundingClientRect();if(r.height&&r.bottom<window.innerHeight*.4)t=Math.round(r.bottom+6)}b.style.left='50%';b.style.transform='translateX(-50%)';b.style.top=t+'px'}
-    if(!pop.hidden){const r=b.getBoundingClientRect(),a=open==='t'?$('#mbT'):$('#mbC'),ar=a.getBoundingClientRect();pop.style.top=Math.round(r.bottom+6)+'px';pop.style.left=Math.round(Math.max(8,Math.min(ar.left-6,window.innerWidth-pop.offsetWidth-8)))+'px'}}
-  function paint(){const on=!!st&&mode==='mark'&&!isFree()&&!szw&&!flArr;b.hidden=!on;if(!on){pop.hidden=true;open=null;return}
-    const t=TN[tool||'']||TN[''];const T=$('#mbT'),k=t[1];if(T.dataset.s!==k){T.dataset.s=k;T.innerHTML=t[2]+'<span>'+k+'</span><em>▾</em>'}
-    T.setAttribute('aria-expanded',open==='t');$('#mbC').setAttribute('aria-expanded',open==='c');$('#mbC i').style.background=curCol();
-    const w=$('#lwIn').value;$('#mbW b').textContent=w;$('#mbW [data-w="-1"]').disabled=+w<=1;$('#mbW [data-w="1"]').disabled=+w>=12;
-    $('#mbA').textContent=act();$('#mbA').classList.toggle('hot',!!tool||asel>=0||amMulti);
-    if(open==='t')pop.innerHTML='<div class="mg">'+TL.map(x=>`<button data-t="${x[0]||''}" aria-pressed="${(tool||null)===x[0]}">${x[2]}<span>${x[1]}</span></button>`).join('')+'</div>';
-    else if(open==='c'){const c=curCol();pop.innerHTML='<div class="mc">'+cols().map(x=>`<button data-c="${x}" style="--c:${x}" aria-pressed="${x===c}" aria-label="顏色"></button>`).join('')+'</div>'}
-    pop.hidden=!open;place()}
-  const stop=e=>e.stopPropagation();[b,pop].forEach(x=>{x.addEventListener('pointerdown',stop)});
-  b.addEventListener('click',e=>{stop(e);
-    if(e.target.closest('#mbT')){open=open==='t'?null:'t';paint();return}
-    if(e.target.closest('#mbC')){open=open==='c'?null:'c';paint();return}
-    const w=e.target.closest('[data-w]');if(w&&!w.disabled){open=null;lwStep(+w.dataset.w);render();return}
-    if(e.target.closest('#mbA')){open=null;paint()}});
-  pop.addEventListener('click',e=>{stop(e);
-    const t=e.target.closest('[data-t]');if(t){const v=t.dataset.t||null;open=null;mk.p1=mk.end=mk.mv=null;
-      if(v!==tool){if(v){const k=document.querySelector(`#tools [data-tool="${v}"]`);if(k)k.click()}else{const k=document.querySelector(`#tools [data-tool="${tool}"]`);if(k)k.click();tool=null}}
-      if(v){asel=-1;amMulti=false;amsel=[];toast({pen:'用手指直接在圖上畫',hl:'用手指直接在圖上畫',text:'點一下要放字的地方'}[v]||'在圖上按住拖曳，放開就畫好')}
-      render();return}
-    const c=e.target.closest('[data-c]');if(c){const v=c.dataset.c,ix=(()=>{try{return annIdx()}catch(_){return[]}})();open=null;
-      if(ix.length){push();ix.forEach(i=>{st.ann[i].c=v})}
-      const k0=asel;asel=-1;const k=document.querySelector(`#colors [data-col="${v}"]`);if(k)k.click();asel=k0;render();return}});
-  document.addEventListener('pointerdown',e=>{if(open&&!b.contains(e.target)&&!pop.contains(e.target)){open=null;paint()}},true);
-  const _r=render1;render1=function(){_r.apply(this,arguments);try{paint()}catch(e){}};
-  window.addEventListener('resize',()=>{try{paint()}catch(e){}});
-  try{paint()}catch(e){}})();
 })();
 </script>
 </body>
