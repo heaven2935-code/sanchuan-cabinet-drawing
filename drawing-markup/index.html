@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川圖面標記">
 <meta name="theme-color" content="#222c34">
-<title>三川工方｜繪圖與標記 V1.1</title>
+<title>三川工方｜繪圖與標記 V1.3</title>
 <style>
 :root{--night:#222c34;--night2:#303d47;--night3:#40515e;--clay:#a65c45;--lightclay:#eab39f;--paper:#fbfaf7;--cream:#eeeae4;--ink:#26313a;--muted:#6c7780;--aqua:#387b77;--line:#d4d9d8}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--night);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.35;cursor:default}input,select,textarea{min-width:0}input:focus,select:focus,textarea:focus{outline:2px solid #76b8b0;outline-offset:0}
@@ -43,23 +43,79 @@
 @media(max-width:650px){.main{grid-template-columns:52px minmax(0,1fr)}.tools{padding:3px 1px}.tool{width:49px;min-height:47px}#app.focus .main{grid-template-columns:52px minmax(0,1fr)}.side{position:absolute;z-index:31;top:auto;left:52px;right:0;bottom:0;height:min(60dvh,500px);width:auto;max-height:60dvh;border-radius:14px 14px 0 0;box-shadow:0 -5px 24px #1a293c40}.project{max-width:23vw}.btn{padding:5px 6px}.point-nudge{width:114px;height:114px;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(3,38px)}}
 @media(max-width:420px){.top{gap:3px}.top .project{width:78px;max-width:78px}.top .btn{font-size:11px;padding:5px}.bar{gap:3px}.pill{font-size:11px;padding:4px 5px}}
 
+/* V1.2 file-management UI, visible New entry even on iPhone portrait */
+.top{overflow-x:auto;overflow-y:hidden;scrollbar-width:none}.top::-webkit-scrollbar{display:none}
+.top .file-new{background:#316e69;border-color:#65a59c;color:#fff;font-weight:700}.top .file-new,.top #fileManager{flex:none}
+.file-overlay{position:fixed;inset:0;z-index:90;background:#0c1823ad;display:flex;align-items:center;justify-content:center;padding:calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom))}
+.file-window{width:min(550px,100%);max-height:min(82dvh,720px);display:flex;flex-direction:column;overflow:hidden;border-radius:15px;background:#faf9f6;box-shadow:0 15px 60px #0006;color:#2b3940}
+.file-head{display:flex;align-items:center;justify-content:space-between;padding:15px 17px 8px;font-size:18px}.file-head button{border:0;background:#e5ebe8;border-radius:50%;height:35px;width:35px;font-size:17px;color:#39544f}
+.file-note{padding:0 17px 12px;font-size:11px;color:#667575;line-height:1.6}
+.file-list{overflow:auto;min-height:80px;padding:0 13px 10px;overscroll-behavior:contain}.file-entry{display:flex;align-items:center;gap:8px;border:1px solid #dce3df;background:#fff;padding:10px;margin-bottom:7px;border-radius:9px}.file-entry.active{background:#edf8f3;border-color:#68a69d}.file-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.file-meta strong{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.file-meta small{color:#71807c;font-size:10px}.file-entry button{border:1px solid #b8cbc5;background:#eef5f1;padding:8px 9px;border-radius:7px;font-size:12px;color:#28615b;flex:none}.file-entry button.file-remove{border-color:#efd5ca;background:#fff1eb;color:#ad503e}
+.file-actions{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid #d9ded9;padding:12px 13px calc(12px + env(safe-area-inset-bottom))}.file-actions button{flex:1;min-width:115px}
+@media(max-width:650px){.top .logo{display:none}.top .project{width:92px;max-width:92px;flex:none}.top .grow{display:none}.top .file-new{order:-2}.top #fileManager{order:-1}.top{gap:4px}.top .btn{flex:none}.file-window{max-height:84dvh}}
+
+/* V1.3: all contextual toggles collected under Settings; editing actions in one menu. */
+.top{overflow:visible;position:relative;z-index:42}
+.action-holder{position:relative;flex:none}
+.action-toggle{min-width:74px}
+.action-popup{position:absolute;z-index:80;top:calc(100% + 7px);right:0;width:202px;max-height:min(70dvh,460px);overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;background:#fffefa;color:#233942;border:1px solid #b9c8c3;border-radius:11px;box-shadow:0 12px 33px #0005;overscroll-behavior:contain}
+.action-popup.hidden{display:none}
+.action-popup .popup-heading{grid-column:1/-1;font-size:11px;font-weight:700;color:#59716f;padding:7px 4px 3px;border-bottom:1px solid #e1e7e4}
+.action-entry{min-height:43px;padding:8px 5px;background:#f2f6f3;border:1px solid #d2ddda;border-radius:7px;color:#28514d;font-size:12px;text-align:center}
+.action-entry:disabled{opacity:.35}
+.tool-heading{font-size:10px;color:#b1bfbd;line-height:1.3;letter-spacing:.09em;padding:2px 0}
+.bar{overflow:visible;position:relative;z-index:37;flex-shrink:0}
+.draw-options{display:flex;align-items:center;gap:5px;flex:none;padding-right:8px;border-right:1px solid #c8d0cc}
+.bar-label{font-size:11px;font-weight:700;color:#58716d;white-space:nowrap}
+.bar .grow{min-width:5px}
+.settings-toggle{font-weight:700;border-color:#88b2a9;color:#225d57;white-space:nowrap;background:#eff7f4;flex:none}
+.settings-toggle[aria-expanded="true"]{background:#d6eae3}
+.quick-panel.settings-panel{left:auto;right:7px;top:48px;width:min(316px,calc(100% - 15px));max-height:min(75dvh,490px);overflow:auto;z-index:51}
+.settings-subheading{font-size:12px;font-weight:700;padding:10px 0 7px;color:#526b67}
+.switch-list{display:grid;gap:6px}
+.quick-panel .setting-switch{display:flex;align-items:center;justify-content:space-between;gap:7px;width:100%;text-align:left;padding:8px 9px;min-height:47px;background:#fafbf8;color:#273e39;border:1px solid #d7e2de;border-radius:8px}
+.setting-switch span:first-child{display:flex;flex-direction:column;gap:2px}
+.setting-switch b{font-size:12px}
+.setting-switch small{color:#778780;font-size:10px}
+.setting-switch .toggle-status{min-width:32px;text-align:center;font-weight:700;border-radius:12px;padding:3px 5px;background:#e6e9e7;color:#71817a}
+.quick-panel .setting-switch.sel{background:#eaf6f0;border-color:#73aba1}
+.setting-switch.sel .toggle-status{background:#387f75;color:#fff}
+#app.focus .action-popup{top:calc(100% + 4px)}
+@media(max-width:650px){.top{overflow:visible}.top .brand,.top .logo{display:none}.top .project{width:73px;max-width:73px}.top .btn{font-size:11px;padding:5px 6px}.action-popup{right:-10px;width:206px;max-height:57dvh}.draw-options{gap:3px;padding-right:4px}.bar{padding:3px 5px}.bar-label{font-size:10px}.quick-btn{min-width:30px}.settings-toggle{font-size:11px}}
+@media(max-width:380px){.top .project{width:62px;max-width:62px}.action-toggle{min-width:68px}.bar-label{display:none}.settings-toggle{padding:5px}}
 </style>
 </head>
 <body>
 <div id="app">
   <header class="top">
-    <div class="logo">川</div><div class="brand"><b>三川工方</b><small>繪圖與標記 V1.1</small></div>
-    <input id="filename" class="project" value="未命名圖面" aria-label="圖檔名稱">
+    <div class="logo">川</div><div class="brand"><b>三川工方</b><small>繪圖與標記 V1.3</small></div>
+    <button class="btn file-new" id="newDocument" title="建立全新圖面">＋ 新檔</button><button class="btn" id="fileManager" title="切換與管理已儲存圖面">檔案 ▾</button><input id="filename" class="project" value="未命名圖面" aria-label="圖檔名稱">
     <div class="grow"></div>
-    <button class="btn" id="undo" title="復原">↶ 復原</button><button class="btn" id="redo" title="重做">↷ 重做</button>
-    <button class="btn" id="fit" title="適合畫布">適屏</button><button class="btn" id="focus" title="隱藏設定面板">⛶ 滿版</button>
-    <button class="btn" id="toggleSide">屬性</button><button class="btn primary" id="share">↗ 分享</button>
+    <div class="action-holder">
+      <button class="btn action-toggle" id="actionMenu" aria-expanded="false" aria-controls="actionPopup">↶ 動作 ▾</button>
+      <div id="actionPopup" class="action-popup hidden" role="menu" aria-label="編輯動作">
+        <div class="popup-heading">編輯</div>
+        <button class="action-entry" id="undo" title="復原">↶ 復原</button>
+        <button class="action-entry" id="redo" title="重做">↷ 重做</button>
+        <button class="action-entry" id="delete" title="刪除選取物件">⌫ 刪除物件</button>
+        <button class="action-entry" id="duplicateTop">▢ 複製物件</button>
+        <div class="popup-heading">畫布與圖層</div>
+        <button class="action-entry" id="fit">⌗ 適屏顯示</button>
+        <button class="action-entry" id="focus">⛶ 滿版畫布</button>
+        <button class="action-entry" id="toggleSide">▤ 屬性／圖層</button>
+        <div class="popup-heading">匯入與匯出</div>
+        <button class="action-entry" id="bgBtn">▧ 匯入現場照片</button>
+        <button class="action-entry" id="exportMenu">⇩ 匯出圖檔／備份</button>
+      </div>
+    </div>
+    <button class="btn primary" id="share">↗ 分享</button>
   </header>
   <main class="main">
     <nav class="tools" id="tools">
       <button class="tool active" data-tool="select"><span class="ic">⌖</span>選取</button>
       <button class="tool" data-tool="pan"><span class="ic">✥</span>平移</button>
       <div class="tool-rule"></div>
+      <div class="tool-heading">繪圖</div>
       <button class="tool" data-menu="lines"><span class="ic">╱</span>線條 ▾</button>
       <button class="tool" data-menu="curves"><span class="ic">◯</span>圓弧 ▾</button>
       <button class="tool" data-menu="triangles"><span class="ic">△</span>三角形 ▾</button>
@@ -70,16 +126,14 @@
     </nav>
     <div class="center">
       <div class="bar">
-        <button class="pill quick-btn" id="openColor" title="線條顏色"><span class="dot" id="colorDot" style="background:#a65c45"></span>顏色</button>
-        <button class="pill quick-btn" id="openWidth" title="線條粗細"><span id="widthPreview"></span><span id="widthLabel">2px</span></button>
-        <button class="pill quick-btn" id="openUnit" title="繪圖單位"><span id="unitLabel">mm ▾</span></button>
-        <button class="pill active" id="grid" title="顯示格線">格線✓</button>
-        <button class="pill" id="guideH" title="水平輔助線">水平</button>
-        <button class="pill" id="guideV" title="垂直輔助線">垂直</button>
-        <button class="pill active" id="snap">吸附✓</button>
-        <button class="pill active" id="angleSnap">角吸✓</button>
-        <button class="pill" id="endCont" style="display:none">結束連續線</button><button class="pill" id="delete" style="color:#a45143">刪除</button>
-        <div class="grow"></div><button class="pill" id="bgBtn">照片</button><button class="pill" id="exportMenu">匯出</button>
+        <div class="draw-options" aria-label="繪圖樣式">
+          <span class="bar-label">繪圖</span>
+          <button class="pill quick-btn" id="openColor" title="繪圖顏色"><span class="dot" id="colorDot" style="background:#a65c45"></span>顏色</button>
+          <button class="pill quick-btn" id="openWidth" title="線條粗細"><span id="widthPreview"></span><span id="widthLabel">2px</span></button>
+        </div>
+        <button class="pill" id="endCont" style="display:none">結束連續線</button>
+        <div class="grow"></div>
+        <button class="pill settings-toggle" id="settingsMenu" title="單位、格線與輔助吸附設定" aria-expanded="false" aria-controls="quickPanel">⚙ 設定 <span id="settingsSummary">公分</span> ▾</button>
         <input type="file" id="bgInput" accept="image/*" class="hidden"><input type="file" id="importInput" accept=".json,application/json" class="hidden">
       </div>
       <div id="toolPicker" class="tool-picker hidden" role="menu"></div>
@@ -97,6 +151,18 @@
     </div>
     <aside class="side closed" id="side"><div id="inspector"></div></aside>
   </main>
+  <div id="fileDialog" class="file-overlay hidden" role="dialog" aria-modal="true" aria-label="檔案管理">
+    <section class="file-window">
+      <div class="file-head"><strong>我的圖面</strong><button id="closeFiles" aria-label="關閉檔案管理">✕</button></div>
+      <div class="file-note">每個檔案獨立保存在目前的瀏覽器。重要圖面請另存 JSON 備份。</div>
+      <div id="fileList" class="file-list"></div>
+      <div class="file-actions">
+        <button class="action" id="newFromFiles">＋ 建立新圖</button>
+        <button class="action ghost" id="openJsonFromFiles">匯入 JSON</button>
+        <button class="action ghost" id="exportJsonFromFiles">備份目前圖面</button>
+      </div>
+    </section>
+  </div>
 </div>
 <script>
 'use strict';
@@ -107,38 +173,130 @@ const tools={select:'選取',pan:'平移',line:'直線',continuous:'連續線',d
 const categories={lines:[['line','直線'],['continuous','連續直線'],['dashed','虛線'],['arrow','箭頭'],['dimension','尺寸標記']],curves:[['circle','圓形'],['semi','半圓'],['quarter','四分之一圓'],['ellipse','橢圓']],triangles:[['triangle','一般三角形'],['rightTriangle','直角三角形'],['isoTriangle','等腰三角形']],polygons:[['polygon','正五角形',5],['polygon','正六角形',6],['polygon','正七角形',7],['polygon','正八角形',8]]};
 const groupNames={lines:'線條種類',curves:'圓形與橢圓',triangles:'三角形',polygons:'正多角形'};
 let activeMenu=null;
-const defaults={tool:'select',unit:'mm',pen:'#a65c45',width:2,grid:true,snap:true,step:1,len:600,angle:0,minor:300,triSecond:450,triAngle:65,sides:6,guideH:false,guideV:false,angleSnap:true,font:'sans',fontSize:36,bold:false,text:'文字標記',side:false};
+const defaults={tool:'select',unit:'cm',pen:'#a65c45',width:2,grid:true,snap:true,step:1,len:600,angle:0,minor:300,triSecond:450,triAngle:65,sides:6,guideH:false,guideV:false,angleSnap:true,font:'sans',fontSize:36,bold:false,text:'文字標記',side:false};
 const state={...defaults,items:[],bg:null,selected:null,point:1,anchor:null,cursor:{x:0,y:0},view:{cx:1200,cy:750,scale:0.27},pending:null,preview:null,gesture:null,project:'未命名圖面'};
 const undo=[],redo=[];let seq=Date.now(),toastTimer=null,autosaveTimer=null,lastView={},vWidth=1,vHeight=1;
+const DOC_INDEX_KEY="sanchuan-markup-doc-index-v1", DOC_PREFIX="sanchuan-markup-doc-v1-", DOC_ACTIVE_KEY="sanchuan-markup-active-doc-v1", LEGACY_KEY="sanchuan-markup-v1";
+let documents=[],activeDocId=null;
 const fmtNum=n=>Number(Number(n).toFixed(3));const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);const toUnit=v=>fmtNum(v/MM[state.unit]);const toMM=v=>Number(v||0)*MM[state.unit];
 const display=v=>`${toUnit(v)} ${names[state.unit]}`;
 const status=s=>$('status').textContent=s;function toast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600)}
 function clone(o){return JSON.parse(JSON.stringify(o))}
-function snapshot(){return JSON.stringify({items:state.items,bg:state.bg,project:state.project})}
+function snapshot(){return JSON.stringify({items:state.items,bg:state.bg,project:state.project,unit:state.unit})}
 function checkpoint(){undo.push(snapshot());if(undo.length>80)undo.shift();redo.length=0}
 function applySnapshot(s){try{const x=JSON.parse(s);state.items=x.items||[];state.bg=x.bg||null;state.project=x.project||'未命名圖面';state.selected=null;state.anchor=null;$('filename').value=state.project;render();store()}catch(e){toast('無法還原')} }
 function undoIt(){if(!undo.length){toast('沒有可復原動作');return}redo.push(snapshot());applySnapshot(undo.pop());toast('已復原')}
 function redoIt(){if(!redo.length){toast('沒有可重做動作');return}undo.push(snapshot());applySnapshot(redo.pop());toast('已重做')}
-function store(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{try{localStorage.setItem('sanchuan-markup-v1',snapshot());$('statusSave').textContent='✓ 已自動保存'}catch(e){$('statusSave').textContent='⚠ 空間不足，請匯出 JSON'}},160)}
-function readStored(){try{const raw=localStorage.getItem('sanchuan-markup-v1');if(raw){const data=JSON.parse(raw);if(Array.isArray(data.items)){state.items=data.items;state.bg=data.bg||null;state.project=data.project||state.project;$('filename').value=state.project;status('已載入上次圖面')}}}catch(e){}}
+function makeDocId(){return 'd'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
+function setDocData(data){state.items=Array.isArray(data?.items)?clone(data.items):[];state.bg=data?.bg||null;state.project=data?.project||'未命名圖面';state.unit=(data?.unit&&MM[data.unit])?data.unit:defaults.unit;state.selected=null;state.point=0;state.anchor=null;state.pending=null;state.preview=null;state.gesture=null;undo.length=0;redo.length=0;$('filename').value=state.project}
+function saveCurrentDocument(){
+ if(!activeDocId)return false;
+ try{
+  state.project=$('filename').value.trim()||'未命名圖面';
+  const info=documents.find(d=>d.id===activeDocId);
+  if(!info)throw Error('圖檔識別遺失');
+  // Save body first; only acknowledge success after all metadata is written.
+  localStorage.setItem(DOC_PREFIX+activeDocId,snapshot());
+  info.name=state.project;info.updatedAt=Date.now();
+  localStorage.setItem(DOC_INDEX_KEY,JSON.stringify(documents));
+  localStorage.setItem(DOC_ACTIVE_KEY,activeDocId);
+  $('statusSave').textContent='✓ 已自動保存';return true;
+ }catch(e){$('statusSave').textContent='⚠ 無法儲存，請匯出 JSON';return false}
+}
+function store(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(saveCurrentDocument,180)}
+function flushSave(){clearTimeout(autosaveTimer);return saveCurrentDocument()}
+function readStored(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(DOC_INDEX_KEY)||'[]');
+  documents=Array.isArray(saved)?saved.filter(d=>d&&typeof d.id==='string'):[];
+  const active=localStorage.getItem(DOC_ACTIVE_KEY);
+  const candidate=documents.find(d=>d.id===active)||documents[0];
+  if(candidate){const raw=localStorage.getItem(DOC_PREFIX+candidate.id);if(raw){const data=JSON.parse(raw);if(Array.isArray(data.items)){activeDocId=candidate.id;setDocData(data);status('已載入上次圖面');return}}}
+  // Preserve the pre-V1.2 auto-saved canvas as its own document, without erasing legacy data.
+  const legacy=localStorage.getItem(LEGACY_KEY);
+  if(legacy){const data=JSON.parse(legacy);if(Array.isArray(data.items)){
+    activeDocId=makeDocId();documents.push({id:activeDocId,name:data.project||'原有圖面',updatedAt:Date.now()});setDocData(data);
+    if(saveCurrentDocument())status('舊版圖面已保留並轉入檔案清單');return;
+  }}
+ }catch(e){$('statusSave').textContent='⚠ 無法讀取儲存紀錄'}
+ // First visit or no saved content: create a blank document.
+ activeDocId=makeDocId();documents.push({id:activeDocId,name:state.project,updatedAt:Date.now()});saveCurrentDocument();
+}
+function openFiles(){if(!flushSave()){toast('目前無法儲存，請先匯出 JSON 備份');return}closeMenus();$('fileDialog').classList.remove('hidden');renderFileList()}
+function closeFiles(){$('fileDialog').classList.add('hidden')}
+function renderFileList(){const entries=documents.slice().sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));$('fileList').innerHTML=entries.map(d=>`<div class="file-entry ${d.id===activeDocId?'active':''}"><div class="file-meta"><strong>${esc(d.name||'未命名圖面')}</strong><small>${d.id===activeDocId?'目前編輯中 · ':''}${new Date(d.updatedAt||Date.now()).toLocaleString('zh-TW')}</small></div><button data-open-doc="${esc(d.id)}" ${d.id===activeDocId?'disabled':''}>${d.id===activeDocId?'已開啟':'開啟'}</button><button class="file-remove" data-delete-doc="${esc(d.id)}" ${documents.length<=1?'disabled':''}>刪除</button></div>`).join('')}
+function newDocument(){
+ const defaultName='未命名圖面 '+(documents.length+1);
+ const name=prompt('新圖面名稱',defaultName);if(name===null)return;
+ if(!flushSave()){alert('目前圖面無法自動保存。請先匯出 JSON 備份，再建立新檔。');return}
+ const id=makeDocId();activeDocId=id;state.unit=defaults.unit;state.items=[];state.bg=null;state.project=name.trim()||defaultName;state.selected=null;state.anchor=null;state.pending=null;state.preview=null;state.gesture=null;state.point=0;undo.length=0;redo.length=0;$('filename').value=state.project;
+ documents.push({id,name:state.project,updatedAt:Date.now()});
+ setTool('select');closeFiles();fit();render();saveCurrentDocument();toast('已建立新圖面：'+state.project);
+}
+function openDocument(id){if(id===activeDocId){closeFiles();return}const doc=documents.find(d=>d.id===id);if(!doc)return;
+ if(!flushSave()){alert('目前圖面無法自動儲存，請先備份 JSON。');return}
+ try{const raw=localStorage.getItem(DOC_PREFIX+id);if(!raw)throw Error('檔案資料不存在');const data=JSON.parse(raw);if(!Array.isArray(data.items))throw Error('圖面格式不正確');activeDocId=id;setDocData(data);setTool('select');fit();render();closeFiles();localStorage.setItem(DOC_ACTIVE_KEY,id);toast('已開啟：'+state.project)}catch(e){toast('檔案開啟失敗：'+e.message)}
+}
+function deleteDocument(id){const doc=documents.find(d=>d.id===id);if(!doc||documents.length<=1)return;
+ if(!confirm('確定刪除「'+(doc.name||'未命名圖面')+'」？此動作無法復原，請先備份 JSON。'))return;
+ if(!flushSave()){toast('目前無法儲存，請先匯出 JSON');return}
+ try{localStorage.removeItem(DOC_PREFIX+id);documents=documents.filter(d=>d.id!==id);
+  if(id===activeDocId){const other=documents[0];const body=JSON.parse(localStorage.getItem(DOC_PREFIX+other.id));activeDocId=other.id;setDocData(body);setTool('select');fit()}
+  localStorage.setItem(DOC_INDEX_KEY,JSON.stringify(documents));localStorage.setItem(DOC_ACTIVE_KEY,activeDocId);render();renderFileList();toast('已刪除圖面');
+ }catch(e){toast('刪除圖面失敗：'+e.message)}
+}
 const current=()=>state.items.find(i=>i.id===state.selected);const pts=i=>i?.points||[];
 function make(type,points){return {id:'s'+(++seq),type,points:clone(points),stroke:state.pen,width:state.width,visible:true,text:state.text,font:state.font,fontSize:state.fontSize,bold:state.bold,angle:0,minor:state.minor,sides:state.sides}}
 function setTool(tool){if(!tools[tool])return;state.tool=tool;state.pending=null;state.preview=null;state.gesture=null;if(tool!=='continuous')state.anchor=null;document.querySelectorAll('[data-tool]').forEach(el=>el.classList.toggle('active',el.dataset.tool===tool));document.querySelectorAll('[data-menu]').forEach(el=>el.classList.toggle('active',!!categories[el.dataset.menu]?.some(row=>row[0]===tool&&(tool!=='polygon'||Number(row[2])===state.sides))));closeMenus();$('hint').innerHTML=`<b>${tools[tool]}</b> ${hintText(tool)}`;updateTip();render()}
 function hintText(tool){return ({select:'點圖形選取，點端點後可微調；按住圖形可移動',pan:'手指拖曳移動畫布',line:'按住拖曳畫線，或分兩次點取起點、終點',continuous:'先點一下設定起點，再點下一點或輸入角度與長度',dashed:'拖曳畫虛線，或點兩個點定位',arrow:'拖曳畫箭頭，或點兩個點定位',dimension:'拖曳或點兩點，自動產生尺寸標記',circle:'從圓心拖曳決定半徑',semi:'先設定圓心和半徑，可再修改起始角度',quarter:'先設定圓心和半徑，可再修改起始角度',triangle:'拖曳畫一般三角形，點屬性可編輯兩邊長與夾角',rightTriangle:'拖曳畫直角三角形，固定夾角90°',isoTriangle:'拖曳畫等腰三角形，兩腰相等',polygon:'拖曳畫正多角形，也可用屬性輸入邊長',ellipse:'從中心拖曳長軸，短軸可輸入',pen:'直接用手指書寫，之後可選取移動',text:'右側輸入文字後，點擊畫布放置'})[tool]||''}
 function updateTip(){const el=$('modeTip');if(state.tool==='continuous'&&state.anchor){el.classList.remove('hidden');el.textContent=`連續線下一段起點：${fmtNum(state.anchor.x)}, ${fmtNum(state.anchor.y)} mm`}else el.classList.add('hidden')}
 
-function closeMenus(){activeMenu=null;$('toolPicker').classList.add('hidden');$('quickPanel').classList.add('hidden')}
+function closeMenus(){activeMenu=null;$('toolPicker').classList.add('hidden');$('quickPanel').classList.add('hidden');$('actionPopup').classList.add('hidden');$('actionMenu').setAttribute('aria-expanded','false');$('settingsMenu').setAttribute('aria-expanded','false')}
 function pickCategory(key){const p=$('toolPicker');$('quickPanel').classList.add('hidden');if(activeMenu===key&&!p.classList.contains('hidden')){closeMenus();return}activeMenu=key;let html=`<div class="tool-picker-title">${groupNames[key]}<button data-close-menu="1">×</button></div>`;html+=categories[key].map(([tool,label,sides])=>`<button data-pick-tool="${tool}" ${sides?`data-pick-sides="${sides}"`:''} class="${tool===state.tool&&(tool!=='polygon'||Number(sides)===state.sides)?'sel':''}">${label}</button>`).join('');p.innerHTML=html;p.classList.remove('hidden')}
-function syncQuick(){if(!$('colorDot'))return;$('colorDot').style.background=state.pen;$('widthPreview').style.height=Math.max(2,Math.min(16,state.width))+'px';$('widthLabel').textContent=state.width+'px';$('unitLabel').textContent=({mm:'mm',cm:'cm',chi:'台尺'})[state.unit]+' ▾';$('guideH').classList.toggle('active',state.guideH);$('guideV').classList.toggle('active',state.guideV);$('angleSnap').classList.toggle('active',state.angleSnap);$('snap').classList.toggle('active',state.snap)}
-function openQuick(type){const e=$('quickPanel');activeMenu=null;$('toolPicker').classList.add('hidden');if(!e.classList.contains('hidden')&&e.dataset.type===type){e.classList.add('hidden');return}e.dataset.type=type;let content='';if(type==='color')content=`<h3>線條顏色 <button data-close-quick="1">×</button></h3><div class="row"><input id="quickColor" type="color" value="${state.pen}" style="width:95px;height:45px;padding:2px"><span>新線與所選線同步調色</span></div>`;if(type==='width')content=`<h3>線條粗細 <button data-close-quick="1">×</button></h3><div class="row"><label class="field">粗細 (px)<input id="quickWidth" type="range" min="0.5" max="22" step="0.5" value="${state.width}"></label><input id="quickWidthNum" type="number" min="0.5" max="30" step="0.5" value="${state.width}" style="width:70px"></div>`;if(type==='unit')content=`<h3>繪圖單位 <button data-close-quick="1">×</button></h3><div class="unit-grid" style="margin-top:9px">${Object.keys(MM).map(k=>`<button data-quick-unit="${k}" class="${state.unit===k?'sel':''}">${names[k]}</button>`).join('')}</div><p class="tiny">單位只影響數值顯示，圖形比例不變。</p>`;e.innerHTML=content;e.classList.remove('hidden')}
+function syncQuick(){
+ if(!$('colorDot'))return;
+ $('colorDot').style.background=state.pen;
+ $('widthPreview').style.height=Math.max(2,Math.min(16,state.width))+'px';
+ $('widthLabel').textContent=state.width+'px';
+ $('settingsSummary').textContent=names[state.unit];
+ const panel=$('quickPanel');
+ panel.querySelectorAll('[data-setting-toggle]').forEach(b=>{
+   const key=b.dataset.settingToggle,on=Boolean(state[key]);b.classList.toggle('sel',on);
+   b.setAttribute('aria-pressed',String(on));const t=b.querySelector('.toggle-status');if(t)t.textContent=on?'開':'關';
+ });
+ panel.querySelectorAll('[data-quick-unit]').forEach(b=>b.classList.toggle('sel',b.dataset.quickUnit===state.unit));
+ $('settingsMenu').setAttribute('aria-expanded',String(!panel.classList.contains('hidden')&&panel.dataset.type==='settings'));
+}
+function openQuick(type){
+ const el=$('quickPanel'),wasOpen=!el.classList.contains('hidden')&&el.dataset.type===type;
+ closeMenus();if(wasOpen)return;
+ el.dataset.type=type;el.classList.toggle('settings-panel',type==='settings');
+ let content='';
+ if(type==='color')content=`<h3>繪圖顏色 <button data-close-quick="1">×</button></h3><div class="row"><input id="quickColor" type="color" value="${state.pen}" style="width:95px;height:45px;padding:2px"><span>新圖形與所選物件同步調色</span></div>`;
+ if(type==='width')content=`<h3>線條粗細 <button data-close-quick="1">×</button></h3><div class="row"><label class="field">粗細 (px)<input id="quickWidth" type="range" min="0.5" max="22" step="0.5" value="${state.width}"></label><input id="quickWidthNum" type="number" min="0.5" max="30" step="0.5" value="${state.width}" style="width:70px"></div>`;
+ if(type==='settings'){
+  const toggle=(key,label,hint)=>`<button class="setting-switch ${state[key]?'sel':''}" data-setting-toggle="${key}" aria-pressed="${Boolean(state[key])}"><span><b>${label}</b><small>${hint}</small></span><span class="toggle-status">${state[key]?'開':'關'}</span></button>`;
+  content=`<h3>單位與繪圖輔助 <button data-close-quick="1">×</button></h3>
+  <div class="settings-subheading">長度單位</div><div class="unit-grid">${Object.keys(MM).map(k=>`<button data-quick-unit="${k}" class="${state.unit===k?'sel':''}">${names[k]}</button>`).join('')}</div>
+  <div class="tiny">預設公分；變更單位只影響輸入和顯示，不改變線條實際尺寸。</div>
+  <div class="settings-subheading">顯示與吸附開關</div><div class="switch-list">
+  ${toggle('grid','格線','顯示畫布格線')}
+  ${toggle('guideH','水平輔助線','穿過選取端點或游標')}
+  ${toggle('guideV','垂直輔助線','穿過選取端點或游標')}
+  ${toggle('angleSnap','角度吸附','接近 0°、45°、90° 等角度時對齊')}
+  ${toggle('snap','格點吸附','以 10 mm 增量吸附座標')}
+  </div>`;
+ }
+ el.innerHTML=content;el.classList.remove('hidden');syncQuick();
+}
 function snapAnglePoint(start,end){if(!state.angleSnap)return end;const dx=end.x-start.x,dy=end.y-start.y,len=Math.hypot(dx,dy);if(len<1)return end;const a=Math.atan2(dy,dx);const nearest=Math.round(a/(Math.PI/4))*Math.PI/4;let diff=Math.abs(a-nearest);diff=Math.min(diff,Math.PI*2-diff);if(diff>Math.PI/20)return end;return roundSnap({x:start.x+len*Math.cos(nearest),y:start.y+len*Math.sin(nearest)})}
 
 function canvasSize(){return {w:Math.max(1,$('stage').clientWidth),h:Math.max(1,$('stage').clientHeight)}}
 function updateViewport(){const {w,h}=canvasSize(),scale=state.view.scale;vWidth=w/scale;vHeight=h/scale;lastView={x:state.view.cx-vWidth/2,y:state.view.cy-vHeight/2,w:vWidth,h:vHeight};svg.setAttribute('viewBox',`${lastView.x} ${lastView.y} ${vWidth} ${vHeight}`);$('paper').setAttribute('x',lastView.x);$('paper').setAttribute('y',lastView.y);$('paper').setAttribute('width',vWidth);$('paper').setAttribute('height',vHeight);$('gridBg').setAttribute('x',lastView.x);$('gridBg').setAttribute('y',lastView.y);$('gridBg').setAttribute('width',vWidth);$('gridBg').setAttribute('height',vHeight);$('gridBg').style.display=state.grid?'':'none';$('zoomText').textContent=Math.round(scale/.27*100)+'%'}
 function screenToWorld(ev){const r=svg.getBoundingClientRect();return {x:lastView.x+(ev.clientX-r.left)/r.width*lastView.w,y:lastView.y+(ev.clientY-r.top)/r.height*lastView.h}}
 const roundSnap=p=>state.snap?{x:Math.round(p.x/10)*10,y:Math.round(p.y/10)*10}:{x:fmtNum(p.x),y:fmtNum(p.y)};
-function updateCursor(p){state.cursor=clone(p);$('coords').textContent=`X ${fmtNum(p.x)}　Y ${fmtNum(p.y)} mm`}
+function updateCursor(p){state.cursor=clone(p);$('coords').textContent=`X ${toUnit(p.x)}　Y ${toUnit(p.y)} ${names[state.unit]}`}
 function isTriangle(type){return ['triangle','rightTriangle','isoTriangle'].includes(type)}
 function triangleBuilt(a,b,type,prior){const angle=(type==='rightTriangle'?90:type==='isoTriangle'?60:65)*Math.PI/180;const len=distance(a,b)||400,ratio=type==='rightTriangle'?.75:type==='isoTriangle'?1:.85;const dx=b.x-a.x,dy=b.y-a.y,theta=Math.atan2(dy,dx)+angle;return [clone(a),clone(b),{x:fmtNum(a.x+len*ratio*Math.cos(theta)),y:fmtNum(a.y+len*ratio*Math.sin(theta))}]}
 function polygonVertices(s){const c=s.points[0],edge=s.points[1];if(!edge)return [];const n=Math.max(3,Math.min(12,Number(s.sides)||6)),radius=distance(c,edge),start=Math.atan2(edge.y-c.y,edge.x-c.x);return Array.from({length:n},(_,i)=>({x:c.x+radius*Math.cos(start+i*Math.PI*2/n),y:c.y+radius*Math.sin(start+i*Math.PI*2/n)}))}
@@ -162,7 +320,7 @@ const field=(label,val,prop,type='number',opts='')=>`<label class="field">${labe
 const select=(label,val,prop,choices)=>`<label class="field">${label}<select data-prop="${prop}">${choices.map(([k,v])=>`<option value="${k}" ${String(k)===String(val)?'selected':''}>${v}</option>`).join('')}</select></label>`;
 function getDims(s){const p=s.points;if(isTriangle(s.type)){return {a:distance(p[0],p[1]),b:distance(p[0],p[2]),angle:Math.atan2(Math.sin(Math.atan2(p[2].y-p[0].y,p[2].x-p[0].x)-Math.atan2(p[1].y-p[0].y,p[1].x-p[0].x)),Math.cos(Math.atan2(p[2].y-p[0].y,p[2].x-p[0].x)-Math.atan2(p[1].y-p[0].y,p[1].x-p[0].x)))*180/Math.PI};}return {length:p.length>1?distance(p[0],p[1]):0}}
 function dialHTML(){const a=Number(state.angle)||0,rad=a*Math.PI/180,xx=55+39*Math.cos(rad),yy=55+39*Math.sin(rad);return `<div class="dial-wrap"><svg class="dial" id="dial" viewBox="0 0 110 110"><circle cx="55" cy="55" r="46" fill="#fafbf9" stroke="#b9cec7" stroke-width="2"/><circle cx="55" cy="55" r="36" fill="none" stroke="#e7eeeb" stroke-dasharray="2 6"/><path d="M 55 8 V 18 M 55 92 V 102 M 8 55 H 18 M 92 55 H 102" stroke="#879e94" stroke-width="2"/><line x1="55" y1="55" x2="${xx}" y2="${yy}" stroke="#a65c45" stroke-width="3" stroke-linecap="round"/><circle cx="${xx}" cy="${yy}" r="5" fill="#a65c45"/><circle cx="55" cy="55" r="4" fill="#2d6e69"/><text x="55" y="31" text-anchor="middle" font-size="9" fill="#60756c">上</text><text x="78" y="58" text-anchor="middle" font-size="9" fill="#60756c">右</text><text x="55" y="86" text-anchor="middle" font-size="9" fill="#60756c">下</text><text x="31" y="58" text-anchor="middle" font-size="9" fill="#60756c">左</text></svg><div class="angle-details">${field('角度（°）',a,'angle','number','step="1"')}<div class="tiny">點選圓盤決定下一段線的方向。<br>0° 向右，90° 向下。</div></div></div>`}
-function renderInspector(){const s=current(),type=state.tool;let html=`<div class="section"><h3>繪圖基準 <small>實際尺寸</small></h3><div class="unit-grid">${Object.keys(MM).map(k=>`<button data-unit="${k}" class="${state.unit===k?'sel':''}">${names[k]}</button>`).join('')}</div><div class="tiny" style="margin-top:7px">1 台尺＝303 mm。切換單位不會改變原本圖面實際尺寸。</div></div>`;
+function renderInspector(){const s=current(),type=state.tool;let html='';
 html+=`<div class="section"><h3>長度與方向 <small>${state.tool==='continuous'?'連續繪線':'數值繪線'}</small></h3><div class="row">${field('線長／'+names[state.unit],toUnit(state.len),'len','number','min="0.01" step="any"')}</div>${dialHTML()}<div class="row" style="margin-top:8px"><button class="action ghost" data-dir="up">↑ 上</button><button class="action ghost" data-dir="left">← 左</button><button class="action ghost" data-dir="right">右 →</button><button class="action ghost" data-dir="down">下 ↓</button></div><button class="action wide" id="addByNumber">${state.tool==='continuous'?'從目前端點延伸一段':'依游標位置新增直線'}</button><div class="tiny" style="margin-top:6px">連續線可選方向或輸入角度與線長；圓弧／三角形／多角形可從定位點依數值建立。</div></div>`;
 if(state.tool==='ellipse')html+=`<div class="section"><h3>橢圓建立尺寸</h3><div class="row">${field('長軸全長／'+names[state.unit],toUnit(state.len*2),'newMajor','number','min="0.01" step="any"')}${field('短軸全長／'+names[state.unit],toUnit(state.minor*2),'newMinor','number','min="0.01" step="any"')}</div><div class="tiny">設定後按「依游標位置新增」，或直接拖曳長軸再編輯短軸。</div></div>`;
 if(state.tool==='polygon')html+=`<div class="section"><h3>正多角形建立尺寸</h3><div class="row">${select('邊數',state.sides,'newSides',[[5,'五角形'],[6,'六角形'],[7,'七角形'],[8,'八角形']])}${field('外接半徑／'+names[state.unit],toUnit(state.len),'newPolyRadius','number','min="0.01" step="any"')}</div><div class="row">${field('等邊邊長／'+names[state.unit],toUnit(2*state.len*Math.sin(Math.PI/state.sides)),'newPolyEdge','number','min="0.01" step="any"')}</div></div>`;
@@ -256,15 +414,26 @@ function svgExport(){download(new Blob([svgExportString()],{type:'image/svg+xml;
 function toPng(){return new Promise((res,rej)=>{const text=svgExportString(),obj=URL.createObjectURL(new Blob([text],{type:'image/svg+xml;charset=utf-8'})),img=new Image();img.onload=()=>{const b=bounds(),scale=Math.min(3,1800/Math.max(1,b.w),1600/Math.max(1,b.h));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(b.w*scale));c.height=Math.max(1,Math.round(b.h*scale));const ctx=c.getContext('2d');ctx.fillStyle='#fffefb';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(obj);c.toBlob(blob=>blob?res(blob):rej(Error('PNG 產生失敗')),'image/png')};img.onerror=()=>{URL.revokeObjectURL(obj);rej(Error('圖片格式錯誤'))};img.src=obj})}
 async function pngExport(){try{download(await toPng(),safeName()+'.png');toast('已輸出 PNG')}catch(e){toast('PNG 匯出失敗：'+e.message)}}
 async function share(){try{const blob=await toPng(),file=new File([blob],safeName()+'.png',{type:'image/png'});if(navigator.share&&navigator.canShare?.({files:[file]})){await navigator.share({title:safeName(),files:[file]});status('已呼叫 iPhone 分享選單')}else{download(blob,file.name);toast('此瀏覽器不支援檔案分享，已下載 PNG')}}catch(e){if(e.name!=='AbortError')toast('無法分享：'+e.message)}}
-function importJson(file){if(!file)return;file.text().then(s=>{const data=JSON.parse(s);if(!Array.isArray(data.items))throw Error('非圖面 JSON');checkpoint();state.items=data.items.filter(o=>o&&typeof o.id==='string'&&Array.isArray(o.points));state.bg=data.bg||null;state.project=data.project||'匯入圖面';if(MM[data.unit])state.unit=data.unit;$('filename').value=state.project;state.selected=null;fit();render();store();toast('圖面已載入')}).catch(e=>toast('JSON 載入失敗：'+e.message))}
+function importJson(file){if(!file)return;file.text().then(s=>{
+ const data=JSON.parse(s);if(!Array.isArray(data.items))throw Error('非圖面 JSON');
+ if(!flushSave())throw Error('現有圖面無法保存，請先匯出備份');
+ activeDocId=makeDocId();documents.push({id:activeDocId,name:data.project||'匯入圖面',updatedAt:Date.now()});
+ data.items=data.items.filter(o=>o&&typeof o.id==='string'&&Array.isArray(o.points));setDocData(data);closeFiles();setTool('select');fit();render();saveCurrentDocument();toast('已另開圖檔：'+state.project);
+}).catch(e=>toast('JSON 載入失敗：'+e.message))}
 // App click delegation
 $('tools').addEventListener('click',e=>{const m=e.target.closest('[data-menu]');if(m){pickCategory(m.dataset.menu);return}const t=e.target.closest('[data-tool]');if(t)setTool(t.dataset.tool)});
 $('toolPicker').addEventListener('click',e=>{if(e.target.closest('[data-close-menu]')){closeMenus();return}const b=e.target.closest('[data-pick-tool]');if(b){if(b.dataset.pickSides)state.sides=Number(b.dataset.pickSides);setTool(b.dataset.pickTool);toast('已選擇 '+(b.textContent||''))}});
 $('pointNudge').addEventListener('click',e=>{const step=e.target.closest('[data-cycle-step]');if(step){e.preventDefault();const all=[1,5,10,50];state.step=all[(all.indexOf(state.step)+1)%all.length];render();return}const b=e.target.closest('[data-float-nudge]');if(b){e.preventDefault();nudge(b.dataset.floatNudge)}});
-$('openColor').onclick=()=>openQuick('color');$('openWidth').onclick=()=>openQuick('width');$('openUnit').onclick=()=>openQuick('unit');
-$('quickPanel').addEventListener('click',e=>{if(e.target.closest('[data-close-quick]')){closeMenus();return}const b=e.target.closest('[data-quick-unit]');if(b){state.unit=b.dataset.quickUnit;syncQuick();render();closeMenus()}});
+$('openColor').onclick=()=>openQuick('color');$('openWidth').onclick=()=>openQuick('width');$('settingsMenu').onclick=()=>openQuick('settings');
+$('quickPanel').addEventListener('click',e=>{
+ if(e.target.closest('[data-close-quick]')){closeMenus();return}
+ const unit=e.target.closest('[data-quick-unit]');
+ if(unit){state.unit=unit.dataset.quickUnit;syncQuick();updateCursor(state.cursor);render();store();return}
+ const toggle=e.target.closest('[data-setting-toggle]');
+ if(toggle){const key=toggle.dataset.settingToggle;if(['grid','guideH','guideV','angleSnap','snap'].includes(key)){state[key]=!state[key];syncQuick();drawOnly()}return}
+});
 $('quickPanel').addEventListener('input',e=>{if(e.target.id==='quickColor')handleProp('pen',e.target.value);if(e.target.id==='quickWidth'||e.target.id==='quickWidthNum'){handleProp('width',e.target.value);const sib=e.target.id==='quickWidth'?'quickWidthNum':'quickWidth';if($(sib))$(sib).value=state.width}syncQuick()});
-$('guideH').onclick=()=>{state.guideH=!state.guideH;syncQuick();drawOnly()};$('guideV').onclick=()=>{state.guideV=!state.guideV;syncQuick();drawOnly()};$('angleSnap').onclick=()=>{state.angleSnap=!state.angleSnap;syncQuick();drawOnly()};
+
 $('inspector').addEventListener('click',e=>{const b=e.target.closest('button');if(!b){const row=e.target.closest('[data-layer]');if(row){state.selected=row.dataset.layer;state.point=0;render()}return}if(b.dataset.unit){state.unit=b.dataset.unit;render();return}if(b.dataset.point!=null){setPoint(Number(b.dataset.point));return}if(b.dataset.nudge){nudge(b.dataset.nudge);return}if(b.dataset.dir){addByNumber(b.dataset.dir);return}if(b.dataset.layerVisible){const o=state.items.find(x=>x.id===b.dataset.layerVisible);if(o){checkpoint();o.visible=o.visible===false;render();store()}return}if(b.dataset.layerUp){reorder(b.dataset.layerUp,1);return}if(b.dataset.layerDown){reorder(b.dataset.layerDown,-1);return}if(b.dataset.layer){state.selected=b.dataset.layer;state.point=0;render();return}
 const row=b.closest('[data-layer]');if(row){state.selected=row.dataset.layer;state.point=0;render();return}
 const id=b.id;if(id==='addByNumber')addByNumber();if(id==='deleteSel')del();if(id==='duplicate')duplicate();if(id==='layerUp'&&current())reorder(current().id,1);if(id==='clear'){if(state.items.length&&confirm('確定清空所有圖形？此操作可以復原。')){checkpoint();state.items=[];state.selected=null;state.anchor=null;render();store()}}if(id==='removeBg'&&state.bg){checkpoint();state.bg=null;render();store()}if(id==='shareSide')share();if(id==='png')pngExport();if(id==='svgExport')svgExport();if(id==='jsonExport')saveJson();if(id==='jsonImport')$('importInput').click()});
@@ -272,22 +441,35 @@ $('inspector').addEventListener('change',e=>{const key=e.target.dataset.prop;if(
 $('inspector').addEventListener('pointerdown',e=>{if(e.target.closest('#dial')){e.preventDefault();setDirection(e)}},{passive:false});
 svg.addEventListener('pointerdown',onDown);svg.addEventListener('pointermove',onMove);svg.addEventListener('pointerup',onUp);svg.addEventListener('pointercancel',e=>{state.gesture=null;state.preview=null;render()});
 $('undo').onclick=undoIt;$('redo').onclick=redoIt;$('fit').onclick=fit;$('delete').onclick=del;$('endCont').onclick=()=>{state.anchor=null;state.pending=null;render();toast('連續線已結束')};
-$('grid').onclick=()=>{state.grid=!state.grid;$('grid').textContent=state.grid?'格線 ✓':'格線';$('grid').classList.toggle('active',state.grid);drawOnly()};
-$('snap').onclick=()=>{state.snap=!state.snap;$('snap').textContent=state.snap?'吸附 10mm ✓':'不吸附';$('snap').classList.toggle('active',state.snap)};
+
 $('zoomIn').onclick=()=>zoom(1.25);$('zoomOut').onclick=()=>zoom(.8);
 $('focus').onclick=()=>{closeMenus();$('app').classList.toggle('focus');$('focus').textContent=$('app').classList.contains('focus')?'↩ 返回':'⛶ 滿版';setTimeout(drawOnly,0)};
 $('toggleSide').onclick=()=>{closeMenus();if($('app').classList.contains('focus')){$('app').classList.remove('focus');$('focus').textContent='⛶ 滿版'}const s=$('side');s.classList.toggle('closed');state.side=!s.classList.contains('closed');setTimeout(drawOnly,0)};
 $('bgBtn').onclick=()=>$('bgInput').click();$('bgInput').onchange=e=>{setBg(e.target.files[0]);e.target.value=''};$('importInput').onchange=e=>{importJson(e.target.files[0]);e.target.value=''};
 $('share').onclick=share;
+$('actionMenu').onclick=()=>{const wasOpen=!$('actionPopup').classList.contains('hidden');closeMenus();if(!wasOpen){$('actionPopup').classList.remove('hidden');$('actionMenu').setAttribute('aria-expanded','true')}};
+$('actionPopup').addEventListener('click',e=>{if(e.target.closest('button')){$('actionPopup').classList.add('hidden');$('actionMenu').setAttribute('aria-expanded','false')}});
+$('duplicateTop').onclick=duplicate;
+$('newDocument').onclick=newDocument;
+$('fileManager').onclick=openFiles;
+$('closeFiles').onclick=closeFiles;
+$('newFromFiles').onclick=newDocument;
+$('openJsonFromFiles').onclick=()=>$('importInput').click();
+$('exportJsonFromFiles').onclick=saveJson;
+$('fileDialog').addEventListener('click',e=>{if(e.target===$('fileDialog')){closeFiles();return}const opener=e.target.closest('[data-open-doc]');if(opener){openDocument(opener.dataset.openDoc);return}const del=e.target.closest('[data-delete-doc]');if(del){deleteDocument(del.dataset.deleteDoc)}});
 $('exportMenu').onclick=()=>{closeMenus();const s=$('side');if($('app').classList.contains('focus')){$('app').classList.remove('focus');$('focus').textContent='⛶ 滿版'}s.classList.remove('closed');renderInspector();s.scrollTop=s.scrollHeight;setTimeout(drawOnly,0)};
 $('filename').addEventListener('change',()=>{state.project=$('filename').value;store()});
+document.addEventListener('pointerdown',e=>{
+ if(!$('actionPopup').classList.contains('hidden')&&!e.target.closest('.action-holder')){$('actionPopup').classList.add('hidden');$('actionMenu').setAttribute('aria-expanded','false')}
+ if(!$('quickPanel').classList.contains('hidden')&&!e.target.closest('#quickPanel')&&!e.target.closest('#settingsMenu')&&!e.target.closest('#openColor')&&!e.target.closest('#openWidth')){$('quickPanel').classList.add('hidden');$('settingsMenu').setAttribute('aria-expanded','false')}
+});
 window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redoIt():undoIt()}else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();del()}else if(e.key==='Escape'){closeMenus();$('side').classList.add('closed');state.anchor=null;state.pending=null;state.selected=null;render()}});
 const resize=()=>{document.documentElement.style.setProperty('--real-height',(window.visualViewport?.height||window.innerHeight)+'px');drawOnly()};window.addEventListener('resize',resize);window.visualViewport?.addEventListener('resize',resize);
 // Prevent two-finger Safari page zoom and add zoom-on-pinch directly to the SVG.
 let pinch=null;svg.addEventListener('touchstart',e=>{if(e.touches.length===2){const a=e.touches[0],b=e.touches[1];pinch={d:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),scale:state.view.scale};state.gesture=null;state.preview=null}},{passive:true});svg.addEventListener('touchmove',e=>{if(pinch&&e.touches.length===2){e.preventDefault();const a=e.touches[0],b=e.touches[1];state.view.scale=Math.max(.035,Math.min(3,pinch.scale*Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)/Math.max(1,pinch.d)));drawOnly()}},{passive:false});svg.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=null});
 readStored();resize();fit();render();
 // Non-production smoke-test interface, read-only references except operations through public UI.
-window.__SC_TEST={get:()=>({items:clone(state.items),tool:state.tool,selected:state.selected,anchor:clone(state.anchor),unit:state.unit}),setTool,addByNumber,undo:undoIt,redo:redoIt,render,svgExportString};
+window.__SC_TEST={get:()=>({items:clone(state.items),tool:state.tool,selected:state.selected,anchor:clone(state.anchor),unit:state.unit,project:state.project,activeDocId,documents:clone(documents)}),setTool,addByNumber,undo:undoIt,redo:redoIt,render,svgExportString,newDocument,openDocument,saveCurrentDocument};
 })();
 </script>
 </body>
