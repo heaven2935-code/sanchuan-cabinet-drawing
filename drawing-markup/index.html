@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川圖面標記">
 <meta name="theme-color" content="#222c34">
-<title>三川工方｜繪圖與標記 V1.7</title>
+<title>三川工方｜繪圖與標記 V1.8</title>
 <style>
 :root{--night:#222c34;--night2:#303d47;--night3:#40515e;--clay:#a65c45;--lightclay:#eab39f;--paper:#fbfaf7;--cream:#eeeae4;--ink:#26313a;--muted:#6c7780;--aqua:#387b77;--line:#d4d9d8}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--night);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.35;cursor:default}input,select,textarea{min-width:0}input:focus,select:focus,textarea:focus{outline:2px solid #76b8b0;outline-offset:0}
@@ -295,12 +295,88 @@ body.numeric-keyboard #app .hint,body.numeric-keyboard #app .hud{display:none}
  #app .numeric-text-button,#app .numeric-direction-row button,#app .numeric-primary,#app .numeric-close,
  #app .numeric-small{height:33px;min-height:33px}#app .numeric-direction-row button{font-size:17px}}
 
+
+/* V1.8: actual non-overlapping toolbar: occupy layout space, NEVER float above artwork. */
+#app > .numeric-panel {
+  position:relative !important;
+  flex:0 0 auto;
+  order:0;
+  left:auto !important;right:auto !important;top:auto !important;bottom:auto !important;
+  margin:0;
+  width:100% !important;
+  max-width:100% !important;
+  max-height:none !important;
+  overflow:visible;
+  border:0;
+  border-bottom:1px solid #90aaa4;
+  border-radius:0;
+  box-shadow:none;
+  background:#f7f9f6;
+  z-index:39;
+  backdrop-filter:none;
+}
+#app > .numeric-panel .numeric-strip {
+  display:flex;align-items:center;
+  height:49px;min-height:49px;
+  padding:4px max(5px,env(safe-area-inset-right)) 4px max(5px,env(safe-area-inset-left));
+  gap:4px;
+}
+#app > .numeric-panel .numeric-scroll {flex:1;overflow-x:auto;overflow-y:hidden;min-width:0}
+#app > .numeric-panel .numeric-fixed{display:flex;align-items:center;gap:5px;flex:none;white-space:nowrap}
+#app > .numeric-panel .numeric-fixed .numeric-field input{width:65px}
+#app > .numeric-panel .numeric-fixed .numeric-field-angle input{width:49px}
+@media(max-width:650px){#app > .numeric-panel .numeric-fixed{gap:3px}
+ #app > .numeric-panel .numeric-fixed .numeric-field{font-size:10px;gap:2px}
+ #app > .numeric-panel .numeric-fixed .numeric-field input{width:54px;height:32px;font-size:14px}
+ #app > .numeric-panel .numeric-fixed .numeric-field-angle input{width:39px}}
+
+#app > .numeric-panel .numeric-primary {min-width:54px;height:36px}
+#app > .numeric-panel .numeric-close {height:36px}
+#app > .numeric-panel .numeric-angle-dial {position:absolute;top:calc(100% + 3px);bottom:auto;left:50%;right:auto;transform:translateX(-50%);z-index:65;}
+#app > .numeric-panel.collapsed {width:100% !important;min-height:36px}
+#app > .numeric-panel.collapsed .numeric-strip{height:36px;min-height:36px;justify-content:flex-start;}
+#app > .numeric-panel.collapsed .numeric-small{height:29px}
+#app > .numeric-panel.collapsed .numeric-fixed{display:none}
+/* Settings are directly under the file bar; draw tools stay anchored to bottom. */
+#app > .settings-top-bar {
+  display:flex;align-items:center;gap:3px;flex:0 0 auto;
+  height:52px;min-height:52px;min-width:0;width:100%;
+  background:#eaf1ee;border-bottom:1px solid #a3b8b0;
+  padding:2px max(4px,env(safe-area-inset-right)) 2px max(4px,env(safe-area-inset-left));
+  z-index:38;
+}
+#app .settings-top-bar .setting-tools{
+  display:flex;flex:1;min-width:0;align-items:center;gap:4px;white-space:nowrap;
+  padding:0 4px;overflow-x:auto;overflow-y:hidden;touch-action:pan-x;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+#app .settings-top-bar .setting-tools::-webkit-scrollbar{display:none}
+#app .settings-top-bar .tool{
+  display:flex;flex:none;align-items:center;justify-content:center;flex-direction:column;
+  min-width:55px;width:55px;height:44px;min-height:44px;gap:1px;padding:2px 3px;
+  border-radius:7px;border:1px solid #c4d6d0;color:#365954;background:#f9fcfa;font-size:10px;
+}
+#app .settings-top-bar .tool .ic{font-size:17px;line-height:1}
+#app .settings-top-bar .tool.sel{border-color:#38877b;background:#d1e9e1;color:#14594e;font-weight:700}
+#app .top-strip-caption{font-size:11px;font-weight:800;white-space:nowrap;color:#54736c;padding-left:5px}
+#app .top-strip-close{width:28px;height:30px;flex:none;border:1px solid #a8bcb4;background:#fafbf9;border-radius:7px;font-size:19px;color:#375952}
+/* No forced overlay during numeric keyboard input. The app's visual-viewport height shrinks,
+   and the numeric row remains above the canvas even while typing. */
+body.numeric-keyboard #app > .numeric-panel {display:block !important;top:auto !important;bottom:auto !important;}
+body.numeric-keyboard #app > .settings-top-bar{display:none !important}
+body.numeric-keyboard #app .main{min-height:0;flex:1}
+@media(max-height:440px){
+ #app > .numeric-panel .numeric-strip{height:43px;min-height:43px;padding-top:2px;padding-bottom:2px}
+ #app > .settings-top-bar{height:45px;min-height:45px}
+ #app .settings-top-bar .tool{height:39px;min-height:39px}
+}
+
 </style>
 </head>
 <body>
 <div id="app">
   <header class="top">
-    <div class="logo">川</div><div class="brand"><b>三川工方</b><small>繪圖與標記 V1.6</small></div>
+    <div class="logo">川</div><div class="brand"><b>三川工方</b><small>繪圖與標記 V1.8</small></div>
     <input id="filename" class="project" value="未命名圖面" aria-label="圖檔名稱" title="點此更改圖面名稱">
     <div class="grow"></div>
     <button class="btn settings-icon" id="settingsMenu" title="單位、格線與輔助設定" aria-label="繪圖設定" aria-expanded="false" aria-controls="quickPanel">⚙<span id="settingsSummary" class="sr-only">公分</span></button>
@@ -321,6 +397,41 @@ body.numeric-keyboard #app .hint,body.numeric-keyboard #app .hud{display:none}
       </div>
     </div>
   </header>
+  <div id="settingsTopBar" class="settings-top-bar hidden" aria-label="畫布設定列">
+    <span class="top-strip-caption">設定</span>
+      <nav class="setting-tools" id="settingsTools" aria-label="繪圖設定">
+        <button class="tool setting-tool" id="unitCycle"><span class="ic">㎝</span><span id="unitCycleLabel">公分</span></button>
+        <button class="tool setting-tool" data-dock-setting="grid"><span class="ic">▦</span><span>格線</span></button>
+        <button class="tool setting-tool" data-dock-setting="guideH"><span class="ic">━</span><span>水平</span></button>
+        <button class="tool setting-tool" data-dock-setting="guideV"><span class="ic">┃</span><span>垂直</span></button>
+        <button class="tool setting-tool" data-dock-setting="angleSnap"><span class="ic">∠</span><span>角吸</span></button>
+        <button class="tool setting-tool" data-dock-setting="snap"><span class="ic">⊞</span><span>吸附</span></button>
+      </nav>
+    <button type="button" id="closeTopSettings" class="top-strip-close" aria-label="收起設定">×</button>
+  </div>
+        <section id="numericPanel" class="numeric-panel hidden" role="group" aria-label="不遮擋畫布的數值畫線工具列">
+          <div class="numeric-strip">
+            <button id="numericMinimize" class="numeric-small" aria-label="收合或展開數值工具列" title="縮成圖示">−</button>
+            <div class="numeric-fixed" aria-label="常用數值輸入">
+              <label class="numeric-field" for="numericLength">長 <span id="numericUnitLabel">cm</span><input id="numericLength" type="number" step="any" min="0.001" value="120" inputmode="decimal"></label>
+              <label class="numeric-field numeric-field-angle" for="numericAngle">角 °<input id="numericAngle" type="number" step="any" value="0" inputmode="decimal"></label>
+            </div>
+            <div id="numericBody" class="numeric-scroll">
+              <button id="numericAngleDialButton" class="numeric-icon-button" aria-label="角度規" title="角度規">∠</button>
+              <div class="numeric-direction-row" role="group" aria-label="畫線方向">
+                <button data-numeric-dir="up" aria-label="向上" title="向上">↑</button><button data-numeric-dir="left" aria-label="向左" title="向左">←</button><button data-numeric-dir="right" class="active" aria-label="向右" title="向右">→</button><button data-numeric-dir="down" aria-label="向下" title="向下">↓</button>
+              </div>
+              <label class="numeric-check" title="新線段從上一段終點接續"><input id="numericContinuous" type="checkbox" checked>連續</label>
+              <button id="numericPickOrigin" class="numeric-text-button" title="從目前準星或選取端點開始">起點</button>
+              <button id="numericEnd" class="numeric-text-button" title="結束數值畫線">結束</button>
+            </div>
+            <button id="numericCommit" class="numeric-primary" title="依輸入長度與方向畫一段線">＋畫</button>
+            <button id="numericClose" class="numeric-close" aria-label="關閉數值畫線">×</button>
+          </div>
+          <span id="numericDirectionLabel" class="numeric-visually-hidden" aria-hidden="true">right →</span>
+          <span id="numericOrigin" class="numeric-visually-hidden" aria-hidden="true">起點：畫布中心</span>
+          <div id="numericAngleDial" class="numeric-angle-dial hidden" aria-label="角度規，點擊圓盤選角度"><svg viewBox="0 0 120 120" id="numericDialSvg"><circle cx="60" cy="60" r="51" fill="#f8fbf8" stroke="#87a6a0" stroke-width="2"/><path d="M60 9V111 M9 60H111" stroke="#c8d6d3" stroke-width="1"/><line id="numericDialRay" x1="60" y1="60" x2="102" y2="60" stroke="#aa624c" stroke-width="4"/><circle cx="60" cy="60" r="4" fill="#346d67"/><text x="60" y="20" text-anchor="middle" font-size="9">270°</text><text x="104" y="56" text-anchor="middle" font-size="9">0°</text><text x="60" y="106" text-anchor="middle" font-size="9">90°</text><text x="18" y="56" text-anchor="middle" font-size="9">180°</text></svg></div>
+        </section>
   <main class="main">
     <div class="center">
       <input type="file" id="bgInput" accept="image/*" class="hidden"><input type="file" id="importInput" accept=".json,application/json" class="hidden">
@@ -344,27 +455,7 @@ body.numeric-keyboard #app .hint,body.numeric-keyboard #app .hud{display:none}
             <span></span><button data-cursor-dir="down">↓</button><span></span>
           </div><button id="cursorConfirm" class="cursor-confirm">◎ 準星選取</button>
         </div>
-        <section id="numericPanel" class="numeric-panel hidden" role="group" aria-label="單排數值畫線控制器">
-          <div class="numeric-strip">
-            <button id="numericMinimize" class="numeric-small" aria-label="收合或展開數值工具列" title="縮成圖示">−</button>
-            <div id="numericBody" class="numeric-scroll">
-              <label class="numeric-field" for="numericLength">長 <span id="numericUnitLabel">cm</span><input id="numericLength" type="number" step="any" min="0.001" value="120" inputmode="decimal"></label>
-              <label class="numeric-field numeric-field-angle" for="numericAngle">角 °<input id="numericAngle" type="number" step="any" value="0" inputmode="decimal"></label>
-              <button id="numericAngleDialButton" class="numeric-icon-button" aria-label="角度規" title="角度規">∠</button>
-              <div class="numeric-direction-row" role="group" aria-label="畫線方向">
-                <button data-numeric-dir="up" aria-label="向上" title="向上">↑</button><button data-numeric-dir="left" aria-label="向左" title="向左">←</button><button data-numeric-dir="right" class="active" aria-label="向右" title="向右">→</button><button data-numeric-dir="down" aria-label="向下" title="向下">↓</button>
-              </div>
-              <label class="numeric-check" title="新線段從上一段終點接續"><input id="numericContinuous" type="checkbox" checked>連續</label>
-              <button id="numericPickOrigin" class="numeric-text-button" title="從目前準星或選取端點開始">起點</button>
-              <button id="numericEnd" class="numeric-text-button" title="結束數值畫線">結束</button>
-            </div>
-            <button id="numericCommit" class="numeric-primary" title="依輸入長度與方向畫一段線">＋畫</button>
-            <button id="numericClose" class="numeric-close" aria-label="關閉數值畫線">×</button>
-          </div>
-          <span id="numericDirectionLabel" class="numeric-visually-hidden" aria-hidden="true">right →</span>
-          <span id="numericOrigin" class="numeric-visually-hidden" aria-hidden="true">起點：畫布中心</span>
-          <div id="numericAngleDial" class="numeric-angle-dial hidden" aria-label="角度規，點擊圓盤選角度"><svg viewBox="0 0 120 120" id="numericDialSvg"><circle cx="60" cy="60" r="51" fill="#f8fbf8" stroke="#87a6a0" stroke-width="2"/><path d="M60 9V111 M9 60H111" stroke="#c8d6d3" stroke-width="1"/><line id="numericDialRay" x1="60" y1="60" x2="102" y2="60" stroke="#aa624c" stroke-width="4"/><circle cx="60" cy="60" r="4" fill="#346d67"/><text x="60" y="20" text-anchor="middle" font-size="9">270°</text><text x="104" y="56" text-anchor="middle" font-size="9">0°</text><text x="60" y="106" text-anchor="middle" font-size="9">90°</text><text x="18" y="56" text-anchor="middle" font-size="9">180°</text></svg></div>
-        </section><div class="hud"><div class="coords" id="coords">X 0　Y 0 mm</div><div class="zoom"><button id="zoomOut">−</button><span id="zoomText">100%</span><button id="zoomIn">＋</button></div></div><div id="toast"></div>
+<div class="hud"><div class="coords" id="coords">X 0　Y 0 mm</div><div class="zoom"><button id="zoomOut">−</button><span id="zoomText">100%</span><button id="zoomIn">＋</button></div></div><div id="toast"></div>
       </div>
       <div class="foot"><span id="status">準備完成｜選擇下方工具開始繪圖</span><span id="statusSave">自動保存至此瀏覽器</span></div>
     </div>
@@ -388,14 +479,6 @@ body.numeric-keyboard #app .hint,body.numeric-keyboard #app .hud{display:none}
         <button class="tool end-cont" id="endCont" style="display:none"><span class="ic">✓</span><span>結束連線</span></button>
         <button class="tool style-tool" id="openColor" title="繪圖顏色"><span class="color-disc" id="colorDot" style="background:#a65c45"></span><span>顏色</span></button>
         <button class="tool style-tool" id="openWidth" title="線條粗細"><span class="line-glyph" id="widthPreview"></span><span id="widthLabel">2px</span></button>
-      </nav>
-      <nav class="setting-tools hidden" id="settingsTools" aria-label="繪圖設定">
-        <button class="tool setting-tool" id="unitCycle"><span class="ic">㎝</span><span id="unitCycleLabel">公分</span></button>
-        <button class="tool setting-tool" data-dock-setting="grid"><span class="ic">▦</span><span>格線</span></button>
-        <button class="tool setting-tool" data-dock-setting="guideH"><span class="ic">━</span><span>水平</span></button>
-        <button class="tool setting-tool" data-dock-setting="guideV"><span class="ic">┃</span><span>垂直</span></button>
-        <button class="tool setting-tool" data-dock-setting="angleSnap"><span class="ic">∠</span><span>角吸</span></button>
-        <button class="tool setting-tool" data-dock-setting="snap"><span class="ic">⊞</span><span>吸附</span></button>
       </nav>
     </div>
     <div class="action-dock" aria-label="固定動作列">
@@ -458,14 +541,14 @@ function shapeIcon(tool,n){
 function syncDock(){
  $('drawingTab').classList.toggle('active',toolTab==='draw');$('settingsTab').classList.toggle('active',toolTab==='settings');
  $('drawingTab').setAttribute('aria-selected',String(toolTab==='draw'));$('settingsTab').setAttribute('aria-selected',String(toolTab==='settings'));
- $('tools').classList.toggle('hidden',toolTab!=='draw');$('settingsTools').classList.toggle('hidden',toolTab!=='settings');
+ $('tools').classList.remove('hidden');$('settingsTopBar').classList.toggle('hidden',toolTab!=='settings');$('settingsTools').classList.remove('hidden');
  $('unitCycleLabel').textContent=names[state.unit];
  $('settingsTools').querySelectorAll('[data-dock-setting]').forEach(b=>{const yes=!!state[b.dataset.dockSetting];b.classList.toggle('sel',yes);b.setAttribute('aria-pressed',String(yes))});
  $('selectAction').classList.toggle('on',state.tool==='select'&&!$('cursorPad').classList.contains('hidden'));syncNumeric();
 }
 function restoreDrawingTools(){if($('tools').innerHTML!==toolHomeMarkup)$('tools').innerHTML=toolHomeMarkup;activeMenu=null;syncToolbarActive()}
 function syncToolbarActive(){document.querySelectorAll('[data-tool]').forEach(el=>el.classList.toggle('active',el.dataset.tool===state.tool));document.querySelectorAll('[data-menu]').forEach(el=>el.classList.toggle('active',!!categories[el.dataset.menu]?.some(row=>row[0]===state.tool&&(state.tool!=='polygon'||Number(row[2])===state.sides))))}
-function selectDrawingTab(tab){toolTab=tab;if(tab==='settings')restoreDrawingTools();closeMenus();syncDock();syncNumeric()}
+function selectDrawingTab(tab){toolTab=(tab==='settings'&&toolTab==='settings')?'draw':tab;if(toolTab==='settings')restoreDrawingTools();closeMenus();syncDock();syncNumeric();requestAnimationFrame(drawOnly)}
 function placeCursorOverlay(){const el=$('precisionCrosshair');if($('cursorPad').classList.contains('hidden')||state.tool!=='select'){el.classList.add('hidden');return}const c=canvasSize(),x=(state.cursor.x-lastView.x)/lastView.w*c.w,y=(state.cursor.y-lastView.y)/lastView.h*c.h;el.style.left=x+'px';el.style.top=y+'px';el.classList.toggle('hidden',x<-30||x>c.w+30||y<-30||y>c.h+30);$('cursorStep').textContent=state.step+' mm'}
 function ensureCursorVisible(){const c=canvasSize();let x=(state.cursor.x-lastView.x)/lastView.w*c.w,y=(state.cursor.y-lastView.y)/lastView.h*c.h;if(x<25||x>c.w-25||y<25||y>c.h-25){state.view.cx=state.cursor.x;state.view.cy=state.cursor.y;}drawOnly()}
 function cursorMode(force){if(state.tool!=='select')setTool('select');const open=typeof force==='boolean'?force:$('cursorPad').classList.contains('hidden');$('cursorPad').classList.toggle('hidden',!open);if(open){const selected=current();const target=selected?.points?.[Math.min(state.point,selected.points.length-1)]||{x:state.view.cx,y:state.view.cy};updateCursor(target);toast('在浮動控制器拖曳準星，按 ◎ 選取；可拖動控制器位置')}syncDock();drawOnly()}
@@ -862,6 +945,7 @@ $('numericPanel').addEventListener('click',e=>{const btn=e.target.closest('[data
 $('numericAngleDialButton').onclick=()=>$('numericAngleDial').classList.toggle('hidden');
 $('numericDialSvg').addEventListener('pointerdown',e=>{e.preventDefault();const r=$('numericDialSvg').getBoundingClientRect(),x=e.clientX-(r.left+r.width/2),y=e.clientY-(r.top+r.height/2);numericSetAngle(Math.round((Math.atan2(y,x)*180/Math.PI+360)%360))});
 $('drawingTab').onclick=()=>selectDrawingTab('draw');$('settingsTab').onclick=()=>selectDrawingTab('settings');
+$('closeTopSettings').onclick=()=>selectDrawingTab('draw');
 $('settingsTools').onclick=e=>{const btn=e.target.closest('[data-dock-setting]');if(btn){const key=btn.dataset.dockSetting;state[key]=!state[key];syncDock();drawOnly();return}if(e.target.closest('#unitCycle')){const units=['cm','mm','chi'],i=units.indexOf(state.unit);state.unit=units[(i+1)%units.length];updateCursor(state.cursor);syncQuick();drawOnly();store()}};
 $('backAction').onclick=()=>{if(activeMenu){restoreDrawingTools();return}if(!$('quickPanel').classList.contains('hidden')){closeMenus();return}if(!$('cursorPad').classList.contains('hidden')){cursorMode(false);return}if(!$('side').classList.contains('closed')){$('side').classList.add('closed');render();return}if(state.anchor){state.anchor=null;render();return}if(state.selected){state.selected=null;render();return}if(state.tool!=='select'){setTool('select');return}toast('目前已回到選取模式')};
 $('quickDelete').onclick=()=>{if(!current()&&state.selected!==PHOTO_ID){toast('請先選取要刪除的圖形或照片');return}del()};
