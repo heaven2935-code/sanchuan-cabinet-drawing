@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川圖面標記">
 <meta name="theme-color" content="#222c34">
-<title>三川工方｜繪圖與標記 V1.6</title>
+<title>三川工方｜繪圖與標記 V1.7</title>
 <style>
 :root{--night:#222c34;--night2:#303d47;--night3:#40515e;--clay:#a65c45;--lightclay:#eab39f;--paper:#fbfaf7;--cream:#eeeae4;--ink:#26313a;--muted:#6c7780;--aqua:#387b77;--line:#d4d9d8}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--night);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.35;cursor:default}input,select,textarea{min-width:0}input:focus,select:focus,textarea:focus{outline:2px solid #76b8b0;outline-offset:0}
@@ -241,6 +241,60 @@
 .new-file-window button.primary{background:#a65c45;color:white;border-color:#a65c45}
 .new-file-window button.quiet{background:#f4f3ef;color:#475b59}
 
+
+/* V1.7 numeric line: a single horizontally swipable row just above drawing tools.
+   Only the draw action and close button stay pinned, so the canvas remains visible. */
+#app .center .numeric-panel{
+  top:auto;right:6px;left:6px;bottom:7px;width:auto;max-height:none;overflow:visible;
+  background:#f7f8f5f2;border:1px solid #88a9a4;border-radius:10px;
+  z-index:62;box-shadow:0 5px 19px #1f333b33;font-size:11px
+}
+#app .numeric-strip{display:flex;align-items:center;gap:3px;height:51px;padding:4px;min-width:0;white-space:nowrap}
+#app .numeric-scroll{display:flex;align-items:center;gap:6px;min-width:0;flex:1;
+  overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;touch-action:pan-x;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;height:100%}
+#app .numeric-scroll::-webkit-scrollbar{display:none}
+#app .numeric-field{display:flex;align-items:center;gap:3px;white-space:nowrap;color:#435d5d;font-size:11px;font-weight:700;flex:none}
+#app .numeric-field input{min-width:0;width:77px;height:36px;border:1px solid #a6bab5;background:white;
+  border-radius:6px;padding:3px 4px;color:#223b3d;font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+#app .numeric-field-angle input{width:64px}
+#app .numeric-field span{color:#4b7770}
+#app .numeric-direction-row{display:flex;align-items:center;gap:3px;flex:none}
+#app .numeric-direction-row button{min-width:33px;height:36px;min-height:36px;padding:0 4px;border-radius:6px;font-size:18px}
+#app .numeric-icon-button,#app .numeric-text-button{flex:none;height:36px;min-width:35px;border:1px solid #b1c6c1;
+  border-radius:6px;background:#ebf1ee;color:#365e56;font-weight:700;padding:0 6px}
+#app #numericAngleDialButton{font-size:18px}
+#app .numeric-check{display:flex;align-items:center;gap:3px;flex:none;font-size:11px;font-weight:700}
+#app .numeric-check input{width:15px;height:15px}
+#app .numeric-small,#app .numeric-close{height:36px;width:24px;min-width:24px;padding:0;border:0;
+  background:#dfe9e5;color:#385b57;font-size:20px;border-radius:6px}
+#app .numeric-small{width:23px;min-width:23px}
+#app .numeric-close{background:#ebe6e0;color:#805644}
+#app .numeric-primary{height:36px;min-width:48px;flex:none;background:#a65c45;color:#fff;
+  border:0;border-radius:6px;font-size:13px;font-weight:800;padding:0 5px}
+#app .numeric-angle-dial{position:absolute;bottom:calc(100% + 5px);right:25%;width:120px;
+  border:1px solid #a7c3bd;border-radius:10px;background:#fffefa;box-shadow:0 6px 19px #0003;padding:5px}
+#app .numeric-angle-dial svg{height:108px;width:108px}
+.numeric-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;
+  overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
+#app .numeric-panel.collapsed{left:auto;width:43px}
+#app .numeric-panel.collapsed .numeric-strip{padding:3px;height:40px;justify-content:center}
+#app .numeric-panel.collapsed .numeric-scroll,#app .numeric-panel.collapsed #numericCommit,#app .numeric-panel.collapsed #numericClose{display:none}
+#app .numeric-panel.collapsed .numeric-small{width:34px;height:32px}
+/* When a phone software keyboard is active, hide the rest of the chrome and reserve
+   the visual viewport for the artwork and this one-row input bar. */
+body.numeric-keyboard #app .top,body.numeric-keyboard #app .bottom-dock,
+body.numeric-keyboard #app .foot,body.numeric-keyboard #app .bar{display:none!important}
+body.numeric-keyboard #app .main{flex:1;min-height:0}
+body.numeric-keyboard #app .numeric-panel{bottom:max(5px,env(safe-area-inset-bottom))}
+body.numeric-keyboard #app .hint,body.numeric-keyboard #app .hud{display:none}
+@media(max-width:650px){#app .numeric-field input{width:69px}#app .numeric-field-angle input{width:57px}
+ #app .numeric-strip{gap:2px;padding:3px}#app .numeric-scroll{gap:4px}}
+@media(max-height:440px){#app .center .numeric-panel{bottom:3px;right:4px;left:4px;width:auto;max-height:none;top:auto}
+ #app .numeric-strip{height:45px}#app .numeric-field input,#app .numeric-icon-button,
+ #app .numeric-text-button,#app .numeric-direction-row button,#app .numeric-primary,#app .numeric-close,
+ #app .numeric-small{height:33px;min-height:33px}#app .numeric-direction-row button{font-size:17px}}
+
 </style>
 </head>
 <body>
@@ -290,21 +344,26 @@
             <span></span><button data-cursor-dir="down">↓</button><span></span>
           </div><button id="cursorConfirm" class="cursor-confirm">◎ 準星選取</button>
         </div>
-        <section id="numericPanel" class="numeric-panel hidden" role="group" aria-label="數值畫線控制器">
-          <header class="numeric-head"><b>⌗ 數值畫線</b><span id="numericDirectionLabel">right →</span><button id="numericMinimize" aria-label="收合數值控制器">−</button><button id="numericClose" aria-label="關閉數值畫線">×</button></header>
-          <div id="numericBody" class="numeric-body">
-            <div class="numeric-inputs">
-              <label>長度 <span id="numericUnitLabel">cm</span><input id="numericLength" type="number" step="any" min="0.001" value="120" inputmode="decimal"></label>
-              <label>角度 °<input id="numericAngle" type="number" step="any" value="0" inputmode="decimal"></label>
-              <button id="numericAngleDialButton" title="開啟角度規">∠</button>
+        <section id="numericPanel" class="numeric-panel hidden" role="group" aria-label="單排數值畫線控制器">
+          <div class="numeric-strip">
+            <button id="numericMinimize" class="numeric-small" aria-label="收合或展開數值工具列" title="縮成圖示">−</button>
+            <div id="numericBody" class="numeric-scroll">
+              <label class="numeric-field" for="numericLength">長 <span id="numericUnitLabel">cm</span><input id="numericLength" type="number" step="any" min="0.001" value="120" inputmode="decimal"></label>
+              <label class="numeric-field numeric-field-angle" for="numericAngle">角 °<input id="numericAngle" type="number" step="any" value="0" inputmode="decimal"></label>
+              <button id="numericAngleDialButton" class="numeric-icon-button" aria-label="角度規" title="角度規">∠</button>
+              <div class="numeric-direction-row" role="group" aria-label="畫線方向">
+                <button data-numeric-dir="up" aria-label="向上" title="向上">↑</button><button data-numeric-dir="left" aria-label="向左" title="向左">←</button><button data-numeric-dir="right" class="active" aria-label="向右" title="向右">→</button><button data-numeric-dir="down" aria-label="向下" title="向下">↓</button>
+              </div>
+              <label class="numeric-check" title="新線段從上一段終點接續"><input id="numericContinuous" type="checkbox" checked>連續</label>
+              <button id="numericPickOrigin" class="numeric-text-button" title="從目前準星或選取端點開始">起點</button>
+              <button id="numericEnd" class="numeric-text-button" title="結束數值畫線">結束</button>
             </div>
-            <div id="numericAngleDial" class="numeric-angle-dial hidden" aria-label="角度規，點擊圓盤選角度"><svg viewBox="0 0 120 120" id="numericDialSvg"><circle cx="60" cy="60" r="51" fill="#f8fbf8" stroke="#87a6a0" stroke-width="2"/><path d="M60 9V111 M9 60H111" stroke="#c8d6d3" stroke-width="1"/><line id="numericDialRay" x1="60" y1="60" x2="102" y2="60" stroke="#aa624c" stroke-width="4"/><circle cx="60" cy="60" r="4" fill="#346d67"/><text x="60" y="20" text-anchor="middle" font-size="9">270°</text><text x="104" y="56" text-anchor="middle" font-size="9">0°</text><text x="60" y="106" text-anchor="middle" font-size="9">90°</text><text x="18" y="56" text-anchor="middle" font-size="9">180°</text></svg></div>
-            <div class="numeric-direction-row" role="group" aria-label="畫線方向">
-              <button data-numeric-dir="up">↑ 上</button><button data-numeric-dir="left">← 左</button><button data-numeric-dir="right" class="active">右 →</button><button data-numeric-dir="down">↓ 下</button>
-            </div>
-            <div class="numeric-origin-row"><span id="numericOrigin">起點：畫布中心</span><button id="numericPickOrigin" title="以目前準星或選取端點為起點">重新設起點</button></div>
-            <div class="numeric-action-row"><label class="numeric-check"><input id="numericContinuous" type="checkbox" checked>連續</label><button id="numericCommit" class="numeric-primary">＋ 畫一段</button><button id="numericEnd">結束</button></div>
+            <button id="numericCommit" class="numeric-primary" title="依輸入長度與方向畫一段線">＋畫</button>
+            <button id="numericClose" class="numeric-close" aria-label="關閉數值畫線">×</button>
           </div>
+          <span id="numericDirectionLabel" class="numeric-visually-hidden" aria-hidden="true">right →</span>
+          <span id="numericOrigin" class="numeric-visually-hidden" aria-hidden="true">起點：畫布中心</span>
+          <div id="numericAngleDial" class="numeric-angle-dial hidden" aria-label="角度規，點擊圓盤選角度"><svg viewBox="0 0 120 120" id="numericDialSvg"><circle cx="60" cy="60" r="51" fill="#f8fbf8" stroke="#87a6a0" stroke-width="2"/><path d="M60 9V111 M9 60H111" stroke="#c8d6d3" stroke-width="1"/><line id="numericDialRay" x1="60" y1="60" x2="102" y2="60" stroke="#aa624c" stroke-width="4"/><circle cx="60" cy="60" r="4" fill="#346d67"/><text x="60" y="20" text-anchor="middle" font-size="9">270°</text><text x="104" y="56" text-anchor="middle" font-size="9">0°</text><text x="60" y="106" text-anchor="middle" font-size="9">90°</text><text x="18" y="56" text-anchor="middle" font-size="9">180°</text></svg></div>
         </section><div class="hud"><div class="coords" id="coords">X 0　Y 0 mm</div><div class="zoom"><button id="zoomOut">−</button><span id="zoomText">100%</span><button id="zoomIn">＋</button></div></div><div id="toast"></div>
       </div>
       <div class="foot"><span id="status">準備完成｜選擇下方工具開始繪圖</span><span id="statusSave">自動保存至此瀏覽器</span></div>
@@ -506,7 +565,7 @@ function deleteDocument(id){const doc=documents.find(d=>d.id===id);if(!doc||docu
 }
 const current=()=>state.items.find(i=>i.id===state.selected);const pts=i=>i?.points||[];
 function make(type,points){return {id:'s'+(++seq),type,points:clone(points),stroke:state.pen,width:state.width,visible:true,text:state.text,font:state.font,fontSize:state.fontSize,bold:state.bold,angle:0,minor:state.minor,sides:state.sides}}
-function setTool(tool){if(!tools[tool])return;const previousTool=state.tool;state.tool=tool;state.pending=null;state.preview=null;state.gesture=null;if(tool!=='continuous')state.anchor=null;closeMenus();restoreDrawingTools();if(tool!=='select'){$('cursorPad').classList.add('hidden')}if(tool==='numeric'){if(!numeric.anchor||previousTool!=='numeric')numeric.anchor=numericOriginFromContext();$('numericPanel').classList.remove('hidden');syncNumeric()}else $('numericPanel').classList.add('hidden');syncDock();$('hint').innerHTML=`<b>${tools[tool]}</b> ${hintText(tool)}`;updateTip();render()}
+function setTool(tool){if(!tools[tool])return;const previousTool=state.tool;state.tool=tool;state.pending=null;state.preview=null;state.gesture=null;if(tool!=='continuous')state.anchor=null;closeMenus();restoreDrawingTools();if(tool!=='select'){$('cursorPad').classList.add('hidden')}if(tool==='numeric'){if(!numeric.anchor||previousTool!=='numeric')numeric.anchor=numericOriginFromContext();$('numericPanel').classList.remove('hidden');syncNumeric()}else {$('numericPanel').classList.add('hidden');document.body.classList.remove('numeric-keyboard')}syncDock();$('hint').innerHTML=`<b>${tools[tool]}</b> ${hintText(tool)}`;updateTip();render()}
 function hintText(tool){return ({numeric:'點畫布指定起點，輸入長度與角度，按「畫一段」；可連續接線',select:'點圖形選取，點端點後可微調；按住圖形可移動',pan:'手指拖曳移動畫布',line:'按住拖曳畫線，或分兩次點取起點、終點',continuous:'先點一下設定起點，再點下一點或輸入角度與長度',dashed:'拖曳畫虛線，或點兩個點定位',arrow:'拖曳畫箭頭，或點兩個點定位',dimension:'拖曳或點兩點，自動產生尺寸標記',circle:'從圓心拖曳決定半徑',semi:'先設定圓心和半徑，可再修改起始角度',quarter:'先設定圓心和半徑，可再修改起始角度',triangle:'拖曳畫一般三角形，點屬性可編輯兩邊長與夾角',rightTriangle:'拖曳畫直角三角形，固定夾角90°',isoTriangle:'拖曳畫等腰三角形，兩腰相等',polygon:'拖曳畫正多角形，也可用屬性輸入邊長',ellipse:'從中心拖曳長軸，短軸可輸入',pen:'直接用手指書寫，之後可選取移動',text:'右側輸入文字後，點擊畫布放置'})[tool]||''}
 function updateTip(){const el=$('modeTip');if(state.tool==='continuous'&&state.anchor){el.classList.remove('hidden');el.textContent=`連續線下一段起點：${fmtNum(state.anchor.x)}, ${fmtNum(state.anchor.y)} mm`}else el.classList.add('hidden')}
 
@@ -777,9 +836,22 @@ $('quickPanel').addEventListener('click',e=>{
 $('quickPanel').addEventListener('input',e=>{if(e.target.id==='quickColor')handleProp('pen',e.target.value);if(e.target.id==='quickWidth'||e.target.id==='quickWidthNum'){handleProp('width',e.target.value);const sib=e.target.id==='quickWidth'?'quickWidthNum':'quickWidth';if($(sib))$(sib).value=state.width}syncQuick()});
 
 $('numericClose').onclick=()=>setTool('select');
-$('numericMinimize').onclick=()=>{const c=$('numericPanel').classList.toggle('collapsed');$('numericMinimize').textContent=c?'＋':'−'};
+$('numericMinimize').onclick=()=>{const c=$('numericPanel').classList.toggle('collapsed');$('numericMinimize').textContent=c?'⌗':'−';$('numericMinimize').title=c?'展開數值畫線':'縮成圖示'};
 $('numericLength').addEventListener('change',e=>{if(numericSetLength(e.target.value))syncNumeric()});
 $('numericAngle').addEventListener('change',e=>numericSetAngle(e.target.value));
+
+// iOS Safari moves the visual viewport above the software keyboard. Numeric inputs
+// temporarily hide tool chrome to keep a usable canvas even in landscape.
+function updateNumericKeyboard(){
+ const focused=['numericLength','numericAngle'].includes(document.activeElement?.id);
+ const isTouch=matchMedia('(pointer:coarse)').matches;
+ document.body.classList.toggle('numeric-keyboard',focused&&isTouch);
+ requestAnimationFrame(()=>{document.documentElement.style.setProperty('--real-height',(window.visualViewport?.height||window.innerHeight)+'px');drawOnly()});
+}
+$('numericPanel').addEventListener('focusin',e=>{if(e.target.matches('input'))updateNumericKeyboard()});
+$('numericPanel').addEventListener('focusout',()=>setTimeout(updateNumericKeyboard,100));
+window.visualViewport?.addEventListener('scroll',()=>{if(document.body.classList.contains('numeric-keyboard'))updateNumericKeyboard()});
+
 $('numericLength').addEventListener('keydown',e=>{if(e.key==='Enter'){e.target.blur();numericCommit()}});
 $('numericAngle').addEventListener('keydown',e=>{if(e.key==='Enter'){e.target.blur();numericCommit()}});
 $('numericContinuous').onchange=e=>{numeric.continuous=e.target.checked;numeric.anchor=numericOriginFromContext();syncNumeric()};
