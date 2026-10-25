@@ -1,0 +1,931 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#222c34">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="三川圖面標記">
+<meta name="theme-color" content="#222c34">
+<title>三川工方｜繪圖與標記 V1.7</title>
+<style>
+:root{--night:#222c34;--night2:#303d47;--night3:#40515e;--clay:#a65c45;--lightclay:#eab39f;--paper:#fbfaf7;--cream:#eeeae4;--ink:#26313a;--muted:#6c7780;--aqua:#387b77;--line:#d4d9d8}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--night);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.35;cursor:default}input,select,textarea{min-width:0}input:focus,select:focus,textarea:focus{outline:2px solid #76b8b0;outline-offset:0}
+#app{height:100vh;height:100dvh;height:var(--real-height,100dvh);width:100vw;display:flex;flex-direction:column;overflow:hidden}.top{height:50px;min-height:50px;display:flex;align-items:center;gap:8px;padding:4px max(10px,env(safe-area-inset-right)) 4px max(10px,env(safe-area-inset-left));background:var(--night);color:#f6f3ef;border-bottom:1px solid #4a5158}.logo{width:33px;height:33px;border:2px solid #d58c71;border-radius:8px;display:grid;place-items:center;flex:none;font-weight:900;color:#d8a18d}.brand{line-height:1.12;min-width:122px}.brand b{display:block;font-size:13px;letter-spacing:2px}.brand small{color:#b2bcc0;font-size:9px}.project{height:32px;width:178px;max-width:22vw;border:1px solid #6c7b82;background:#35434d;color:#fff;border-radius:6px;padding:5px 9px;font-size:12px}.grow{flex:1}.btn{border:1px solid #687780;color:#f8f5f1;background:#35434e;border-radius:7px;padding:6px 10px;white-space:nowrap;font-size:12px;min-height:34px}.btn.primary{background:var(--clay);border-color:#ca8066}.btn.active{background:#506c73}.main{display:grid;grid-template-columns:72px minmax(0,1fr) 290px;flex:1;min-height:0}.tools{background:var(--night2);display:flex;flex-direction:column;align-items:center;overflow-y:auto;overflow-x:hidden;gap:4px;padding:7px 4px calc(10px + env(safe-area-inset-bottom));scrollbar-width:thin}.tool{flex:none;width:63px;min-height:53px;border-radius:8px;border:1px solid transparent;background:transparent;color:#dce4e5;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;padding:5px 1px;font-size:11px}.tool .ic{font-size:21px;line-height:1;font-family:system-ui}.tool.active{color:#f5c6b2;background:#ae674b30;border-color:#d18b70}.tool:hover{background:#44525c}.tool-rule{height:1px;width:48px;background:#5d6a70;margin:4px}.center{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--cream)}.bar{height:41px;min-height:41px;background:#f0ece6;border-bottom:1px solid #ccc6bf;display:flex;align-items:center;gap:6px;padding:4px 9px;white-space:nowrap;overflow-x:auto;scrollbar-width:none}.bar::-webkit-scrollbar{display:none}.pill{font-size:11px;background:white;border:1px solid #c8c6c1;color:#555d62;border-radius:6px;padding:6px 9px;min-height:30px}.pill.active{border-color:#c7836a;color:#9c4a36;background:#fff1ea}.pill strong{font-size:12px}.stage{position:relative;flex:1;min-height:0;background:var(--paper);overflow:hidden}#sheet{display:block;width:100%;height:100%;touch-action:none;user-select:none;cursor:crosshair}.hint{position:absolute;top:10px;left:10px;border-radius:7px;padding:7px 10px;background:#fffffff2;border:1px solid #dad5cb;max-width:min(420px,75%);font-size:11px;color:#626c6c;pointer-events:none;box-shadow:0 2px 14px #00000010}.hint b{color:#9d5b47}.hud{position:absolute;left:10px;right:10px;bottom:10px;display:flex;justify-content:space-between;align-items:end;pointer-events:none;gap:8px}.coords{color:#f3f8f7;font-size:11px;line-height:1.6;background:#293a44e8;border-radius:7px;padding:5px 9px;font-variant-numeric:tabular-nums}.zoom{pointer-events:auto;border:1px solid #d8d0c4;background:#fffffff2;padding:3px;border-radius:7px;display:flex;align-items:center;gap:4px}.zoom button{width:32px;height:30px;border:0;border-radius:5px;background:#e8e3dc;color:#333;font-size:19px}.zoom span{min-width:43px;text-align:center;font-size:11px;color:#555}.foot{height:25px;min-height:25px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 8px;color:#64716f;background:#eeece8;border-top:1px solid #d6d3cb;font-size:10px;overflow:hidden}.foot span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.side{background:#f7f5f1;border-left:1px solid #cfd5d4;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:10px;scrollbar-width:thin}.section{border:1px solid #d8d7d0;background:white;border-radius:10px;padding:11px;margin-bottom:10px;box-shadow:0 1px 8px #00000008}.section h3{margin:0 0 10px;color:#34444c;font-size:13px;display:flex;justify-content:space-between;align-items:center}.section h3 small{font-size:10px;color:#78827e;font-weight:400}.row{display:flex;align-items:center;gap:7px;margin-bottom:8px}.row:last-child{margin-bottom:0}.field{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0;color:#697678;font-size:11px}.field input,.field select,.field textarea{width:100%;min-height:31px;border:1px solid #cfd5d2;background:#fafafa;border-radius:6px;padding:4px 6px;color:#22343e;font-size:13px}.field input[type=color]{padding:2px;min-height:32px;max-width:60px}.field textarea{resize:vertical;min-height:45px}.tiny{color:#6b7b7a;font-size:10px;line-height:1.55}.action{background:#3c7774;color:white;border:0;border-radius:7px;padding:8px 9px;font-size:12px;min-height:34px}.action.ghost{background:#e9efec;color:#396864}.action.warn{background:#fff0e9;color:#9b4b36}.action.dark{background:#34434b}.action:disabled{opacity:.35}.wide{width:100%}.unit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.unit-grid button{padding:7px 2px;border:1px solid #d0d5d3;border-radius:6px;background:#f8f8f6;color:#526363;font-size:11px}.unit-grid button.sel{background:#dcf0eb;border-color:#76a59b;color:#225850;font-weight:700}.nudge{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,35px);gap:4px;max-width:190px;margin:8px auto}.nudge button{background:#eaf1ee;border:1px solid #cadcd7;border-radius:7px;font-size:17px;color:#345d56}.nudge .middle{font-size:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;background:#f7f6f1}.nudge .empty{visibility:hidden}.point-tabs{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0}.point-tabs button{border:1px solid #cdd5d2;border-radius:6px;background:#f7f8f6;color:#4a5b5a;padding:5px 9px;font-size:11px}.point-tabs button.active{background:#347e79;color:white}.dial-wrap{display:flex;align-items:center;gap:8px;justify-content:center}.dial{width:110px;height:110px;touch-action:none;cursor:crosshair;flex:none}.angle-details{flex:1;min-width:0}.angle-details input{width:100%}.swatch{height:28px;min-width:28px;border-radius:5px;border:2px solid #fff;box-shadow:0 0 0 1px #aaa}.layers{display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto}.layer{display:flex;align-items:center;gap:5px;border:1px solid #e0e2de;border-radius:6px;padding:5px;background:#fafbf9;font-size:11px;cursor:pointer}.layer.active{border-color:#4b8e84;background:#eaf4f0}.layer .label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.layer button{border:0;background:transparent;padding:3px;min-width:23px;color:#475963}.hidden{display:none!important}#app.focus .side{display:none}#app.focus .main{grid-template-columns:72px minmax(0,1fr)}#app.focus .top .brand,#app.focus .top .project{display:none}#app.focus .top{height:42px;min-height:42px}#toast{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);background:#273d42;color:white;padding:9px 15px;border-radius:8px;font-size:12px;max-width:70%;pointer-events:none;opacity:0;transition:opacity .2s;z-index:15}#toast.show{opacity:1}.context{position:absolute;right:12px;top:10px;background:#273a42df;color:white;border-radius:7px;font-size:11px;padding:7px 9px;pointer-events:none}
+@media(max-width:900px){.main{grid-template-columns:62px minmax(0,1fr) 235px}.tool{width:56px;min-height:47px}.tools{padding:5px 3px}.side{padding:7px}.section{padding:8px}.brand{min-width:105px}.brand b{letter-spacing:0;font-size:12px}.project{width:110px}.top{gap:5px}.btn{padding:5px 7px;font-size:11px}#app.focus .main{grid-template-columns:62px minmax(0,1fr)}}
+@media(max-width:650px){.main{grid-template-columns:53px minmax(0,1fr)}.tools{padding:4px 1px}.tool{width:48px;min-height:44px;font-size:10px}.side{position:absolute;z-index:10;right:0;top:50px;bottom:0;width:min(300px,84vw);box-shadow:-5px 0 25px #0002}.side.closed{display:none}.brand{display:none}.project{max-width:30vw}.top{height:46px;min-height:46px}#app.focus .main{grid-template-columns:53px minmax(0,1fr)}}
+
+/* v1.1: free the canvas on portrait and landscape. All properties are on-demand. */
+.main{grid-template-columns:61px minmax(0,1fr);position:relative}
+.tools{padding:6px 2px}.tool{width:55px;min-height:49px}.center{position:relative}
+.side{position:absolute;z-index:31;right:0;top:0;bottom:0;width:min(360px,92vw);box-shadow:-5px 0 25px #0b161e35;border-radius:12px 0 0 12px}
+.side.closed{display:none}.side::before{content:'屬性設定';display:block;font-size:13px;font-weight:700;color:#2d4a4b;margin:0 0 12px}
+.bar{height:45px;min-height:45px;gap:4px;padding:4px 6px}.pill{padding:5px 8px;min-height:33px}.quick-btn{min-width:34px;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-weight:600}
+.quick-btn .dot{width:16px;height:16px;border:1.5px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #a1a6a3}
+#widthPreview{display:inline-block;width:22px;background:var(--clay);height:3px;border-radius:3px}
+.tool-picker{position:absolute;z-index:35;left:5px;top:6px;width:min(258px,90%);max-height:min(360px,70%);overflow:auto;border:1px solid #bccac8;background:#fffffff9;border-radius:11px;box-shadow:0 10px 30px #27343b45;padding:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.tool-picker button{border:1px solid #d7dad8;border-radius:8px;min-height:42px;background:#f6f7f5;color:#30494d;font-weight:600;font-size:13px}
+.tool-picker button.sel{border-color:#aa6954;background:#fff1ea;color:#994b36}
+.tool-picker-title{grid-column:1/-1;font-weight:700;color:#485957;font-size:13px;display:flex;align-items:center;justify-content:space-between}
+.tool-picker-title button{min-height:25px;font-size:18px;border:0;background:transparent;padding:0 7px}
+.quick-panel{position:absolute;z-index:36;top:49px;left:6px;width:min(275px,90%);background:#fffffff9;box-shadow:0 7px 25px #1a343f45;border:1px solid #c9d1cc;border-radius:9px;padding:12px;font-size:13px}
+.quick-panel .row{margin:9px 0}.quick-panel .field{font-size:12px}.quick-panel button{border:1px solid #c9d4cf;border-radius:7px;padding:7px;background:#edf4f0;color:#235851}
+.quick-panel h3{font-size:13px;color:#314447;margin:0;display:flex;justify-content:space-between;align-items:center}
+.quick-panel h3 button{background:none;border:none;padding:1px 4px;font-size:22px}
+.point-nudge{position:absolute;z-index:24;width:126px;height:126px;pointer-events:none;display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px);filter:drop-shadow(0 2px 6px #1115)}
+.point-nudge button{pointer-events:auto;border:1px solid #6e9993;background:#e7f6f1ec;color:#226056;font-size:20px;font-weight:700;min-width:0;min-height:0;border-radius:8px;touch-action:manipulation}
+.point-nudge .core{pointer-events:auto;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#fffefbec;border:1px solid #a3c5bb;border-radius:30px;font-size:11px;line-height:1.2;color:#326359;cursor:pointer}
+.point-nudge .core b{font-size:13px}
+.point-nudge .blank{visibility:hidden}
+.guides-guide{stroke:#2778aa;stroke-width:1.2;stroke-dasharray:9 7;vector-effect:non-scaling-stroke;opacity:.72;pointer-events:none}
+@media(max-width:900px){.main{grid-template-columns:55px minmax(0,1fr)}.tool{width:49px;min-height:48px}#app.focus .main{grid-template-columns:55px minmax(0,1fr)}}
+@media(max-width:650px){.main{grid-template-columns:52px minmax(0,1fr)}.tools{padding:3px 1px}.tool{width:49px;min-height:47px}#app.focus .main{grid-template-columns:52px minmax(0,1fr)}.side{position:absolute;z-index:31;top:auto;left:52px;right:0;bottom:0;height:min(60dvh,500px);width:auto;max-height:60dvh;border-radius:14px 14px 0 0;box-shadow:0 -5px 24px #1a293c40}.project{max-width:23vw}.btn{padding:5px 6px}.point-nudge{width:114px;height:114px;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(3,38px)}}
+@media(max-width:420px){.top{gap:3px}.top .project{width:78px;max-width:78px}.top .btn{font-size:11px;padding:5px}.bar{gap:3px}.pill{font-size:11px;padding:4px 5px}}
+
+/* V1.2 file-management UI, visible New entry even on iPhone portrait */
+.top{overflow-x:auto;overflow-y:hidden;scrollbar-width:none}.top::-webkit-scrollbar{display:none}
+.top .file-new{background:#316e69;border-color:#65a59c;color:#fff;font-weight:700}.top .file-new,.top #fileManager{flex:none}
+.file-overlay{position:fixed;inset:0;z-index:90;background:#0c1823ad;display:flex;align-items:center;justify-content:center;padding:calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom))}
+.file-window{width:min(550px,100%);max-height:min(82dvh,720px);display:flex;flex-direction:column;overflow:hidden;border-radius:15px;background:#faf9f6;box-shadow:0 15px 60px #0006;color:#2b3940}
+.file-head{display:flex;align-items:center;justify-content:space-between;padding:15px 17px 8px;font-size:18px}.file-head button{border:0;background:#e5ebe8;border-radius:50%;height:35px;width:35px;font-size:17px;color:#39544f}
+.file-note{padding:0 17px 12px;font-size:11px;color:#667575;line-height:1.6}
+.file-list{overflow:auto;min-height:80px;padding:0 13px 10px;overscroll-behavior:contain}.file-entry{display:flex;align-items:center;gap:8px;border:1px solid #dce3df;background:#fff;padding:10px;margin-bottom:7px;border-radius:9px}.file-entry.active{background:#edf8f3;border-color:#68a69d}.file-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.file-meta strong{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.file-meta small{color:#71807c;font-size:10px}.file-entry button{border:1px solid #b8cbc5;background:#eef5f1;padding:8px 9px;border-radius:7px;font-size:12px;color:#28615b;flex:none}.file-entry button.file-remove{border-color:#efd5ca;background:#fff1eb;color:#ad503e}
+.file-actions{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid #d9ded9;padding:12px 13px calc(12px + env(safe-area-inset-bottom))}.file-actions button{flex:1;min-width:115px}
+@media(max-width:650px){.top .logo{display:none}.top .project{width:92px;max-width:92px;flex:none}.top .grow{display:none}.top .file-new{order:-2}.top #fileManager{order:-1}.top{gap:4px}.top .btn{flex:none}.file-window{max-height:84dvh}}
+
+/* V1.3: all contextual toggles collected under Settings; editing actions in one menu. */
+.top{overflow:visible;position:relative;z-index:42}
+.action-holder{position:relative;flex:none}
+.action-toggle{min-width:74px}
+.action-popup{position:absolute;z-index:80;top:calc(100% + 7px);right:0;width:202px;max-height:min(70dvh,460px);overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;background:#fffefa;color:#233942;border:1px solid #b9c8c3;border-radius:11px;box-shadow:0 12px 33px #0005;overscroll-behavior:contain}
+.action-popup.hidden{display:none}
+.action-popup .popup-heading{grid-column:1/-1;font-size:11px;font-weight:700;color:#59716f;padding:7px 4px 3px;border-bottom:1px solid #e1e7e4}
+.action-entry{min-height:43px;padding:8px 5px;background:#f2f6f3;border:1px solid #d2ddda;border-radius:7px;color:#28514d;font-size:12px;text-align:center}
+.action-entry:disabled{opacity:.35}
+.tool-heading{font-size:10px;color:#b1bfbd;line-height:1.3;letter-spacing:.09em;padding:2px 0}
+.bar{overflow:visible;position:relative;z-index:37;flex-shrink:0}
+.draw-options{display:flex;align-items:center;gap:5px;flex:none;padding-right:8px;border-right:1px solid #c8d0cc}
+.bar-label{font-size:11px;font-weight:700;color:#58716d;white-space:nowrap}
+.bar .grow{min-width:5px}
+.settings-toggle{font-weight:700;border-color:#88b2a9;color:#225d57;white-space:nowrap;background:#eff7f4;flex:none}
+.settings-toggle[aria-expanded="true"]{background:#d6eae3}
+.quick-panel.settings-panel{left:auto;right:7px;top:48px;width:min(316px,calc(100% - 15px));max-height:min(75dvh,490px);overflow:auto;z-index:51}
+.settings-subheading{font-size:12px;font-weight:700;padding:10px 0 7px;color:#526b67}
+.switch-list{display:grid;gap:6px}
+.quick-panel .setting-switch{display:flex;align-items:center;justify-content:space-between;gap:7px;width:100%;text-align:left;padding:8px 9px;min-height:47px;background:#fafbf8;color:#273e39;border:1px solid #d7e2de;border-radius:8px}
+.setting-switch span:first-child{display:flex;flex-direction:column;gap:2px}
+.setting-switch b{font-size:12px}
+.setting-switch small{color:#778780;font-size:10px}
+.setting-switch .toggle-status{min-width:32px;text-align:center;font-weight:700;border-radius:12px;padding:3px 5px;background:#e6e9e7;color:#71817a}
+.quick-panel .setting-switch.sel{background:#eaf6f0;border-color:#73aba1}
+.setting-switch.sel .toggle-status{background:#387f75;color:#fff}
+#app.focus .action-popup{top:calc(100% + 4px)}
+@media(max-width:650px){.top{overflow:visible}.top .brand,.top .logo{display:none}.top .project{width:73px;max-width:73px}.top .btn{font-size:11px;padding:5px 6px}.action-popup{right:-10px;width:206px;max-height:57dvh}.draw-options{gap:3px;padding-right:4px}.bar{padding:3px 5px}.bar-label{font-size:10px}.quick-btn{min-width:30px}.settings-toggle{font-size:11px}}
+@media(max-width:380px){.top .project{width:62px;max-width:62px}.action-toggle{min-width:68px}.bar-label{display:none}.settings-toggle{padding:5px}}
+
+/* V1.5: Bottom-first drafting UI, minimal top controls, consolidated File menu. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.top{height:48px;min-height:48px;z-index:65;gap:7px;overflow:visible}
+.top .brand{min-width:92px}
+.top .project{width:170px;max-width:min(36vw,170px);flex:0 1 170px}
+.top .grow{min-width:0}
+.top .settings-icon{width:39px;min-width:39px;padding:3px;font-size:23px;line-height:1;border-color:#89a9a6;background:#344b50;flex:none}
+.top .action-toggle{min-width:72px;padding:7px 8px}
+.top .file-toggle{min-width:78px;padding:7px 7px;border-color:#bd826e;background:#764e43}
+.file-holder{position:relative;flex:none}
+.file-popup{position:absolute;top:calc(100% + 7px);right:0;z-index:82;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:224px;max-height:min(75dvh,490px);overflow-y:auto;overscroll-behavior:contain;padding:9px;background:#fffefa;border:1px solid #b9c8c3;border-radius:11px;box-shadow:0 12px 35px #0005;color:#253942}
+.file-popup .popup-heading{grid-column:1/-1;font-size:11px;font-weight:700;color:#60716d;padding:5px 3px 4px;border-bottom:1px solid #e0e7e2}
+.file-entry-btn{min-height:43px;padding:7px 4px;background:#f3f7f4;border:1px solid #d3ded9;border-radius:8px;font-size:11px;color:#294f4b;line-height:1.25}
+.file-entry-btn.file-primary{background:#d9efe8;border-color:#8cbab1;color:#205750;font-weight:700}
+#app .main,#app.focus .main{display:flex;grid-template-columns:none;min-height:0;position:relative;flex:1}
+.main .center{width:100%;flex:1;min-width:0;min-height:0;position:relative}
+.main .side{position:absolute;top:0;right:0;bottom:0;width:min(350px,85vw);z-index:32}
+.bottom-dock{height:75px;min-height:75px;width:100%;display:flex;align-items:stretch;gap:0;background:#2e3d46;border-top:1px solid #51646b;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);position:relative;z-index:39}
+#app .bottom-dock .tools{display:flex;flex:1 1 auto;min-width:0;width:auto;height:100%;flex-direction:row;align-items:center;gap:3px;padding:3px 5px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x;background:transparent}
+#app .bottom-dock .tools::-webkit-scrollbar{display:none}
+#app .bottom-dock .tool{width:63px;min-width:63px;height:56px;min-height:56px;flex:none;gap:2px;padding:4px 2px;font-size:10.5px;line-height:1.1}
+#app .bottom-dock .tool .ic{font-size:23px}
+#app .bottom-dock .tool-rule{height:30px;min-height:30px;width:1px;min-width:1px;margin:0 3px;background:#64757b}
+#app .bottom-dock .tool-heading{display:none}
+.dock-style{display:flex;flex:none;gap:3px;align-items:center;padding:4px 7px;border-left:1px solid #6e7b80;box-shadow:-4px 0 7px #19232b44;z-index:2;background:#2e3d46}
+.style-shortcut{height:54px;min-width:47px;max-width:55px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:4px 5px;color:#e4f0ee;background:#364953;border:1px solid #657f84;border-radius:9px;font-size:11px;white-space:nowrap}
+.style-shortcut .dot{display:block;height:23px;width:23px;border-radius:50%;border:2px solid #eceee7;box-shadow:0 0 0 1px #0004}
+.line-glyph{width:26px;min-height:2px;border-radius:4px;background:#e2c7b6;display:block}
+#app .center .tool-picker{top:auto;bottom:8px;left:8px;max-height:min(330px,65%);z-index:47}
+#app .center .quick-panel{top:auto;bottom:8px;right:8px;left:auto;max-height:min(330px,64%);overflow-y:auto;z-index:49}
+#app .center .quick-panel.settings-panel{top:8px;bottom:auto;right:8px;width:min(316px,calc(100% - 16px));max-height:min(480px,80%);z-index:58}
+#app .center .hint{max-width:min(380px,80%)}
+#app .top .file-new{display:none}
+@media(max-width:650px){
+ .top{height:46px;min-height:46px;padding-left:6px;padding-right:6px;gap:4px}
+ .top .logo{display:grid;width:29px;height:29px;font-size:12px;border-radius:6px}
+ .top .brand{display:none}
+ .top .project{flex:1 1 auto;min-width:58px;max-width:none;width:90px;height:31px;font-size:11px}
+ .top .grow{display:none}
+ .top .settings-icon{min-width:36px;width:36px;height:35px;font-size:22px}
+ .top .action-toggle{min-width:63px;width:63px;font-size:11px;padding:6px 2px}
+ .top .file-toggle{min-width:69px;width:69px;font-size:11px;padding:6px 2px}
+ .top .action-popup{right:-35px}
+ .file-popup{width:217px;right:0;max-height:min(70dvh,450px)}
+ .bottom-dock{height:72px;min-height:72px}
+ #app .bottom-dock .tool{min-width:59px;width:59px;height:54px;min-height:54px}
+ .dock-style{padding:3px 5px}
+ .style-shortcut{min-width:44px;height:53px}
+ .main .side{top:0;right:0;bottom:0}
+}
+@media(max-height:440px){
+ .top{height:43px;min-height:43px}
+ .bottom-dock{height:61px;min-height:61px}
+ #app .bottom-dock .tool{height:49px;min-height:49px}
+ #app .bottom-dock .tool .ic{font-size:20px}
+ .style-shortcut{height:49px}
+ .style-shortcut .dot{height:19px;width:19px}
+ .foot{height:21px;min-height:21px}
+ #app .center .quick-panel.settings-panel{max-height:calc(100% - 16px)}
+}
+
+/* V1.5: two fixed rows, quick drawing/settings tabs, draggable precision cursor above the dock. */
+.top .settings-icon{display:none}
+.top .project{flex:1;max-width:none;width:auto;min-width:70px}
+.top .action-holder{display:none}
+.top .file-holder{margin-left:auto}
+.bottom-dock{height:123px;min-height:123px;padding:0;display:flex;flex-direction:column;align-items:stretch;background:#25313a;gap:0}
+.mode-strip{height:69px;min-height:69px;display:flex;align-items:stretch;gap:0;border-bottom:1px solid #63747a;min-width:0}
+.tab-toggle{width:67px;min-width:67px;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:3px 4px;background:#24343d;border-right:1px solid #536870}
+.dock-tab{min-height:28px;border:1px solid #607981;border-radius:7px;color:#d5e3e2;background:transparent;display:flex;align-items:center;justify-content:center;gap:4px;font-size:15px}
+.dock-tab span{font-size:10px}.dock-tab.active{background:#ad674932;border-color:#d9a68e;color:#f6c4b0}
+#app .mode-strip .tools,#app .mode-strip .setting-tools{flex:1;min-width:0;display:flex;height:100%;flex-direction:row;align-items:center;gap:3px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;touch-action:pan-x;-webkit-overflow-scrolling:touch;padding:3px 5px;background:#303d45;overscroll-behavior-x:contain}
+#app .mode-strip .tools::-webkit-scrollbar,#app .mode-strip .setting-tools::-webkit-scrollbar{display:none}
+#app .mode-strip .tool{min-width:59px;width:59px;min-height:58px;height:58px;flex:none;gap:3px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:3px 1px;border:1px solid transparent;border-radius:8px;color:#e3e9e8;font-size:10px;background:transparent;line-height:1.1}
+#app .mode-strip .tool .ic{font-size:23px;line-height:1.1}
+#app .mode-strip .tool.active,#app .mode-strip .tool.sel{background:#b7745930;border-color:#cf977d;color:#ffccb6}
+#app .mode-strip .tool .color-disc{height:24px;width:24px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #0006;flex:none}
+#app .mode-strip .tool .line-glyph{width:27px;background:#eac1a4;min-height:2px;border-radius:3px;display:block}
+#app .mode-strip .setting-tool.sel{background:#28695e8a;border-color:#6dd7bb;color:white}
+#app .mode-strip .tool.submenu-back{background:#354a50;border-color:#718e8c}
+#app .mode-strip .tool .shape-glyph{display:grid;place-items:center;width:28px;height:28px;line-height:1}
+#app .mode-strip .tool .shape-glyph svg{height:28px;width:28px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.action-dock{min-height:54px;height:54px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;padding:2px max(3px,env(safe-area-inset-left)) 2px max(3px,env(safe-area-inset-right));background:#222f38;align-items:stretch}
+.dock-action{min-width:0;padding:2px 1px;border:1px solid transparent;border-radius:8px;background:#303e47;color:#d7e1e1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:10px}
+.dock-action .ic{font-size:20px;line-height:1}
+.dock-action:active{background:#4c6970}
+.dock-action.select-action{background:#694837;border-color:#db9b7e;color:#f6d1be}
+.dock-action.select-action.on{background:#276c65;border-color:#78d4c3;color:#fff}
+.action-dock .action-holder{display:flex;min-width:0;position:relative}
+.action-dock .action-toggle{min-width:0;width:100%;height:auto;background:#303e47;border:1px solid transparent;border-radius:8px;font-size:11px;padding:0}
+.action-dock .action-popup{right:0;top:auto;bottom:calc(100% + 5px);max-height:min(290px,65dvh);z-index:90}
+/* Keep the action popup above the draggable precision pad when both are open. */
+.bottom-dock:has(.action-popup:not(.hidden)){z-index:80}
+#app .bottom-dock .tools{padding:3px 4px}
+#app .bottom-dock .tools .tool{min-width:59px}
+#app .mode-strip .tool.end-cont{min-width:64px}
+.precision-crosshair{position:absolute;left:0;top:0;z-index:35;pointer-events:none;width:54px;height:54px;transform:translate(-50%,-50%);border-radius:50%;border:1px dashed #af624a;box-shadow:0 0 0 1px #fff5;display:grid;place-items:center}
+.precision-crosshair:before,.precision-crosshair:after{content:"";position:absolute;background:#aa583f;box-shadow:0 0 2px white}
+.precision-crosshair:before{height:1.5px;width:72px}
+.precision-crosshair:after{width:1.5px;height:72px}
+.precision-crosshair .hair-ring{height:13px;width:13px;border:2px solid #fff;background:#d57552;border-radius:50%;box-shadow:0 0 0 1px #6f342b;z-index:2}
+.cursor-pad{position:absolute;right:9px;top:37%;width:164px;max-width:calc(100% - 16px);z-index:56;border-radius:14px;border:1px solid #91aaa6;background:#293e45ec;color:#fff;box-shadow:0 9px 32px #12232a75;padding:5px;touch-action:none;user-select:none;-webkit-user-select:none;backdrop-filter:blur(6px)}
+.cursor-pad-head{display:flex;align-items:center;justify-content:space-between;gap:2px;touch-action:none;cursor:grab;font-size:11px;font-weight:700;padding:1px 2px 4px;min-height:22px;color:#def1eb}
+.cursor-pad-head button{border:0;border-radius:6px;background:#ffffff22;color:#fff;font-size:18px;min-width:26px;height:23px;line-height:1}
+.cursor-touch{height:37px;background:#a9bab51f;border:1px dashed #aecac3;border-radius:8px;display:grid;place-items:center;font-size:10px;color:#e9e9e4;touch-action:none;cursor:crosshair}
+.cursor-arrow-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,28px);gap:2px;margin-top:5px}
+.cursor-arrow-grid button{border-radius:6px;border:1px solid #8ba9a4;background:#476264;color:#fff;font-size:17px;padding:0;touch-action:manipulation}
+.cursor-arrow-grid button.cursor-step{font-size:10px;background:#eeeae0;color:#314547;font-weight:700}
+.cursor-confirm{height:30px;width:100%;margin-top:5px;background:#d4a18b;color:#26363a;border:0;border-radius:8px;font-size:12px;font-weight:800;touch-action:manipulation}
+#app .point-nudge{z-index:54}
+@media(max-width:650px){.top .action-holder{display:none}.top .logo{display:none}.top .file-toggle{width:69px}.top .project{flex:1}.bottom-dock{height:116px;min-height:116px}.mode-strip{height:66px;min-height:66px}.tab-toggle{width:60px;min-width:60px}.action-dock{height:50px;min-height:50px}.dock-action{font-size:10px}.dock-action .ic{font-size:19px}#app .mode-strip .tool{min-width:55px;width:55px;min-height:55px;height:55px}.cursor-pad{width:152px}.cursor-arrow-grid{grid-template-rows:repeat(3,27px)}}
+@media(max-height:440px){.top{height:42px;min-height:42px}.bottom-dock{height:94px;min-height:94px}.mode-strip{height:50px;min-height:50px}.tab-toggle{width:59px;min-width:59px}.dock-tab{min-height:20px;font-size:12px}.dock-tab span{font-size:9px}.action-dock{height:44px;min-height:44px}#app .mode-strip .tool{height:45px;min-height:45px;min-width:54px;width:54px;font-size:9px}#app .mode-strip .tool .ic{font-size:18px}#app .mode-strip .tool .shape-glyph,#app .mode-strip .tool .shape-glyph svg{height:20px;width:20px}.dock-action .ic{font-size:17px}.dock-action{font-size:9px}.cursor-pad{width:145px;padding:3px}.cursor-touch{height:29px}.cursor-arrow-grid{grid-template-rows:repeat(3,22px);margin-top:3px}.cursor-confirm{height:25px;margin-top:3px}.cursor-pad-head{min-height:18px}}
+
+
+/* V1.5 integrated: accessible numeric line panel; compact on landscape phones. */
+.numeric-panel{position:absolute;top:8px;right:8px;z-index:57;width:min(326px,calc(100% - 16px));max-height:calc(100% - 15px);overflow:auto;overscroll-behavior:contain;border:1px solid #9dbbb5;border-radius:12px;background:#fdfdf9f7;box-shadow:0 10px 28px #25363a55;font-size:12px;color:#243a3d;backdrop-filter:blur(6px)}
+.numeric-head{display:flex;align-items:center;gap:6px;padding:7px 8px;background:#2a4249;color:#fff;position:sticky;top:0;z-index:1}
+.numeric-head b{font-size:12px;white-space:nowrap}.numeric-head span{color:#e9b098;font-size:11px;margin-left:auto;white-space:nowrap}
+.numeric-head button{background:#617277;border:0;border-radius:5px;color:#fff;width:25px;height:25px;font-size:17px;padding:0;flex-shrink:0}
+.numeric-body{padding:8px;display:flex;flex-direction:column;gap:7px}
+.numeric-inputs{display:grid;grid-template-columns:1fr 1fr 32px;gap:6px;align-items:end}
+.numeric-inputs label{display:flex;flex-direction:column;gap:3px;color:#53666a;font-size:11px;min-width:0}
+.numeric-inputs label span{display:inline;color:#667c7b}
+.numeric-inputs input{width:100%;height:37px;min-width:0;border:1px solid #aebfbd;border-radius:6px;padding:5px 7px;color:#223539;background:#fff;font-size:16px;font-weight:700}
+#numericAngleDialButton{height:37px;border:1px solid #c4cfcb;border-radius:7px;background:#e7efeb;font-size:18px;color:#3f6b65}
+.numeric-angle-dial{display:flex;justify-content:center;align-items:center}.numeric-angle-dial svg{width:105px;height:105px;touch-action:none;cursor:crosshair;user-select:none}
+.numeric-direction-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.numeric-direction-row button{padding:5px 1px;min-height:34px;border:1px solid #c3d2d0;border-radius:6px;background:#edf2ee;color:#47615f;font-size:12px;white-space:nowrap}
+.numeric-direction-row button.active{color:#fff;background:#447e76;border-color:#447e76;font-weight:800}
+.numeric-origin-row{display:flex;gap:5px;justify-content:space-between;align-items:center;font-size:10px;color:#60746c;min-width:0}
+.numeric-origin-row span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.numeric-origin-row button{font-size:10px;white-space:nowrap;border:1px solid #b4ccc4;border-radius:6px;background:#ebf4ee;padding:5px;color:#376a61}
+.numeric-action-row{display:flex;align-items:center;gap:5px;min-height:37px}
+.numeric-check{display:flex;gap:5px;align-items:center;white-space:nowrap;font-size:11px;color:#355d57}.numeric-check input{width:16px;height:16px;accent-color:#3f8478}
+.numeric-action-row button{border:0;border-radius:7px;padding:7px 10px;min-height:35px;background:#e7eee8;color:#385a55;font-size:12px;font-weight:700}
+.numeric-action-row button.numeric-primary{background:#a65c45;color:#fff;flex:1}
+.numeric-panel.collapsed .numeric-body{display:none}
+@media(max-height:440px){.numeric-panel{width:min(284px,calc(100% - 16px));max-height:calc(100% - 6px);top:3px;right:4px}.numeric-body{padding:5px;gap:3px}.numeric-inputs input{height:30px;font-size:14px}.numeric-head{padding:3px 6px}.numeric-head button{height:20px;width:22px}.numeric-direction-row button{min-height:26px}.numeric-action-row button{min-height:28px;padding:3px 6px}.numeric-action-row{min-height:27px}.numeric-origin-row button{padding:3px}}
+
+
+/* V1.6: separate a focused layer manager from the contextual properties editor. */
+.side::before{display:none}
+.layer-mode-only{display:block}
+.layer-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:7px;border-bottom:1px solid #d5dfdb;padding:3px 0 10px;margin-bottom:10px}
+.layer-sheet-head strong{font-size:15px;color:#274442}.layer-sheet-head button{background:#e9efed;border:1px solid #c6d6d0;border-radius:6px;padding:6px 10px;color:#365953}
+.layer-footer{color:#697875;font-size:11px;line-height:1.5;margin-top:12px}
+.layer-image-name{font-size:11px}.layers{max-height:none;overflow:visible}
+.photo-range{width:100%;accent-color:#387b77}
+.photo-tools{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:8px}
+.photo-tools button{border:1px solid #a9c7bf;border-radius:7px;background:#e8f2ee;color:#306961;padding:7px 10px}
+.new-file-overlay{position:absolute;inset:0;z-index:120;background:#101b239c;display:flex;align-items:center;justify-content:center;padding:18px}
+.new-file-window{width:min(390px,100%);background:#fffefa;border:1px solid #d9ded9;border-radius:13px;padding:17px;box-shadow:0 12px 40px #15242c75;display:flex;flex-direction:column;gap:11px}
+.new-file-window h3{font-size:17px;color:#2a4142;margin:0}.new-file-window p{font-size:12px;line-height:1.65;color:#5d6b6b;margin:0}
+.new-file-window button{min-height:43px;border-radius:7px;border:1px solid #bed0c9;background:#e8f2ef;color:#275f58;font-size:14px}
+.new-file-window button.primary{background:#a65c45;color:white;border-color:#a65c45}
+.new-file-window button.quiet{background:#f4f3ef;color:#475b59}
+
+
+/* V1.7 numeric line: a single horizontally swipable row just above drawing tools.
+   Only the draw action and close button stay pinned, so the canvas remains visible. */
+#app .center .numeric-panel{
+  top:auto;right:6px;left:6px;bottom:7px;width:auto;max-height:none;overflow:visible;
+  background:#f7f8f5f2;border:1px solid #88a9a4;border-radius:10px;
+  z-index:62;box-shadow:0 5px 19px #1f333b33;font-size:11px
+}
+#app .numeric-strip{display:flex;align-items:center;gap:3px;height:51px;padding:4px;min-width:0;white-space:nowrap}
+#app .numeric-scroll{display:flex;align-items:center;gap:6px;min-width:0;flex:1;
+  overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;touch-action:pan-x;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;height:100%}
+#app .numeric-scroll::-webkit-scrollbar{display:none}
+#app .numeric-field{display:flex;align-items:center;gap:3px;white-space:nowrap;color:#435d5d;font-size:11px;font-weight:700;flex:none}
+#app .numeric-field input{min-width:0;width:77px;height:36px;border:1px solid #a6bab5;background:white;
+  border-radius:6px;padding:3px 4px;color:#223b3d;font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+#app .numeric-field-angle input{width:64px}
+#app .numeric-field span{color:#4b7770}
+#app .numeric-direction-row{display:flex;align-items:center;gap:3px;flex:none}
+#app .numeric-direction-row button{min-width:33px;height:36px;min-height:36px;padding:0 4px;border-radius:6px;font-size:18px}
+#app .numeric-icon-button,#app .numeric-text-button{flex:none;height:36px;min-width:35px;border:1px solid #b1c6c1;
+  border-radius:6px;background:#ebf1ee;color:#365e56;font-weight:700;padding:0 6px}
+#app #numericAngleDialButton{font-size:18px}
+#app .numeric-check{display:flex;align-items:center;gap:3px;flex:none;font-size:11px;font-weight:700}
+#app .numeric-check input{width:15px;height:15px}
+#app .numeric-small,#app .numeric-close{height:36px;width:24px;min-width:24px;padding:0;border:0;
+  background:#dfe9e5;color:#385b57;font-size:20px;border-radius:6px}
+#app .numeric-small{width:23px;min-width:23px}
+#app .numeric-close{background:#ebe6e0;color:#805644}
+#app .numeric-primary{height:36px;min-width:48px;flex:none;background:#a65c45;color:#fff;
+  border:0;border-radius:6px;font-size:13px;font-weight:800;padding:0 5px}
+#app .numeric-angle-dial{position:absolute;bottom:calc(100% + 5px);right:25%;width:120px;
+  border:1px solid #a7c3bd;border-radius:10px;background:#fffefa;box-shadow:0 6px 19px #0003;padding:5px}
+#app .numeric-angle-dial svg{height:108px;width:108px}
+.numeric-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;
+  overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
+#app .numeric-panel.collapsed{left:auto;width:43px}
+#app .numeric-panel.collapsed .numeric-strip{padding:3px;height:40px;justify-content:center}
+#app .numeric-panel.collapsed .numeric-scroll,#app .numeric-panel.collapsed #numericCommit,#app .numeric-panel.collapsed #numericClose{display:none}
+#app .numeric-panel.collapsed .numeric-small{width:34px;height:32px}
+/* When a phone software keyboard is active, hide the rest of the chrome and reserve
+   the visual viewport for the artwork and this one-row input bar. */
+body.numeric-keyboard #app .top,body.numeric-keyboard #app .bottom-dock,
+body.numeric-keyboard #app .foot,body.numeric-keyboard #app .bar{display:none!important}
+body.numeric-keyboard #app .main{flex:1;min-height:0}
+body.numeric-keyboard #app .numeric-panel{bottom:max(5px,env(safe-area-inset-bottom))}
+body.numeric-keyboard #app .hint,body.numeric-keyboard #app .hud{display:none}
+@media(max-width:650px){#app .numeric-field input{width:69px}#app .numeric-field-angle input{width:57px}
+ #app .numeric-strip{gap:2px;padding:3px}#app .numeric-scroll{gap:4px}}
+@media(max-height:440px){#app .center .numeric-panel{bottom:3px;right:4px;left:4px;width:auto;max-height:none;top:auto}
+ #app .numeric-strip{height:45px}#app .numeric-field input,#app .numeric-icon-button,
+ #app .numeric-text-button,#app .numeric-direction-row button,#app .numeric-primary,#app .numeric-close,
+ #app .numeric-small{height:33px;min-height:33px}#app .numeric-direction-row button{font-size:17px}}
+
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="logo">川</div><div class="brand"><b>三川工方</b><small>繪圖與標記 V1.6</small></div>
+    <input id="filename" class="project" value="未命名圖面" aria-label="圖檔名稱" title="點此更改圖面名稱">
+    <div class="grow"></div>
+    <button class="btn settings-icon" id="settingsMenu" title="單位、格線與輔助設定" aria-label="繪圖設定" aria-expanded="false" aria-controls="quickPanel">⚙<span id="settingsSummary" class="sr-only">公分</span></button>
+    <div class="file-holder">
+      <button class="btn file-toggle" id="fileMenu" aria-label="檔案、匯入、匯出與分享" aria-expanded="false" aria-controls="filePopup">▤ 檔案 ▾</button>
+      <div id="filePopup" class="file-popup hidden" role="menu" aria-label="檔案操作">
+        <div class="popup-heading">圖面管理</div>
+        <button class="file-entry-btn" id="newDocument">＋ 新建圖面</button>
+        <button class="file-entry-btn" id="fileManager">▤ 開啟圖面</button>
+        <div class="popup-heading">匯入</div>
+        <button class="file-entry-btn" id="bgBtn">▧ 加入照片（可調整）</button>
+        <button class="file-entry-btn" id="fileImportJson">⇧ 匯入 JSON</button>
+        <div class="popup-heading">匯出與分享</div>
+        <button class="file-entry-btn file-primary" id="share">↗ 一鍵分享</button>
+        <button class="file-entry-btn" id="filePngExport">⇩ 下載 PNG</button>
+        <button class="file-entry-btn" id="fileSvgExport">⇩ 下載 SVG</button>
+        <button class="file-entry-btn" id="fileJsonExport">⇩ 備份 JSON</button>
+      </div>
+    </div>
+  </header>
+  <main class="main">
+    <div class="center">
+      <input type="file" id="bgInput" accept="image/*" class="hidden"><input type="file" id="importInput" accept=".json,application/json" class="hidden">
+      <div id="toolPicker" class="tool-picker hidden" role="menu"></div>
+      <div id="quickPanel" class="quick-panel hidden"></div>
+      <div class="stage" id="stage">
+        <svg id="sheet" xmlns="http://www.w3.org/2000/svg" aria-label="可觸控編輯的繪圖畫布"><defs>
+            <pattern id="minorGrid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#dfebe8" stroke-width="1"/></pattern>
+            <pattern id="majorGrid" width="250" height="250" patternUnits="userSpaceOnUse"><rect width="250" height="250" fill="url(#minorGrid)"/><path d="M 250 0 L 0 0 0 250" fill="none" stroke="#bfcfca" stroke-width="2"/></pattern>
+            <marker id="arrowhead" viewBox="0 0 10 10" refX="8.8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker>
+          </defs><rect id="paper" fill="#fffefb"/><rect id="gridBg" fill="url(#majorGrid)" pointer-events="none"/><g id="background"></g><g id="guides"></g><g id="art"></g><g id="preview"></g><g id="handles"></g></svg>
+        <div class="hint" id="hint"><b>選取</b> 點線段可編輯；按下方「選取」可開啟浮動準星控制器</div><div id="modeTip" class="context hidden"></div>
+        <div id="pointNudge" class="point-nudge hidden"></div>
+        <div id="precisionCrosshair" class="precision-crosshair hidden"><span class="hair-ring"></span><span class="hair-dot"></span></div>
+        <div id="cursorPad" class="cursor-pad hidden" aria-label="可移動的精準游標控制器">
+          <div class="cursor-pad-head" id="cursorPadGrip"><span>⊕ 準星控制</span><button id="closeCursorPad" title="收起游標控制器" aria-label="收起游標控制器">×</button></div>
+          <div id="cursorTouch" class="cursor-touch" aria-label="拖曳這裡移動圖面上的準星">在這裡拖動準星</div>
+          <div class="cursor-arrow-grid">
+            <span></span><button data-cursor-dir="up">↑</button><span></span>
+            <button data-cursor-dir="left">←</button><button class="cursor-step" id="cursorStep" title="切換微調步距">1 mm</button><button data-cursor-dir="right">→</button>
+            <span></span><button data-cursor-dir="down">↓</button><span></span>
+          </div><button id="cursorConfirm" class="cursor-confirm">◎ 準星選取</button>
+        </div>
+        <section id="numericPanel" class="numeric-panel hidden" role="group" aria-label="單排數值畫線控制器">
+          <div class="numeric-strip">
+            <button id="numericMinimize" class="numeric-small" aria-label="收合或展開數值工具列" title="縮成圖示">−</button>
+            <div id="numericBody" class="numeric-scroll">
+              <label class="numeric-field" for="numericLength">長 <span id="numericUnitLabel">cm</span><input id="numericLength" type="number" step="any" min="0.001" value="120" inputmode="decimal"></label>
+              <label class="numeric-field numeric-field-angle" for="numericAngle">角 °<input id="numericAngle" type="number" step="any" value="0" inputmode="decimal"></label>
+              <button id="numericAngleDialButton" class="numeric-icon-button" aria-label="角度規" title="角度規">∠</button>
+              <div class="numeric-direction-row" role="group" aria-label="畫線方向">
+                <button data-numeric-dir="up" aria-label="向上" title="向上">↑</button><button data-numeric-dir="left" aria-label="向左" title="向左">←</button><button data-numeric-dir="right" class="active" aria-label="向右" title="向右">→</button><button data-numeric-dir="down" aria-label="向下" title="向下">↓</button>
+              </div>
+              <label class="numeric-check" title="新線段從上一段終點接續"><input id="numericContinuous" type="checkbox" checked>連續</label>
+              <button id="numericPickOrigin" class="numeric-text-button" title="從目前準星或選取端點開始">起點</button>
+              <button id="numericEnd" class="numeric-text-button" title="結束數值畫線">結束</button>
+            </div>
+            <button id="numericCommit" class="numeric-primary" title="依輸入長度與方向畫一段線">＋畫</button>
+            <button id="numericClose" class="numeric-close" aria-label="關閉數值畫線">×</button>
+          </div>
+          <span id="numericDirectionLabel" class="numeric-visually-hidden" aria-hidden="true">right →</span>
+          <span id="numericOrigin" class="numeric-visually-hidden" aria-hidden="true">起點：畫布中心</span>
+          <div id="numericAngleDial" class="numeric-angle-dial hidden" aria-label="角度規，點擊圓盤選角度"><svg viewBox="0 0 120 120" id="numericDialSvg"><circle cx="60" cy="60" r="51" fill="#f8fbf8" stroke="#87a6a0" stroke-width="2"/><path d="M60 9V111 M9 60H111" stroke="#c8d6d3" stroke-width="1"/><line id="numericDialRay" x1="60" y1="60" x2="102" y2="60" stroke="#aa624c" stroke-width="4"/><circle cx="60" cy="60" r="4" fill="#346d67"/><text x="60" y="20" text-anchor="middle" font-size="9">270°</text><text x="104" y="56" text-anchor="middle" font-size="9">0°</text><text x="60" y="106" text-anchor="middle" font-size="9">90°</text><text x="18" y="56" text-anchor="middle" font-size="9">180°</text></svg></div>
+        </section><div class="hud"><div class="coords" id="coords">X 0　Y 0 mm</div><div class="zoom"><button id="zoomOut">−</button><span id="zoomText">100%</span><button id="zoomIn">＋</button></div></div><div id="toast"></div>
+      </div>
+      <div class="foot"><span id="status">準備完成｜選擇下方工具開始繪圖</span><span id="statusSave">自動保存至此瀏覽器</span></div>
+    </div>
+    <aside class="side closed" id="side"><div id="inspector"></div></aside>
+  </main>
+  <div class="bottom-dock" aria-label="繪圖與編輯工具列">
+    <div class="mode-strip">
+      <div class="tab-toggle" role="tablist" aria-label="上排工具切換">
+        <button id="drawingTab" class="dock-tab active" aria-selected="true">✎<span>繪圖</span></button>
+        <button id="settingsTab" class="dock-tab" aria-selected="false">⚙<span>設定</span></button>
+      </div>
+      <nav class="tools" id="tools" aria-label="繪圖工具">
+        <button class="tool" data-tool="pan"><span class="ic">✥</span><span>平移</span></button>
+        <button class="tool" data-menu="lines"><span class="ic">╱</span><span>線條</span></button>
+        <button class="tool" data-tool="numeric" title="數值畫線 · 輸入線長與角度"><span class="ic">⌗</span><span>數值畫線</span></button>
+        <button class="tool" data-menu="curves"><span class="ic">◯</span><span>圓弧</span></button>
+        <button class="tool" data-menu="triangles"><span class="ic">△</span><span>三角形</span></button>
+        <button class="tool" data-menu="polygons"><span class="ic">⬡</span><span>多角形</span></button>
+        <button class="tool" data-tool="pen"><span class="ic">✎</span><span>畫筆</span></button>
+        <button class="tool" data-tool="text"><span class="ic">文</span><span>文字</span></button>
+        <button class="tool end-cont" id="endCont" style="display:none"><span class="ic">✓</span><span>結束連線</span></button>
+        <button class="tool style-tool" id="openColor" title="繪圖顏色"><span class="color-disc" id="colorDot" style="background:#a65c45"></span><span>顏色</span></button>
+        <button class="tool style-tool" id="openWidth" title="線條粗細"><span class="line-glyph" id="widthPreview"></span><span id="widthLabel">2px</span></button>
+      </nav>
+      <nav class="setting-tools hidden" id="settingsTools" aria-label="繪圖設定">
+        <button class="tool setting-tool" id="unitCycle"><span class="ic">㎝</span><span id="unitCycleLabel">公分</span></button>
+        <button class="tool setting-tool" data-dock-setting="grid"><span class="ic">▦</span><span>格線</span></button>
+        <button class="tool setting-tool" data-dock-setting="guideH"><span class="ic">━</span><span>水平</span></button>
+        <button class="tool setting-tool" data-dock-setting="guideV"><span class="ic">┃</span><span>垂直</span></button>
+        <button class="tool setting-tool" data-dock-setting="angleSnap"><span class="ic">∠</span><span>角吸</span></button>
+        <button class="tool setting-tool" data-dock-setting="snap"><span class="ic">⊞</span><span>吸附</span></button>
+      </nav>
+    </div>
+    <div class="action-dock" aria-label="固定動作列">
+      <button class="dock-action" id="backAction" title="返回上一層或退出目前操作"><span class="ic">↩</span><span>返回</span></button>
+      <button class="dock-action" id="quickDelete" title="刪除選取物件"><span class="ic">⌫</span><span>刪除</span></button>
+      <button class="dock-action select-action" id="selectAction" title="選取模式及精準準星控制"><span class="ic">⌖</span><span>選取</span></button>
+      <button class="dock-action" id="quickFit" title="顯示全部圖面"><span class="ic">⛶</span><span>適屏</span></button>
+      <button class="dock-action" id="quickLayers" title="開啟或關閉圖層"><span class="ic">▤</span><span>圖層</span></button>
+    <div class="action-holder">
+      <button class="btn action-toggle" id="actionMenu" aria-expanded="false" aria-controls="actionPopup">⋯ 更多</button>
+      <div id="actionPopup" class="action-popup hidden" role="menu" aria-label="編輯動作">
+        <div class="popup-heading">編輯</div>
+        <button class="action-entry" id="undo">↶ 復原</button>
+        <button class="action-entry" id="redo">↷ 重做</button>
+        <button class="action-entry" id="duplicateTop">▢ 複製所選物件</button>
+        <button class="action-entry" id="openProperties">✎ 編輯所選物件</button>
+        <button class="action-entry" id="focus">⛶ 滿版畫布</button>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div id="fileDialog" class="file-overlay hidden" role="dialog" aria-modal="true" aria-label="檔案管理">
+    <section class="file-window">
+      <div class="file-head"><strong>我的圖面</strong><button id="closeFiles" aria-label="關閉檔案管理">✕</button></div>
+      <div class="file-note">每個檔案獨立保存在目前的瀏覽器。重要圖面請另存 JSON 備份。</div>
+      <div id="fileList" class="file-list"></div>
+      <div class="file-actions">
+        <button class="action" id="newFromFiles">＋ 建立新圖</button>
+        <button class="action ghost" id="openJsonFromFiles">匯入 JSON</button>
+        <button class="action ghost" id="exportJsonFromFiles">備份目前圖面</button>
+      </div>
+    </section>
+  </div>
+  <div id="newFileDialog" class="new-file-overlay hidden" role="dialog" aria-modal="true" aria-label="新增圖面選項">
+    <section class="new-file-window">
+      <h3>建立空白新圖面</h3>
+      <p>可以直接建立新檔，不必先另外儲存目前畫面。原本已由瀏覽器自動儲存的圖面仍保留在「檔案 → 開啟圖面」。</p>
+      <button id="newDirect" class="primary">＋ 直接建立新檔</button>
+      <button id="newKeep">保留目前圖面後建立</button>
+      <button id="newCancel" class="quiet">取消</button>
+    </section>
+  </div>
+</div>
+<script>
+'use strict';
+(()=>{
+const $=id=>document.getElementById(id), svg=$('sheet');
+const MM={mm:1,cm:10,chi:303}, names={mm:'公釐',cm:'公分',chi:'台尺'};
+const tools={numeric:'數值畫線',select:'選取',pan:'平移',line:'直線',continuous:'連續線',dashed:'虛線',arrow:'箭頭',dimension:'尺寸線',circle:'圓形',semi:'半圓',quarter:'四分之一圓',ellipse:'橢圓',triangle:'一般三角形',rightTriangle:'直角三角形',isoTriangle:'等腰三角形',polygon:'正多角形',pen:'畫筆',text:'文字'};
+const categories={lines:[['line','直線'],['continuous','連續直線'],['numeric','數值畫線'],['dashed','虛線'],['arrow','箭頭'],['dimension','尺寸標記']],curves:[['circle','圓形'],['semi','半圓'],['quarter','四分之一圓'],['ellipse','橢圓']],triangles:[['triangle','一般三角形'],['rightTriangle','直角三角形'],['isoTriangle','等腰三角形']],polygons:[['polygon','正五角形',5],['polygon','正六角形',6],['polygon','正七角形',7],['polygon','正八角形',8]]};
+const groupNames={lines:'線條種類',curves:'圓形與橢圓',triangles:'三角形',polygons:'正多角形'};
+const toolHomeMarkup=$('tools').innerHTML;
+let toolTab='draw';
+function shapeIcon(tool,n){
+ const icons={numeric:'<path d="M3 19H23 M3 15v8 M23 15v8 M8 7h12 M13 4l-3 3 3 3"/>',line:'<path d="M5 23L23 5"/>',continuous:'<path d="M3 21 L12 12 L23 20"/>',dashed:'<path d="M3 22L7 18 M10 15L14 11 M17 8L21 4"/>',arrow:'<path d="M4 23L23 4M15 4H23V12"/>',dimension:'<path d="M4 5V22 M24 5V22 M4 14H24 M8 10L4 14L8 18 M20 10L24 14L20 18"/>',circle:'<circle cx="14" cy="14" r="10"/>',semi:'<path d="M4 23 A10 10 0 0 1 24 23 M4 23 H24"/>',quarter:'<path d="M5 23L5 6 A17 17 0 0 1 22 23 Z"/>',ellipse:'<ellipse cx="14" cy="14" rx="11" ry="6"/>',triangle:'<path d="M3 24L14 4L25 24Z"/>',rightTriangle:'<path d="M4 4V24H24Z M4 19H9V24"/>',isoTriangle:'<path d="M14 4L3 24H25Z M8 13l3 2 M20 13l-3 2"/>',polygon:''};
+ let body=icons[tool]||'';
+ if(tool==='polygon'){let sides=n||6;const ps=Array.from({length:sides},(_,i)=>{const a=-Math.PI/2+i*Math.PI*2/sides;return `${(14+11*Math.cos(a)).toFixed(1)},${(14+11*Math.sin(a)).toFixed(1)}`}).join(' ');body=`<polygon points="${ps}"/>`}
+ return `<span class="shape-glyph"><svg viewBox="0 0 28 28" aria-hidden="true">${body}</svg></span>`;
+}
+function syncDock(){
+ $('drawingTab').classList.toggle('active',toolTab==='draw');$('settingsTab').classList.toggle('active',toolTab==='settings');
+ $('drawingTab').setAttribute('aria-selected',String(toolTab==='draw'));$('settingsTab').setAttribute('aria-selected',String(toolTab==='settings'));
+ $('tools').classList.toggle('hidden',toolTab!=='draw');$('settingsTools').classList.toggle('hidden',toolTab!=='settings');
+ $('unitCycleLabel').textContent=names[state.unit];
+ $('settingsTools').querySelectorAll('[data-dock-setting]').forEach(b=>{const yes=!!state[b.dataset.dockSetting];b.classList.toggle('sel',yes);b.setAttribute('aria-pressed',String(yes))});
+ $('selectAction').classList.toggle('on',state.tool==='select'&&!$('cursorPad').classList.contains('hidden'));syncNumeric();
+}
+function restoreDrawingTools(){if($('tools').innerHTML!==toolHomeMarkup)$('tools').innerHTML=toolHomeMarkup;activeMenu=null;syncToolbarActive()}
+function syncToolbarActive(){document.querySelectorAll('[data-tool]').forEach(el=>el.classList.toggle('active',el.dataset.tool===state.tool));document.querySelectorAll('[data-menu]').forEach(el=>el.classList.toggle('active',!!categories[el.dataset.menu]?.some(row=>row[0]===state.tool&&(state.tool!=='polygon'||Number(row[2])===state.sides))))}
+function selectDrawingTab(tab){toolTab=tab;if(tab==='settings')restoreDrawingTools();closeMenus();syncDock();syncNumeric()}
+function placeCursorOverlay(){const el=$('precisionCrosshair');if($('cursorPad').classList.contains('hidden')||state.tool!=='select'){el.classList.add('hidden');return}const c=canvasSize(),x=(state.cursor.x-lastView.x)/lastView.w*c.w,y=(state.cursor.y-lastView.y)/lastView.h*c.h;el.style.left=x+'px';el.style.top=y+'px';el.classList.toggle('hidden',x<-30||x>c.w+30||y<-30||y>c.h+30);$('cursorStep').textContent=state.step+' mm'}
+function ensureCursorVisible(){const c=canvasSize();let x=(state.cursor.x-lastView.x)/lastView.w*c.w,y=(state.cursor.y-lastView.y)/lastView.h*c.h;if(x<25||x>c.w-25||y<25||y>c.h-25){state.view.cx=state.cursor.x;state.view.cy=state.cursor.y;}drawOnly()}
+function cursorMode(force){if(state.tool!=='select')setTool('select');const open=typeof force==='boolean'?force:$('cursorPad').classList.contains('hidden');$('cursorPad').classList.toggle('hidden',!open);if(open){const selected=current();const target=selected?.points?.[Math.min(state.point,selected.points.length-1)]||{x:state.view.cx,y:state.view.cy};updateCursor(target);toast('在浮動控制器拖曳準星，按 ◎ 選取；可拖動控制器位置')}syncDock();drawOnly()}
+function nearestSegmentDist(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,den=dx*dx+dy*dy;if(!den)return distance(p,a);const t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/den));return Math.hypot(p.x-a.x-dx*t,p.y-a.y-dy*t)}
+function isNearShape(p,s,limit){const ps=s.points||[];if(!ps.length)return false;let segments=ps.slice();if(s.type==='polygon')segments=polygonVertices(s);if(s.type==='text')return Math.abs(p.x-ps[0].x)<(s.fontSize||30)*Math.max(3,(s.text||'').length)&&Math.abs(p.y-ps[0].y)<(s.fontSize||30)*2;
+if(s.type==='circle'||s.type==='semi'||s.type==='quarter'||s.type==='ellipse'){
+ const c=ps[0],r=distance(c,ps[1]);if(s.type==='ellipse'){const ang=Math.atan2(ps[1].y-c.y,ps[1].x-c.x),x=(p.x-c.x)*Math.cos(ang)+(p.y-c.y)*Math.sin(ang),y=-(p.x-c.x)*Math.sin(ang)+(p.y-c.y)*Math.cos(ang),ry=s.minor||r/2;return Math.abs(Math.hypot(x/r,y/ry)-1)*Math.max(1,Math.min(r,ry))<limit;}
+ const ang=(Math.atan2(p.y-c.y,p.x-c.x)*180/Math.PI+360)%360,start=((s.angle||0)%360+360)%360,diff=(ang-start+360)%360;
+ return Math.abs(distance(p,c)-r)<limit&&(s.type==='circle'||diff<=(s.type==='semi'?180:90));}
+if(segments.length<2)return false;for(let i=0;i<segments.length-1;i++)if(nearestSegmentDist(p,segments[i],segments[i+1])<=limit)return true;
+if(['polygon','triangle','rightTriangle','isoTriangle'].includes(s.type))return nearestSegmentDist(p,segments[segments.length-1],segments[0])<=limit;
+return false}
+function selectAtCursor(){const p=state.cursor,limit=17/state.view.scale;let found=null;
+for(let i=state.items.length-1;i>=0&&!found;i--){const o=state.items[i];if(o.visible===false)continue;for(let j=0;j<o.points.length;j++)if(distance(p,o.points[j])<=limit){found={o,j};break}if(!found&&isNearShape(p,o,limit))found={o,j:0}}
+if(!found){const b=state.bg;if(b&&b.visible!==false&&p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h){state.selected=PHOTO_ID;sideMode='properties';$('side').classList.remove('closed');render();toast('已選取照片，可調整大小與透明度');return}state.selected=null;render();toast('準星處沒有圖形；可移動準星後再選');return}
+state.selected=found.o.id;state.point=found.j;updateCursor(found.o.points[found.j]);render();toast('已選取 '+(tools[found.o.type]||'圖形')+' · 點 '+String.fromCharCode(65+found.j))}
+let activeMenu=null;
+const numeric={lengthMM:1200,angle:0,direction:'right',continuous:true,anchor:null};
+const defaults={tool:'select',unit:'cm',pen:'#a65c45',width:2,grid:true,snap:true,step:1,len:600,angle:0,minor:300,triSecond:450,triAngle:65,sides:6,guideH:false,guideV:false,angleSnap:true,font:'sans',fontSize:36,bold:false,text:'文字標記',side:false};
+const state={...defaults,items:[],bg:null,selected:null,point:1,anchor:null,cursor:{x:0,y:0},view:{cx:1200,cy:750,scale:0.27},pending:null,preview:null,gesture:null,project:'未命名圖面'};
+const undo=[],redo=[];let seq=Date.now(),toastTimer=null,autosaveTimer=null,lastView={},vWidth=1,vHeight=1;
+const DOC_INDEX_KEY="sanchuan-markup-doc-index-v1", DOC_PREFIX="sanchuan-markup-doc-v1-", DOC_ACTIVE_KEY="sanchuan-markup-active-doc-v1", LEGACY_KEY="sanchuan-markup-v1";
+let documents=[],activeDocId=null,sideMode='layers';
+const PHOTO_ID="__background_photo__";
+const fmtNum=n=>Number(Number(n).toFixed(3));const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);const toUnit=v=>fmtNum(v/MM[state.unit]);const toMM=v=>Number(v||0)*MM[state.unit];
+const display=v=>`${toUnit(v)} ${names[state.unit]}`;
+const status=s=>$('status').textContent=s;function toast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600)}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function snapshot(){return JSON.stringify({items:state.items,bg:state.bg,project:state.project,unit:state.unit})}
+function checkpoint(){undo.push(snapshot());if(undo.length>80)undo.shift();redo.length=0}
+function applySnapshot(s){try{const x=JSON.parse(s);state.items=x.items||[];state.bg=x.bg||null;state.project=x.project||'未命名圖面';state.selected=null;state.anchor=null;$('filename').value=state.project;render();store()}catch(e){toast('無法還原')} }
+function undoIt(){if(!undo.length){toast('沒有可復原動作');return}redo.push(snapshot());applySnapshot(undo.pop());toast('已復原')}
+function redoIt(){if(!redo.length){toast('沒有可重做動作');return}undo.push(snapshot());applySnapshot(redo.pop());toast('已重做')}
+function makeDocId(){return 'd'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
+function setDocData(data){numeric.anchor=null;state.items=Array.isArray(data?.items)?clone(data.items):[];state.bg=data?.bg||null;state.project=data?.project||'未命名圖面';state.unit=(data?.unit&&MM[data.unit])?data.unit:defaults.unit;state.selected=null;state.point=0;state.anchor=null;state.pending=null;state.preview=null;state.gesture=null;undo.length=0;redo.length=0;$('filename').value=state.project}
+function saveCurrentDocument(){
+ if(!activeDocId)return false;
+ try{
+  state.project=$('filename').value.trim()||'未命名圖面';
+  const info=documents.find(d=>d.id===activeDocId);
+  if(!info)throw Error('圖檔識別遺失');
+  // Save body first; only acknowledge success after all metadata is written.
+  localStorage.setItem(DOC_PREFIX+activeDocId,snapshot());
+  info.name=state.project;info.updatedAt=Date.now();
+  localStorage.setItem(DOC_INDEX_KEY,JSON.stringify(documents));
+  localStorage.setItem(DOC_ACTIVE_KEY,activeDocId);
+  $('statusSave').textContent='✓ 已自動保存';return true;
+ }catch(e){$('statusSave').textContent='⚠ 無法儲存，請匯出 JSON';return false}
+}
+function store(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(saveCurrentDocument,180)}
+function flushSave(){clearTimeout(autosaveTimer);return saveCurrentDocument()}
+function readStored(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(DOC_INDEX_KEY)||'[]');
+  documents=Array.isArray(saved)?saved.filter(d=>d&&typeof d.id==='string'):[];
+  const active=localStorage.getItem(DOC_ACTIVE_KEY);
+  const candidate=documents.find(d=>d.id===active)||documents[0];
+  if(candidate){const raw=localStorage.getItem(DOC_PREFIX+candidate.id);if(raw){const data=JSON.parse(raw);if(Array.isArray(data.items)){activeDocId=candidate.id;setDocData(data);status('已載入上次圖面');return}}}
+  // Preserve the pre-V1.2 auto-saved canvas as its own document, without erasing legacy data.
+  const legacy=localStorage.getItem(LEGACY_KEY);
+  if(legacy){const data=JSON.parse(legacy);if(Array.isArray(data.items)){
+    activeDocId=makeDocId();documents.push({id:activeDocId,name:data.project||'原有圖面',updatedAt:Date.now()});setDocData(data);
+    if(saveCurrentDocument())status('舊版圖面已保留並轉入檔案清單');return;
+  }}
+ }catch(e){$('statusSave').textContent='⚠ 無法讀取儲存紀錄'}
+ // First visit or no saved content: create a blank document.
+ activeDocId=makeDocId();documents.push({id:activeDocId,name:state.project,updatedAt:Date.now()});saveCurrentDocument();
+}
+function openFiles(){if(!flushSave()){toast('目前無法儲存，請先匯出 JSON 備份');return}closeMenus();$('fileDialog').classList.remove('hidden');renderFileList()}
+function closeFiles(){$('fileDialog').classList.add('hidden')}
+function renderFileList(){const entries=documents.slice().sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));$('fileList').innerHTML=entries.map(d=>`<div class="file-entry ${d.id===activeDocId?'active':''}"><div class="file-meta"><strong>${esc(d.name||'未命名圖面')}</strong><small>${d.id===activeDocId?'目前編輯中 · ':''}${new Date(d.updatedAt||Date.now()).toLocaleString('zh-TW')}</small></div><button data-open-doc="${esc(d.id)}" ${d.id===activeDocId?'disabled':''}>${d.id===activeDocId?'已開啟':'開啟'}</button><button class="file-remove" data-delete-doc="${esc(d.id)}" ${documents.length<=1?'disabled':''}>刪除</button></div>`).join('')}
+function newDocument(){closeMenus();$('newFileDialog').classList.remove('hidden')}
+function createBlankDocument(keepCurrent){
+ if(keepCurrent && !flushSave()){toast('儲存空間不足，請先匯出 JSON 備份');return}
+ // When creating directly, do not force a write of the previous document.
+ // Existing browser autosave is retained, because deleting saved work is dangerous.
+ clearTimeout(autosaveTimer);
+ const id=makeDocId(),name='未命名圖面 '+(documents.length+1);
+ activeDocId=id;setDocData({items:[],bg:null,project:name,unit:defaults.unit});
+ documents.push({id,name,updatedAt:Date.now()});
+ $('newFileDialog').classList.add('hidden');closeFiles();sideMode='layers';$('side').classList.add('closed');setTool('select');fit();render();
+ const saved=saveCurrentDocument();
+ toast(saved?'已建立新圖面，可直接繪製':'已開啟新畫布；儲存空間不足，請匯出 JSON');
+}
+function openDocument(id){if(id===activeDocId){closeFiles();return}const doc=documents.find(d=>d.id===id);if(!doc)return;
+ if(!flushSave()){alert('目前圖面無法自動儲存，請先備份 JSON。');return}
+ try{const raw=localStorage.getItem(DOC_PREFIX+id);if(!raw)throw Error('檔案資料不存在');const data=JSON.parse(raw);if(!Array.isArray(data.items))throw Error('圖面格式不正確');activeDocId=id;setDocData(data);setTool('select');fit();render();closeFiles();localStorage.setItem(DOC_ACTIVE_KEY,id);toast('已開啟：'+state.project)}catch(e){toast('檔案開啟失敗：'+e.message)}
+}
+function deleteDocument(id){const doc=documents.find(d=>d.id===id);if(!doc||documents.length<=1)return;
+ if(!confirm('確定刪除「'+(doc.name||'未命名圖面')+'」？此動作無法復原，請先備份 JSON。'))return;
+ if(!flushSave()){toast('目前無法儲存，請先匯出 JSON');return}
+ try{localStorage.removeItem(DOC_PREFIX+id);documents=documents.filter(d=>d.id!==id);
+  if(id===activeDocId){const other=documents[0];const body=JSON.parse(localStorage.getItem(DOC_PREFIX+other.id));activeDocId=other.id;setDocData(body);setTool('select');fit()}
+  localStorage.setItem(DOC_INDEX_KEY,JSON.stringify(documents));localStorage.setItem(DOC_ACTIVE_KEY,activeDocId);render();renderFileList();toast('已刪除圖面');
+ }catch(e){toast('刪除圖面失敗：'+e.message)}
+}
+const current=()=>state.items.find(i=>i.id===state.selected);const pts=i=>i?.points||[];
+function make(type,points){return {id:'s'+(++seq),type,points:clone(points),stroke:state.pen,width:state.width,visible:true,text:state.text,font:state.font,fontSize:state.fontSize,bold:state.bold,angle:0,minor:state.minor,sides:state.sides}}
+function setTool(tool){if(!tools[tool])return;const previousTool=state.tool;state.tool=tool;state.pending=null;state.preview=null;state.gesture=null;if(tool!=='continuous')state.anchor=null;closeMenus();restoreDrawingTools();if(tool!=='select'){$('cursorPad').classList.add('hidden')}if(tool==='numeric'){if(!numeric.anchor||previousTool!=='numeric')numeric.anchor=numericOriginFromContext();$('numericPanel').classList.remove('hidden');syncNumeric()}else {$('numericPanel').classList.add('hidden');document.body.classList.remove('numeric-keyboard')}syncDock();$('hint').innerHTML=`<b>${tools[tool]}</b> ${hintText(tool)}`;updateTip();render()}
+function hintText(tool){return ({numeric:'點畫布指定起點，輸入長度與角度，按「畫一段」；可連續接線',select:'點圖形選取，點端點後可微調；按住圖形可移動',pan:'手指拖曳移動畫布',line:'按住拖曳畫線，或分兩次點取起點、終點',continuous:'先點一下設定起點，再點下一點或輸入角度與長度',dashed:'拖曳畫虛線，或點兩個點定位',arrow:'拖曳畫箭頭，或點兩個點定位',dimension:'拖曳或點兩點，自動產生尺寸標記',circle:'從圓心拖曳決定半徑',semi:'先設定圓心和半徑，可再修改起始角度',quarter:'先設定圓心和半徑，可再修改起始角度',triangle:'拖曳畫一般三角形，點屬性可編輯兩邊長與夾角',rightTriangle:'拖曳畫直角三角形，固定夾角90°',isoTriangle:'拖曳畫等腰三角形，兩腰相等',polygon:'拖曳畫正多角形，也可用屬性輸入邊長',ellipse:'從中心拖曳長軸，短軸可輸入',pen:'直接用手指書寫，之後可選取移動',text:'右側輸入文字後，點擊畫布放置'})[tool]||''}
+function updateTip(){const el=$('modeTip');if(state.tool==='continuous'&&state.anchor){el.classList.remove('hidden');el.textContent=`連續線下一段起點：${fmtNum(state.anchor.x)}, ${fmtNum(state.anchor.y)} mm`}else el.classList.add('hidden')}
+
+function closeMenus(){activeMenu=null;$('toolPicker').classList.add('hidden');$('quickPanel').classList.add('hidden');$('actionPopup').classList.add('hidden');$('filePopup').classList.add('hidden');$('actionMenu').setAttribute('aria-expanded','false');$('settingsMenu').setAttribute('aria-expanded','false');$('fileMenu').setAttribute('aria-expanded','false')}
+function pickCategory(key){
+ if(activeMenu===key){restoreDrawingTools();return}
+ activeMenu=key;const opts=categories[key]||[];
+ $('tools').innerHTML=`<button class="tool submenu-back" id="backSubmenu"><span class="ic">‹</span><span>返回</span></button>`+
+ opts.map(([tool,label,sides])=>`<button class="tool ${tool===state.tool&&(tool!=='polygon'||Number(sides)===state.sides)?'active':''}" data-pick-tool="${tool}" ${sides?`data-pick-sides="${sides}"`:''} aria-label="${label}">${shapeIcon(tool,sides)}<span>${label.replace('正','').replace('三角形','三角').replace('四分之一','1/4')}</span></button>`).join('');
+}
+function syncQuick(){
+ if(!$('colorDot'))return;
+ $('colorDot').style.background=state.pen;
+ $('widthPreview').style.height=Math.max(2,Math.min(16,state.width))+'px';
+ $('widthLabel').textContent=state.width+'px';
+ $('settingsSummary').textContent=names[state.unit];$('settingsMenu').title='繪圖設定 · 目前單位：'+names[state.unit];
+ const panel=$('quickPanel');
+ panel.querySelectorAll('[data-setting-toggle]').forEach(b=>{
+   const key=b.dataset.settingToggle,on=Boolean(state[key]);b.classList.toggle('sel',on);
+   b.setAttribute('aria-pressed',String(on));const t=b.querySelector('.toggle-status');if(t)t.textContent=on?'開':'關';
+ });
+ panel.querySelectorAll('[data-quick-unit]').forEach(b=>b.classList.toggle('sel',b.dataset.quickUnit===state.unit));
+ $('settingsMenu').setAttribute('aria-expanded',String(!panel.classList.contains('hidden')&&panel.dataset.type==='settings'));syncDock();
+}
+function openQuick(type){
+ const el=$('quickPanel'),wasOpen=!el.classList.contains('hidden')&&el.dataset.type===type;
+ closeMenus();if(wasOpen)return;
+ el.dataset.type=type;el.classList.toggle('settings-panel',type==='settings');
+ let content='';
+ if(type==='color')content=`<h3>繪圖顏色 <button data-close-quick="1">×</button></h3><div class="row"><input id="quickColor" type="color" value="${state.pen}" style="width:95px;height:45px;padding:2px"><span>新圖形與所選物件同步調色</span></div>`;
+ if(type==='width')content=`<h3>線條粗細 <button data-close-quick="1">×</button></h3><div class="row"><label class="field">粗細 (px)<input id="quickWidth" type="range" min="0.5" max="22" step="0.5" value="${state.width}"></label><input id="quickWidthNum" type="number" min="0.5" max="30" step="0.5" value="${state.width}" style="width:70px"></div>`;
+ if(type==='settings'){
+  const toggle=(key,label,hint)=>`<button class="setting-switch ${state[key]?'sel':''}" data-setting-toggle="${key}" aria-pressed="${Boolean(state[key])}"><span><b>${label}</b><small>${hint}</small></span><span class="toggle-status">${state[key]?'開':'關'}</span></button>`;
+  content=`<h3>單位與繪圖輔助 <button data-close-quick="1">×</button></h3>
+  <div class="settings-subheading">長度單位</div><div class="unit-grid">${Object.keys(MM).map(k=>`<button data-quick-unit="${k}" class="${state.unit===k?'sel':''}">${names[k]}</button>`).join('')}</div>
+  <div class="tiny">預設公分；變更單位只影響輸入和顯示，不改變線條實際尺寸。</div>
+  <div class="settings-subheading">顯示與吸附開關</div><div class="switch-list">
+  ${toggle('grid','格線','顯示畫布格線')}
+  ${toggle('guideH','水平輔助線','穿過選取端點或游標')}
+  ${toggle('guideV','垂直輔助線','穿過選取端點或游標')}
+  ${toggle('angleSnap','角度吸附','接近 0°、45°、90° 等角度時對齊')}
+  ${toggle('snap','格點吸附','以 10 mm 增量吸附座標')}
+  </div>`;
+ }
+ el.innerHTML=content;el.classList.remove('hidden');syncQuick();
+}
+function snapAnglePoint(start,end){if(!state.angleSnap)return end;const dx=end.x-start.x,dy=end.y-start.y,len=Math.hypot(dx,dy);if(len<1)return end;const a=Math.atan2(dy,dx);const nearest=Math.round(a/(Math.PI/4))*Math.PI/4;let diff=Math.abs(a-nearest);diff=Math.min(diff,Math.PI*2-diff);if(diff>Math.PI/20)return end;return roundSnap({x:start.x+len*Math.cos(nearest),y:start.y+len*Math.sin(nearest)})}
+
+function canvasSize(){return {w:Math.max(1,$('stage').clientWidth),h:Math.max(1,$('stage').clientHeight)}}
+function updateViewport(){const {w,h}=canvasSize(),scale=state.view.scale;vWidth=w/scale;vHeight=h/scale;lastView={x:state.view.cx-vWidth/2,y:state.view.cy-vHeight/2,w:vWidth,h:vHeight};svg.setAttribute('viewBox',`${lastView.x} ${lastView.y} ${vWidth} ${vHeight}`);$('paper').setAttribute('x',lastView.x);$('paper').setAttribute('y',lastView.y);$('paper').setAttribute('width',vWidth);$('paper').setAttribute('height',vHeight);$('gridBg').setAttribute('x',lastView.x);$('gridBg').setAttribute('y',lastView.y);$('gridBg').setAttribute('width',vWidth);$('gridBg').setAttribute('height',vHeight);$('gridBg').style.display=state.grid?'':'none';$('zoomText').textContent=Math.round(scale/.27*100)+'%'}
+function screenToWorld(ev){const r=svg.getBoundingClientRect();return {x:lastView.x+(ev.clientX-r.left)/r.width*lastView.w,y:lastView.y+(ev.clientY-r.top)/r.height*lastView.h}}
+const roundSnap=p=>state.snap?{x:Math.round(p.x/10)*10,y:Math.round(p.y/10)*10}:{x:fmtNum(p.x),y:fmtNum(p.y)};
+function updateCursor(p){state.cursor=clone(p);$('coords').textContent=`X ${toUnit(p.x)}　Y ${toUnit(p.y)} ${names[state.unit]}`}
+function isTriangle(type){return ['triangle','rightTriangle','isoTriangle'].includes(type)}
+function triangleBuilt(a,b,type,prior){const angle=(type==='rightTriangle'?90:type==='isoTriangle'?60:65)*Math.PI/180;const len=distance(a,b)||400,ratio=type==='rightTriangle'?.75:type==='isoTriangle'?1:.85;const dx=b.x-a.x,dy=b.y-a.y,theta=Math.atan2(dy,dx)+angle;return [clone(a),clone(b),{x:fmtNum(a.x+len*ratio*Math.cos(theta)),y:fmtNum(a.y+len*ratio*Math.sin(theta))}]}
+function polygonVertices(s){const c=s.points[0],edge=s.points[1];if(!edge)return [];const n=Math.max(3,Math.min(12,Number(s.sides)||6)),radius=distance(c,edge),start=Math.atan2(edge.y-c.y,edge.x-c.x);return Array.from({length:n},(_,i)=>({x:c.x+radius*Math.cos(start+i*Math.PI*2/n),y:c.y+radius*Math.sin(start+i*Math.PI*2/n)}))}
+function polyPath(ps){return ps.length?'M '+ps.map(v=>`${v.x} ${v.y}`).join(' L ')+' Z':''}
+function shapePath(s){const p=s.points||[];if(!p.length)return '';if(['line','continuous','dashed','arrow','dimension'].includes(s.type))return p.length>1?`M ${p[0].x} ${p[0].y} L ${p[1].x} ${p[1].y}`:'';
+if(s.type==='pen')return p.map((v,i)=>`${i?'L':'M'} ${v.x} ${v.y}`).join(' ');
+if(isTriangle(s.type))return p.length===3?polyPath(p):'';if(s.type==='polygon')return polyPath(polygonVertices(s));if(s.type==='ellipse'){if(p.length<2)return '';const c=p[0],rx=distance(c,p[1]),ry=Math.max(1,Number(s.minor)||rx*.5),angle=Math.atan2(p[1].y-c.y,p[1].x-c.x)*180/Math.PI,unit={x:(p[1].x-c.x)/Math.max(rx,1),y:(p[1].y-c.y)/Math.max(rx,1)};const opposite={x:c.x-rx*unit.x,y:c.y-rx*unit.y};return `M ${p[1].x} ${p[1].y} A ${rx} ${ry} ${angle} 0 1 ${opposite.x} ${opposite.y} A ${rx} ${ry} ${angle} 0 1 ${p[1].x} ${p[1].y}`}
+if(['circle','semi','quarter'].includes(s.type)){if(p.length<2)return '';const c=p[0],r=distance(c,p[1]);if(r<.01)return '';if(s.type==='circle')return `M ${c.x+r} ${c.y} A ${r} ${r} 0 1 0 ${c.x-r} ${c.y} A ${r} ${r} 0 1 0 ${c.x+r} ${c.y}`;const a=(Number(s.angle)||0)*Math.PI/180,sw=s.type==='semi'?Math.PI:Math.PI/2;const start={x:c.x+r*Math.cos(a),y:c.y+r*Math.sin(a)},end={x:c.x+r*Math.cos(a+sw),y:c.y+r*Math.sin(a+sw)};return `M ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${end.x} ${end.y}`}
+return ''}
+function triangleFromDrag(a,b){const vx=b.x-a.x,vy=b.y-a.y;return [a,b,{x:(a.x+b.x)/2-vy*.7,y:(a.y+b.y)/2+vx*.7}]}
+function renderShape(s,{hit=true}={}){if(s.visible===false)return '';const color=esc(s.stroke||'#a65c45'),width=Math.max(.5,Number(s.width)||2),opacity='';if(s.type==='text'){const p=s.points[0],family=({sans:'-apple-system, PingFang TC, sans-serif',serif:'STSong, Songti TC, serif',kai:'BiauKai, DFKai-SB, serif',mono:'ui-monospace, Menlo, monospace'})[s.font]||'sans-serif';const fs=Math.max(8,Number(s.fontSize)||36);return `<g data-id="${esc(s.id)}"><text x="${p.x}" y="${p.y}" font-size="${fs}" font-family="${family}" fill="${color}" font-weight="${s.bold?'700':'400'}" style="white-space:pre">${esc(s.text||'文字')}</text>${hit?`<rect x="${p.x-12}" y="${p.y-fs}" width="${Math.max(130,fs*String(s.text||'').length)}" height="${fs*1.25}" fill="transparent" stroke="transparent" stroke-width="14" pointer-events="all"/>`:''}</g>`}
+const d=shapePath(s);if(!d)return '';let extra='';if(s.type==='arrow')extra=' marker-end="url(#arrowhead)"';if(s.type==='dashed')extra=' stroke-dasharray="9 7"';let dim='';if(s.type==='dimension'&&s.points.length>=2){const [a,b]=s.points,ang=Math.atan2(b.y-a.y,b.x-a.x),mx=(a.x+b.x)/2,my=(a.y+b.y)/2,off=24;const cx=mx+Math.sin(ang)*off,cy=my-Math.cos(ang)*off;const sz=Math.max(16,Math.min(42,24/state.view.scale*.27));dim=`<text x="${cx}" y="${cy}" fill="${color}" font-size="${sz}" font-family="-apple-system,PingFang TC,sans-serif" text-anchor="middle" paint-order="stroke" stroke="#fffefb" stroke-width="5" stroke-linejoin="round" font-weight="600">${esc(display(distance(a,b)))}</text><path d="M ${a.x-12*Math.sin(ang)} ${a.y+12*Math.cos(ang)} L ${a.x+12*Math.sin(ang)} ${a.y-12*Math.cos(ang)} M ${b.x-12*Math.sin(ang)} ${b.y+12*Math.cos(ang)} L ${b.x+12*Math.sin(ang)} ${b.y-12*Math.cos(ang)}" stroke="${color}" stroke-width="1.4" fill="none" vector-effect="non-scaling-stroke"/>`}
+return `<g data-id="${esc(s.id)}"><path d="${d}" fill="none" stroke="${color}" stroke-width="${width}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"${extra}/>${dim}${hit?`<path d="${d}" fill="${(isTriangle(s.type)||s.type==='polygon')?'transparent':'none'}" stroke="transparent" stroke-width="27" pointer-events="${(isTriangle(s.type)||s.type==='polygon')?'all':'stroke'}" vector-effect="non-scaling-stroke"/>`:''}</g>`}
+function drawGuides(){const p=current()?.points?.[Math.min(state.point,current()?.points?.length-1)]||state.cursor;let html='';if(state.guideH)html+=`<line class="guides-guide" x1="${lastView.x}" y1="${p.y}" x2="${lastView.x+lastView.w}" y2="${p.y}"/>`;if(state.guideV)html+=`<line class="guides-guide" x1="${p.x}" y1="${lastView.y}" x2="${p.x}" y2="${lastView.y+lastView.h}"/>`;return html}
+function updateNudge(){const el=$('pointNudge'),s=current();if(state.tool!=='select'||!s||!s.points.length||s.visible===false||!$('side').classList.contains('closed')){el.classList.add('hidden');return}const p=s.points[Math.min(state.point,s.points.length-1)],rect=canvasSize(),centerX=(p.x-lastView.x)/lastView.w*rect.w,centerY=(p.y-lastView.y)/lastView.h*rect.h,size=matchMedia('(max-width:650px)').matches?114:126;el.style.left=Math.max(3,Math.min(rect.w-size-3,centerX-size/2))+'px';el.style.top=Math.max(3,Math.min(rect.h-size-3,centerY-size-30))+'px';el.classList.remove('hidden');el.innerHTML=`<span class="blank"></span><button data-float-nudge="up" title="上移端點">↑</button><span class="blank"></span><button data-float-nudge="left" title="左移端點">←</button><button class="core" data-cycle-step="1" title="切換微調步距"><b>${state.step}</b>mm</button><button data-float-nudge="right" title="右移端點">→</button><span class="blank"></span><button data-float-nudge="down" title="下移端點">↓</button><span class="blank"></span>`}
+function drawHandles(){if(state.selected===PHOTO_ID&&state.bg&&state.bg.visible!==false){const b=state.bg,verts=[[b.x,b.y],[b.x+b.w,b.y],[b.x+b.w,b.y+b.h],[b.x,b.y+b.h]];return `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" stroke="#2f8d81" stroke-width="2" vector-effect="non-scaling-stroke" stroke-dasharray="8 5" fill="none" pointer-events="none"/>`+verts.map((p,i)=>`<g data-bg-handle="${i}"><circle cx="${p[0]}" cy="${p[1]}" r="${Math.max(16,11/state.view.scale)}" fill="#fff" stroke="#318d85" stroke-width="2" vector-effect="non-scaling-stroke" pointer-events="all"/><circle cx="${p[0]}" cy="${p[1]}" r="${Math.max(5,4/state.view.scale)}" fill="#318d85" pointer-events="none"/></g>`).join('')}
+const s=current();if(!s||s.visible===false)return '';const radius=Math.max(12,7/state.view.scale);return s.points.map((p,i)=>`<g data-handle="${i}" data-id="${esc(s.id)}"><circle cx="${p.x}" cy="${p.y}" r="${radius*1.2}" fill="transparent" stroke="transparent" pointer-events="all"/><circle cx="${p.x}" cy="${p.y}" r="${radius*.55}" fill="${i===state.point?'#49a49b':'#ffffff'}" stroke="#2b786f" stroke-width="2" vector-effect="non-scaling-stroke" pointer-events="none"/><text x="${p.x+radius*.8}" y="${p.y-radius*.8}" font-size="${14/state.view.scale}" fill="#327d74" font-weight="700" pointer-events="none">${String.fromCharCode(65+i)}</text></g>`).join('')}
+function drawBackground(){if(!state.bg?.src||state.bg.visible===false)return '';const b=state.bg;return `<image data-bg="1" href="${esc(b.src)}" x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" preserveAspectRatio="none" opacity="${b.opacity??0.65}" pointer-events="${state.tool==='select'?'all':'none'}"/>`}
+function render(){syncQuick();updateViewport();$('background').innerHTML=drawBackground();$('art').innerHTML=state.items.map(s=>renderShape(s)).join('');$('handles').innerHTML=drawHandles();$('guides').innerHTML=drawGuides();updateNudge();$('preview').innerHTML=state.preview?`<g opacity=".65" pointer-events="none">${renderShape(state.preview,{hit:false})}</g>`:'';renderInspector();updateTip();placeCursorOverlay();syncToolbarActive();$('undo').disabled=!undo.length;$('redo').disabled=!redo.length;$('endCont').style.display=state.tool==='continuous'?'':'none'}
+function drawOnly(){updateViewport();$('background').innerHTML=drawBackground();$('art').innerHTML=state.items.map(s=>renderShape(s)).join('');$('handles').innerHTML=drawHandles();$('guides').innerHTML=drawGuides();updateNudge();placeCursorOverlay();$('preview').innerHTML=state.preview?`<g opacity=".68" pointer-events="none">${renderShape(state.preview,{hit:false})}</g>`:'';updateTip()}
+const field=(label,val,prop,type='number',opts='')=>`<label class="field">${label}<input type="${type}" data-prop="${prop}" value="${esc(val)}" ${opts}></label>`;
+const select=(label,val,prop,choices)=>`<label class="field">${label}<select data-prop="${prop}">${choices.map(([k,v])=>`<option value="${k}" ${String(k)===String(val)?'selected':''}>${v}</option>`).join('')}</select></label>`;
+function getDims(s){const p=s.points;if(isTriangle(s.type)){return {a:distance(p[0],p[1]),b:distance(p[0],p[2]),angle:Math.atan2(Math.sin(Math.atan2(p[2].y-p[0].y,p[2].x-p[0].x)-Math.atan2(p[1].y-p[0].y,p[1].x-p[0].x)),Math.cos(Math.atan2(p[2].y-p[0].y,p[2].x-p[0].x)-Math.atan2(p[1].y-p[0].y,p[1].x-p[0].x)))*180/Math.PI};}return {length:p.length>1?distance(p[0],p[1]):0}}
+function dialHTML(){const a=Number(state.angle)||0,rad=a*Math.PI/180,xx=55+39*Math.cos(rad),yy=55+39*Math.sin(rad);return `<div class="dial-wrap"><svg class="dial" id="dial" viewBox="0 0 110 110"><circle cx="55" cy="55" r="46" fill="#fafbf9" stroke="#b9cec7" stroke-width="2"/><circle cx="55" cy="55" r="36" fill="none" stroke="#e7eeeb" stroke-dasharray="2 6"/><path d="M 55 8 V 18 M 55 92 V 102 M 8 55 H 18 M 92 55 H 102" stroke="#879e94" stroke-width="2"/><line x1="55" y1="55" x2="${xx}" y2="${yy}" stroke="#a65c45" stroke-width="3" stroke-linecap="round"/><circle cx="${xx}" cy="${yy}" r="5" fill="#a65c45"/><circle cx="55" cy="55" r="4" fill="#2d6e69"/><text x="55" y="31" text-anchor="middle" font-size="9" fill="#60756c">上</text><text x="78" y="58" text-anchor="middle" font-size="9" fill="#60756c">右</text><text x="55" y="86" text-anchor="middle" font-size="9" fill="#60756c">下</text><text x="31" y="58" text-anchor="middle" font-size="9" fill="#60756c">左</text></svg><div class="angle-details">${field('角度（°）',a,'angle','number','step="1"')}<div class="tiny">點選圓盤決定下一段線的方向。<br>0° 向右，90° 向下。</div></div></div>`}
+function renderLayerPanel(){
+ const entries=[...state.items].reverse();
+ const layerRow=o=>`<div class="layer ${o.id===state.selected?'active':''}" data-layer="${esc(o.id)}"><button data-layer-visible="${esc(o.id)}" title="顯示／隱藏">${o.visible!==false?'◉':'◌'}</button><span class="label">${esc(o.type==='text'?(o.text||'文字').slice(0,18):tools[o.type]||o.type)}</span><button data-layer-up="${esc(o.id)}" title="向上">↑</button><button data-layer-down="${esc(o.id)}" title="向下">↓</button></div>`;
+ const bg=state.bg?`<div class="layer ${state.selected===PHOTO_ID?'active':''}" data-layer="${PHOTO_ID}"><button data-photo-visible="1" title="顯示／隱藏圖片">${state.bg.visible===false?'◌':'◉'}</button><span class="label layer-image-name">▧ 照片底圖</span><button data-edit-photo="1" title="編輯照片">編輯</button></div>`:'';
+ $('inspector').innerHTML=`<div class="layer-sheet-head"><strong>圖層 · ${entries.length+(state.bg?1:0)} 個物件</strong><button id="closePanel">關閉</button></div><div class="layers">${entries.map(layerRow).join('')}${bg||''}</div><p class="layer-footer">點選圖層可選取物件；◉ 控制顯示；箭頭調整前後順序。編輯尺寸、顏色、照片屬性請點選物件後使用「更多 → 編輯所選物件」。</p>`;
+}
+function renderPhotoProperties(){let html='';if(state.bg&&state.selected===PHOTO_ID){const b=state.bg;html=`<div class="layer-sheet-head"><strong>照片編輯</strong><button id="closePanel">關閉</button></div><div class="section"><h3>照片位置與大小</h3><div class="row">${field('左上 X／'+names[state.unit],toUnit(b.x),'photoX','number','step="any"')}${field('左上 Y／'+names[state.unit],toUnit(b.y),'photoY','number','step="any"')}</div><div class="row">${field('寬度／'+names[state.unit],toUnit(b.w),'photoW','number','min="0.1" step="any"')}${field('高度／'+names[state.unit],toUnit(b.h),'photoH','number','min="0.1" step="any"')}</div><label class="tiny"><input type="checkbox" data-prop="photoLock" ${b.aspectLocked!==false?'checked':''}> 鎖定照片長寬比例（建議）</label><h3 style="margin-top:12px">照片透明度 <small id="photoOpacityValue">${Math.round((b.opacity??.65)*100)}%</small></h3><input type="range" class="photo-range" min="0" max="100" step="1" value="${Math.round((b.opacity??.65)*100)}" data-prop="photoAlpha" aria-label="照片透明度"><div class="photo-tools"><button id="photoMoveMode">選取照片後拖曳移動</button><button id="photoFit">畫面定位照片</button><button id="removeBg" class="action warn">移除照片</button></div><p class="tiny">點擊照片選取，拖動照片可移動位置；拖曳四角控制點調整尺寸。照片僅供視覺標記，實際尺寸請另行校正。</p></div>`}
+$('inspector').innerHTML=html}
+function renderInspector(){if(sideMode==='layers'){renderLayerPanel();return}const s=current(),type=state.tool;let html='';if(state.selected===PHOTO_ID&&state.bg){renderPhotoProperties();return}
+html+=`<div class="section"><h3>長度與方向 <small>${state.tool==='continuous'?'連續繪線':'數值繪線'}</small></h3><div class="row">${field('線長／'+names[state.unit],toUnit(state.len),'len','number','min="0.01" step="any"')}</div>${dialHTML()}<div class="row" style="margin-top:8px"><button class="action ghost" data-dir="up">↑ 上</button><button class="action ghost" data-dir="left">← 左</button><button class="action ghost" data-dir="right">右 →</button><button class="action ghost" data-dir="down">下 ↓</button></div><button class="action wide" id="addByNumber">${state.tool==='continuous'?'從目前端點延伸一段':'依游標位置新增直線'}</button><div class="tiny" style="margin-top:6px">連續線可選方向或輸入角度與線長；圓弧／三角形／多角形可從定位點依數值建立。</div></div>`;
+if(state.tool==='ellipse')html+=`<div class="section"><h3>橢圓建立尺寸</h3><div class="row">${field('長軸全長／'+names[state.unit],toUnit(state.len*2),'newMajor','number','min="0.01" step="any"')}${field('短軸全長／'+names[state.unit],toUnit(state.minor*2),'newMinor','number','min="0.01" step="any"')}</div><div class="tiny">設定後按「依游標位置新增」，或直接拖曳長軸再編輯短軸。</div></div>`;
+if(state.tool==='polygon')html+=`<div class="section"><h3>正多角形建立尺寸</h3><div class="row">${select('邊數',state.sides,'newSides',[[5,'五角形'],[6,'六角形'],[7,'七角形'],[8,'八角形']])}${field('外接半徑／'+names[state.unit],toUnit(state.len),'newPolyRadius','number','min="0.01" step="any"')}</div><div class="row">${field('等邊邊長／'+names[state.unit],toUnit(2*state.len*Math.sin(Math.PI/state.sides)),'newPolyEdge','number','min="0.01" step="any"')}</div></div>`;
+if(isTriangle(state.tool))html+=`<div class="section"><h3>三角形建立尺寸</h3><div class="row">${field('邊 AB／'+names[state.unit],toUnit(state.len),'len','number','min="0.01" step="any"')}${field('邊 AC／'+names[state.unit],toUnit(state.tool==='isoTriangle'?state.len:state.triSecond),'newTriB','number','min="0.01" step="any"')}</div><div class="row">${state.tool==='rightTriangle'?'<span class="tiny">頂點 A 固定直角 90°</span>':field('夾角 A（°）',state.triAngle,'newTriAngle','number','min="1" max="179" step="any"')}</div><div class="tiny">依游標位置建立；拖曳也可以快速畫出基本形狀。</div></div>`;
+html+=`<div class="section"><h3>畫筆與文字樣式</h3><div class="row">${field('線條顏色',state.pen,'pen','color')}${field('粗細／px',state.width,'width','number','min="0.5" max="30" step="0.5"')}</div><div class="row">${select('字體',state.font,'font',[['sans','黑體'],['serif','宋體'],['kai','楷體'],['mono','等寬']])}${field('字級',state.fontSize,'fontSize','number','min="8" max="180"')}</div><div class="row"><label class="field">粗體 <select data-prop="bold"><option value="false" ${!state.bold?'selected':''}>一般</option><option value="true" ${state.bold?'selected':''}>粗體</option></select></label></div><label class="field">文字內容<textarea data-prop="text" rows="2">${esc(state.text)}</textarea></label><div class="tiny">文字工具：輸入內容後，點畫布位置放置。</div></div>`;
+if(s){const index=state.items.indexOf(s),d=getDims(s);html+=`<div class="section"><h3>選取物件 <small>${esc(tools[s.type]||s.type)}</small></h3><div class="point-tabs">${s.points.map((p,i)=>`<button data-point="${i}" class="${state.point===i?'active':''}">點 ${String.fromCharCode(65+i)}</button>`).join('')}</div><div class="row">${field('X／'+names[state.unit],toUnit(s.points[Math.min(state.point,s.points.length-1)].x),'px','number','step="any"')}${field('Y／'+names[state.unit],toUnit(s.points[Math.min(state.point,s.points.length-1)].y),'py','number','step="any"')}</div>`;
+if(['line','continuous','arrow','dashed','dimension'].includes(s.type))html+=`<div class="row">${field('這條線長／'+names[state.unit],toUnit(d.length),'itemLen','number','min="0.01" step="any"')}${field('方向（°）',fmtNum(Math.atan2(s.points[1].y-s.points[0].y,s.points[1].x-s.points[0].x)*180/Math.PI),'itemAngle','number','step="any"')}</div>`;
+if(['circle','semi','quarter'].includes(s.type))html+=`<div class="row">${field('半徑／'+names[state.unit],toUnit(d.length),'radius','number','min="0.01" step="any"')}${field('起始角（°）',s.angle||0,'startAngle','number','step="any"')}</div>`;
+if(isTriangle(s.type))html+=`<div class="row">${field('邊 AB／'+names[state.unit],toUnit(d.a),'triA','number','min="0.01" step="any"')}${field('邊 AC／'+names[state.unit],toUnit(d.b),'triB','number','min="0.01" step="any"')}</div><div class="row">${s.type==='rightTriangle'?'<span class="tiny">直角固定 90°（頂點 A）</span>':field('夾角 A（°）',fmtNum(d.angle),'triAngle','number','step="any"')}</div>`;
+if(s.type==='ellipse')html+=`<div class="row">${field('長軸全長／'+names[state.unit],toUnit(d.length*2),'major','number','min="0.01" step="any"')}${field('短軸全長／'+names[state.unit],toUnit((s.minor||d.length/2)*2),'minor','number','min="0.01" step="any"')}</div><div class="row">${field('長軸角度 °',fmtNum(Math.atan2(s.points[1].y-s.points[0].y,s.points[1].x-s.points[0].x)*180/Math.PI),'ellipseAngle','number','step="any"')}</div>`;
+if(s.type==='polygon')html+=`<div class="row">${select('角數',s.sides||6,'polygonSides',[[5,'正五角形'],[6,'正六角形'],[7,'正七角形'],[8,'正八角形']])}${field('邊長／'+names[state.unit],toUnit(2*d.length*Math.sin(Math.PI/(s.sides||6))),'polygonEdge','number','min="0.01" step="any"')}</div><div class="row">${field('外接圓半徑／'+names[state.unit],toUnit(d.length),'polygonRadius','number','min="0.01" step="any"')}${field('旋轉角度 °',fmtNum(Math.atan2(s.points[1].y-s.points[0].y,s.points[1].x-s.points[0].x)*180/Math.PI),'polygonAngle','number','step="any"')}</div>`;
+if(s.type==='text')html+=`<label class="field">物件文字<textarea data-prop="itemText" rows="2">${esc(s.text)}</textarea></label><div class="row" style="margin-top:8px">${select('字體',s.font,'itemFont',[['sans','黑體'],['serif','宋體'],['kai','楷體'],['mono','等寬']])}${field('字級',s.fontSize,'itemFontSize','number','min="8" max="180"')}</div><div class="row"><label class="field">粗體<select data-prop="itemBold"><option value="false" ${!s.bold?'selected':''}>一般</option><option value="true" ${s.bold?'selected':''}>粗體</option></select></label></div>`;
+html+=`<div class="row" style="margin-top:9px">${field('物件顏色',s.stroke,'itemColor','color')}${field('物件粗細',s.width,'itemWidth','number','min="0.5" max="30" step="0.5"')}</div><h3 style="margin-top:10px">端點精準微調</h3><div class="row">${select('每次移動',state.step,'step',[[1,'1 mm'],[5,'5 mm'],[10,'10 mm'],[50,'50 mm']])}<div class="tiny" style="flex:2">選點 A / B / C 後按方向鍵</div></div>${nudgeHTML()}<div class="row"><button class="action warn" id="deleteSel">刪除</button><button class="action ghost" id="duplicate">複製</button><button class="action ghost" id="layerUp">上移圖層</button></div></div>`;
+}else{html+=`<div class="section"><h3>精準游標</h3><div class="row">${field('游標 X／'+names[state.unit],toUnit(state.cursor.x),'px','number','step="any"')}${field('游標 Y／'+names[state.unit],toUnit(state.cursor.y),'py','number','step="any"')}</div><div class="row">${select('每次移動',state.step,'step',[[1,'1 mm'],[5,'5 mm'],[10,'10 mm'],[50,'50 mm']])}<div class="tiny" style="flex:2">未選取物件時，方向鍵移動精準游標。</div></div>${nudgeHTML()}</div>`}
+
+
+$('inspector').innerHTML=html}
+function nudgeHTML(){return `<div class="nudge"><span class="empty"></span><button data-nudge="up">↑</button><span class="empty"></span><button data-nudge="left">←</button><div class="middle">●<small>${state.step} mm</small></div><button data-nudge="right">→</button><span class="empty"></span><button data-nudge="down">↓</button><span class="empty"></span></div>`}
+function addItem(item){checkpoint();state.items.push(item);state.selected=item.id;state.point=Math.max(0,item.points.length-1);state.preview=null;render();store();status(`已新增${tools[item.type]||item.type}`)}
+function nudge(dir){if(state.selected===PHOTO_ID&&state.bg){const dirMap={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};const v=dirMap[dir];if(!v)return;checkpoint();state.bg.x=fmtNum(state.bg.x+v[0]*state.step);state.bg.y=fmtNum(state.bg.y+v[1]*state.step);render();store();return}let d=({up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]})[dir];if(!d)return;const s=current();checkpoint();const before=s?clone(s.points):null;const p=s?s.points[Math.min(state.point,s.points.length-1)]:state.cursor;p.x=fmtNum(p.x+d[0]*state.step);p.y=fmtNum(p.y+d[1]*state.step);if(s){fixNamedTriangle(s,state.point,before);status(`點 ${String.fromCharCode(65+state.point)} 精準微調 ${state.step} mm`)}else updateCursor(p);render();store()}
+function setPoint(i){const s=current();if(!s)return;state.point=Math.max(0,Math.min(s.points.length-1,i));updateCursor(s.points[state.point]);render()}
+function fixNamedTriangle(s,index,old){
+ if(!['rightTriangle','isoTriangle'].includes(s.type)||!old||old.length<3)return;
+ const [a,b,c]=s.points;
+ if(index===0){const dx=a.x-old[0].x,dy=a.y-old[0].y;for(let k=1;k<3;k++){s.points[k].x=fmtNum(old[k].x+dx);s.points[k].y=fmtNum(old[k].y+dy)}return}
+ const angleAB=Math.atan2(b.y-a.y,b.x-a.x);
+ if(s.type==='rightTriangle'){
+   const ori=(old[1].x-old[0].x)*(old[2].y-old[0].y)-(old[1].y-old[0].y)*(old[2].x-old[0].x);
+   const side=ori<0?-1:1,length=index===2?Math.max(1,distance(a,c)):Math.max(1,distance(old[0],old[2]));
+   const rad=angleAB+side*Math.PI/2;c.x=fmtNum(a.x+length*Math.cos(rad));c.y=fmtNum(a.y+length*Math.sin(rad));
+ } else {
+   if(index===1){const len=Math.max(1,distance(a,b)),rad=Math.atan2(old[2].y-a.y,old[2].x-a.x);c.x=fmtNum(a.x+len*Math.cos(rad));c.y=fmtNum(a.y+len*Math.sin(rad))}
+   else {const len=Math.max(1,distance(a,c)),rad=Math.atan2(old[1].y-a.y,old[1].x-a.x);b.x=fmtNum(a.x+len*Math.cos(rad));b.y=fmtNum(a.y+len*Math.sin(rad))}
+ }
+}
+function moveShape(s,dx,dy){s.points.forEach(p=>{p.x=fmtNum(p.x+dx);p.y=fmtNum(p.y+dy)})}
+function lineFrom(anchor,len,angle){const rad=angle*Math.PI/180;return [{...anchor},{x:fmtNum(anchor.x+len*Math.cos(rad)),y:fmtNum(anchor.y+len*Math.sin(rad))}]}
+function numericOriginFromContext(){
+ const selected=current();if(selected?.points?.length)return clone(selected.points[Math.min(state.point,selected.points.length-1)]);
+ const p=state.cursor;
+ if(lastView.w&&p.x>=lastView.x&&p.x<=lastView.x+lastView.w&&p.y>=lastView.y&&p.y<=lastView.y+lastView.h)return clone(p);
+ return {x:fmtNum(state.view.cx),y:fmtNum(state.view.cy)};
+}
+function syncNumeric(){
+ const root=$('numericPanel');if(!root||root.classList.contains('hidden'))return;
+ $('numericLength').value=fmtNum(numeric.lengthMM/MM[state.unit]);$('numericUnitLabel').textContent=names[state.unit];
+ $('numericAngle').value=fmtNum(numeric.angle);$('numericDirectionLabel').textContent=(numeric.direction==='custom'?'自訂':numeric.direction)+' '+({right:'→',left:'←',up:'↑',down:'↓',custom:'∠'}[numeric.direction]);
+ $('numericContinuous').checked=numeric.continuous;
+ $('numericOrigin').textContent=`起點 X ${toUnit((numeric.anchor||numericOriginFromContext()).x)} / Y ${toUnit((numeric.anchor||numericOriginFromContext()).y)} ${names[state.unit]}`;
+ root.querySelectorAll('[data-numeric-dir]').forEach(btn=>{const yes=btn.dataset.numericDir===numeric.direction;btn.classList.toggle('active',yes);btn.setAttribute('aria-pressed',String(yes))});
+ const ray=$('numericDialRay'),rad=numeric.angle*Math.PI/180;ray.setAttribute('x2',60+42*Math.cos(rad));ray.setAttribute('y2',60+42*Math.sin(rad));
+}
+function numericDirection(angle){const a=((Number(angle)%360)+360)%360;return (Math.abs(a)<.00001||Math.abs(a-360)<.00001)?'right':Math.abs(a-90)<.00001?'down':Math.abs(a-180)<.00001?'left':Math.abs(a-270)<.00001?'up':'custom'}
+function numericSetAngle(deg){if(!Number.isFinite(Number(deg)))return toast('角度格式錯誤');numeric.angle=fmtNum(Number(deg));numeric.direction=numericDirection(numeric.angle);syncNumeric()}
+function numericSetLength(value){const n=Number(value);if(!Number.isFinite(n)||n<=0||n>10000000){toast('請輸入大於 0 的有效長度');return false}numeric.lengthMM=n*MM[state.unit];return true}
+function numericCommit(){
+ if(!numericSetLength($('numericLength').value))return false;
+ const a=Number($('numericAngle').value);if(!Number.isFinite(a)){toast('角度格式錯誤');return false}
+ numeric.angle=a;numeric.direction=numericDirection(a);
+ const p=numeric.anchor||numericOriginFromContext();const next=lineFrom(p,numeric.lengthMM,numeric.angle);
+ const item=make('line',next);addItem(item);
+ updateCursor(next[1]);if(numeric.continuous)numeric.anchor=clone(next[1]);
+ else numeric.anchor=clone(p);
+ syncNumeric();status(`數值畫線 ${display(numeric.lengthMM)}，${fmtNum(a)}° · ${numeric.continuous?'下一段接續':'單段'}`);return true;
+}
+function addByNumber(dir){if(state.tool==='numeric'){numericCommit();return}if(dir){state.angle=({right:0,down:90,left:180,up:270})[dir]}const len=Math.max(.001,state.len);let a=state.tool==='continuous'?state.anchor:null;
+if(!a){const selected=current();a=selected?.points?.[Math.min(state.point,selected.points.length-1)]||state.cursor}
+const pp=lineFrom(a,len,state.angle);const type=state.tool;let s=make(type,isTriangle(type)?triangleBuilt(pp[0],pp[1],type):pp);if(isTriangle(type)){const a=s.points[0],b=s.points[1],theta=Math.atan2(b.y-a.y,b.x-a.x)+(type==='rightTriangle'?90:type==='isoTriangle'?state.triAngle:state.triAngle)*Math.PI/180,l=type==='isoTriangle'?len:state.triSecond;s.points[2]={x:fmtNum(a.x+l*Math.cos(theta)),y:fmtNum(a.y+l*Math.sin(theta))}}if(type==='ellipse')s.minor=state.minor;if(type==='polygon')s.sides=state.sides;if(type==='text'){s.points=[pp[0]]}addItem(s);state.anchor=type==='continuous'?clone(pp[1]):null;updateCursor(pp[1]);updateTip();status(`${tools[type]}：${display(len)}，角度 ${state.angle}°`)}
+function mutateSelected(prop,val){const s=current();if(!s)return;checkpoint();const p=s.points[Math.min(state.point,s.points.length-1)];const before=clone(s.points);const d=getDims(s);let n=Number(val);if(['px','py'].includes(prop)){p[prop==='px'?'x':'y']=fmtNum(toMM(n));fixNamedTriangle(s,state.point,before);updateCursor(p)}
+else if(prop==='itemColor')s.stroke=val;else if(prop==='itemWidth')s.width=Math.max(.5,Math.min(30,n));
+else if(prop==='itemFont')s.font=val;else if(prop==='itemFontSize')s.fontSize=Math.max(8,n);else if(prop==='itemBold')s.bold=val==='true';else if(prop==='itemText')s.text=val;
+else if(prop==='itemLen'||prop==='itemAngle'){const a=s.points[0],b=s.points[1],ang=prop==='itemAngle'?n:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI,len=prop==='itemLen'?toMM(n):distance(a,b);if(len<=0){undo.pop();toast('長度必須大於零');return}b.x=fmtNum(a.x+len*Math.cos(ang*Math.PI/180));b.y=fmtNum(a.y+len*Math.sin(ang*Math.PI/180))}
+else if(prop==='radius'){if(toMM(n)<=0){undo.pop();toast('半徑必須大於零');return}const c=s.points[0],b=s.points[1],a=Math.atan2(b.y-c.y,b.x-c.x);b.x=fmtNum(c.x+toMM(n)*Math.cos(a));b.y=fmtNum(c.y+toMM(n)*Math.sin(a))}
+else if(prop==='startAngle')s.angle=n;
+else if(['major','minor','ellipseAngle','polygonEdge','polygonRadius','polygonAngle','polygonSides'].includes(prop)){const c=s.points[0],b=s.points[1],radius=distance(c,b),theta=Math.atan2(b.y-c.y,b.x-c.x);let nextR=radius,nextTheta=theta;if(prop==='minor')s.minor=Math.max(.5,toMM(n)/2);if(prop==='major')nextR=Math.max(.5,toMM(n)/2);if(prop==='ellipseAngle'||prop==='polygonAngle')nextTheta=n*Math.PI/180;if(prop==='polygonSides')s.sides=Math.max(5,Math.min(8,Math.round(n)));if(prop==='polygonRadius')nextR=Math.max(.5,toMM(n));if(prop==='polygonEdge')nextR=Math.max(.5,toMM(n))/(2*Math.sin(Math.PI/(s.sides||6)));b.x=fmtNum(c.x+nextR*Math.cos(nextTheta));b.y=fmtNum(c.y+nextR*Math.sin(nextTheta));}
+else if(['triA','triB','triAngle'].includes(prop)){const [a,b,c]=s.points,angB=Math.atan2(b.y-a.y,b.x-a.x),angC=Math.atan2(c.y-a.y,c.x-a.x);if(prop==='triA'){const length=toMM(n);b.x=fmtNum(a.x+length*Math.cos(angB));b.y=fmtNum(a.y+length*Math.sin(angB));if(s.type==='isoTriangle'){c.x=fmtNum(a.x+length*Math.cos(angC));c.y=fmtNum(a.y+length*Math.sin(angC))}}if(prop==='triB'){const length=toMM(n);c.x=fmtNum(a.x+length*Math.cos(angC));c.y=fmtNum(a.y+length*Math.sin(angC));if(s.type==='isoTriangle'){b.x=fmtNum(a.x+length*Math.cos(angB));b.y=fmtNum(a.y+length*Math.sin(angB))}}if(prop==='triAngle'&&s.type!=='rightTriangle'){const dist=distance(a,c);c.x=fmtNum(a.x+dist*Math.cos(angB+n*Math.PI/180));c.y=fmtNum(a.y+dist*Math.sin(angB+n*Math.PI/180))}if(s.type==='rightTriangle')fixNamedTriangle(s,1,before)}
+render();store()}
+function chooseAndDrag(event){const bgHandle=event.target.closest('[data-bg-handle]');if(bgHandle&&state.bg){state.selected=PHOTO_ID;return {kind:'bg-resize',index:Number(bgHandle.dataset.bgHandle),origin:screenToWorld(event),snapshot:snapshot(),moved:false}}
+if(event.target.closest('[data-bg]')&&state.bg){state.selected=PHOTO_ID;return {kind:'bg-move',origin:screenToWorld(event),snapshot:snapshot(),moved:false}}
+const handle=event.target.closest('[data-handle]');const node=event.target.closest('[data-id]');if(handle){const id=handle.dataset.id,i=Number(handle.dataset.handle);state.selected=id;state.point=i;return {kind:'handle',id,index:i,origin:screenToWorld(event),snapshot:snapshot(),moved:false}}
+if(node){const id=node.dataset.id;state.selected=id;state.point=Math.max(0,Math.min(state.point,(current()?.points?.length||1)-1));return {kind:'move',id,origin:screenToWorld(event),snapshot:snapshot(),moved:false}}
+state.selected=null;return {kind:'empty',origin:screenToWorld(event),moved:false}}
+function onDown(e){if(e.button!=null&&e.button!==0)return;if(state.gesture)return;e.preventDefault();svg.setPointerCapture(e.pointerId);let p=screenToWorld(e);state.cursor=clone(p);updateCursor(p);if(state.tool==='select'){state.gesture=chooseAndDrag(e);render();return}
+if(state.tool==='numeric'){numeric.anchor=clone(roundSnap(p));syncNumeric();toast('已設定數值畫線起點');return}
+if(state.tool==='pan'){state.gesture={kind:'pan',origin:{x:e.clientX,y:e.clientY},cx:state.view.cx,cy:state.view.cy,moved:false};return}
+if(state.tool==='text'){const s=make('text',[roundSnap(p)]);addItem(s);setTool('select');return}
+state.gesture={kind:'draw',type:state.tool,start:roundSnap(p),current:roundSnap(p),origin:{x:e.clientX,y:e.clientY},moved:false,trail:[roundSnap(p)]};if(state.tool==='pen')state.preview=make('pen',[p]);drawOnly()}
+function previewFor(g){const a=g.start,b=g.current,t=g.type;let points=[a,b];if(isTriangle(t))points=triangleBuilt(a,b,t);if(t==='continuous'){if(!state.anchor)return null;points=[clone(state.anchor),b]}
+let s=make(t,points);if(t==='pen')s.points=g.trail;return s}
+function onMove(e){const g=state.gesture;if(!g)return;e.preventDefault();if(g.kind==='pan'){const dx=(e.clientX-g.origin.x)/state.view.scale,dy=(e.clientY-g.origin.y)/state.view.scale;state.view.cx=g.cx-dx;state.view.cy=g.cy-dy;updateViewport();return}
+const point=screenToWorld(e);updateCursor(point);
+if(g.kind==='bg-move'||g.kind==='bg-resize'){
+ const original=JSON.parse(g.snapshot).bg;if(!original||!state.bg)return;
+ const dx=point.x-g.origin.x,dy=point.y-g.origin.y;
+ if(Math.abs(dx)+Math.abs(dy)>3/state.view.scale)g.moved=true;
+ if(g.kind==='bg-move'){state.bg.x=fmtNum(original.x+dx);state.bg.y=fmtNum(original.y+dy)}
+ else{const corners=[[original.x,original.y],[original.x+original.w,original.y],[original.x+original.w,original.y+original.h],[original.x,original.y+original.h]];
+ const opposite=corners[(g.index+2)%4],signX=[-1,1,1,-1][g.index],signY=[-1,-1,1,1][g.index];
+ let w=Math.max(10,Math.abs(point.x-opposite[0])),h=Math.max(10,Math.abs(point.y-opposite[1]));
+ if(original.aspectLocked!==false){const ratio=original.w/Math.max(1,original.h);if(w/h>ratio)h=w/ratio;else w=h*ratio}
+ state.bg.w=fmtNum(w);state.bg.h=fmtNum(h);state.bg.x=fmtNum(signX===1?opposite[0]:opposite[0]-w);state.bg.y=fmtNum(signY===1?opposite[1]:opposite[1]-h)}
+ drawOnly();return;
+}
+if(g.kind==='draw'){g.current=(['line','continuous','dashed','arrow','dimension'].includes(g.type)?snapAnglePoint(g.type==='continuous'&&state.anchor?state.anchor:g.start,roundSnap(point)):roundSnap(point));if(Math.hypot(e.clientX-g.origin.x,e.clientY-g.origin.y)>5)g.moved=true;if(g.type==='pen')g.trail.push(point);state.preview=previewFor(g);drawOnly();return}
+if(g.kind==='move'||g.kind==='handle'){const s=current();if(!s)return;const dx=point.x-g.origin.x,dy=point.y-g.origin.y;if(Math.abs(dx)+Math.abs(dy)>3/state.view.scale)g.moved=true;const original=JSON.parse(g.snapshot).items.find(x=>x.id===s.id);if(!original)return;s.points=clone(original.points);if(g.kind==='handle'){s.points[g.index]=roundSnap({x:original.points[g.index].x+dx,y:original.points[g.index].y+dy});fixNamedTriangle(s,g.index,original.points)}else{moveShape(s,dx,dy)}drawOnly()}}
+function onUp(e){const g=state.gesture;if(!g)return;state.gesture=null;e.preventDefault();if(g.kind==='pan'){state.preview=null;drawOnly();return}
+if(g.kind==='bg-move'||g.kind==='bg-resize'){if(g.moved){undo.push(g.snapshot);if(undo.length>80)undo.shift();redo.length=0;store()}else{sideMode='properties';$('side').classList.remove('closed')}render();return}
+if(g.kind==='move'||g.kind==='handle'){if(g.moved){undo.push(g.snapshot);if(undo.length>80)undo.shift();redo.length=0;store()}render();return}
+if(g.kind==='empty'){render();return}
+if(g.kind!=='draw')return;const type=g.type,a=g.start,b=g.current;state.preview=null;
+if(type==='pen'){if(g.trail.length>1){addItem(make('pen',g.trail))}else render();return}
+if(type==='continuous'){if(!state.anchor){state.anchor=clone(a);state.pending=null;status('已設定連續線起點，可點下一點或選方向、輸入長度');render();return}if(distance(state.anchor,b)>1){const s=make('continuous',[clone(state.anchor),clone(b)]);addItem(s);state.anchor=clone(b);updateCursor(b)}else render();return}
+if(g.moved){if(distance(a,b)<1){render();return}const s=make(type,isTriangle(type)?triangleBuilt(a,b,type):[a,b]);addItem(s);state.pending=null;return}
+if(!state.pending||state.pending.type!==type){state.pending={type,start:clone(a)};status('已設定第一點，請點第二點完成');render();return}
+const first=state.pending.start;state.pending=null;if(distance(first,b)<1){render();return}const s=make(type,isTriangle(type)?triangleBuilt(first,b,type):[first,b]);addItem(s)}
+function del(){if(state.selected===PHOTO_ID&&state.bg){checkpoint();state.bg=null;state.selected=null;render();store();toast('照片已移除');return}const s=current();if(!s)return;checkpoint();state.items=state.items.filter(x=>x.id!==s.id);state.selected=null;render();store();toast('已刪除')}
+function duplicate(){const s=current();if(!s)return;let t=clone(s);t.id='s'+(++seq);t.points.forEach(p=>{p.x+=40;p.y+=40});addItem(t);toast('已複製圖層')}
+function reorder(id,delta){let i=state.items.findIndex(x=>x.id===id),j=i+delta;if(i<0||j<0||j>=state.items.length)return;checkpoint();[state.items[i],state.items[j]]=[state.items[j],state.items[i]];render();store()}
+function setDirection(e){const r=$('dial').getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);state.angle=(Math.round((Math.atan2(dy,dx)*180/Math.PI+360)%360));renderInspector()}
+function handleProp(key,value){if(['photoX','photoY','photoW','photoH','photoAlpha','photoLock'].includes(key)){
+ const b=state.bg;if(!b)return;
+ if(key!=='photoAlpha')checkpoint();const n=Number(value);
+ if(key==='photoX')b.x=fmtNum(toMM(n));if(key==='photoY')b.y=fmtNum(toMM(n));
+ if(key==='photoLock')b.aspectLocked=value==='true';
+ if(key==='photoW'&&n>0){const ratio=b.w/Math.max(1,b.h);b.w=fmtNum(toMM(n));if(b.aspectLocked!==false)b.h=fmtNum(b.w/ratio)}
+ if(key==='photoH'&&n>0){const ratio=b.w/Math.max(1,b.h);b.h=fmtNum(toMM(n));if(b.aspectLocked!==false)b.w=fmtNum(b.h*ratio)}
+ if(key==='photoAlpha')b.opacity=Math.max(0,Math.min(1,n/100));
+ render();store();return;
+}
+if(['px','py','itemLen','itemAngle','radius','startAngle','triA','triB','triAngle','major','minor','ellipseAngle','polygonSides','polygonEdge','polygonRadius','polygonAngle','itemColor','itemWidth','itemFont','itemFontSize','itemBold','itemText'].includes(key)){if(current())mutateSelected(key,value);else if(key==='px'||key==='py'){state.cursor[key==='px'?'x':'y']=toMM(value);updateCursor(state.cursor);renderInspector()}return}
+if(key==='bgOpacity'){if(state.bg){checkpoint();state.bg.opacity=Math.max(0,Math.min(1,Number(value)||0));$('background').innerHTML=drawBackground();store()}return}
+if(key==='newMajor'){state.len=Math.max(.01,toMM(value)/2);return}if(key==='newMinor'){state.minor=Math.max(.01,toMM(value)/2);return}if(key==='newSides'){state.sides=Math.max(5,Math.min(8,Math.round(Number(value)||6)));renderInspector();return}if(key==='newPolyRadius'){state.len=Math.max(.01,toMM(value));renderInspector();return}if(key==='newPolyEdge'){state.len=Math.max(.01,toMM(value))/(2*Math.sin(Math.PI/state.sides));renderInspector();return}if(key==='newTriB'){state.triSecond=Math.max(.01,toMM(value));return}if(key==='newTriAngle'){state.triAngle=Math.max(1,Math.min(179,Number(value)||65));return}if(key==='len'){state.len=Math.max(.01,toMM(value));return}if(key==='angle'){state.angle=Number(value)||0;renderInspector();return}
+if(key==='pen'){state.pen=value;const s=current();if(s){checkpoint();s.stroke=value;drawOnly();store()}return}
+if(key==='width'){state.width=Math.max(.5,Math.min(30,Number(value)||2));const s=current();if(s){checkpoint();s.width=state.width;drawOnly();store()}return}
+if(key==='font'){state.font=value;return}if(key==='fontSize'){state.fontSize=Number(value);return}if(key==='bold'){state.bold=value==='true';return}if(key==='text'){state.text=value;return}if(key==='step'){state.step=Number(value)||1;renderInspector()}}
+function setBg(file){if(!file)return;
+ const reader=new FileReader();reader.onerror=()=>toast('照片讀取失敗');
+ reader.onload=()=>{const img=new Image();img.onerror=()=>toast('無法辨識照片格式');img.onload=()=>{
+  try{
+   // Compress camera photos to reduce browser storage failures on iPhone.
+   const maxDimension=2200,ratio=Math.min(1,maxDimension/Math.max(img.naturalWidth,img.naturalHeight)),c=document.createElement('canvas');
+   c.width=Math.max(1,Math.round(img.naturalWidth*ratio));c.height=Math.max(1,Math.round(img.naturalHeight*ratio));
+   const ctx=c.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);
+   const compressed=c.toDataURL('image/jpeg',.84);checkpoint();const width=2200,height=width*img.naturalHeight/img.naturalWidth;
+   state.bg={src:compressed,x:0,y:0,w:width,h:height,opacity:.65,aspectLocked:true,visible:true};state.selected=PHOTO_ID;sideMode='properties';$('side').classList.remove('closed');state.view.cx=width/2;state.view.cy=height/2;fit();render();store();toast('照片已加入：可移動、縮放與調整透明度');
+  }catch(e){toast('照片處理失敗：'+e.message)}
+ };img.src=reader.result};reader.readAsDataURL(file)}
+function fit(){const box=state.items.flatMap(i=>i.points);if(state.bg&&state.bg.visible!==false)box.push({x:state.bg.x,y:state.bg.y},{x:state.bg.x+state.bg.w,y:state.bg.y+state.bg.h});if(box.length){const minX=Math.min(...box.map(p=>p.x)),maxX=Math.max(...box.map(p=>p.x)),minY=Math.min(...box.map(p=>p.y)),maxY=Math.max(...box.map(p=>p.y)),w=maxX-minX,h=maxY-minY;state.view.cx=(minX+maxX)/2;state.view.cy=(minY+maxY)/2;const rect=canvasSize();state.view.scale=Math.min(rect.w/Math.max(w+260,600),rect.h/Math.max(h+220,450),1.3)}else{state.view={cx:1200,cy:750,scale:Math.min(canvasSize().w/2800,canvasSize().h/1700)}}drawOnly()}
+function zoom(f){state.view.scale=Math.min(3,Math.max(.035,state.view.scale*f));drawOnly()}
+function bounds(){const box=state.items.filter(s=>s.visible!==false).flatMap(i=>i.points);if(state.bg&&state.bg.visible!==false)box.push({x:state.bg.x,y:state.bg.y},{x:state.bg.x+state.bg.w,y:state.bg.y+state.bg.h});if(!box.length)return {...lastView};let minX=Math.min(...box.map(p=>p.x)),maxX=Math.max(...box.map(p=>p.x)),minY=Math.min(...box.map(p=>p.y)),maxY=Math.max(...box.map(p=>p.y));const pad=Math.max(90,(Math.max(maxX-minX,maxY-minY))*.06);return {x:minX-pad,y:minY-pad,w:Math.max(400,maxX-minX+2*pad),h:Math.max(280,maxY-minY+2*pad)}}
+function svgExportString(){const b=bounds();const valid=state.items.filter(s=>s.visible!==false);const arrow=`<defs><marker id="arrowhead" viewBox="0 0 10 10" refX="8.8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a65c45"/></marker></defs>`;return `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.ceil(b.w)}" height="${Math.ceil(b.h)}" viewBox="${b.x} ${b.y} ${b.w} ${b.h}">${arrow}<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="#fffefb"/>${drawBackground()}${valid.map(s=>renderShape(s,{hit:false})).join('')}</svg>`}
+function download(blob,filename){const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),2000)}
+const safeName=()=>($('filename').value.trim()||'三川圖面').replace(/[\\/:*?"<>|]/g,'_');
+function saveJson(){state.project=$('filename').value.trim()||'未命名圖面';const data={format:'sanchuan-markup',version:1,unit:state.unit,project:state.project,items:state.items,bg:state.bg};download(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),safeName()+'.json');store();toast('已儲存可編輯 JSON')}
+function svgExport(){download(new Blob([svgExportString()],{type:'image/svg+xml;charset=utf-8'}),safeName()+'.svg');toast('已輸出 SVG')}
+function toPng(){return new Promise((res,rej)=>{const text=svgExportString(),obj=URL.createObjectURL(new Blob([text],{type:'image/svg+xml;charset=utf-8'})),img=new Image();img.onload=()=>{const b=bounds(),scale=Math.min(3,1800/Math.max(1,b.w),1600/Math.max(1,b.h));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(b.w*scale));c.height=Math.max(1,Math.round(b.h*scale));const ctx=c.getContext('2d');ctx.fillStyle='#fffefb';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(obj);c.toBlob(blob=>blob?res(blob):rej(Error('PNG 產生失敗')),'image/png')};img.onerror=()=>{URL.revokeObjectURL(obj);rej(Error('圖片格式錯誤'))};img.src=obj})}
+async function pngExport(){try{download(await toPng(),safeName()+'.png');toast('已輸出 PNG')}catch(e){toast('PNG 匯出失敗：'+e.message)}}
+async function share(){try{const blob=await toPng(),file=new File([blob],safeName()+'.png',{type:'image/png'});if(navigator.share&&navigator.canShare?.({files:[file]})){await navigator.share({title:safeName(),files:[file]});status('已呼叫 iPhone 分享選單')}else{download(blob,file.name);toast('此瀏覽器不支援檔案分享，已下載 PNG')}}catch(e){if(e.name!=='AbortError')toast('無法分享：'+e.message)}}
+function importJson(file){if(!file)return;file.text().then(s=>{
+ const data=JSON.parse(s);if(!Array.isArray(data.items))throw Error('非圖面 JSON');
+ if(!flushSave())throw Error('現有圖面無法保存，請先匯出備份');
+ activeDocId=makeDocId();documents.push({id:activeDocId,name:data.project||'匯入圖面',updatedAt:Date.now()});
+ data.items=data.items.filter(o=>o&&typeof o.id==='string'&&Array.isArray(o.points));setDocData(data);closeFiles();setTool('select');fit();render();saveCurrentDocument();toast('已另開圖檔：'+state.project);
+}).catch(e=>toast('JSON 載入失敗：'+e.message))}
+// App click delegation
+$('tools').addEventListener('click',e=>{
+ if(e.target.closest('#backSubmenu')){restoreDrawingTools();return}
+ const pick=e.target.closest('[data-pick-tool]');if(pick){if(pick.dataset.pickSides)state.sides=Number(pick.dataset.pickSides);setTool(pick.dataset.pickTool);toast('工具：'+(pick.getAttribute('aria-label')||tools[state.tool]));return}
+ const style=e.target.closest('#openColor,#openWidth');if(style){openQuick(style.id==='openColor'?'color':'width');return}
+ const m=e.target.closest('[data-menu]');if(m){pickCategory(m.dataset.menu);return}const t=e.target.closest('[data-tool]');if(t)setTool(t.dataset.tool)
+});
+$('toolPicker').addEventListener('click',e=>{if(e.target.closest('[data-close-menu]')){closeMenus();return}const b=e.target.closest('[data-pick-tool]');if(b){if(b.dataset.pickSides)state.sides=Number(b.dataset.pickSides);setTool(b.dataset.pickTool);toast('已選擇 '+(b.textContent||''))}});
+$('pointNudge').addEventListener('click',e=>{const step=e.target.closest('[data-cycle-step]');if(step){e.preventDefault();const all=[1,5,10,50];state.step=all[(all.indexOf(state.step)+1)%all.length];render();return}const b=e.target.closest('[data-float-nudge]');if(b){e.preventDefault();nudge(b.dataset.floatNudge)}});
+$('settingsMenu').onclick=()=>selectDrawingTab('settings');
+$('quickPanel').addEventListener('click',e=>{
+ if(e.target.closest('[data-close-quick]')){closeMenus();return}
+ const unit=e.target.closest('[data-quick-unit]');
+ if(unit){state.unit=unit.dataset.quickUnit;syncQuick();updateCursor(state.cursor);render();store();return}
+ const toggle=e.target.closest('[data-setting-toggle]');
+ if(toggle){const key=toggle.dataset.settingToggle;if(['grid','guideH','guideV','angleSnap','snap'].includes(key)){state[key]=!state[key];syncQuick();drawOnly()}return}
+});
+$('quickPanel').addEventListener('input',e=>{if(e.target.id==='quickColor')handleProp('pen',e.target.value);if(e.target.id==='quickWidth'||e.target.id==='quickWidthNum'){handleProp('width',e.target.value);const sib=e.target.id==='quickWidth'?'quickWidthNum':'quickWidth';if($(sib))$(sib).value=state.width}syncQuick()});
+
+$('numericClose').onclick=()=>setTool('select');
+$('numericMinimize').onclick=()=>{const c=$('numericPanel').classList.toggle('collapsed');$('numericMinimize').textContent=c?'⌗':'−';$('numericMinimize').title=c?'展開數值畫線':'縮成圖示'};
+$('numericLength').addEventListener('change',e=>{if(numericSetLength(e.target.value))syncNumeric()});
+$('numericAngle').addEventListener('change',e=>numericSetAngle(e.target.value));
+
+// iOS Safari moves the visual viewport above the software keyboard. Numeric inputs
+// temporarily hide tool chrome to keep a usable canvas even in landscape.
+function updateNumericKeyboard(){
+ const focused=['numericLength','numericAngle'].includes(document.activeElement?.id);
+ const isTouch=matchMedia('(pointer:coarse)').matches;
+ document.body.classList.toggle('numeric-keyboard',focused&&isTouch);
+ requestAnimationFrame(()=>{document.documentElement.style.setProperty('--real-height',(window.visualViewport?.height||window.innerHeight)+'px');drawOnly()});
+}
+$('numericPanel').addEventListener('focusin',e=>{if(e.target.matches('input'))updateNumericKeyboard()});
+$('numericPanel').addEventListener('focusout',()=>setTimeout(updateNumericKeyboard,100));
+window.visualViewport?.addEventListener('scroll',()=>{if(document.body.classList.contains('numeric-keyboard'))updateNumericKeyboard()});
+
+$('numericLength').addEventListener('keydown',e=>{if(e.key==='Enter'){e.target.blur();numericCommit()}});
+$('numericAngle').addEventListener('keydown',e=>{if(e.key==='Enter'){e.target.blur();numericCommit()}});
+$('numericContinuous').onchange=e=>{numeric.continuous=e.target.checked;numeric.anchor=numericOriginFromContext();syncNumeric()};
+$('numericPickOrigin').onclick=()=>{numeric.anchor=numericOriginFromContext();updateCursor(numeric.anchor);syncNumeric();toast('數值畫線起點已更新')};
+$('numericCommit').onclick=numericCommit;
+$('numericEnd').onclick=()=>{numeric.anchor=null;setTool('select');toast('數值連續畫線結束')};
+$('numericPanel').addEventListener('click',e=>{const btn=e.target.closest('[data-numeric-dir]');if(btn){const dir=btn.dataset.numericDir;numeric.direction=dir;numeric.angle=({right:0,down:90,left:180,up:270})[dir];syncNumeric()}});
+$('numericAngleDialButton').onclick=()=>$('numericAngleDial').classList.toggle('hidden');
+$('numericDialSvg').addEventListener('pointerdown',e=>{e.preventDefault();const r=$('numericDialSvg').getBoundingClientRect(),x=e.clientX-(r.left+r.width/2),y=e.clientY-(r.top+r.height/2);numericSetAngle(Math.round((Math.atan2(y,x)*180/Math.PI+360)%360))});
+$('drawingTab').onclick=()=>selectDrawingTab('draw');$('settingsTab').onclick=()=>selectDrawingTab('settings');
+$('settingsTools').onclick=e=>{const btn=e.target.closest('[data-dock-setting]');if(btn){const key=btn.dataset.dockSetting;state[key]=!state[key];syncDock();drawOnly();return}if(e.target.closest('#unitCycle')){const units=['cm','mm','chi'],i=units.indexOf(state.unit);state.unit=units[(i+1)%units.length];updateCursor(state.cursor);syncQuick();drawOnly();store()}};
+$('backAction').onclick=()=>{if(activeMenu){restoreDrawingTools();return}if(!$('quickPanel').classList.contains('hidden')){closeMenus();return}if(!$('cursorPad').classList.contains('hidden')){cursorMode(false);return}if(!$('side').classList.contains('closed')){$('side').classList.add('closed');render();return}if(state.anchor){state.anchor=null;render();return}if(state.selected){state.selected=null;render();return}if(state.tool!=='select'){setTool('select');return}toast('目前已回到選取模式')};
+$('quickDelete').onclick=()=>{if(!current()&&state.selected!==PHOTO_ID){toast('請先選取要刪除的圖形或照片');return}del()};
+$('selectAction').onclick=()=>cursorMode();
+$('quickFit').onclick=fit;
+$('quickLayers').onclick=()=>{closeMenus();if(sideMode==='layers'&&!$('side').classList.contains('closed')){$('side').classList.add('closed')}else{sideMode='layers';$('side').classList.remove('closed')}render()};
+const vector={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+$('cursorPad').addEventListener('click',e=>{if(e.target.closest('#closeCursorPad')){cursorMode(false);return}if(e.target.closest('#cursorConfirm')){selectAtCursor();return}if(e.target.closest('#cursorStep')){const all=[1,5,10,50];state.step=all[(all.indexOf(state.step)+1)%all.length];placeCursorOverlay();return}const b=e.target.closest('[data-cursor-dir]');if(b){const v=vector[b.dataset.cursorDir];updateCursor({x:fmtNum(state.cursor.x+v[0]*state.step),y:fmtNum(state.cursor.y+v[1]*state.step)});ensureCursorVisible()}});
+let padGesture=null;
+function clampPadPosition(x,y){const stage=$('stage'),pad=$('cursorPad');const maxX=Math.max(2,stage.clientWidth-pad.offsetWidth-2),maxY=Math.max(2,stage.clientHeight-pad.offsetHeight-2);pad.style.left=Math.min(maxX,Math.max(2,x))+'px';pad.style.top=Math.min(maxY,Math.max(2,y))+'px';pad.style.right='auto'}
+$('cursorPadGrip').addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;e.preventDefault();const rect=$('cursorPad').getBoundingClientRect(),root=$('stage').getBoundingClientRect();padGesture={kind:'movePad',id:e.pointerId,x:e.clientX,y:e.clientY,left:rect.left-root.left,top:rect.top-root.top};$('cursorPadGrip').setPointerCapture(e.pointerId)});
+$('cursorPadGrip').addEventListener('pointermove',e=>{if(!padGesture||padGesture.kind!=='movePad'||e.pointerId!==padGesture.id)return;e.preventDefault();clampPadPosition(padGesture.left+e.clientX-padGesture.x,padGesture.top+e.clientY-padGesture.y)});
+$('cursorPadGrip').addEventListener('pointerup',()=>{padGesture=null});$('cursorPadGrip').addEventListener('pointercancel',()=>{padGesture=null});
+let trackGesture=null;
+$('cursorTouch').addEventListener('pointerdown',e=>{e.preventDefault();trackGesture={id:e.pointerId,x:e.clientX,y:e.clientY,world:clone(state.cursor)};$('cursorTouch').setPointerCapture(e.pointerId)});
+$('cursorTouch').addEventListener('pointermove',e=>{if(!trackGesture||trackGesture.id!==e.pointerId)return;e.preventDefault();updateCursor({x:fmtNum(trackGesture.world.x+(e.clientX-trackGesture.x)/state.view.scale),y:fmtNum(trackGesture.world.y+(e.clientY-trackGesture.y)/state.view.scale)});ensureCursorVisible()});
+$('cursorTouch').addEventListener('pointerup',()=>{trackGesture=null});$('cursorTouch').addEventListener('pointercancel',()=>{trackGesture=null});
+$('inspector').addEventListener('click',e=>{const b=e.target.closest('button');if(!b){const row=e.target.closest('[data-layer]');if(row){state.selected=row.dataset.layer;state.point=0;if(state.selected===PHOTO_ID)sideMode='properties';render()}return}if(b.dataset.unit){state.unit=b.dataset.unit;render();return}if(b.dataset.point!=null){setPoint(Number(b.dataset.point));return}if(b.dataset.nudge){nudge(b.dataset.nudge);return}if(b.dataset.dir){addByNumber(b.dataset.dir);return}if(b.dataset.photoVisible){if(state.bg){checkpoint();state.bg.visible=state.bg.visible===false;render();store()}return}if(b.dataset.editPhoto){state.selected=PHOTO_ID;sideMode='properties';render();return}if(b.id==='closePanel'){$('side').classList.add('closed');return}if(b.dataset.layerVisible){const o=state.items.find(x=>x.id===b.dataset.layerVisible);if(o){checkpoint();o.visible=o.visible===false;render();store()}return}if(b.dataset.layerUp){reorder(b.dataset.layerUp,1);return}if(b.dataset.layerDown){reorder(b.dataset.layerDown,-1);return}if(b.dataset.layer){state.selected=b.dataset.layer;state.point=0;if(state.selected===PHOTO_ID)sideMode='properties';render();return}
+const row=b.closest('[data-layer]');if(row){state.selected=row.dataset.layer;state.point=0;if(state.selected===PHOTO_ID)sideMode='properties';render();return}
+const id=b.id;if(id==='addByNumber')addByNumber();if(id==='deleteSel')del();if(id==='duplicate')duplicate();if(id==='layerUp'&&current())reorder(current().id,1);if(id==='clear'){if(state.items.length&&confirm('確定清空所有圖形？此操作可以復原。')){checkpoint();state.items=[];state.selected=null;state.anchor=null;render();store()}}if(id==='removeBg'&&state.bg){checkpoint();state.bg=null;state.selected=null;render();store()}if(id==='photoFit'&&state.bg){const b=state.bg,c=canvasSize();state.view.cx=b.x+b.w/2;state.view.cy=b.y+b.h/2;state.view.scale=Math.max(.035,Math.min(3,c.w/(b.w*1.15),c.h/(b.h*1.15)));render()}if(id==='photoMoveMode'){setTool('select');toast('點住照片即可拖動，拖四角可調整大小')}if(id==='shareSide')share();if(id==='png')pngExport();if(id==='svgExport')svgExport();if(id==='jsonExport')saveJson();if(id==='jsonImport')$('importInput').click()});
+$('inspector').addEventListener('change',e=>{const key=e.target.dataset.prop;if(key)handleProp(key,key==='photoLock'?String(e.target.checked):e.target.value)});
+$('inspector').addEventListener('input',e=>{if(e.target.dataset.prop==='photoAlpha'&&state.bg){state.bg.opacity=Number(e.target.value)/100;const label=$('photoOpacityValue');if(label)label.textContent=e.target.value+'%';const node=$('background').querySelector('[data-bg]');if(node)node.setAttribute('opacity',String(state.bg.opacity))}});
+$('inspector').addEventListener('pointerdown',e=>{if(e.target.dataset.prop==='photoAlpha')checkpoint();if(e.target.closest('#dial')){e.preventDefault();setDirection(e)}},{passive:false});
+svg.addEventListener('pointerdown',onDown);svg.addEventListener('pointermove',onMove);svg.addEventListener('pointerup',onUp);svg.addEventListener('pointercancel',e=>{state.gesture=null;state.preview=null;render()});
+$('undo').onclick=undoIt;$('redo').onclick=redoIt;$('tools').addEventListener('click',e=>{if(e.target.closest('#endCont')){state.anchor=null;state.pending=null;render();toast('連續線已結束')}});
+
+$('zoomIn').onclick=()=>zoom(1.25);$('zoomOut').onclick=()=>zoom(.8);
+$('focus').onclick=()=>{closeMenus();$('app').classList.toggle('focus');$('focus').textContent=$('app').classList.contains('focus')?'↩ 返回':'⛶ 滿版';setTimeout(drawOnly,0)};
+
+$('bgBtn').onclick=()=>$('bgInput').click();$('bgInput').onchange=e=>{setBg(e.target.files[0]);e.target.value=''};$('importInput').onchange=e=>{importJson(e.target.files[0]);e.target.value=''};
+$('share').onclick=share;
+$('actionMenu').onclick=()=>{const wasOpen=!$('actionPopup').classList.contains('hidden');closeMenus();if(!wasOpen){$('actionPopup').classList.remove('hidden');$('actionMenu').setAttribute('aria-expanded','true')}};
+$('actionPopup').addEventListener('click',e=>{if(e.target.closest('button')){$('actionPopup').classList.add('hidden');$('actionMenu').setAttribute('aria-expanded','false')}});
+$('duplicateTop').onclick=duplicate;
+$('openProperties').onclick=()=>{if(!state.selected){toast('請先選取物件或照片');return}sideMode='properties';$('side').classList.remove('closed');render()};
+$('newDocument').onclick=newDocument;
+$('newDirect').onclick=()=>createBlankDocument(false);$('newKeep').onclick=()=>createBlankDocument(true);$('newCancel').onclick=()=>$('newFileDialog').classList.add('hidden');
+$('fileManager').onclick=openFiles;
+$('closeFiles').onclick=closeFiles;
+$('newFromFiles').onclick=newDocument;
+$('openJsonFromFiles').onclick=()=>$('importInput').click();
+$('exportJsonFromFiles').onclick=saveJson;
+$('fileDialog').addEventListener('click',e=>{if(e.target===$('fileDialog')){closeFiles();return}const opener=e.target.closest('[data-open-doc]');if(opener){openDocument(opener.dataset.openDoc);return}const del=e.target.closest('[data-delete-doc]');if(del){deleteDocument(del.dataset.deleteDoc)}});
+$('fileImportJson').onclick=()=>$('importInput').click();
+$('filePngExport').onclick=pngExport;
+$('fileSvgExport').onclick=svgExport;
+$('fileJsonExport').onclick=saveJson;
+$('settingsMenu').onclick=()=>selectDrawingTab('settings');
+$('fileMenu').onclick=()=>{const wasOpen=!$('filePopup').classList.contains('hidden');closeMenus();if(!wasOpen){$('filePopup').classList.remove('hidden');$('fileMenu').setAttribute('aria-expanded','true')}};
+$('filePopup').addEventListener('click',e=>{if(e.target.closest('button')){$('filePopup').classList.add('hidden');$('fileMenu').setAttribute('aria-expanded','false')}});
+$('filename').addEventListener('change',()=>{state.project=$('filename').value;store()});
+document.addEventListener('pointerdown',e=>{
+ if(!$('actionPopup').classList.contains('hidden')&&!e.target.closest('.action-holder')){$('actionPopup').classList.add('hidden');$('actionMenu').setAttribute('aria-expanded','false')}
+ if(!$('filePopup').classList.contains('hidden')&&!e.target.closest('.file-holder')){$('filePopup').classList.add('hidden');$('fileMenu').setAttribute('aria-expanded','false')}
+ if(!$('quickPanel').classList.contains('hidden')&&!e.target.closest('#quickPanel')&&!e.target.closest('#settingsMenu')&&!e.target.closest('#tools')){$('quickPanel').classList.add('hidden');$('settingsMenu').setAttribute('aria-expanded','false')}
+});
+window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redoIt():undoIt()}else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();del()}else if(e.key==='Escape'){$('newFileDialog').classList.add('hidden');closeMenus();$('side').classList.add('closed');state.anchor=null;state.pending=null;state.selected=null;render()}});
+const resize=()=>{document.documentElement.style.setProperty('--real-height',(window.visualViewport?.height||window.innerHeight)+'px');drawOnly()};window.addEventListener('resize',resize);window.visualViewport?.addEventListener('resize',resize);
+// Prevent two-finger Safari page zoom and add zoom-on-pinch directly to the SVG.
+let pinch=null;svg.addEventListener('touchstart',e=>{if(e.touches.length===2){const a=e.touches[0],b=e.touches[1];pinch={d:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),scale:state.view.scale};state.gesture=null;state.preview=null}},{passive:true});svg.addEventListener('touchmove',e=>{if(pinch&&e.touches.length===2){e.preventDefault();const a=e.touches[0],b=e.touches[1];state.view.scale=Math.max(.035,Math.min(3,pinch.scale*Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)/Math.max(1,pinch.d)));drawOnly()}},{passive:false});svg.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=null});
+readStored();resize();fit();restoreDrawingTools();syncDock();render();
+// Non-production smoke-test interface, read-only references except operations through public UI.
+window.__SC_TEST={get:()=>({items:clone(state.items),tool:state.tool,selected:state.selected,anchor:clone(state.anchor),unit:state.unit,project:state.project,activeDocId,documents:clone(documents)}),setTool,addByNumber,undo:undoIt,redo:redoIt,render,svgExportString,newDocument,openDocument,saveCurrentDocument,cursorMode,selectAtCursor,getCursor:()=>clone(state.cursor),numericGet:()=>clone(numeric),numericCommit,numericSetAngle,createBlankDocument,renderLayerPanel,getPhoto:()=>clone(state.bg),setPhoto:(v)=>{if(!state.bg)return;Object.assign(state.bg,v);render()}};
+})();
+</script>
+</body>
+</html>
