@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川圖面標記">
 <meta name="theme-color" content="#222c34">
-<title>三川工方｜繪圖與標記 V1.3</title>
+<title>三川工方｜繪圖與標記 V1.4</title>
 <style>
 :root{--night:#222c34;--night2:#303d47;--night3:#40515e;--clay:#a65c45;--lightclay:#eab39f;--paper:#fbfaf7;--cream:#eeeae4;--ink:#26313a;--muted:#6c7780;--aqua:#387b77;--line:#d4d9d8}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--night);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.35;cursor:default}input,select,textarea{min-width:0}input:focus,select:focus,textarea:focus{outline:2px solid #76b8b0;outline-offset:0}
@@ -83,34 +83,126 @@
 #app.focus .action-popup{top:calc(100% + 4px)}
 @media(max-width:650px){.top{overflow:visible}.top .brand,.top .logo{display:none}.top .project{width:73px;max-width:73px}.top .btn{font-size:11px;padding:5px 6px}.action-popup{right:-10px;width:206px;max-height:57dvh}.draw-options{gap:3px;padding-right:4px}.bar{padding:3px 5px}.bar-label{font-size:10px}.quick-btn{min-width:30px}.settings-toggle{font-size:11px}}
 @media(max-width:380px){.top .project{width:62px;max-width:62px}.action-toggle{min-width:68px}.bar-label{display:none}.settings-toggle{padding:5px}}
+
+/* V1.4: Bottom-first drafting UI, minimal top controls, consolidated File menu. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.top{height:48px;min-height:48px;z-index:65;gap:7px;overflow:visible}
+.top .brand{min-width:92px}
+.top .project{width:170px;max-width:min(36vw,170px);flex:0 1 170px}
+.top .grow{min-width:0}
+.top .settings-icon{width:39px;min-width:39px;padding:3px;font-size:23px;line-height:1;border-color:#89a9a6;background:#344b50;flex:none}
+.top .action-toggle{min-width:72px;padding:7px 8px}
+.top .file-toggle{min-width:78px;padding:7px 7px;border-color:#bd826e;background:#764e43}
+.file-holder{position:relative;flex:none}
+.file-popup{position:absolute;top:calc(100% + 7px);right:0;z-index:82;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:224px;max-height:min(75dvh,490px);overflow-y:auto;overscroll-behavior:contain;padding:9px;background:#fffefa;border:1px solid #b9c8c3;border-radius:11px;box-shadow:0 12px 35px #0005;color:#253942}
+.file-popup .popup-heading{grid-column:1/-1;font-size:11px;font-weight:700;color:#60716d;padding:5px 3px 4px;border-bottom:1px solid #e0e7e2}
+.file-entry-btn{min-height:43px;padding:7px 4px;background:#f3f7f4;border:1px solid #d3ded9;border-radius:8px;font-size:11px;color:#294f4b;line-height:1.25}
+.file-entry-btn.file-primary{background:#d9efe8;border-color:#8cbab1;color:#205750;font-weight:700}
+#app .main,#app.focus .main{display:flex;grid-template-columns:none;min-height:0;position:relative;flex:1}
+.main .center{width:100%;flex:1;min-width:0;min-height:0;position:relative}
+.main .side{position:absolute;top:0;right:0;bottom:0;width:min(350px,85vw);z-index:32}
+.bottom-dock{height:75px;min-height:75px;width:100%;display:flex;align-items:stretch;gap:0;background:#2e3d46;border-top:1px solid #51646b;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);position:relative;z-index:39}
+#app .bottom-dock .tools{display:flex;flex:1 1 auto;min-width:0;width:auto;height:100%;flex-direction:row;align-items:center;gap:3px;padding:3px 5px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x;background:transparent}
+#app .bottom-dock .tools::-webkit-scrollbar{display:none}
+#app .bottom-dock .tool{width:63px;min-width:63px;height:56px;min-height:56px;flex:none;gap:2px;padding:4px 2px;font-size:10.5px;line-height:1.1}
+#app .bottom-dock .tool .ic{font-size:23px}
+#app .bottom-dock .tool-rule{height:30px;min-height:30px;width:1px;min-width:1px;margin:0 3px;background:#64757b}
+#app .bottom-dock .tool-heading{display:none}
+.dock-style{display:flex;flex:none;gap:3px;align-items:center;padding:4px 7px;border-left:1px solid #6e7b80;box-shadow:-4px 0 7px #19232b44;z-index:2;background:#2e3d46}
+.style-shortcut{height:54px;min-width:47px;max-width:55px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:4px 5px;color:#e4f0ee;background:#364953;border:1px solid #657f84;border-radius:9px;font-size:11px;white-space:nowrap}
+.style-shortcut .dot{display:block;height:23px;width:23px;border-radius:50%;border:2px solid #eceee7;box-shadow:0 0 0 1px #0004}
+.line-glyph{width:26px;min-height:2px;border-radius:4px;background:#e2c7b6;display:block}
+#app .center .tool-picker{top:auto;bottom:8px;left:8px;max-height:min(330px,65%);z-index:47}
+#app .center .quick-panel{top:auto;bottom:8px;right:8px;left:auto;max-height:min(330px,64%);overflow-y:auto;z-index:49}
+#app .center .quick-panel.settings-panel{top:8px;bottom:auto;right:8px;width:min(316px,calc(100% - 16px));max-height:min(480px,80%);z-index:58}
+#app .center .hint{max-width:min(380px,80%)}
+#app .top .file-new{display:none}
+@media(max-width:650px){
+ .top{height:46px;min-height:46px;padding-left:6px;padding-right:6px;gap:4px}
+ .top .logo{display:grid;width:29px;height:29px;font-size:12px;border-radius:6px}
+ .top .brand{display:none}
+ .top .project{flex:1 1 auto;min-width:58px;max-width:none;width:90px;height:31px;font-size:11px}
+ .top .grow{display:none}
+ .top .settings-icon{min-width:36px;width:36px;height:35px;font-size:22px}
+ .top .action-toggle{min-width:63px;width:63px;font-size:11px;padding:6px 2px}
+ .top .file-toggle{min-width:69px;width:69px;font-size:11px;padding:6px 2px}
+ .top .action-popup{right:-35px}
+ .file-popup{width:217px;right:0;max-height:min(70dvh,450px)}
+ .bottom-dock{height:72px;min-height:72px}
+ #app .bottom-dock .tool{min-width:59px;width:59px;height:54px;min-height:54px}
+ .dock-style{padding:3px 5px}
+ .style-shortcut{min-width:44px;height:53px}
+ .main .side{top:0;right:0;bottom:0}
+}
+@media(max-height:440px){
+ .top{height:43px;min-height:43px}
+ .bottom-dock{height:61px;min-height:61px}
+ #app .bottom-dock .tool{height:49px;min-height:49px}
+ #app .bottom-dock .tool .ic{font-size:20px}
+ .style-shortcut{height:49px}
+ .style-shortcut .dot{height:19px;width:19px}
+ .foot{height:21px;min-height:21px}
+ #app .center .quick-panel.settings-panel{max-height:calc(100% - 16px)}
+}
 </style>
 </head>
 <body>
 <div id="app">
   <header class="top">
-    <div class="logo">川</div><div class="brand"><b>三川工方</b><small>繪圖與標記 V1.3</small></div>
-    <button class="btn file-new" id="newDocument" title="建立全新圖面">＋ 新檔</button><button class="btn" id="fileManager" title="切換與管理已儲存圖面">檔案 ▾</button><input id="filename" class="project" value="未命名圖面" aria-label="圖檔名稱">
+    <div class="logo">川</div><div class="brand"><b>三川工方</b><small>繪圖與標記 V1.4</small></div>
+    <input id="filename" class="project" value="未命名圖面" aria-label="圖檔名稱" title="點此更改圖面名稱">
     <div class="grow"></div>
+    <button class="btn settings-icon" id="settingsMenu" title="單位、格線與輔助設定" aria-label="繪圖設定" aria-expanded="false" aria-controls="quickPanel">⚙<span id="settingsSummary" class="sr-only">公分</span></button>
     <div class="action-holder">
       <button class="btn action-toggle" id="actionMenu" aria-expanded="false" aria-controls="actionPopup">↶ 動作 ▾</button>
       <div id="actionPopup" class="action-popup hidden" role="menu" aria-label="編輯動作">
         <div class="popup-heading">編輯</div>
-        <button class="action-entry" id="undo" title="復原">↶ 復原</button>
-        <button class="action-entry" id="redo" title="重做">↷ 重做</button>
-        <button class="action-entry" id="delete" title="刪除選取物件">⌫ 刪除物件</button>
-        <button class="action-entry" id="duplicateTop">▢ 複製物件</button>
+        <button class="action-entry" id="undo">↶ 復原</button>
+        <button class="action-entry" id="redo">↷ 重做</button>
+        <button class="action-entry" id="delete">⌫ 刪除</button>
+        <button class="action-entry" id="duplicateTop">▢ 複製</button>
         <div class="popup-heading">畫布與圖層</div>
-        <button class="action-entry" id="fit">⌗ 適屏顯示</button>
-        <button class="action-entry" id="focus">⛶ 滿版畫布</button>
+        <button class="action-entry" id="fit">⌗ 適屏</button>
+        <button class="action-entry" id="focus">⛶ 滿版</button>
         <button class="action-entry" id="toggleSide">▤ 屬性／圖層</button>
-        <div class="popup-heading">匯入與匯出</div>
-        <button class="action-entry" id="bgBtn">▧ 匯入現場照片</button>
-        <button class="action-entry" id="exportMenu">⇩ 匯出圖檔／備份</button>
       </div>
     </div>
-    <button class="btn primary" id="share">↗ 分享</button>
+    <div class="file-holder">
+      <button class="btn file-toggle" id="fileMenu" aria-label="檔案、匯入、匯出與分享" aria-expanded="false" aria-controls="filePopup">▤ 檔案 ▾</button>
+      <div id="filePopup" class="file-popup hidden" role="menu" aria-label="檔案操作">
+        <div class="popup-heading">圖面管理</div>
+        <button class="file-entry-btn" id="newDocument">＋ 新建圖面</button>
+        <button class="file-entry-btn" id="fileManager">▤ 開啟圖面</button>
+        <div class="popup-heading">匯入</div>
+        <button class="file-entry-btn" id="bgBtn">▧ 匯入照片</button>
+        <button class="file-entry-btn" id="fileImportJson">⇧ 匯入 JSON</button>
+        <div class="popup-heading">匯出與分享</div>
+        <button class="file-entry-btn file-primary" id="share">↗ 一鍵分享</button>
+        <button class="file-entry-btn" id="filePngExport">⇩ 下載 PNG</button>
+        <button class="file-entry-btn" id="fileSvgExport">⇩ 下載 SVG</button>
+        <button class="file-entry-btn" id="fileJsonExport">⇩ 備份 JSON</button>
+      </div>
+    </div>
   </header>
   <main class="main">
+    <div class="center">
+      <input type="file" id="bgInput" accept="image/*" class="hidden"><input type="file" id="importInput" accept=".json,application/json" class="hidden">
+      <div id="toolPicker" class="tool-picker hidden" role="menu"></div>
+      <div id="quickPanel" class="quick-panel hidden"></div>
+      <div class="stage" id="stage">
+        <svg id="sheet" xmlns="http://www.w3.org/2000/svg" aria-label="可觸控編輯的繪圖畫布"><defs>
+            <pattern id="minorGrid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#dfebe8" stroke-width="1"/></pattern>
+            <pattern id="majorGrid" width="250" height="250" patternUnits="userSpaceOnUse"><rect width="250" height="250" fill="url(#minorGrid)"/><path d="M 250 0 L 0 0 0 250" fill="none" stroke="#bfcfca" stroke-width="2"/></pattern>
+            <marker id="arrowhead" viewBox="0 0 10 10" refX="8.8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker>
+          </defs><rect id="paper" fill="#fffefb"/><rect id="gridBg" fill="url(#majorGrid)" pointer-events="none"/><g id="background"></g><g id="guides"></g><g id="art"></g><g id="preview"></g><g id="handles"></g></svg>
+        <div class="hint" id="hint"><b>選取</b> 點線段或端點可再編輯；端點微調鍵會在附近出現</div><div id="modeTip" class="context hidden"></div>
+        <div id="pointNudge" class="point-nudge hidden"></div><div class="hud"><div class="coords" id="coords">X 0　Y 0 mm</div><div class="zoom"><button id="zoomOut">−</button><span id="zoomText">100%</span><button id="zoomIn">＋</button></div></div><div id="toast"></div>
+      </div>
+      <div class="foot"><span id="status">準備完成｜選擇下方工具開始繪圖</span><span id="statusSave">自動保存至此瀏覽器</span></div>
+    </div>
+    <aside class="side closed" id="side"><div id="inspector"></div></aside>
+  </main>
+  <div class="bottom-dock" aria-label="繪圖工具列">
     <nav class="tools" id="tools">
       <button class="tool active" data-tool="select"><span class="ic">⌖</span>選取</button>
       <button class="tool" data-tool="pan"><span class="ic">✥</span>平移</button>
@@ -123,34 +215,13 @@
       <div class="tool-rule"></div>
       <button class="tool" data-tool="pen"><span class="ic">✎</span>畫筆</button>
       <button class="tool" data-tool="text"><span class="ic">文</span>文字</button>
+      <button class="tool end-cont" id="endCont" style="display:none"><span class="ic">✓</span>結束連線</button>
     </nav>
-    <div class="center">
-      <div class="bar">
-        <div class="draw-options" aria-label="繪圖樣式">
-          <span class="bar-label">繪圖</span>
-          <button class="pill quick-btn" id="openColor" title="繪圖顏色"><span class="dot" id="colorDot" style="background:#a65c45"></span>顏色</button>
-          <button class="pill quick-btn" id="openWidth" title="線條粗細"><span id="widthPreview"></span><span id="widthLabel">2px</span></button>
-        </div>
-        <button class="pill" id="endCont" style="display:none">結束連續線</button>
-        <div class="grow"></div>
-        <button class="pill settings-toggle" id="settingsMenu" title="單位、格線與輔助吸附設定" aria-expanded="false" aria-controls="quickPanel">⚙ 設定 <span id="settingsSummary">公分</span> ▾</button>
-        <input type="file" id="bgInput" accept="image/*" class="hidden"><input type="file" id="importInput" accept=".json,application/json" class="hidden">
-      </div>
-      <div id="toolPicker" class="tool-picker hidden" role="menu"></div>
-      <div id="quickPanel" class="quick-panel hidden"></div>
-      <div class="stage" id="stage">
-        <svg id="sheet" xmlns="http://www.w3.org/2000/svg" aria-label="可觸控編輯的繪圖畫布"><defs>
-            <pattern id="minorGrid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#dfebe8" stroke-width="1"/></pattern>
-            <pattern id="majorGrid" width="250" height="250" patternUnits="userSpaceOnUse"><rect width="250" height="250" fill="url(#minorGrid)"/><path d="M 250 0 L 0 0 0 250" fill="none" stroke="#bfcfca" stroke-width="2"/></pattern>
-            <marker id="arrowhead" viewBox="0 0 10 10" refX="8.8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker>
-          </defs><rect id="paper" fill="#fffefb"/><rect id="gridBg" fill="url(#majorGrid)" pointer-events="none"/><g id="background"></g><g id="guides"></g><g id="art"></g><g id="preview"></g><g id="handles"></g></svg>
-        <div class="hint" id="hint"><b>選取</b> 點線段或端點可再編輯；端點微調鍵會在附近出現</div><div id="modeTip" class="context hidden"></div>
-        <div id="pointNudge" class="point-nudge hidden"></div><div class="hud"><div class="coords" id="coords">X 0　Y 0 mm</div><div class="zoom"><button id="zoomOut">−</button><span id="zoomText">100%</span><button id="zoomIn">＋</button></div></div><div id="toast"></div>
-      </div>
-      <div class="foot"><span id="status">準備完成｜選擇左側工具開始繪圖</span><span id="statusSave">自動保存至此瀏覽器</span></div>
+    <div class="dock-style" aria-label="顏色及線寬">
+      <button class="style-shortcut" id="openColor" title="繪圖顏色"><span class="dot" id="colorDot" style="background:#a65c45"></span><span>顏色</span></button>
+      <button class="style-shortcut" id="openWidth" title="線條粗細"><span class="line-glyph" id="widthPreview"></span><span id="widthLabel">2px</span></button>
     </div>
-    <aside class="side closed" id="side"><div id="inspector"></div></aside>
-  </main>
+  </div>
   <div id="fileDialog" class="file-overlay hidden" role="dialog" aria-modal="true" aria-label="檔案管理">
     <section class="file-window">
       <div class="file-head"><strong>我的圖面</strong><button id="closeFiles" aria-label="關閉檔案管理">✕</button></div>
@@ -252,14 +323,14 @@ function setTool(tool){if(!tools[tool])return;state.tool=tool;state.pending=null
 function hintText(tool){return ({select:'點圖形選取，點端點後可微調；按住圖形可移動',pan:'手指拖曳移動畫布',line:'按住拖曳畫線，或分兩次點取起點、終點',continuous:'先點一下設定起點，再點下一點或輸入角度與長度',dashed:'拖曳畫虛線，或點兩個點定位',arrow:'拖曳畫箭頭，或點兩個點定位',dimension:'拖曳或點兩點，自動產生尺寸標記',circle:'從圓心拖曳決定半徑',semi:'先設定圓心和半徑，可再修改起始角度',quarter:'先設定圓心和半徑，可再修改起始角度',triangle:'拖曳畫一般三角形，點屬性可編輯兩邊長與夾角',rightTriangle:'拖曳畫直角三角形，固定夾角90°',isoTriangle:'拖曳畫等腰三角形，兩腰相等',polygon:'拖曳畫正多角形，也可用屬性輸入邊長',ellipse:'從中心拖曳長軸，短軸可輸入',pen:'直接用手指書寫，之後可選取移動',text:'右側輸入文字後，點擊畫布放置'})[tool]||''}
 function updateTip(){const el=$('modeTip');if(state.tool==='continuous'&&state.anchor){el.classList.remove('hidden');el.textContent=`連續線下一段起點：${fmtNum(state.anchor.x)}, ${fmtNum(state.anchor.y)} mm`}else el.classList.add('hidden')}
 
-function closeMenus(){activeMenu=null;$('toolPicker').classList.add('hidden');$('quickPanel').classList.add('hidden');$('actionPopup').classList.add('hidden');$('actionMenu').setAttribute('aria-expanded','false');$('settingsMenu').setAttribute('aria-expanded','false')}
+function closeMenus(){activeMenu=null;$('toolPicker').classList.add('hidden');$('quickPanel').classList.add('hidden');$('actionPopup').classList.add('hidden');$('filePopup').classList.add('hidden');$('actionMenu').setAttribute('aria-expanded','false');$('settingsMenu').setAttribute('aria-expanded','false');$('fileMenu').setAttribute('aria-expanded','false')}
 function pickCategory(key){const p=$('toolPicker');$('quickPanel').classList.add('hidden');if(activeMenu===key&&!p.classList.contains('hidden')){closeMenus();return}activeMenu=key;let html=`<div class="tool-picker-title">${groupNames[key]}<button data-close-menu="1">×</button></div>`;html+=categories[key].map(([tool,label,sides])=>`<button data-pick-tool="${tool}" ${sides?`data-pick-sides="${sides}"`:''} class="${tool===state.tool&&(tool!=='polygon'||Number(sides)===state.sides)?'sel':''}">${label}</button>`).join('');p.innerHTML=html;p.classList.remove('hidden')}
 function syncQuick(){
  if(!$('colorDot'))return;
  $('colorDot').style.background=state.pen;
  $('widthPreview').style.height=Math.max(2,Math.min(16,state.width))+'px';
  $('widthLabel').textContent=state.width+'px';
- $('settingsSummary').textContent=names[state.unit];
+ $('settingsSummary').textContent=names[state.unit];$('settingsMenu').title='繪圖設定 · 目前單位：'+names[state.unit];
  const panel=$('quickPanel');
  panel.querySelectorAll('[data-setting-toggle]').forEach(b=>{
    const key=b.dataset.settingToggle,on=Boolean(state[key]);b.classList.toggle('sel',on);
@@ -336,7 +407,7 @@ if(s.type==='text')html+=`<label class="field">物件文字<textarea data-prop="
 html+=`<div class="row" style="margin-top:9px">${field('物件顏色',s.stroke,'itemColor','color')}${field('物件粗細',s.width,'itemWidth','number','min="0.5" max="30" step="0.5"')}</div><h3 style="margin-top:10px">端點精準微調</h3><div class="row">${select('每次移動',state.step,'step',[[1,'1 mm'],[5,'5 mm'],[10,'10 mm'],[50,'50 mm']])}<div class="tiny" style="flex:2">選點 A / B / C 後按方向鍵</div></div>${nudgeHTML()}<div class="row"><button class="action warn" id="deleteSel">刪除</button><button class="action ghost" id="duplicate">複製</button><button class="action ghost" id="layerUp">上移圖層</button></div></div>`;
 }else{html+=`<div class="section"><h3>精準游標</h3><div class="row">${field('游標 X／'+names[state.unit],toUnit(state.cursor.x),'px','number','step="any"')}${field('游標 Y／'+names[state.unit],toUnit(state.cursor.y),'py','number','step="any"')}</div><div class="row">${select('每次移動',state.step,'step',[[1,'1 mm'],[5,'5 mm'],[10,'10 mm'],[50,'50 mm']])}<div class="tiny" style="flex:2">未選取物件時，方向鍵移動精準游標。</div></div>${nudgeHTML()}</div>`}
 html+=`<div class="section"><h3>圖層 <small>${state.items.length} 個物件</small></h3><div class="layers">${state.items.length?state.items.slice().reverse().map((o,i)=>`<div class="layer ${o.id===state.selected?'active':''}" data-layer="${o.id}"><button data-layer-visible="${o.id}" title="顯示或隱藏">${o.visible!==false?'◉':'◌'}</button><span class="label">${esc(o.type==='text'?(o.text||'文字').slice(0,15):tools[o.type]||o.type)} (${state.items.length-i})</span><button data-layer-up="${o.id}" title="上一層">↑</button><button data-layer-down="${o.id}" title="下一層">↓</button></div>`).join(''):'<div class="tiny">尚無圖形。先選工具，開始在畫布繪製。</div>'}</div></div>`;
-html+=`<div class="section"><h3>檔案與分享</h3><div class="row"><button class="action" id="shareSide">↗ 分享 PNG</button><button class="action ghost" id="png">下載 PNG</button></div><div class="row"><button class="action ghost" id="svgExport">下載 SVG</button><button class="action ghost" id="jsonExport">存可編輯 JSON</button></div><div class="row"><button class="action ghost" id="jsonImport">開啟 JSON</button><button class="action warn" id="clear">清空圖面</button></div><div class="tiny">重要專案請儲存 JSON 備份。分享 PNG 是完工圖片；JSON 可重新載入繼續編輯。</div></div>`;
+
 if(state.bg)html+=`<div class="section"><h3>照片底圖</h3><div class="row">${field('透明度（0～1）',state.bg.opacity??0.65,'bgOpacity','number','min="0" max="1" step="0.05"')}<button class="action warn" id="removeBg">移除底圖</button></div></div>`;
 $('inspector').innerHTML=html}
 function nudgeHTML(){return `<div class="nudge"><span class="empty"></span><button data-nudge="up">↑</button><span class="empty"></span><button data-nudge="left">←</button><div class="middle">●<small>${state.step} mm</small></div><button data-nudge="right">→</button><span class="empty"></span><button data-nudge="down">↓</button><span class="empty"></span></div>`}
@@ -457,10 +528,17 @@ $('newFromFiles').onclick=newDocument;
 $('openJsonFromFiles').onclick=()=>$('importInput').click();
 $('exportJsonFromFiles').onclick=saveJson;
 $('fileDialog').addEventListener('click',e=>{if(e.target===$('fileDialog')){closeFiles();return}const opener=e.target.closest('[data-open-doc]');if(opener){openDocument(opener.dataset.openDoc);return}const del=e.target.closest('[data-delete-doc]');if(del){deleteDocument(del.dataset.deleteDoc)}});
-$('exportMenu').onclick=()=>{closeMenus();const s=$('side');if($('app').classList.contains('focus')){$('app').classList.remove('focus');$('focus').textContent='⛶ 滿版'}s.classList.remove('closed');renderInspector();s.scrollTop=s.scrollHeight;setTimeout(drawOnly,0)};
+$('fileImportJson').onclick=()=>$('importInput').click();
+$('filePngExport').onclick=pngExport;
+$('fileSvgExport').onclick=svgExport;
+$('fileJsonExport').onclick=saveJson;
+$('settingsMenu').onclick=()=>openQuick('settings');
+$('fileMenu').onclick=()=>{const wasOpen=!$('filePopup').classList.contains('hidden');closeMenus();if(!wasOpen){$('filePopup').classList.remove('hidden');$('fileMenu').setAttribute('aria-expanded','true')}};
+$('filePopup').addEventListener('click',e=>{if(e.target.closest('button')){$('filePopup').classList.add('hidden');$('fileMenu').setAttribute('aria-expanded','false')}});
 $('filename').addEventListener('change',()=>{state.project=$('filename').value;store()});
 document.addEventListener('pointerdown',e=>{
  if(!$('actionPopup').classList.contains('hidden')&&!e.target.closest('.action-holder')){$('actionPopup').classList.add('hidden');$('actionMenu').setAttribute('aria-expanded','false')}
+ if(!$('filePopup').classList.contains('hidden')&&!e.target.closest('.file-holder')){$('filePopup').classList.add('hidden');$('fileMenu').setAttribute('aria-expanded','false')}
  if(!$('quickPanel').classList.contains('hidden')&&!e.target.closest('#quickPanel')&&!e.target.closest('#settingsMenu')&&!e.target.closest('#openColor')&&!e.target.closest('#openWidth')){$('quickPanel').classList.add('hidden');$('settingsMenu').setAttribute('aria-expanded','false')}
 });
 window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redoIt():undoIt()}else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();del()}else if(e.key==='Escape'){closeMenus();$('side').classList.add('closed');state.anchor=null;state.pending=null;state.selected=null;render()}});
