@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="三川圖面標記">
 <meta name="theme-color" content="#222c34">
-<title>三川工方｜繪圖與標記 V1.9</title>
+<title>三川工方｜繪圖與標記 V1.10</title>
 <style>
 :root{--night:#222c34;--night2:#303d47;--night3:#40515e;--clay:#a65c45;--lightclay:#eab39f;--paper:#fbfaf7;--cream:#eeeae4;--ink:#26313a;--muted:#6c7780;--aqua:#387b77;--line:#d4d9d8}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--night);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.35;cursor:default}input,select,textarea{min-width:0}input:focus,select:focus,textarea:focus{outline:2px solid #76b8b0;outline-offset:0}
@@ -296,7 +296,7 @@ body.numeric-keyboard #app .hint,body.numeric-keyboard #app .hud{display:none}
  #app .numeric-small{height:33px;min-height:33px}#app .numeric-direction-row button{font-size:17px}}
 
 
-/* V1.9: actual non-overlapping toolbar: occupy layout space, NEVER float above artwork. */
+/* V1.10: actual non-overlapping toolbar: occupy layout space, NEVER float above artwork. */
 #app > .numeric-panel {
   position:relative !important;
   flex:0 0 auto;
@@ -371,7 +371,7 @@ body.numeric-keyboard #app .main{min-height:0;flex:1}
  #app .settings-top-bar .tool{height:39px;min-height:39px}
 }
 
-/* V1.9: one drawing entry, contextual editing and an origin-centred dial. */
+/* V1.10: one drawing entry, contextual editing and an origin-centred dial. */
 #app .bottom-dock .tab-toggle,#backAction,#selectAction,#cursorPad,#precisionCrosshair,#numericAngleDialButton,#numericAngleDial,#numericMinimize,#numericEnd,.numeric-direction-row{display:none!important}
 #app .bottom-dock .mode-strip{display:none;min-height:0}
 #app.picker-open .bottom-dock .mode-strip{display:flex}
@@ -413,12 +413,28 @@ body.numeric-keyboard #app .main{min-height:0;flex:1}
 #app > .numeric-panel .numeric-fixed{flex:0 1 auto;max-width:calc(100% - 148px);overflow-x:auto;scrollbar-width:thin}
 #app > .numeric-panel #numericBody{flex:1 1 50px;min-width:32px}
 #app > .numeric-panel .numeric-fixed .numeric-field{flex:none}
+
+/* V1.10: no persistent coordinates, zoom controls or overlapping layer sheet. */
+#app .hud,#quickFit,#quickDelete,#app .action-dock .action-holder{display:none!important}
+#app .action-dock{overflow:hidden;gap:4px;padding:3px 5px;align-items:center}
+#app #drawMain{min-width:66px!important;max-width:100px;padding:0 8px;height:48px}
+#app #quickLayers,#app #quickUndo{min-width:40px;width:40px;height:48px}
+#layerNumbers{display:flex;align-items:center;gap:4px;flex:1 1 0;min-width:0;height:48px;overflow-x:auto;overflow-y:hidden;touch-action:pan-x;scrollbar-width:none}
+#layerNumbers button{flex:none;width:40px;height:40px;border:1px solid #637c83;border-radius:8px;background:#34474f;color:#fff;font-size:16px;font-weight:700;touch-action:pan-x}
+#layerNumbers button.active{background:#347e79;border:2px solid #a6e7cf}
+#layerNumbers button.muted-layer{border-style:dashed;color:#a3afb4}
+.empty-layers{font-size:11px;color:#bbc6c9;white-space:nowrap;padding:0 6px}
+#app #selectionActions{position:relative;inset:auto;flex:none;height:46px;min-height:46px;padding:3px 6px;align-items:center;background:#f0f5f1;border-bottom:1px solid #cbd9d2;overflow-y:hidden;pointer-events:auto}
+#selectionActions button{flex:none;min-height:38px;font-size:12px;padding:0 9px}
+.selected-layer-name{flex:none;font-size:11px;color:#39635d;white-space:nowrap}
+#app #quickRedo{min-width:34px;width:34px;padding:3px;font-size:21px}
+#app .main .center{min-width:0}
 </style>
 </head>
 <body>
 <div id="app">
   <header class="top">
-    <div class="logo">川</div><div class="brand"><b>三川工方</b><small>繪圖與標記 V1.9</small></div>
+    <div class="logo">川</div><div class="brand"><b>三川工方</b><small>繪圖與標記 V1.10</small></div>
     <input id="filename" class="project" value="未命名圖面" aria-label="圖檔名稱" title="點此更改圖面名稱">
     <div class="grow"></div>
     <button class="btn settings-icon" id="settingsMenu" title="單位、格線與輔助設定" aria-label="繪圖設定" aria-expanded="false" aria-controls="quickPanel">⚙<span id="settingsSummary" class="sr-only">公分</span></button>
@@ -883,7 +899,7 @@ if(g.kind==='bg-move'||g.kind==='bg-resize'){
 }
 if(g.kind==='draw'){g.current=(['line','continuous','dashed','arrow','dimension'].includes(g.type)?snapAnglePoint(g.type==='continuous'&&state.anchor?state.anchor:g.start,roundSnap(point)):roundSnap(point));if(Math.hypot(e.clientX-g.origin.x,e.clientY-g.origin.y)>5)g.moved=true;if(g.type==='pen')g.trail.push(point);state.preview=previewFor(g);drawOnly();return}
 if(g.kind==='move'||g.kind==='handle'){const s=current();if(!s)return;const dx=point.x-g.origin.x,dy=point.y-g.origin.y;if(Math.abs(dx)+Math.abs(dy)>3/state.view.scale)g.moved=true;const original=JSON.parse(g.snapshot).items.find(x=>x.id===s.id);if(!original)return;s.points=clone(original.points);if(g.kind==='handle'&&g.index===0&&['circle','semi','quarter','ellipse','polygon'].includes(s.type)){moveShape(s,dx,dy)}else if(g.kind==='handle'){s.points[g.index]=roundSnap({x:original.points[g.index].x+dx,y:original.points[g.index].y+dy});fixNamedTriangle(s,g.index,original.points)}else{moveShape(s,dx,dy)}drawOnly()}}
-function onUp(e){const g=state.gesture;if(!g)return;clearTimeout(holdTimer);if(g.kind==='browse'||g.kind==='held'){state.gesture=null;if(g.kind==='browse'&&!g.moved){if(g.target===state.selected&&g.target){selectionPart='whole';}else if(!g.target){state.selected=null;selectionPart='whole';}}render();return;}state.gesture=null;e.preventDefault();if(g.kind==='pan'){state.preview=null;drawOnly();return}
+function onUp(e){const g=state.gesture;if(!g)return;clearTimeout(holdTimer);if(g.kind==='browse'||g.kind==='held'){state.gesture=null;if(g.kind==='browse'&&!g.moved){if(g.target===state.selected&&g.target){selectionPart='whole';}else if(!g.target){state.selected=null;selectionPart='whole';}}render();if(g.kind==='browse')blankTap(e,g);else lastBlankTap=null;return;}state.gesture=null;e.preventDefault();if(g.kind==='pan'){state.preview=null;drawOnly();return}
 if(g.kind==='bg-move'||g.kind==='bg-resize'){if(g.moved){undo.push(g.snapshot);if(undo.length>80)undo.shift();redo.length=0;store()}else{sideMode='properties';$('side').classList.remove('closed')}render();return}
 if(g.kind==='move'||g.kind==='handle'){if(g.moved){undo.push(g.snapshot);if(undo.length>80)undo.shift();redo.length=0;store()}render();return}
 if(g.kind==='empty'){render();return}
@@ -1062,7 +1078,7 @@ $('numericAngle').closest('label').id='angleField';
 document.querySelector('.numeric-fixed').insertAdjacentHTML('beforeend','<label id="secondaryField" class="numeric-field hidden"><b id="secondaryLabel">高</b><input id="numericSecondary" type="number" min="0.001" step="any" inputmode="decimal" value="60" aria-label="第二尺寸"></label>');
 $('numericClose').textContent='取消';$('numericCommit').textContent='確認';$('numericPickOrigin').textContent='重設起點';
 $('numericPanel').setAttribute('aria-label','數值繪製');
-function cancelGesture(){clearTimeout(holdTimer);const g=state.gesture;if(g?.snapshot){const x=JSON.parse(g.snapshot);state.items=x.items;state.bg=x.bg;}state.gesture=null;state.preview=null;rotation=null;}
+function cancelGesture(){lastBlankTap=null;clearTimeout(holdTimer);const g=state.gesture;if(g?.snapshot){const x=JSON.parse(g.snapshot);state.items=x.items;state.bg=x.bg;}state.gesture=null;state.preview=null;rotation=null;}
 function targetAt(e){const h=e.target.closest('[data-id]');if(h)return h.dataset.id;const p=screenToWorld(e),lim=18/state.view.scale;for(let i=state.items.length-1;i>=0;i--){const s=state.items[i];if(s.visible!==false&&(isNearShape(p,s,lim)||s.points.some(q=>distance(q,p)<lim)))return s.id;}return e.target.closest('[data-bg],[data-bg-handle]')?PHOTO_ID:null;}
 function browseDown(e){
  const id=targetAt(e),h=e.target.closest('[data-handle]'),bh=e.target.closest('[data-bg-handle]');
@@ -1073,7 +1089,7 @@ function browseDown(e){
  if(id&&id===state.selected&&selectionPart==='move'){
    state.gesture=chooseAndDrag(e);render();return;
  }
- const g={kind:'browse',target:id,origin:{x:e.clientX,y:e.clientY},cx:state.view.cx,cy:state.view.cy,moved:false};state.gesture=g;
+ const g={kind:'browse',started:performance.now(),target:id,origin:{x:e.clientX,y:e.clientY},cx:state.view.cx,cy:state.view.cy,moved:false};state.gesture=g;
  clearTimeout(holdTimer);
  if(id)holdTimer=setTimeout(()=>{if(state.gesture!==g||g.moved||pinch)return;state.selected=id;state.point=0;selectionPart='whole';g.kind='held';navigator.vibrate?.(15);render();},400);
 }
@@ -1156,6 +1172,39 @@ settingsShade.onclick=()=>closeMenus();
 $('settingsMenu').onclick=()=>openQuick('settings');$('settingsTab').onclick=()=>openQuick('settings');
 $('quickPanel').addEventListener('input',e=>{if(e.target.id==='settingsPen')state.pen=e.target.value;if(e.target.id==='settingsWidth'){const n=Number(e.target.value);if(n>=.5&&n<=30)state.width=n;}syncQuick();});
 $('quickPanel').addEventListener('keydown',e=>{if(e.key!=='Tab'||settingsShade.classList.contains('hidden'))return;const a=[...$('quickPanel').querySelectorAll('button,input')].filter(x=>!x.disabled),first=a[0],last=a.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
+
+// V1.10: numbered layer selection lives in the existing bottom row.
+let layerStripOpen=false,lastBlankTap=null;
+const layerStrip=document.createElement('nav');layerStrip.id='layerNumbers';layerStrip.className='hidden';layerStrip.setAttribute('aria-label','依編號選取圖層');$('quickLayers').after(layerStrip);
+$('quickLayers').innerHTML='<span class="ic">↖</span><span>選取</span>';$('quickLayers').title='選取並展開圖層編號';$('quickLayers').setAttribute('aria-controls','layerNumbers');
+// Editing commands reserve a shallow row, never overlay the paper.
+$('stage').before($('selectionActions'));
+const redoButton=document.createElement('button');redoButton.id='quickRedo';redoButton.className='btn hidden';redoButton.textContent='↷';redoButton.title='重做';redoButton.setAttribute('aria-label','重做');$('settingsMenu').before(redoButton);redoButton.onclick=redoIt;
+function numberedLayers(){return [...(state.bg?[{id:PHOTO_ID,type:'photo',visible:state.bg.visible}]:[]),...state.items];}
+function syncLayerNumbers(){
+ if(state.tool==='select'&&state.selected)layerStripOpen=true;
+ const open=layerStripOpen&&state.tool==='select';layerStrip.classList.toggle('hidden',!open);$('quickLayers').classList.toggle('on',state.tool==='select');$('quickLayers').setAttribute('aria-expanded',String(open));$('quickRedo').classList.toggle('hidden',!redo.length);
+ const entries=numberedLayers(),markup=entries.length?entries.map((o,i)=>`<button type="button" data-layer-number="${esc(o.id)}" class="${o.id===state.selected?'active ':''}${o.visible===false?'muted-layer':''}" aria-label="圖層 ${i+1} ${esc(o.type==='photo'?'照片':tools[o.type]||o.type)}${o.visible===false?'（隱藏）':''}" aria-pressed="${o.id===state.selected}">${i+1}</button>`).join(''):'<span class="empty-layers">尚無物件</span>';
+ if(layerStrip.innerHTML!==markup){const scroll=layerStrip.scrollLeft;layerStrip.innerHTML=markup;layerStrip.scrollLeft=scroll;}
+ if(sideMode==='layers')$('side').classList.add('closed');
+}
+$('quickLayers').onclick=()=>{setTool('select');layerStripOpen=true;closeMenus();$('side').classList.add('closed');render();};
+layerStrip.onclick=e=>{const button=e.target.closest('[data-layer-number]');if(!button)return;cancelGesture();state.selected=button.dataset.layerNumber;state.point=0;selectionPart='whole';state.pending=null;state.preview=null;sideMode='properties';$('side').classList.add('closed');render();};
+const renderInteractionV19=renderInteraction;
+renderInteraction=function(){renderInteractionV19();syncLayerNumbers();if(state.tool==='select'&&state.selected){const o=state.selected===PHOTO_ID?state.bg:current(),idx=numberedLayers().findIndex(o=>o.id===state.selected)+1;
+ $('selectionActions').insertAdjacentHTML('afterbegin',`<span class="selected-layer-name">圖層 ${idx}</span>`);
+ $('selectionActions').insertAdjacentHTML('beforeend',`<button data-layer-visibility>${o?.visible===false?'顯示':'隱藏'}</button>${current()?'<button data-copy-layer>複製</button><button data-layer-forward>往前</button><button data-layer-backward>往後</button>':''}<button data-delete-layer>刪除</button>`);
+ $('hint').innerHTML=`<b>↖ 圖層 ${idx}</b> ${selectionPart==='whole'?'整體已選取':selectionPart==='move'?'拖曳物件移動':'控制點 '+String.fromCharCode(65+state.point)}`;
+ }else if(state.tool==='select')$('hint').innerHTML='<b>↖ 瀏覽</b> 長按或按編號選取・空白雙擊適屏';
+};
+$('selectionActions').addEventListener('click',e=>{
+ if(e.target.closest('[data-delete-layer]'))del();
+ if(e.target.closest('[data-copy-layer]')){duplicate();selectionPart='whole';render();}
+ if(e.target.closest('[data-layer-forward]'))reorder(state.selected,1);
+ if(e.target.closest('[data-layer-backward]'))reorder(state.selected,-1);
+ if(e.target.closest('[data-layer-visibility]')){const o=state.selected===PHOTO_ID?state.bg:current();if(o){checkpoint();o.visible=o.visible===false;render();store();}}
+});
+function blankTap(e,g){if(g.target||g.moved||performance.now()-g.started>280){lastBlankTap=null;return;}const now=performance.now();if(lastBlankTap&&now-lastBlankTap.time<320&&Math.hypot(e.clientX-lastBlankTap.x,e.clientY-lastBlankTap.y)<24){lastBlankTap=null;fit();status('已適屏');}else lastBlankTap={time:now,x:e.clientX,y:e.clientY};}
 
 readStored();resize();fit();restoreDrawingTools();syncDock();render();
 // Non-production smoke-test interface, read-only references except operations through public UI.
